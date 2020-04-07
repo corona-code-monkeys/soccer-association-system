@@ -1,4 +1,4 @@
 package com.SAS.game_event_logger;
 
-public class Offence {
+public class Offence extends GameEvent{
 }
