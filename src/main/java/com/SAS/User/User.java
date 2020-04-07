@@ -2,7 +2,7 @@
  * The class represents a user in the system
  */
 
-package com.SAS.soccer_association_system.User;
+package com.SAS.User;
 
 public abstract class User {
 

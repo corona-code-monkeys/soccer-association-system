@@ -2,7 +2,7 @@
  * The class represents a coach
  */
 
-package com.SAS.soccer_association_system.User;
+package com.SAS.User;
 
 public class Coach extends Role {
 

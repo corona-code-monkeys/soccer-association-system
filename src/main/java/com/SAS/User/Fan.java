@@ -2,7 +2,7 @@
  * The class represents a fan
  */
 
-package com.SAS.soccer_association_system.User;
+package com.SAS.User;
 
 public class Fan extends Role {
 

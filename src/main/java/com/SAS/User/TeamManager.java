@@ -2,7 +2,7 @@
  * The class represents a team manager
  */
 
-package com.SAS.soccer_association_system.User;
+package com.SAS.User;
 
 public class TeamManager extends Role {
 

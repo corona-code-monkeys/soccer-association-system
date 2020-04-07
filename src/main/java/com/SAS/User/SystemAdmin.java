@@ -2,7 +2,7 @@
  * The class represents a system admin
  */
 
-package com.SAS.soccer_association_system.User;
+package com.SAS.User;
 
 public class SystemAdmin extends Role {
 

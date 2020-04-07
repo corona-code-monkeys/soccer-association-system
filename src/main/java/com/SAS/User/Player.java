@@ -2,7 +2,7 @@
  * The class represents a player
  */
 
-package com.SAS.soccer_association_system.User;
+package com.SAS.User;
 
 import java.time.LocalDate;
 

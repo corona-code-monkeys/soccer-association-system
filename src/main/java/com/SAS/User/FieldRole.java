@@ -2,7 +2,7 @@
  * The class represents the different roles in the field
  */
 
-package com.SAS.soccer_association_system.User;
+package com.SAS.User;
 
 public enum FieldRole {
     goalKeeper,

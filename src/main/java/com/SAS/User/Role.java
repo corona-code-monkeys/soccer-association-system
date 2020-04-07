@@ -2,7 +2,7 @@
  * The class represents the privileges of registered user
  */
 
-package com.SAS.soccer_association_system.User;
+package com.SAS.User;
 
 public abstract class Role extends User {
 

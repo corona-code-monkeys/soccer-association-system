@@ -2,7 +2,7 @@
  * The class represents a personal page of a coach / player or a team
  */
 
-package com.SAS.soccer_association_system.User;
+package com.SAS.User;
 
 public class PersonalPage {
 

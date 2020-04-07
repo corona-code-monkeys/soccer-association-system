@@ -1,7 +1,7 @@
 /**
  * The class represents a team owner
  */
-package com.SAS.soccer_association_system.User;
+package com.SAS.User;
 
 public class TeamOwner extends Role {
 
