@@ -1,7 +1,8 @@
 package com.SAS.soccer_association_system.stadium;
 
-import java.util.List;
-
+/**
+ * The class represent a football stadium of a team
+ */
 public class Stadium {
 
     private String location;
@@ -11,6 +12,12 @@ public class Stadium {
     public Stadium() {
     }
 
+    /**
+     * The method adds a game to the stadium games list
+     * @param location
+     * @param gamesList
+     * @param homeTeam
+     */
     public Stadium(String location, List<Game> gamesList, Team homeTeam) {
         this.location = location;
         this.gamesList = gamesList;
