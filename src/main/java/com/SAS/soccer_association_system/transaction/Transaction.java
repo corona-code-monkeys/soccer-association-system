@@ -15,6 +15,13 @@ public class Transaction {
     public Transaction() {
     }
 
+    public Transaction(float amount, String type, LocalDate date, Team team) {
+        this.amount = amount;
+        this.type = type;
+        this.date = date;
+        this.team = team;
+    }
+
     public float getAmount() {
         return amount;
     }
