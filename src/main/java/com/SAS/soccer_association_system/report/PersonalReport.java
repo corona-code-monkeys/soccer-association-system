@@ -1,6 +1,6 @@
 package com.SAS.soccer_association_system.report;
 
-public class PersonalReport {
+public class PersonalReport extends Report {
 
     private int pageId;
     private String descr;
