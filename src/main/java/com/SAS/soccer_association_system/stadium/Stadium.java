@@ -1,5 +1,7 @@
 package com.SAS.soccer_association_system.stadium;
 
+import java.util.LinkedList;
+
 /**
  * The class represent a football stadium of a team
  */
@@ -10,6 +12,7 @@ public class Stadium {
     private Team homeTeam;
 
     public Stadium() {
+        gamesList = new LinkedList<Game>();
     }
 
     /**
