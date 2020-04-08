@@ -1,7 +1,6 @@
-package com.SAS.soccer_association_system;
+package com.SAS.League;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * class league that create a league according to the features in the black class diagram

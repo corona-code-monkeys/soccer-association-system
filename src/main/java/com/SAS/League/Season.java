@@ -1,6 +1,9 @@
-package com.SAS.soccer_association_system;
+package com.SAS.League;
 
 import java.util.ArrayList;
+
+class Team {
+}//to be removed
 
 public class Season {
     int year;
@@ -9,9 +12,9 @@ public class Season {
     ArrayList<League> leaguesList;
 
     public Season() {
-        this.gamesList=new ArrayList<>();
-        this.leaguesList=new ArrayList<>();
-        this.teamsList=new ArrayList<Team>();
+        this.gamesList = new ArrayList<>();
+        this.leaguesList = new ArrayList<>();
+        this.teamsList = new ArrayList<Team>();
     }
 
     public Season(int year, ArrayList<Game> gamesList, ArrayList<Team> teamsList, ArrayList<League> leaguesList) {
