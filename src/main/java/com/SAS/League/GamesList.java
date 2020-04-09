@@ -10,6 +10,9 @@ public class GamesList {
      * replace default constructor
      */
     public GamesList() {
+        this.leagueName="";
+        this.season=-1;
+        this.gameslist= new ArrayList<>();
     }
 
     /**

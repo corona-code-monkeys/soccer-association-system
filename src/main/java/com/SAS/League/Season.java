@@ -3,7 +3,13 @@ package com.SAS.League;
 import java.util.ArrayList;
 
 class Team {
+
+    public String getName;
+
+    public void addBudget(int year, int budget) {
+    }
 }//to be removed
+
 class Game {
 }//to be removed
 
@@ -13,6 +19,7 @@ class Game {
 public class Season {
     private int year;
     private ArrayList<GamesList> gamesList;
+    private ArrayList<Budget> budgets;
     ArrayList<Team> teamsList;
     ArrayList<League> leaguesList;
 
@@ -23,9 +30,10 @@ public class Season {
         this.gamesList = new ArrayList<>();
         this.leaguesList = new ArrayList<>();
         this.teamsList = new ArrayList<Team>();
+        this.budgets=new ArrayList<>();
     }
 
-    
+
     /**
      * param constructor
      *
@@ -33,11 +41,12 @@ public class Season {
      * @param teamsList
      * @param leaguesList
      */
-    public Season(int year, ArrayList<Team> teamsList, ArrayList<League> leaguesList) {
+    public Season(int year, ArrayList<Team> teamsList, ArrayList<League> leaguesList, ArrayList<Budget> budgets) {
         this.year = year;
         this.gamesList = new ArrayList<>();
         this.teamsList = teamsList;
         this.leaguesList = leaguesList;
+        this.budgets=budgets;
     }
 
     /**
@@ -62,19 +71,39 @@ public class Season {
      * @return the games list for this season in specific league
      */
     public ArrayList<GamesList> getGamesList() {
-        return gamesList;
+        return this.gamesList;
 
     }
 
     /**
-     * @param league
-     * @param games
+     * @param league the league that the games will be take place in
+     * @param games  the list of the games
      */
     public void addGamesList(String league, ArrayList<Game> games) {
-        gamesList.add(new GamesList(league, this.year, games));
-        for (int i = 0; i < leaguesList.size(); i++) {
-            if (leaguesList.get(i).getName().equals(league)) {
-                leaguesList.get(i).addGamesList(this.year, games);
+        this.gamesList.add(new GamesList(league, this.year, games));
+        for (int i = 0; i < this.leaguesList.size(); i++) {
+            if (this.leaguesList.get(i).getName().equals(league)) {
+                this.leaguesList.get(i).addGamesList(this.year, games);
+            }
+        }
+    }
+
+    /**
+     * @return the budgets list for this season in specific league
+     */
+    public ArrayList<Budget> getBudgets() {
+        return this.budgets;
+    }
+
+    /**
+     * @param team   which team the budgets belong to
+     * @param budget the budget of the input team for this season
+     */
+    public void addBudget(String team, int budget) {
+        this.budgets.add(new Budget(team,this.year,budget));
+        for (int i = 0; i < this.teamsList.size(); i++) {
+            if (this.teamsList.get(i).getName.equals(team)) {
+                this.teamsList.get(i).addBudget(this.year, budget);
             }
         }
     }
