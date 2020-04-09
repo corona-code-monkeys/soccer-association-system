@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 class Team {
 }//to be removed
+class Game {
+}//to be removed
 
 /**
  * class season that define the object season and attributes
