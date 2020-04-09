@@ -5,8 +5,8 @@
 package com.SAS.User;
 
 public enum FieldRole {
-    goalKeeper,
-    defender,
-    striker,
-    midfielder
+    GOAL_KEEPER,
+    DEFENDER,
+    STRIKER,
+    MIDFIELDER
 }

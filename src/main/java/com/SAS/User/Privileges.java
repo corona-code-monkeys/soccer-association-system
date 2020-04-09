@@ -6,6 +6,8 @@ package com.SAS.User;
 
 public class Privileges {
 
-    public void edit(String privilege) {
+    //Will be implemented
+    public void edit(String privilege) throws Exception {
+        throw new Exception("Not implemented");
     }
 }

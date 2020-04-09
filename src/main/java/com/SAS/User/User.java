@@ -18,7 +18,7 @@ public abstract class User {
     }
 
     /**
-     * The function returns the uderID
+     * The function returns the userID
      * @return userID - int
      */
     public int getUserID() {
