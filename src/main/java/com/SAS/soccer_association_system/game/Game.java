@@ -17,6 +17,9 @@ public class Game {
     private GameReport gameReport;
     private List<Referee> referees;
 
+    /**
+     * Empty constructor
+     */
     public Game() {
         referees = new LinkedList<Referee>();
     }
@@ -58,62 +61,122 @@ public class Game {
         return false;
     }
 
+    /**
+     * The function returns the current season
+     * @return
+     */
     public Season getSeason() {
         return season;
     }
 
+    /**
+     * The function sets the season
+     * @param season
+     */
     public void setSeason(Season season) {
         this.season = season;
     }
 
+    /**
+     * The function returns the date
+     * @return
+     */
     public LocalDate getDate() {
         return date;
     }
 
+    /**
+     * The function sets the date
+     * @return
+     */
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
+    /**
+     * The function returns the host team of the game
+     * @return
+     */
     public Team getHost() {
         return host;
     }
 
+    /**
+     * The function sets the host team of the game
+     * @return
+     */
     public void setHost(Team host) {
         this.host = host;
     }
 
+    /**
+     * The function returns the guest team of the game
+     * @return
+     */
     public Team getGuest() {
         return guest;
     }
 
+    /**
+     * The function returns the guest team of the game
+     * @return
+     */
     public void setGuest(Team guest) {
         this.guest = guest;
     }
 
+    /**
+     * The function return the score of host team
+     * @return
+     */
     public int getHostScore() {
         return hostScore;
     }
 
-    public void setHostScore(int hostScore) {
-        this.hostScore = hostScore;
+    /**
+     * The function adds 1 goal to host team
+     * @return
+     */
+    public void addGoalToHost() {
+        this.hostScore++;
     }
 
+    /**
+     * The function return the score of guest team
+     * @return
+     */
     public int getGuestScore() {
         return guestScore;
     }
 
-    public void setGuestScore(int guestScore) {
-        this.guestScore = guestScore;
+    /**
+     * The function adds 1 goal to guest team
+     * @return
+     */
+    public void addGoalToGuest() {
+        this.guestScore++;
     }
 
+    /**
+     * The function return the stadium the game take place in
+     * @return
+     */
     public Stadium getStadium() {
         return stadium;
     }
 
+    /**
+     * The function sets the stadium the game take place in
+     * @return
+     */
     public void setStadium(Stadium stadium) {
         this.stadium = stadium;
     }
 
+    /**
+     * The functions returns the game events
+     * @return
+     */
     public GameEventslogger getEvents() {
         return events;
     }
@@ -122,18 +185,34 @@ public class Game {
         this.events = events;
     }
 
+    /**
+     * The function return the game report
+     * @return
+     */
     public GameReport getGameReport() {
         return gameReport;
     }
 
+    /**
+     * The function sets the game report
+     * @return
+     */
     public void setGameReport(GameReport gameReport) {
         this.gameReport = gameReport;
     }
 
+    /**
+     * The function return the game referees
+     * @return
+     */
     public List<Referee> getReferees() {
         return referees;
     }
 
+    /**
+     * The function sets the game referees
+     * @return
+     */
     public void setReferees(List<Referee> referees) {
         this.referees = referees;
     }
