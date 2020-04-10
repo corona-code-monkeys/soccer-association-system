@@ -3,7 +3,7 @@ package com.SAS.soccer_association_system.stadium;
 import java.util.LinkedList;
 
 /**
- * The class represent a football stadium of a team
+ * The class represent a soccer stadium of a team
  */
 public class Stadium {
 
@@ -11,6 +11,9 @@ public class Stadium {
     private List<Game> gamesList;
     private Team homeTeam;
 
+    /**
+     * Empty constructor
+     */
     public Stadium() {
         gamesList = new LinkedList<Game>();
     }
@@ -36,26 +39,50 @@ public class Stadium {
         return true;
     }
 
+    /**
+     * The function returns the location of the stadium
+     * @return
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     * The function sets the location of the stadium
+     * @param location
+     */
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     * The function returns list of the games in the stadium
+     * @return
+     */
     public List<Game> getGamesList() {
         return gamesList;
     }
 
+    /**
+     * The function sets the game list of the stadium
+     * @param gamesList
+     */
     public void setGamesList(List<Game> gamesList) {
         this.gamesList = gamesList;
     }
 
+    /**
+     * The function returns the team that owns the stadium
+     * @return
+     */
     public Team getHomeTeam() {
         return homeTeam;
     }
 
+    /**
+     * The function sets a team that owns the stadium
+     * @param homeTeam
+     */
     public void setHomeTeam(Team homeTeam) {
         this.homeTeam = homeTeam;
     }
