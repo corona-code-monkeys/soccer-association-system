@@ -3,10 +3,9 @@ package com.SAS.soccer_association_system.report;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class GameReport extends Report {
+public class GameReport {
 
     private LocalDate gameDate;
-    //TODO: need to reconsider the use of time
     private LocalDateTime time;
 
     public GameReport() {
@@ -16,6 +15,7 @@ public class GameReport extends Report {
         this.gameDate = gameDate;
         this.time = time;
     }
+
 
     public LocalDate getGameDate() {
         return gameDate;
