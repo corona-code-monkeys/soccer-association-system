@@ -27,7 +27,7 @@ public class UserController {
     }
 
     //did not call this yet!
-    public void setPrivilegesforUser(User user, String privilege, boolean  approval) {
-        user.setPrivileges(globalPrivileges.getPrivileges(privilege, approval));
+    public void setPrivilegesforUser(User user, String role, boolean  approval) {
+        user.setPrivileges(globalPrivileges.getPrivileges(role, approval));
     }
 }

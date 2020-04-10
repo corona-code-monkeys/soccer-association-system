@@ -56,19 +56,19 @@ public class Privileges {
 
     /**
      * This function returns the appropriate privileges for the received role
-     * @param privilege - a string representing the role
+     * @param role - a string representing the role
      * @param approved- a boolean representing whether the team manager can add/remove assets
      * @return - a hashset of strings representing the role privileges
      */
-    public HashSet<String> getPrivileges(String privilege, boolean approved) {
-        switch (privilege){
+    public HashSet<String> getPrivileges(String role, boolean approved) {
+        switch (role){
             case "TeamOwner":
                 //a team owner need to get approval to receive privileges from the team owner, once we have
                 //UI will need to popup a window to get approval
                 if (approved)
                     return privileges.get("TeamOwner");
             default:
-                return privileges.get(privilege);
+                return privileges.get(role);
         }
 
 
