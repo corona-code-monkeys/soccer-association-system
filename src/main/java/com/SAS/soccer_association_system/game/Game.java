@@ -45,6 +45,10 @@ public class Game {
         System.out.println("Game Started");
     }
 
+    //TODO: implement endGame method
+    public void endGame(){
+    }
+
     //TODO: complete the method after merge with game event logger
     public boolean addGameEvent(){
         return false;
