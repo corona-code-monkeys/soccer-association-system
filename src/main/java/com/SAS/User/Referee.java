@@ -18,7 +18,6 @@ public class Referee extends Role {
     public Referee(User user, int level) {
         this.user = user;
         this.level = level;
-        super.setPrivileges("Referee");
     }
 
     /**

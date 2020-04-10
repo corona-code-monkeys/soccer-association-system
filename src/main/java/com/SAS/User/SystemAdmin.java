@@ -14,6 +14,5 @@ public class SystemAdmin extends Role {
      */
     public SystemAdmin(User user) {
         this.user = user;
-        super.setPrivileges("Referee");
     }
 }

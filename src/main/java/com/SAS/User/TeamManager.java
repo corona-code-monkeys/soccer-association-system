@@ -15,7 +15,6 @@ public class TeamManager extends Role {
      */
     public TeamManager(User user) {
         this.user = user;
-        super.setPrivileges("TeamManager");
     }
 
     /**

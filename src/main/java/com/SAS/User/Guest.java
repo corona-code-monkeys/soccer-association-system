@@ -5,4 +5,5 @@
 package com.SAS.User;
 
 public class Guest extends User {
+
 }
