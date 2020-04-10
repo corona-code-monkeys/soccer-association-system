@@ -1,63 +1,45 @@
 package com.SAS.League;
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Budget {
-    private String team;
-    private int season;
+    private Team team;
+    private  Season season;
     private int budget;
-    /**
-     * replace default constructor
-     */
-    public Budget() {
-        this.team="";
-        this.season=-1;
-        this.budget=-1;
-    }
+
+
 
     /**
      * GamesList constructor with attributes
-     * @param team: the name of the league
-     * @param season: the year when the season started
+     * @param team: the team the budget belong
+     * @param season: the budget's season
      * @param budget: the list of the games
      */
-    public Budget(String team, int season, int budget) {
+    public Budget(Team team, Season season, int budget) {
         this.team = team;
         this.season = season;
         this.budget = budget;
+
     }
 
     /**
      *
      * @return the budget's team name
      */
-    public String getTeam() {
+    public Team getTeam() {
         return team;
     }
 
-    /**
-     *
-     * @param team: the budget's team name
-     */
-    public void setTeam(String team) {
-        this.team = team;
-    }
 
     /**
      *
      * @return in which season the budget is valid
      */
-    public int getSeason() {
+    public Season getSeason() {
         return season;
     }
 
-    /**
-     *
-     * @param season: in which season the budget is valid
-     */
-    public void setSeason(int season) {
-        this.season = season;
-    }
 
     /**
      *
@@ -67,11 +49,5 @@ public class Budget {
         return budget;
     }
 
-    /**
-     *
-     * @param budget: set the size of the budget
-     */
-    public void setBudget(int budget) {
-        this.budget = budget;
-    }
+
 }
