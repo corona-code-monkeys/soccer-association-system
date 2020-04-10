@@ -49,6 +49,10 @@ public class Game {
     public void endGame(){
     }
 
+    //TODO: implement editReport
+    public void editReport(){
+    }
+
     //TODO: complete the method after merge with game event logger
     public boolean addGameEvent(){
         return false;
