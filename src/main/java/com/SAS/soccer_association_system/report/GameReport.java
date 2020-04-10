@@ -38,7 +38,6 @@ public class GameReport {
 
     /**
      * The function sets the date the game took place
-     * @return
      */
     public void setGameDate(LocalDate gameDate) {
         this.gameDate = gameDate;
@@ -54,7 +53,6 @@ public class GameReport {
 
     /**
      * The function sets the time the game ended
-     * @return
      */
     public void setTime(LocalDateTime time) {
         this.time = time;

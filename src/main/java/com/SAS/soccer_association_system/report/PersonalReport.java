@@ -37,7 +37,6 @@ public class PersonalReport {
 
     /**
      * The function sets the pageId of the page that user complain about
-     * @return
      */
     public void setPageId(int pageId) {
         this.pageId = pageId;
@@ -53,7 +52,6 @@ public class PersonalReport {
 
     /**
      * The function sets the description of the complain
-     * @return
      */
     public void setDescr(String descr) {
         this.descr = descr;
@@ -69,7 +67,6 @@ public class PersonalReport {
 
     /**
      * The function sets the userId of the user that complain
-     * @return
      */
     public void setUserId(int userId) {
         this.userId = userId;
