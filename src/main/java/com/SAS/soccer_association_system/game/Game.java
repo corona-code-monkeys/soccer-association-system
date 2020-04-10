@@ -25,44 +25,45 @@ public class Game {
     }
 
     /**
-     * The function returns the winning team of the match
+     * The function returns the winning team name. else, return draw.
+     *
      * @return
      */
-    //TODO: discuss what arg to return
-    public Team getWinningTeam();{
-        if(hostScore > guestScore){
-            return host;
+    public String getWinningTeam() {
+        if (hostScore > guestScore) {
+            return hostScore.name;
         }
 
-        if(hostScore < guestScore){
-            return guest;
+        if (hostScore < guestScore) {
+            return guest.name;
         }
-        //TODO: what to return if draw
-        return null;
+
+        return "draw";
     }
 
     /**
      * The function starts the match
      */
-    public void startGame(){
+    public void startGame() {
         System.out.println("Game Started");
     }
 
     //TODO: implement endGame method
-    public void endGame(){
+    public void endGame() {
     }
 
     //TODO: implement editReport
-    public void editReport(){
+    public void editReport() {
     }
 
     //TODO: complete the method after merge with game event logger
-    public boolean addGameEvent(){
+    public boolean addGameEvent() {
         return false;
     }
 
     /**
      * The function returns the current season
+     *
      * @return
      */
     public Season getSeason() {
@@ -71,6 +72,7 @@ public class Game {
 
     /**
      * The function sets the season
+     *
      * @param season
      */
     public void setSeason(Season season) {
@@ -79,6 +81,7 @@ public class Game {
 
     /**
      * The function returns the date
+     *
      * @return
      */
     public LocalDate getDate() {
@@ -87,6 +90,7 @@ public class Game {
 
     /**
      * The function sets the date
+     *
      * @return
      */
     public void setDate(LocalDate date) {
@@ -95,6 +99,7 @@ public class Game {
 
     /**
      * The function returns the host team of the game
+     *
      * @return
      */
     public Team getHost() {
@@ -103,6 +108,7 @@ public class Game {
 
     /**
      * The function sets the host team of the game
+     *
      * @return
      */
     public void setHost(Team host) {
@@ -111,6 +117,7 @@ public class Game {
 
     /**
      * The function returns the guest team of the game
+     *
      * @return
      */
     public Team getGuest() {
@@ -119,6 +126,7 @@ public class Game {
 
     /**
      * The function returns the guest team of the game
+     *
      * @return
      */
     public void setGuest(Team guest) {
@@ -127,6 +135,7 @@ public class Game {
 
     /**
      * The function return the score of host team
+     *
      * @return
      */
     public int getHostScore() {
@@ -135,6 +144,7 @@ public class Game {
 
     /**
      * The function adds 1 goal to host team
+     *
      * @return
      */
     public void addGoalToHost() {
@@ -143,6 +153,7 @@ public class Game {
 
     /**
      * The function return the score of guest team
+     *
      * @return
      */
     public int getGuestScore() {
@@ -151,6 +162,7 @@ public class Game {
 
     /**
      * The function adds 1 goal to guest team
+     *
      * @return
      */
     public void addGoalToGuest() {
@@ -159,6 +171,7 @@ public class Game {
 
     /**
      * The function return the stadium the game take place in
+     *
      * @return
      */
     public Stadium getStadium() {
@@ -167,6 +180,7 @@ public class Game {
 
     /**
      * The function sets the stadium the game take place in
+     *
      * @return
      */
     public void setStadium(Stadium stadium) {
@@ -175,6 +189,7 @@ public class Game {
 
     /**
      * The functions returns the game events
+     *
      * @return
      */
     public GameEventslogger getEvents() {
@@ -187,6 +202,7 @@ public class Game {
 
     /**
      * The function return the game report
+     *
      * @return
      */
     public GameReport getGameReport() {
@@ -195,6 +211,7 @@ public class Game {
 
     /**
      * The function sets the game report
+     *
      * @return
      */
     public void setGameReport(GameReport gameReport) {
@@ -203,6 +220,7 @@ public class Game {
 
     /**
      * The function return the game referees
+     *
      * @return
      */
     public List<Referee> getReferees() {
@@ -211,6 +229,7 @@ public class Game {
 
     /**
      * The function sets the game referees
+     *
      * @return
      */
     public void setReferees(List<Referee> referees) {
