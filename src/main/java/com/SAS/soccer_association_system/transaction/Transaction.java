@@ -11,12 +11,7 @@ public class Transaction {
     private transactionType type;
     private LocalDate date;
     private Team team;
-
-    /**
-     * Empty constructor
-     */
-    public Transaction() {
-    }
+    private String description;
 
     /**
      * Params constructor
@@ -25,8 +20,9 @@ public class Transaction {
      * @param date
      * @param team
      */
-    public Transaction(float amount, transactionType type, LocalDate date, Team team) {
+    public Transaction(float amount, transactionType type, LocalDate date, Team team, String description) {
         this.amount = amount;
+        this.description = description;
         this.type = type;
         this.date = date;
         this.team = team;
@@ -54,6 +50,14 @@ public class Transaction {
      */
     public transactionType getType() {
         return type;
+    }
+
+    /**
+     * The function returns the description of the transaction
+     * @return
+     */
+    public String getDescription() {
+        return description;
     }
 
     /**
