@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 public class GameReport {
 
     private LocalDate gameDate;
-    private LocalDateTime time;
+    //maybe will be events object
+    private String description;
 
     /**
      * Empty constructor
@@ -20,11 +21,10 @@ public class GameReport {
     /**
      * Params constructor
      * @param gameDate
-     * @param time
      */
-    public GameReport(LocalDate gameDate, LocalDateTime time) {
+    public GameReport(LocalDate gameDate, String description) {
         this.gameDate = gameDate;
-        this.time = time;
+        this.description = description;
     }
 
 
@@ -36,26 +36,13 @@ public class GameReport {
         return gameDate;
     }
 
-    /**
-     * The function sets the date the game took place
-     */
-    public void setGameDate(LocalDate gameDate) {
-        this.gameDate = gameDate;
+    //TODO: implement edit report method
+    public void editReport(){
     }
 
-    /**
-     * The function returns the time the game ended
-     * @return
-     */
-    public LocalDateTime getTime() {
-        return time;
-    }
 
-    /**
-     * The function sets the time the game ended
-     */
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
+
+
+
 }
 
