@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class Transaction {
 
     private float amount;
-    private String type;
+    private transactionType type;
     private LocalDate date;
     private Team team;
 
@@ -25,7 +25,7 @@ public class Transaction {
      * @param date
      * @param team
      */
-    public Transaction(float amount, String type, LocalDate date, Team team) {
+    public Transaction(float amount, transactionType type, LocalDate date, Team team) {
         this.amount = amount;
         this.type = type;
         this.date = date;
@@ -52,7 +52,7 @@ public class Transaction {
      * The function returns the type the transaction
      * @return
      */
-    public String getType() {
+    public transactionType getType() {
         return type;
     }
 
@@ -60,7 +60,7 @@ public class Transaction {
      * The function sets the type of the transaction
      * @param type
      */
-    public void setType(String type) {
+    public void setType(transactionType type) {
         this.type = type;
     }
 
