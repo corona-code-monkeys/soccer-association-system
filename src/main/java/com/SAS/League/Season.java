@@ -117,19 +117,20 @@ public class Season {
      * @param games  the list of the games
      */
     public void addGamesList(League league, ArrayList<Game> games) {
-        boolean wasAdded = false;
-        GamesList game = new GamesList(league, this, games);
-        this.gamesList.put(league,game);
-        for (int i = 0; i < this.leaguesList.size(); i++) {
-            if (this.leaguesList.get(i).getName().equals(league)) {
-                this.leaguesList.get(i).addGamesList(this, games);
-                wasAdded = true;
+        if (this.gamesList.get(league) == null) {
+            boolean wasAdded = false;
+            GamesList game = new GamesList(league, this, games);
+            this.gamesList.put(league, game);
+            for (int i = 0; i < this.leaguesList.size(); i++) {
+                if (this.leaguesList.get(i).getName().equals(league)) {
+                    this.leaguesList.get(i).addGamesList(this, games);
+                    wasAdded = true;
+                }
+            }
+            if (!wasAdded) {
+                this.gamesList.remove(game); //if the league doesn't exist
             }
         }
-        if (!wasAdded) {
-            this.gamesList.remove(game); //if the league doesn't exist
-        }
-
     }
 
 
@@ -138,17 +139,19 @@ public class Season {
      * @param budget the budget of the input team for this season
      */
     public void addBudget(Team team, int budget) {
-        boolean wasAdded = false;
-        Budget budgetToAdd = new Budget(team, this, budget);
-        this.budgets.put(team,budgetToAdd);
-        for (int i = 0; i < this.teamsList.size(); i++) {
-            if (this.teamsList.get(i).getName.equals(team)) {
-                this.teamsList.get(i).addBudget(this.year, budget);
-                wasAdded = true;
+        if (this.budgets.get(team) == null) {
+            boolean wasAdded = false;
+            Budget budgetToAdd = new Budget(team, this, budget);
+            this.budgets.put(team, budgetToAdd);
+            for (int i = 0; i < this.teamsList.size(); i++) {
+                if (this.teamsList.get(i).getName.equals(team)) {
+                    this.teamsList.get(i).addBudget(this.year, budget);
+                    wasAdded = true;
+                }
             }
-        }
-        if (!wasAdded) {
-            this.budgets.remove(budgetToAdd); //if the team doesn't exist
+            if (!wasAdded) {
+                this.budgets.remove(budgetToAdd); //if the team doesn't exist
+            }
         }
     }
 
@@ -157,72 +160,78 @@ public class Season {
      * @param table: the league table for this the league
      */
     public void addTable(League league, Table table) {
-        boolean wasAdded = false;
-        this.tables.put(league,table);
-        for (int i = 0; i < this.leaguesList.size(); i++) {
-            if (this.leaguesList.get(i).getName().equals(league)) {
-                this.leaguesList.get(i).addTable(this, table);
-                wasAdded = true;
+        if (this.tables.get(league) == null) {
+            boolean wasAdded = false;
+            this.tables.put(league, table);
+            for (int i = 0; i < this.leaguesList.size(); i++) {
+                if (this.leaguesList.get(i).getName().equals(league)) {
+                    this.leaguesList.get(i).addTable(this, table);
+                    wasAdded = true;
+                }
             }
-        }
-        if (!wasAdded) {
-            this.tables.remove(table); //if the league doesn't exist
+            if (!wasAdded) {
+                this.tables.remove(table); //if the league doesn't exist
+            }
         }
     }
 
     /**
-     *
-     * @param league the league that the games policy is relevant to
+     * @param league      the league that the games policy is relevant to
      * @param gamesPolicy the game policy you want to add
      */
     public void addGamePolicy(League league, GamesPolicy gamesPolicy) {
-        boolean wasAdded = false;
-        this.gamesPolicy.put(league,gamesPolicy);
-        for (int i = 0; i < this.leaguesList.size(); i++) {
-            if (this.leaguesList.get(i).getName().equals(league)) {
-                this.leaguesList.get(i).addGamePolicy(this, gamesPolicy);
-                wasAdded = true;
+        if (this.gamesPolicy.get(league) == null) {
+            boolean wasAdded = false;
+            this.gamesPolicy.put(league, gamesPolicy);
+            for (int i = 0; i < this.leaguesList.size(); i++) {
+                if (this.leaguesList.get(i).getName().equals(league)) {
+                    this.leaguesList.get(i).addGamePolicy(this, gamesPolicy);
+                    wasAdded = true;
+                }
             }
-        }
-        if (!wasAdded) {
-            this.gamesPolicy.remove(gamesPolicy); //if the league doesn't exist
+            if (!wasAdded) {
+                this.gamesPolicy.remove(gamesPolicy); //if the league doesn't exist
+            }
         }
     }
 
     /**
-     *
-     * @param league the league that the points policy is relevant to
+     * @param league       the league that the points policy is relevant to
      * @param pointsPolicy the points policy you want to add
      */
-    public void addPointsPolicy(League league, PointsPolicy pointsPolicy ) {
-        boolean wasAdded = false;
-        this.pointsPolicy.put(league,pointsPolicy);
-        for (int i = 0; i < this.leaguesList.size(); i++) {
-            if (this.leaguesList.get(i).getName().equals(league)) {
-                this.leaguesList.get(i).addPointsPolicy(this, pointsPolicy);
-                wasAdded = true;
+    public void addPointsPolicy(League league, PointsPolicy pointsPolicy) {
+        if (this.pointsPolicy.get(league) == null) {
+            boolean wasAdded = false;
+            this.pointsPolicy.put(league, pointsPolicy);
+            for (int i = 0; i < this.leaguesList.size(); i++) {
+                if (this.leaguesList.get(i).getName().equals(league)) {
+                    this.leaguesList.get(i).addPointsPolicy(this, pointsPolicy);
+                    wasAdded = true;
+                }
             }
-        }
-        if (!wasAdded) {
-            this.pointsPolicy.remove(pointsPolicy); //if the league doesn't exist
+            if (!wasAdded) {
+                this.pointsPolicy.remove(pointsPolicy); //if the league doesn't exist
+            }
         }
     }
+
     /**
-     *
-     * @param league the league that the points policy is relevant to
+     * @param league     the league that the points policy is relevant to
      * @param rankPolicy the rank policy you want to add
      */
-    public void addRankPolicy(League league, LeagueRankPolicy rankPolicy  ) {
-        boolean wasAdded = false;
-        this.rankPolicy.put(league,rankPolicy);
-        for (int i = 0; i < this.leaguesList.size(); i++) {
-            if (this.leaguesList.get(i).getName().equals(league)) {
-                this.leaguesList.get(i).addRankPolicy(this, rankPolicy);
-                wasAdded = true;
+    public void addRankPolicy(League league, LeagueRankPolicy rankPolicy) {
+        if (this.rankPolicy.get(league) == null) {
+            boolean wasAdded = false;
+            this.rankPolicy.put(league, rankPolicy);
+            for (int i = 0; i < this.leaguesList.size(); i++) {
+                if (this.leaguesList.get(i).getName().equals(league)) {
+                    this.leaguesList.get(i).addRankPolicy(this, rankPolicy);
+                    wasAdded = true;
+                }
             }
-        }
-        if (!wasAdded) {
-            this.rankPolicy.remove(rankPolicy); //if the league doesn't exist
+            if (!wasAdded) {
+                this.rankPolicy.remove(rankPolicy); //if the league doesn't exist
+            }
         }
     }
 }
