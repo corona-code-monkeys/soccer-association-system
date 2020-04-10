@@ -14,6 +14,5 @@ public class AssociationRepresentative extends Role {
      */
     public AssociationRepresentative(User user) {
         this.user = user;
-        super.setPrivileges("AssociationRepresentative");
     }
 }

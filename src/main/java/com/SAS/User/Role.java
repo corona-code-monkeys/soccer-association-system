@@ -4,15 +4,14 @@
 
 package com.SAS.User;
 
+import java.util.HashSet;
+
 public abstract class Role extends User {
 
-    private Privileges privileges;
 
-    /**
-     * The function edits the privileges of the user
-     * @param privilege
-     */
-    public void setPrivileges(String privilege) {
-        this.privileges.edit(privilege);
+    public Role() {
+
     }
+
+
 }

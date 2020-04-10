@@ -23,7 +23,6 @@ public class Player extends Role {
         this.user = user;
         this.dateOfBirth = dateOfBirth;
         this.fieldRole = fieldRole;
-        super.setPrivileges("Player");
     }
 
     /**

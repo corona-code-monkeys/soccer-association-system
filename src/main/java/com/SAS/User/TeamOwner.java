@@ -14,7 +14,6 @@ public class TeamOwner extends Role {
      */
     public TeamOwner(User user) {
         this.user = user;
-        super.setPrivileges("TeamOwner");
     }
 
     /**

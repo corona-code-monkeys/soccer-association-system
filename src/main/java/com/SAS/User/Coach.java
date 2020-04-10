@@ -23,7 +23,6 @@ public class Coach extends Role {
         this.level = level;
         this.fieldRole = fieldRole;
         /*this.team = team;*/
-        super.setPrivileges("Coach");
     }
 
     /**

@@ -14,7 +14,6 @@ public class Fan extends Role {
      */
     public Fan(User user) {
         this.user = user;
-        super.setPrivileges("Fan");
     }
 
     /**
