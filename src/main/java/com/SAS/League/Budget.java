@@ -1,16 +1,18 @@
 package com.SAS.League;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Budget {
     private Team team;
-    private  Season season;
+    private Season season;
     private int budget;
 
     /**
      * GamesArrangment constructor with attributes
-     * @param team: the team the budget belong
+     *
+     * @param team:   the team the budget belong
      * @param season: the budget's season
      * @param budget: the list of the games
      */
@@ -22,7 +24,6 @@ public class Budget {
     }
 
     /**
-     *
      * @return the budget's team name
      */
     public Team getTeam() {
@@ -31,7 +32,6 @@ public class Budget {
 
 
     /**
-     *
      * @return in which season the budget is valid
      */
     public Season getSeason() {
@@ -40,12 +40,16 @@ public class Budget {
 
 
     /**
-     *
      * @return the size of the budget
      */
     public int getBudget() {
         return budget;
     }
 
-
+    /**
+     * @param budget the new budget you want to set
+     */
+    public void setBudget(int budget) {
+        this.budget = budget;
+    }
 }
