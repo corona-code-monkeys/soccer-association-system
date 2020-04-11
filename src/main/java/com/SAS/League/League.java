@@ -13,7 +13,7 @@ class Table {
  */
 public class League {
     private String name;
-    HashSet<Season> seasonList;
+    private HashSet<Season> seasonList;
     private HashMap<Season, GamesArrangment> gamesList;
     private HashMap<Season, Table> tables;
     private HashMap<Season, PointsPolicy> pointsPolicy;
@@ -48,6 +48,14 @@ public class League {
      */
     public void addSeason(Season season) {
         this.seasonList.add(season);
+    }
+
+    /**
+     *
+     * @return the seasons set
+     */
+    public HashSet<Season> getSeasonList() {
+        return seasonList;
     }
 
     /**

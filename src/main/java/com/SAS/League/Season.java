@@ -23,8 +23,8 @@ public class Season {
     private HashMap<League, GamesArrangment> gamesList;
     private HashMap<Team, Budget> budgets;
     private HashMap<League, Table> tables;
-    HashSet<Team> teamsList;
-    HashSet<League> leaguesList;
+    private HashSet<Team> teamsList;
+    private HashSet<League> leaguesList;
     private HashMap<League, PointsPolicy> pointsPolicy;
     private HashMap<League, GamesPolicy> gamesPolicy;
     private HashMap<League, LeagueRankPolicy> rankPolicy;
@@ -65,6 +65,38 @@ public class Season {
      */
     public int getYear() {
         return year;
+    }
+
+    /**
+     *
+     * @return getter for the team set in this season
+     */
+    public HashSet<Team> getTeamsList() {
+        return teamsList;
+    }
+
+    /**
+     *
+     * @param team the team you want to add the the team list of this season
+     */
+    public void addTeam(Team team) {
+        this.teamsList.add(team);
+    }
+
+    /**
+     *
+     * @return set of the league that participate in this season
+     */
+    public HashSet<League> getLeaguesList() {
+        return leaguesList;
+    }
+
+    /**
+     *
+     * @param league the league you want to add the the league list of this season
+     */
+    public void addLeague(League league) {
+        this.leaguesList.add(league);
     }
 
     /**
