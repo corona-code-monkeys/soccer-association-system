@@ -10,6 +10,7 @@ public class Stadium {
     private String location;
     private List<Game> gamesList;
     private Team homeTeam;
+    private facilityType facilityType;
 
     /**
      * Empty constructor
@@ -24,10 +25,11 @@ public class Stadium {
      * @param gamesList
      * @param homeTeam
      */
-    public Stadium(String location, List<Game> gamesList, Team homeTeam) {
+    public Stadium(String location, List<Game> gamesList, Team homeTeam, facilityType facilityType) {
         this.location = location;
         this.gamesList = gamesList;
         this.homeTeam = homeTeam;
+        this.facilityType = facilityType;
     }
 
     public boolean addGame(Game newGame){
