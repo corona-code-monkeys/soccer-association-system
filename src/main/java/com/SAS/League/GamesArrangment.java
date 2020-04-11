@@ -2,18 +2,18 @@ package com.SAS.League;
 
 import java.util.ArrayList;
 
-public class GamesList {
+public class GamesArrangment {
     private League leagueName;
     private Season season;
     ArrayList<Game> gameslist;
 
     /**
-     * GamesList constructor with attributes
+     * GamesArrangment constructor with attributes
      * @param league: the name of the league
      * @param season: the year when the season started
      * @param gameslist: the list of the games
      */
-    public GamesList(League league, Season season, ArrayList<Game> gameslist) {
+    public GamesArrangment(League league, Season season, ArrayList<Game> gameslist) {
         this.leagueName = league;
         this.season = season;
         this.gameslist = gameslist;

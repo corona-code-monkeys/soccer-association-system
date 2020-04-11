@@ -8,10 +8,8 @@ public class Budget {
     private  Season season;
     private int budget;
 
-
-
     /**
-     * GamesList constructor with attributes
+     * GamesArrangment constructor with attributes
      * @param team: the team the budget belong
      * @param season: the budget's season
      * @param budget: the list of the games

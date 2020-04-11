@@ -3,12 +3,14 @@ package com.SAS.League;
 /**
  * class for policy that gives three points per win and one point per draws
  */
-public class ThreeForWinOneForDrawPolicy extends PointsPolicy{
+public class ThreeForWinOneForDrawPolicy extends PointsPolicy {
     /**
      * constructor that init the object and gives him name
      */
-    public ThreeForWinOneForDrawPolicy() {
-        this.name="Three points for win and one point for draw policy";
+    public ThreeForWinOneForDrawPolicy(League league, Season season) {
+        this.name = "Three points for win and one point for draw policy";
+        this.league = league;
+        this.season=season;
     }
 
     @Override
@@ -24,5 +26,20 @@ public class ThreeForWinOneForDrawPolicy extends PointsPolicy{
     @Override
     public int howManyPointsForDraw() {
         return 1;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public League getLeague() {
+        return this.league;
+    }
+
+    @Override
+    public Season getSeason() {
+        return this.season;
     }
 }

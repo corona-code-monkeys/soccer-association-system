@@ -5,6 +5,8 @@ package com.SAS.League;
  */
 public abstract class PointsPolicy {
     protected String name;
+    protected League league;
+    protected Season season;
 
     /**
      *
@@ -23,5 +25,11 @@ public abstract class PointsPolicy {
       * @return how many point you will get per lose in the specific policy (always 0)
      */
     public int howManyPointsForLose(){return 0;}
+
+    public abstract String getName();
+
+    public abstract League getLeague();
+
+    public abstract Season getSeason();
 }
 

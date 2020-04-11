@@ -7,8 +7,10 @@ public class OneRoundLeague extends GamesPolicy {
     /**
      * constructor that init the object and gives him name
      */
-    public OneRoundLeague() {
+    public OneRoundLeague(League league, Season season) {
         this.name="One round league";
+        this.league=league;
+        this.season=season;
     }
 
     @Override
@@ -19,5 +21,20 @@ public class OneRoundLeague extends GamesPolicy {
     @Override
     public int howManyRounds() {
         return 1;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public Season getSeason() {
+        return this.season;
+    }
+
+    @Override
+    public League getLeague() {
+        return this.league;
     }
 }

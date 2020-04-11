@@ -7,8 +7,10 @@ public class OnePointForWinAndNoneForDraw extends PointsPolicy {
     /**
      * constructor that init the object and gives him name
      */
-    public OnePointForWinAndNoneForDraw() {
+    public OnePointForWinAndNoneForDraw(League league, Season season) {
         this.name="one point per win and none for draw";
+        this.league=league;
+        this.season= season;
     }
 
     @Override
@@ -24,5 +26,20 @@ public class OnePointForWinAndNoneForDraw extends PointsPolicy {
     @Override
     public int howManyPointsForDraw() {
         return 0;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public League getLeague() {
+        return this.league;
+    }
+
+    @Override
+    public Season getSeason() {
+        return this.season;
     }
 }
