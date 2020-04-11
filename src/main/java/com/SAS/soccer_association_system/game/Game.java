@@ -7,6 +7,7 @@ import java.util.List;
 public class Game {
 
     private Season season;
+    private League league;
     private LocalDate date;
     private Team host;
     private Team guest;
@@ -22,6 +23,20 @@ public class Game {
      */
     public Game() {
         referees = new LinkedList<Referee>();
+    }
+
+    public Game(Season season, League league, LocalDate date, Team host, Team guest, int hostScore, int guestScore, Stadium stadium, GameEventslogger events, GameReport gameReport, List<Referee> referees) {
+        this.season = season;
+        this.league = league;
+        this.date = date;
+        this.host = host;
+        this.guest = guest;
+        this.hostScore = hostScore;
+        this.guestScore = guestScore;
+        this.stadium = stadium;
+        this.events = events;
+        this.gameReport = gameReport;
+        this.referees = referees;
     }
 
     /**
@@ -53,7 +68,7 @@ public class Game {
     }
 
     //TODO: implement editReport
-    public void editReport() {
+    public void editReport(GameEvent toChange, GameEvent newEvent) {
     }
 
     //TODO: complete the method after merge with game event logger
