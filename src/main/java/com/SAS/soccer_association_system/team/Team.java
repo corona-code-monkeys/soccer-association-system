@@ -10,11 +10,12 @@ import java.util.List;
 public class Team {
 
     private String name;
-    private Stadium homeStadium;
+    private List<Stadium> teamFacilities;
     private List<Player> players;
     private TeamOwner owner;
     private List<TeamManager> managers;
     private HashMap<Season, Budget> budgets;
+    private HashMap<String, Double> quartersBalance;
     private List<Transaction> transactionList;
 
     /**
@@ -25,6 +26,8 @@ public class Team {
         managers = new LinkedList<TeamManager>();
         transactionList = new LinkedList<Transaction>();
         budgets = new HashMap<Season, Budget>();
+        teamFacilities = new LinkedList<Stadium>();
+        initializeFinanceYear();
     }
 
     /**
@@ -37,7 +40,7 @@ public class Team {
      * @param transactionList
      * @param budgets
      */
-    public Team(String name, Stadium homeStadium, List<Player> players, List<TeamManager> managers, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets) {
+    public Team(String name, Stadium homeStadium, List<Player> players, List<TeamManager> managers, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets, List<Stadium> teamFacilities, HashMap<String, Double> quartersBalance) {
         this.name = name;
         this.homeStadium = homeStadium;
         this.players = players;
@@ -45,6 +48,23 @@ public class Team {
         this.managers = managers;
         this.transactionList = transactionList;
         this.budgets = budgets;
+        this.teamFacilities = teamFacilities;
+        initializeFinanceYear();
+
+    }
+
+    //TODO: set the starting budget for the season as sum of income in Q1
+
+    /**
+     * The function initialize the quarters map with the keys and zero balance
+     */
+    private void initializeFinanceYear() {
+        this.quartersBalance  = new HashMap<String, Double>() {{
+            put("1", 0.0);
+            put("2", 0.0);
+            put("3", 0.0);
+            put("4", 0.0);
+        }};
     }
 
     /**
