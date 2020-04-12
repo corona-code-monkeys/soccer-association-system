@@ -1,4 +1,4 @@
-package com.SAS.soccer_association_system.team;
+package com.SAS.team;
 
 import java.util.HashMap;
 import java.util.LinkedList;

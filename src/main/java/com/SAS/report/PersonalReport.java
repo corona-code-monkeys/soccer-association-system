@@ -1,4 +1,4 @@
-package com.SAS.soccer_association_system.report;
+package com.SAS.report;
 
 /**
  * The class represent a complain report made by a registered user about the system

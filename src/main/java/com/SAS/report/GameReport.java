@@ -1,7 +1,6 @@
-package com.SAS.soccer_association_system.report;
+package com.SAS.report;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * The class represents the game report that made by the referee when a game ends

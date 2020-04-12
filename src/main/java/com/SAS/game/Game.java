@@ -1,4 +1,4 @@
-package com.SAS.soccer_association_system.game;
+package com.SAS.game;
 
 import java.time.LocalDate;
 import java.util.LinkedList;

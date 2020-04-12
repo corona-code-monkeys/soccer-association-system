@@ -1,4 +1,4 @@
-package com.SAS.soccer_association_system.transaction;
+package com.SAS.transaction;
 
 import java.time.LocalDate;
 
