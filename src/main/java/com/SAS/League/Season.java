@@ -3,6 +3,7 @@ package com.SAS.League;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 class Team {
 
@@ -149,7 +150,7 @@ public class Season {
      * @param league the league that the games will be take place in
      * @param games  the list of the games
      */
-    public void addGamesList(League league, ArrayList<Game> games) {
+    public void addGamesList(League league, LinkedList<Game> games) {
         if (this.leaguesList.contains(league)&&!this.gamesList.containsKey(league)) {
             GamesArrangment gamesArrangment = new GamesArrangment(league, this, games);
             this.gamesList.put(league, gamesArrangment);

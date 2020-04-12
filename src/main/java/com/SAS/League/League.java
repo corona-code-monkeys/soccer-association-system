@@ -3,6 +3,7 @@ package com.SAS.League;
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 
 class Table {
@@ -80,7 +81,7 @@ public class League {
      * @param season: the season relevant to this game list
      * @param games:  the list of games in this league for this specific season
      */
-    public void addGamesList(Season season, ArrayList<Game> games) {
+    public void addGamesList(Season season, LinkedList<Game> games) {
         if (this.seasonList.contains(season) && !this.gamesList.containsKey(season)) {
             GamesArrangment gamesArrangment = new GamesArrangment(this, season, games);
             this.gamesList.put(season, gamesArrangment);
