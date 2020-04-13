@@ -1,7 +1,7 @@
 package com.SAS.League;
 
 import java.util.LinkedList;
-
+import com.SAS.game.Game;
 public class GamesArrangment {
     private League leagueName;
     private Season season;
