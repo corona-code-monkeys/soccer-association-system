@@ -1,5 +1,7 @@
 package com.SAS.transaction;
 
+import com.SAS.team.Team;
+
 import java.time.LocalDate;
 
 /**

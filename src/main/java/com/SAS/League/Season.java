@@ -9,10 +9,7 @@ class Team {
 
     public String getName;
 
-    public void addBudget(Season season, Budget budget) {
-    }
-}//to be removed
-
+}
 class Game {
 }//to be removed
 
@@ -163,11 +160,10 @@ public class Season {
      * @param team   which team the budgets belong to
      * @param budget the budget of the input team for this season
      */
-    public void addBudget(Team team, int budget) {
+    public void addBudget(Team team, double budget) {
         if (this.leaguesList.contains(team)&&!this.budgets.containsKey(team)) {
             Budget budgetToAdd = new Budget(team, this, budget);
             this.budgets.put(team, budgetToAdd);
-            team.addBudget(this, budgetToAdd);
         }
     }
 

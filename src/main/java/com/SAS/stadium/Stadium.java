@@ -1,6 +1,10 @@
 package com.SAS.stadium;
 
+import com.SAS.game.Game;
+import com.SAS.team.Team;
+
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * The class represent a soccer stadium of a team

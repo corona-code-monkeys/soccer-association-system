@@ -1,5 +1,13 @@
 package com.SAS.team;
 
+import com.SAS.League.Budget;
+import com.SAS.League.Season;
+import com.SAS.User.Player;
+import com.SAS.User.TeamManager;
+import com.SAS.User.TeamOwner;
+import com.SAS.stadium.Stadium;
+import com.SAS.transaction.Transaction;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,6 +17,7 @@ import java.util.List;
  */
 public class Team {
 
+    private Stadium homeStadium;
     private String name;
     private List<Stadium> teamFacilities;
     private List<Player> players;

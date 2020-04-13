@@ -7,7 +7,7 @@ import java.util.Map;
 public class Budget {
     private Team team;
     private Season season;
-    private int budget;
+    private double budget;
 
     /**
      * GamesArrangment constructor with attributes
@@ -16,7 +16,7 @@ public class Budget {
      * @param season: the budget's season
      * @param budget: the list of the games
      */
-    public Budget(Team team, Season season, int budget) {
+    public Budget(Team team, Season season, double budget) {
         this.team = team;
         this.season = season;
         this.budget = budget;
@@ -42,7 +42,7 @@ public class Budget {
     /**
      * @return the size of the budget
      */
-    public int getBudget() {
+    public double getBudget() {
         return budget;
     }
 
