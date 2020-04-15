@@ -4,20 +4,24 @@
 
 package com.SAS.User;
 
+import com.SAS.game.Game;
+
+import java.util.LinkedList;
+import java.util.List;
+
 public class Referee extends Role {
 
     private User user;
     private int level;
-    /*private List<Game> games;*/
+    private List<Game> games;
 
     /**
      * Constructor
      * @param user
-     * @param level
      */
-    public Referee(User user, int level) {
+    public Referee(User user) {
         this.user = user;
-        this.level = level;
+        games = new LinkedList<>();
     }
 
     /**
@@ -44,12 +48,12 @@ public class Referee extends Role {
         this.level = level;
     }
 
-    /*public addGame (Game game) {
+    public void addGame (Game game) {
         games.add(game);
     }
 
-    public removeGame (Game game) {
-        games.remove(game)
-    }*/
+    public void removeGame (Game game) {
+        games.remove(game);
+    }
 
 }

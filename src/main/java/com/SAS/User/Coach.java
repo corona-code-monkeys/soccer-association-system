@@ -4,25 +4,22 @@
 
 package com.SAS.User;
 
+import com.SAS.team.Team;
+
 public class Coach extends Role {
 
     private User user;
     private int level;
     private FieldRole fieldRole;
-    /*private Team team; */
+    private Team team;
     private PersonalPage personalPage;
 
     /**
      * Constructor
      * @param user
-     * @param level
-     * @param fieldRole
      */
-    public Coach(User user, Integer level, FieldRole fieldRole /* Team team*/) {
+    public Coach(User user) {
         this.user = user;
-        this.level = level;
-        this.fieldRole = fieldRole;
-        /*this.team = team;*/
     }
 
     /**
@@ -63,6 +60,22 @@ public class Coach extends Role {
      */
     public void setFieldRole(FieldRole fieldRole) {
         this.fieldRole = fieldRole;
+    }
+
+    /**
+     * The function returns the team of the coach
+     * @return team
+     */
+    public Team getTeam() {
+        return team;
+    }
+
+    /**
+     * The function sets the team of the coach
+     * @param team
+     */
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     /**
