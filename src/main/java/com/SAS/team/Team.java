@@ -66,6 +66,7 @@ public class Team {
         this.coach = coach;
         active = true;
         initializeFinanceYear();
+
     }
 
     //TODO: set the starting budget for the season as sum of income in Q1
