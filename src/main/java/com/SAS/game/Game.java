@@ -1,5 +1,14 @@
 package com.SAS.game;
 
+import com.SAS.League.League;
+import com.SAS.League.Season;
+import com.SAS.User.Referee;
+import com.SAS.game_event_logger.GameEvent;
+import com.SAS.game_event_logger.GameEventLogger;
+import com.SAS.report.GameReport;
+import com.SAS.stadium.Stadium;
+import com.SAS.team.Team;
+
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +23,7 @@ public class Game {
     private int hostScore;
     private int guestScore;
     private Stadium stadium;
-    private GameEventslogger events;
+    private GameEventLogger events;
     private GameReport gameReport;
     private List<Referee> referees;
 
@@ -25,7 +34,7 @@ public class Game {
         referees = new LinkedList<Referee>();
     }
 
-    public Game(Season season, League league, LocalDate date, Team host, Team guest, int hostScore, int guestScore, Stadium stadium, GameEventslogger events, GameReport gameReport, List<Referee> referees) {
+    public Game(Season season, League league, LocalDate date, Team host, Team guest, int hostScore, int guestScore, Stadium stadium, GameEventLogger events, GameReport gameReport, List<Referee> referees) {
         this.season = season;
         this.league = league;
         this.date = date;
@@ -46,11 +55,11 @@ public class Game {
      */
     public String getWinningTeam() {
         if (hostScore > guestScore) {
-            return hostScore.name;
+            return host.getName();
         }
 
         if (hostScore < guestScore) {
-            return guest.name;
+            return guest.getName();
         }
 
         return "draw";
@@ -207,11 +216,11 @@ public class Game {
      *
      * @return
      */
-    public GameEventslogger getEvents() {
+    public GameEventLogger getEvents() {
         return events;
     }
 
-    public void setEvents(GameEventslogger events) {
+    public void setEvents(GameEventLogger events) {
         this.events = events;
     }
 

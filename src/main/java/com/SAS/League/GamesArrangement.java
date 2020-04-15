@@ -1,8 +1,10 @@
 package com.SAS.League;
 
+import com.SAS.game.Game;
+
 import java.util.LinkedList;
 
-public class GamesArrangment {
+public class GamesArrangement {
     private League leagueName;
     private Season season;
     private LinkedList<Game> gameslist;
@@ -13,7 +15,7 @@ public class GamesArrangment {
      * @param season: the year when the season started
      * @param gameslist: the list of the games
      */
-    public GamesArrangment(League league, Season season, LinkedList<Game> gameslist) {
+    public GamesArrangement(League league, Season season, LinkedList<Game> gameslist) {
         this.leagueName = league;
         this.season = season;
         this.gameslist = gameslist;
