@@ -173,7 +173,7 @@ public class League {
      * @param ref the referee you want to add to the list of referees
      */
     public void addReferee(Season season, Referee ref) {
-        if (this.seasonList.contains(season) && !this.referees.containsKey(season)) {
+        if (this.seasonList.contains(season) && this.referees.containsKey(season)) {
             this.referees.get(season).add(ref);
             season.addReferee(this, ref);
         }
