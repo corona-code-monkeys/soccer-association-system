@@ -3,6 +3,8 @@ package com.SAS.game_event_logger;
 import java.time.LocalDate;
 
 public abstract class GameEvent {
+
+    private int eventID;
     private String gameID;
     private LocalDate gameDate;
     private Integer gameMinute;
