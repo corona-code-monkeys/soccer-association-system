@@ -5,6 +5,11 @@ package com.SAS.teamManagenemt;
 
 import com.SAS.User.*;
 import com.SAS.team.Team;
+import com.SAS.transaction.Transaction;
+import com.SAS.transaction.TransactionType;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -150,8 +155,55 @@ public class TeamManagement {
      * @return true - if the user is the team owner, otherwise - false
      */
     private boolean ownsTeam(Team team, User nominatedBy) {
-         return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam() == team;
+        return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam() == team;
     }
 
+    /**
+     * The fcuntion receives the parameters of new transaction and the team and add it if it's legal -
+     * not exceed the budget of the team
+     * @param team
+     * @param transDetails
+     * @return
+     */
+    public Transaction addTransactionToTeam(Team team, List<String> transDetails, User teamOwner) {
+        if (ownsTeam(team, teamOwner)) {
+            //first amount, second type, third date and last description
+            double amount = Double.parseDouble(transDetails.get(0));
+            TransactionType type = convertStringToTrasactionType(transDetails.get(1));
+            LocalDate date = LocalDate.parse(transDetails.get(2));
+            String description = transDetails.get(3);
+
+            //create the transaction
+            Transaction transaction = new Transaction(amount, type, date, team, description, (TeamOwner) teamOwner);
+
+            boolean isTransAdded = team.addTransactionToTeam(transaction);
+            if (!isTransAdded) {
+                System.out.println("The transaction could not be added to the team, it exceeded the team's budget.");
+            }
+
+            return transaction;
+        }
+
+        else {
+            System.out.println("The user is unauthorized to report transactions.");
+            return null;
+        }
+    }
+
+    /**
+     * The function converts string to transaction type
+     * @param type
+     * @return
+     */
+    private TransactionType convertStringToTrasactionType(String type){
+        switch (type) {
+            case "Expense":
+                return TransactionType.EXPENSE;
+            case "Income":
+                return TransactionType.INCOME;
+            default:
+                return null;
+        }
+    }
 
 }
