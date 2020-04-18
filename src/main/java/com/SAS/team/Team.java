@@ -112,7 +112,7 @@ public class Team {
         quarterBalance = quartersBalance.get(quarter);
 
         if (quarterBalance + transactionAmount >= 0){
-            transactionList.add(newTransaction)
+            transactionList.add(newTransaction);
             quartersBalance.put(quarter, quarterBalance + transactionAmount);
             return true;
         }
