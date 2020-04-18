@@ -1,11 +1,11 @@
-package com.SAS.soccer_association_system.stadium;
+package com.SAS.soccer_association_system.facility;
 
 import java.util.LinkedList;
 
 /**
  * The class represent a soccer stadium of a team
  */
-public class Stadium {
+public class Facility {
 
     private String location;
     private List<Game> gamesList;
@@ -15,7 +15,7 @@ public class Stadium {
     /**
      * Empty constructor
      */
-    public Stadium() {
+    public Facility() {
         gamesList = new LinkedList<Game>();
     }
 
@@ -25,7 +25,7 @@ public class Stadium {
      * @param gamesList
      * @param homeTeam
      */
-    public Stadium(String location, List<Game> gamesList, Team homeTeam, facilityType facilityType) {
+    public Facility(String location, List<Game> gamesList, Team homeTeam, facilityType facilityType) {
         this.location = location;
         this.gamesList = gamesList;
         this.homeTeam = homeTeam;
