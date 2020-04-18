@@ -175,7 +175,7 @@ public class Team {
      * @param newManager
      * @return
      */
-    public boolean setTeamManager(TeamManager newManager) {
+    public void setTeamManager(TeamManager newManager) {
         this.manager = newManager;
     }
 
@@ -212,5 +212,9 @@ public class Team {
     }
 
     public void addBudget(Season season, Budget budget) {
+    }
+
+    public void removeTeamManager(TeamManager teamManager) {
+        this.manager = null;
     }
 }

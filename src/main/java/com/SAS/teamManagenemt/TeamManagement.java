@@ -43,6 +43,43 @@ public class TeamManagement {
     }
 
     /**
+     * This function removes a user from being a team manager by the team owner
+     * @param teamManager
+     * @param team
+     * @param removedBy
+     * @return
+     */
+    public User removeTeamManager(User teamManager, Team team, User removedBy) {
+        //checks if the user manages the team and that the removing user is the owner of the team and nominated him
+        if (validateTeamManager(teamManager, team, removedBy) && ownsTeam(team, removedBy)) {
+            team.removeTeamManager((TeamManager)teamManager);
+            ((TeamManager)teamManager).removeTeam();
+            //get the inner user (previous role)
+            teamManager = ((TeamManager) teamManager).getUser();
+        }
+
+        else {
+            System.out.println("The user is unauthorized to remove the team manager");
+        }
+
+        return teamManager;
+    }
+
+    /**
+     * This function verify whether the user is the team manager of the team,
+     * and that the team owner that nominated him is the same user trying to remove him
+     * @param teamManager
+     * @param team
+     * @param removedBy
+     * @return true or false
+     */
+    private boolean validateTeamManager(User teamManager, Team team, User removedBy) {
+        return teamManager instanceof TeamManager && ((TeamManager)teamManager).getTeam() == team &&
+                removedBy instanceof TeamOwner && ((TeamManager)teamManager).getNominatedBy() == removedBy;
+    }
+
+
+    /**
      * The function returns true if the user can be the team owner (he's a player / coach / manager of the team)
      * @param user
      * @param team
