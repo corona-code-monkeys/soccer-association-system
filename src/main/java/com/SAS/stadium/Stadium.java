@@ -2,6 +2,7 @@ package com.SAS.stadium;
 
 import com.SAS.game.Game;
 import com.SAS.team.Team;
+import com.SAS.teamManagenemt.TeamAsset;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,12 +10,13 @@ import java.util.List;
 /**
  * The class represent a soccer stadium of a team
  */
-public class Stadium {
+public class Stadium implements TeamAsset {
 
+    private String name;
     private String location;
     private List<Game> gamesList;
     private Team homeTeam;
-    private facilityType facilityType;
+    private FacilityType facilityType;
 
     /**
      * Empty constructor
@@ -29,7 +31,8 @@ public class Stadium {
      * @param gamesList
      * @param homeTeam
      */
-    public Stadium(String location, List<Game> gamesList, Team homeTeam, facilityType facilityType) {
+    public Stadium(String name, String location, List<Game> gamesList, Team homeTeam, FacilityType facilityType) {
+        this.name = name;
         this.location = location;
         this.gamesList = gamesList;
         this.homeTeam = homeTeam;
@@ -43,6 +46,21 @@ public class Stadium {
 
         gamesList.add(newGame);
         return true;
+    }
+
+    /**
+     * This function returns the name of the stadium
+     * @return String
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * This function sets the name of the stadium
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -81,7 +99,7 @@ public class Stadium {
      * The function returns the team that owns the stadium
      * @return
      */
-    public Team getHomeTeam() {
+    public Team getTeam() {
         return homeTeam;
     }
 
@@ -89,7 +107,61 @@ public class Stadium {
      * The function sets a team that owns the stadium
      * @param homeTeam
      */
-    public void setHomeTeam(Team homeTeam) {
+    public void setTeam(Team homeTeam) {
         this.homeTeam = homeTeam;
+    }
+
+    /**
+     * This function removes the facility from being in the team's facilities
+     */
+    @Override
+    public void removeAssetFromTeam() {
+        this.homeTeam.removeFacility(this);
+        this.homeTeam = null;
+    }
+
+    /**
+     * This function sets the FacilityType
+     * @param facilityType
+     */
+    public void setFacilityType(FacilityType facilityType) {
+        this.facilityType = facilityType;
+    }
+
+    /**
+     * This function returns the FacilityType
+     * @return FacilityType
+     */
+    public FacilityType getFacilityType() {
+        return facilityType;
+    }
+
+    /**
+     * This functions edits the stadiums details
+     * @param details
+     */
+    @Override
+    public void editDetails(List<String> details) {
+        //first is name, second is location, third is type
+        setName(details.get(0));
+        setLocation(details.get(1));
+        setFacilityType(convertStringToFacilityType(details.get(2)));
+    }
+
+    /**
+     * This function converts string to FacilityType
+     * @param facilityType
+     * @return facilityType
+     */
+    private FacilityType convertStringToFacilityType(String facilityType){
+        switch(facilityType){
+           case "Stadium":
+               return FacilityType.STADIUM;
+            case "Training":
+                return FacilityType.TRAINING;
+            default:
+                System.out.println("Error, no such type");
+                return null;
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.SAS.stadium;
 
-public enum facilityType {
+public enum FacilityType {
     STADIUM,
     TRAINING
 }

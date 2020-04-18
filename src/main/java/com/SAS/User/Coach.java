@@ -5,10 +5,11 @@
 package com.SAS.User;
 
 import com.SAS.team.Team;
-
+import com.SAS.teamManagenemt.TeamAsset;
 import java.util.HashSet;
+import java.util.List;
 
-public class Coach extends Role {
+public class Coach extends Role implements TeamAsset {
 
     private User user;
     private int level;
@@ -18,6 +19,7 @@ public class Coach extends Role {
 
     /**
      * Constructor
+     *
      * @param user
      */
     public Coach(User user, String fullName) {
@@ -28,6 +30,7 @@ public class Coach extends Role {
 
     /**
      * The function returns the user
+     *
      * @return user
      */
     public User getUser() {
@@ -36,6 +39,7 @@ public class Coach extends Role {
 
     /**
      * The function returns the level of the coach
+     *
      * @return level - int
      */
     public Integer getLevel() {
@@ -44,6 +48,7 @@ public class Coach extends Role {
 
     /**
      * The function returns the field role of the coach
+     *
      * @return field role
      */
     public FieldRole getFieldRole() {
@@ -52,6 +57,7 @@ public class Coach extends Role {
 
     /**
      * The function sets the level of the coach
+     *
      * @param level - int
      */
     public void setLevel(int level) {
@@ -60,6 +66,7 @@ public class Coach extends Role {
 
     /**
      * The function sets the field role of the coach
+     *
      * @param fieldRole
      */
     public void setFieldRole(FieldRole fieldRole) {
@@ -68,6 +75,7 @@ public class Coach extends Role {
 
     /**
      * The function returns the team of the coach
+     *
      * @return team
      */
     public Team getTeam() {
@@ -76,6 +84,7 @@ public class Coach extends Role {
 
     /**
      * The function sets the team of the coach
+     *
      * @param team
      */
     public void setTeam(Team team) {
@@ -83,7 +92,17 @@ public class Coach extends Role {
     }
 
     /**
+     * This function removes the coach from team
+     */
+    @Override
+    public void removeAssetFromTeam() {
+        this.team.removeCoach(this);
+        this.team=null;
+    }
+
+    /**
      * The function adds personal page to the coach
+     *
      * @param description
      */
     public void addPage(String description) {
@@ -92,6 +111,7 @@ public class Coach extends Role {
 
     /**
      * The fucntion returns the pageID of the personal page
+     *
      * @return pageID - int
      */
     public int getPageID() {
@@ -100,6 +120,7 @@ public class Coach extends Role {
 
     /**
      * The function returns all the privileges of the user
+     *
      * @return
      */
     public HashSet<String> getMyPrivileges() {
@@ -110,4 +131,19 @@ public class Coach extends Role {
     public String getRole() {
         return "Coach";
     }
+
+    /**
+     * This function edits the player details
+     *
+     * @param details
+     */
+    @Override
+    public void editDetails(List<String> details) {
+        //first is level, second is fieldRole
+        setLevel(Integer.parseInt(details.get(0)));
+        setFieldRole(convertStringToFieldRole(details.get(1)));
+    }
+
+
+
 }

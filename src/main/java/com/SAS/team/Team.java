@@ -2,6 +2,7 @@ package com.SAS.team;
 
 import com.SAS.League.Budget;
 import com.SAS.League.Season;
+import com.SAS.User.Coach;
 import com.SAS.User.Player;
 import com.SAS.User.TeamManager;
 import com.SAS.User.TeamOwner;
@@ -26,6 +27,7 @@ public class Team {
     private HashMap<String, Double> quartersBalance;
     private List<Transaction> transactionList;
     private Stadium homeStadium;
+    private Coach coach;
 
     /**
      * Empty constructor
@@ -49,7 +51,7 @@ public class Team {
      * @param transactionList
      * @param budgets
      */
-    public Team(String name, Stadium homeStadium, List<Player> players, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets, List<Stadium> teamFacilities, HashMap<String, Double> quartersBalance) {
+    public Team(String name, Stadium homeStadium, List<Player> players, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets, List<Stadium> teamFacilities, HashMap<String, Double> quartersBalance, Coach coach) {
         this.name = name;
         this.homeStadium = homeStadium;
         this.players = players;
@@ -58,8 +60,8 @@ public class Team {
         this.transactionList = transactionList;
         this.budgets = budgets;
         this.teamFacilities = teamFacilities;
+        this.coach = coach;
         initializeFinanceYear();
-
     }
 
     //TODO: set the starting budget for the season as sum of income in Q1
@@ -179,6 +181,7 @@ public class Team {
         this.manager = newManager;
     }
 
+
     /**
      * The function returns the team owners
      * @return
@@ -212,5 +215,47 @@ public class Team {
     }
 
     public void addBudget(Season season, Budget budget) {
+    }
+
+    /**
+     * This function returns the team's coach
+     * @return coach
+     */
+    public Coach getCoach() {
+        return coach;
+    }
+
+    /**
+     * This function sets the team's coach
+     * @param coach
+     */
+    public void setCoach(Coach coach) {
+        this.coach = coach;
+    }
+
+    /**
+     * This function removes the player from the team players
+     * @param player
+     */
+    public void removePlayer(Player player) {
+        this.players.remove(player);
+    }
+
+    /**
+     * This function removes the coach from being the coach of the team
+     * @param coach
+     */
+    public void removeCoach (Coach coach){
+        if (this.coach == coach){
+            this.coach=null;
+        }
+    }
+
+    /**
+     * This function removes the facility from the facilities list
+     * @param facility
+     */
+    public void removeFacility(Stadium facility) {
+        this.teamFacilities.remove(facility);
     }
 }

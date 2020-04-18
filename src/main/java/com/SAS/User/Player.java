@@ -5,11 +5,14 @@
 package com.SAS.User;
 
 import com.SAS.team.Team;
+import com.SAS.teamManagenemt.TeamAsset;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 
-public class Player extends Role {
+public class Player extends Role implements TeamAsset {
 
     private User user;
     private LocalDate dateOfBirth;
@@ -111,4 +114,28 @@ public class Player extends Role {
     public void setTeam(Team team) {
         this.team = team;
     }
+
+    /**
+     * This function remove the asset from the team
+     */
+    @Override
+    public void removeAssetFromTeam() {
+        team.removePlayer(this);
+        this.team = null;
+    }
+
+    /**
+     * This function edits the player details
+     * @param details
+     */
+    @Override
+    public void editDetails(List<String> details) {
+        //first is dateOfBirth, second is fieldRole
+        setDateOfBirth(LocalDate.parse(details.get(0)));
+        setFieldRole(convertStringToFieldRole(details.get(1)));
+    }
+
+
+
+
 }
