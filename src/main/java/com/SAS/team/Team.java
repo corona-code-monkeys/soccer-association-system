@@ -5,12 +5,17 @@ import com.SAS.League.Season;
 import com.SAS.User.Player;
 import com.SAS.User.TeamManager;
 import com.SAS.User.TeamOwner;
-import com.SAS.stadium.Stadium;
+import com.SAS.stadium.Facility;
 import com.SAS.transaction.Transaction;
 
+import java.time.LocalDate;
+import java.time.temporal.IsoFields;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.SAS.stadium.facilityType.STADIUM;
+import static com.SAS.transaction.transactionType.INCOME;
 
 /**
  * The class represent a team in the football association system
@@ -18,14 +23,13 @@ import java.util.List;
 public class Team {
 
     private String name;
-    private List<Stadium> teamFacilities;
+    private List<Facility> teamFacilities;
     private List<Player> players;
     private List<TeamOwner> owners;
     private TeamManager manager;
     private HashMap<Season, Budget> budgets;
-    private HashMap<String, Double> quartersBalance;
+    private HashMap<Integer, Double> quartersBalance;
     private List<Transaction> transactionList;
-    private Stadium homeStadium;
 
     /**
      * Empty constructor
@@ -34,7 +38,7 @@ public class Team {
         players = new LinkedList<Player>();
         transactionList = new LinkedList<Transaction>();
         budgets = new HashMap<Season, Budget>();
-        teamFacilities = new LinkedList<Stadium>();
+        teamFacilities = new LinkedList<Facility>();
         owners = new LinkedList<>();
         initializeFinanceYear();
     }
@@ -42,21 +46,18 @@ public class Team {
     /**
      * Params constructor
      * @param name
-     * @param homeStadium
      * @param players
      * @param owner
      * @param manager
-     * @param transactionList
-     * @param budgets
      */
-    public Team(String name, Stadium homeStadium, List<Player> players, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets, List<Stadium> teamFacilities, HashMap<String, Double> quartersBalance) {
+    public Team(String name, List<Player> players, TeamOwner owner, TeamManager manager, List<Facility> teamFacilities) {
         this.name = name;
-        this.homeStadium = homeStadium;
         this.players = players;
+        owners = new LinkedList<>();
         this.owners.add(owner);
         this.manager = manager;
-        this.transactionList = transactionList;
-        this.budgets = budgets;
+        this.transactionList = new LinkedList<>();
+        budgets = new HashMap<>();
         this.teamFacilities = teamFacilities;
         initializeFinanceYear();
 
@@ -68,11 +69,11 @@ public class Team {
      * The function initialize the quarters map with the keys and zero balance
      */
     private void initializeFinanceYear() {
-        this.quartersBalance  = new HashMap<String, Double>() {{
-            put("1", 0.0);
-            put("2", 0.0);
-            put("3", 0.0);
-            put("4", 0.0);
+        this.quartersBalance  = new HashMap<Integer, Double>() {{
+            put(1, 0.0);
+            put(2, 0.0);
+            put(3, 0.0);
+            put(4, 0.0);
         }};
     }
 
@@ -90,25 +91,34 @@ public class Team {
         return true;
     }
 
-  //TODO: remove player from team
 
     /**
-     * The function add a transaction that made by the team
+     * The function add a transaction that made by the team owner and updates the team budget according to a new transaction
      * @param newTransaction
-     * @return
+     * @return true if the income is bigger then expense in the quarter, else return false
      */
     public boolean addTransactionToTeam(Transaction newTransaction) {
         if (newTransaction == null) {
             return false;
         }
 
-        transactionList.add(newTransaction);
-        updateBudget(newTransaction);
-        return true;
-    }
+        double transactionAmount = 0.0, quarterBalance = 0.0;
+        int quarter;
+        LocalDate transactionDate = newTransaction.getDate();
+        //get the year quarter: 1/2/3/4
+        quarter = transactionDate.get(IsoFields.QUARTER_OF_YEAR);
+        //check if transaction amount is positive or negative
+        transactionAmount = (newTransaction.getType() == INCOME) ? newTransaction.getAmount(): -newTransaction.getAmount();
+        quarterBalance = quartersBalance.get(quarter);
 
-    //TODO: to be implement later
-    private void updateBudget(Transaction newTransaction) {
+        if (quarterBalance + transactionAmount >= 0){
+            transactionList.add(newTransaction)
+            quartersBalance.put(quarter, quarterBalance + transactionAmount);
+            return true;
+        }
+
+        //the quarter balance is less then zero so we cant approve the transaction
+        return false;
 
     }
 
@@ -134,17 +144,26 @@ public class Team {
      * The function return the home stadium of the team
      * @return
      */
-    public Stadium getHomeStadium() {
-        return homeStadium;
+    public Facility getHomeStadium() {
+        for(Facility facility: teamFacilities){
+            if (facility.facilityType == STADIUM){
+                return facility;
+            }
+        }
+
+        return null;
     }
 
     /**
-     * The function sets the home stadium of the team
-     * @param homeStadium
+     * The function adds new facility to team facilities list
+     * @param newFacility
      */
-    public void setHomeStadium(Stadium homeStadium) {
-        this.homeStadium = homeStadium;
+    public void addFacility(Facility newFacility){
+        if (newFacility != null){
+            teamFacilities.add(newFacility);
+        }
     }
+
 
     /**
      * The function returns a list of players of the team
