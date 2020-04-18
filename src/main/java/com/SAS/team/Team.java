@@ -26,6 +26,7 @@ public class Team {
     private HashMap<String, Double> quartersBalance;
     private List<Transaction> transactionList;
     private Stadium homeStadium;
+    private boolean active;
 
     /**
      * Empty constructor
@@ -36,6 +37,7 @@ public class Team {
         budgets = new HashMap<Season, Budget>();
         teamFacilities = new LinkedList<Stadium>();
         owners = new LinkedList<>();
+        active = true;
         initializeFinanceYear();
     }
 
@@ -58,6 +60,7 @@ public class Team {
         this.transactionList = transactionList;
         this.budgets = budgets;
         this.teamFacilities = teamFacilities;
+        active = true;
         initializeFinanceYear();
 
     }
@@ -175,7 +178,7 @@ public class Team {
      * @param newManager
      * @return
      */
-    public boolean setTeamManager(TeamManager newManager) {
+    public void setTeamManager(TeamManager newManager) {
         this.manager = newManager;
     }
 
@@ -212,5 +215,27 @@ public class Team {
     }
 
     public void addBudget(Season season, Budget budget) {
+    }
+
+    /**
+     * The function sets the team to be inactive
+     */
+    public void inactivateTeam() {
+        this.active = false;
+    }
+
+    /**
+     * The function sets the team to be active
+     */
+    public void reactivateTeam() {
+        this.active = true;
+    }
+
+    /**
+     * The function returns true if the team is active, otherwise returns false
+     * @return treu or false
+     */
+    public boolean isActive() {
+        return active;
     }
 }

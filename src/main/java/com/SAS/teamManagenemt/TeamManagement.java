@@ -6,6 +6,9 @@ package com.SAS.teamManagenemt;
 import com.SAS.User.*;
 import com.SAS.team.Team;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class TeamManagement {
 
     private UserController userController;
@@ -78,6 +81,63 @@ public class TeamManagement {
      */
     private boolean ownsTeam(Team team, User nominatedBy) {
          return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam() == team;
+    }
+
+    /**
+     * The function receives a team and a team owner and closes this team
+     * @param team
+     * @param teamOwner
+     */
+    public void closeTeam(Team team, User teamOwner) {
+        if (ownsTeam(team, teamOwner) && team.isActive()) {
+            team.inactivateTeam();
+            sendNotificationClose(team, "closed");
+        }
+
+        else {
+            System.out.println("The user is unauthorized to close the team");
+        }
+    }
+
+    /**
+     * The function receives a team and a team owner and opens this team
+     * @param team
+     * @param teamOwner
+     */
+    public void openTeam(Team team, User teamOwner) {
+        if (ownsTeam(team, teamOwner) && !team.isActive()) {
+            team.reactivateTeam();
+            sendNotificationClose(team, "opened");
+        }
+
+        else {
+            System.out.println("The user is unauthorized to open the team");
+        }
+    }
+
+    /**
+     * The function receives a team that has been closed and send the message to all the team management
+     * and the system admins
+     * @param team
+     */
+    //TODO: add system admins from DB
+    private void sendNotificationClose(Team team, String message) {
+        String close = "The team " + team.getName() + " has been " + message + ".";
+
+        //get all the management of the team
+        List<User> management = new LinkedList<>();
+        management.addAll(team.getOwners());
+        User manager = team.getManager();
+        if (manager != null) {
+            management.add(manager);
+        }
+
+        //add the system admins from DB
+
+        for (User user: management) {
+            ((Role)user).getNotification(close);
+        }
+
     }
 
 
