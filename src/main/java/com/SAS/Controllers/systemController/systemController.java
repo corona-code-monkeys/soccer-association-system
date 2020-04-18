@@ -7,14 +7,16 @@ public class systemController {
 
     private LinkedList<String> externalSystemsAvailable;
     private LinkedList<externalSystem> connectedExternalSystems;
+    private userController userController;
     private User admin;
 
     /**
      * Constructor
      */
-    public systemController() {
+    public systemController(userController userController) {
         connectedExternalSystems = new LinkedList<>();
         externalSystemsAvailable = new LinkedList<>();
+        this.userController = userController;
         initExternalSystemsAvailable();
     }
 
@@ -30,7 +32,8 @@ public class systemController {
      * The function receives raw data and insert the data to our DB
      */
     //TODO: insert data to DB
-    public void insertDateToDB() {
+    public boolean insertDateToDB() {
+        return false;
     }
 
     /**
@@ -132,25 +135,20 @@ public class systemController {
      *
      * @param userName
      * @param password
+     * @param fullName
      * @return
      */
-    public boolean createSystemAdmin(String userName, String password) {
-        if (userName == null || password == null) {
+    public boolean createSystemAdmin(String userName, String password, String fullName) {
+        if (userName == null || password == null || fullName == null) {
             return false;
         }
 
-        if (userName.length() == 0 || password.length() == 0) {
+        if (userName.length() == 0 || password.length() == 0 || fullName.length() == 0) {
             return false;
         }
 
-        //TODO: create user
+        admin = userController.createUser(userName, password, fullName, SYSTEM_ADMIN, true);
         return true;
     }
-
-
-    public static void main() {
-
-    }
-
 
 }
