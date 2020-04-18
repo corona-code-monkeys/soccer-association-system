@@ -22,7 +22,7 @@ public class Team {
     private List<Stadium> teamFacilities;
     private List<Player> players;
     private TeamOwner owner;
-    private List<TeamManager> managers;
+    private TeamManager manager;
     private HashMap<Season, Budget> budgets;
     private HashMap<String, Double> quartersBalance;
     private List<Transaction> transactionList;
@@ -32,7 +32,6 @@ public class Team {
      */
     public Team() {
         players = new LinkedList<Player>();
-        managers = new LinkedList<TeamManager>();
         transactionList = new LinkedList<Transaction>();
         budgets = new HashMap<Season, Budget>();
         teamFacilities = new LinkedList<Stadium>();
@@ -49,12 +48,12 @@ public class Team {
      * @param transactionList
      * @param budgets
      */
-    public Team(String name, Stadium homeStadium, List<Player> players, List<TeamManager> managers, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets, List<Stadium> teamFacilities, HashMap<String, Double> quartersBalance) {
+    public Team(String name, Stadium homeStadium, List<Player> players, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets, List<Stadium> teamFacilities, HashMap<String, Double> quartersBalance) {
         this.name = name;
         this.homeStadium = homeStadium;
         this.players = players;
         this.owner = owner;
-        this.managers = managers;
+        this.manager = manager;
         this.transactionList = transactionList;
         this.budgets = budgets;
         this.teamFacilities = teamFacilities;
@@ -163,25 +162,20 @@ public class Team {
     }
 
     /**
-     * The function return the managers of the team
+     * The function return the manager of the team
      * @return
      */
-    public List<TeamManager> getManagers() {
-        return managers;
+    public TeamManager getManager() {
+        return manager;
     }
 
     /**
-     * The function adds a new manager to the team
+     * The function sets the new manager to the team
      * @param newManager
      * @return
      */
-    public boolean addManagerToTeam(TeamManager newManager) {
-        if (newManager == null) {
-            return false;
-        }
-
-        managers.add(newManager);
-        return true;
+    public boolean setTeamManager(TeamManager newManager) {
+        this.manager = newManager;
     }
 
     /**

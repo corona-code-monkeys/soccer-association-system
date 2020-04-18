@@ -16,13 +16,9 @@ public class Player extends Role {
     /**
      * Constructor
      * @param user
-     * @param dateOfBirth
-     * @param fieldRole
      */
-    public Player(User user, LocalDate dateOfBirth, FieldRole fieldRole) {
+    public Player(User user) {
         this.user = user;
-        this.dateOfBirth = dateOfBirth;
-        this.fieldRole = fieldRole;
     }
 
     /**
@@ -39,6 +35,14 @@ public class Player extends Role {
      */
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    /**
+     * The function sets the birth of date of the player
+     * @param dateOfBirth
+     */
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     /**
