@@ -1,27 +1,18 @@
 package com.SAS.League;
 
-import java.util.ArrayList;
+import com.SAS.game.Game;
+import com.SAS.team.Team;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-
-class Team {
-
-    public String getName;
-
-    public void addBudget(Season season, Budget budget) {
-    }
-}//to be removed
-
-class Game {
-}//to be removed
 
 /**
  * class season that define the object season and attributes
  */
 public class Season {
     private int year;
-    private HashMap<League, GamesArrangment> gamesList;
+    private HashMap<League, GamesArrangement> gamesList;
     private HashMap<Team, Budget> budgets;
     private HashMap<League, Table> tables;
     private HashSet<Team> teamsList;
@@ -104,7 +95,7 @@ public class Season {
      * @param league the league that you want to get her table
      * @return the games list for this season in specific league
      */
-    public GamesArrangment getGamesList(League league) {
+    public GamesArrangement getGamesList(League league) {
         return this.gamesList.get(league);
 
     }
@@ -152,7 +143,7 @@ public class Season {
      */
     public void addGamesList(League league, LinkedList<Game> games) {
         if (this.leaguesList.contains(league)&&!this.gamesList.containsKey(league)) {
-            GamesArrangment gamesArrangment = new GamesArrangment(league, this, games);
+            GamesArrangement gamesArrangment = new GamesArrangement(league, this, games);
             this.gamesList.put(league, gamesArrangment);
             league.addGamesList(this, games);
         }

@@ -1,9 +1,9 @@
 package com.SAS.game_event_logger;
 
-import java.time.LocalDate;
+import com.SAS.User.Player;
+import com.SAS.team.Team;
 
-class Team {
-}//to be removed
+import java.time.LocalDate;
 
 public class Offside extends GameEvent {
     private Team teamInFavor;

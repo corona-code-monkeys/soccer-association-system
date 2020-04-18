@@ -12,7 +12,14 @@ public class AssociationRepresentative extends Role {
      * Constructor
      * @param user
      */
-    public AssociationRepresentative(User user) {
+    public AssociationRepresentative(User user, String fullName) {
+        super(fullName);
         this.user = user;
+    }
+
+
+    @Override
+    public String getRole() {
+        return "AssociationRepresentative";
     }
 }

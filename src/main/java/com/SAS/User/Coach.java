@@ -6,6 +6,8 @@ package com.SAS.User;
 
 import com.SAS.team.Team;
 
+import java.util.HashSet;
+
 public class Coach extends Role {
 
     private User user;
@@ -18,8 +20,10 @@ public class Coach extends Role {
      * Constructor
      * @param user
      */
-    public Coach(User user) {
+    public Coach(User user, String fullName) {
+        super(fullName);
         this.user = user;
+        myPrivileges.addAll(user.myPrivileges);
     }
 
     /**
@@ -92,5 +96,18 @@ public class Coach extends Role {
      */
     public int getPageID() {
         return personalPage.getPageID();
+    }
+
+    /**
+     * The function returns all the privileges of the user
+     * @return
+     */
+    public HashSet<String> getMyPrivileges() {
+        return myPrivileges;
+    }
+
+    @Override
+    public String getRole() {
+        return "Coach";
     }
 }

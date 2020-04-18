@@ -1,5 +1,13 @@
 package com.SAS.team;
 
+import com.SAS.League.Budget;
+import com.SAS.League.Season;
+import com.SAS.User.Player;
+import com.SAS.User.TeamManager;
+import com.SAS.User.TeamOwner;
+import com.SAS.stadium.Stadium;
+import com.SAS.transaction.Transaction;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,11 +20,12 @@ public class Team {
     private String name;
     private List<Stadium> teamFacilities;
     private List<Player> players;
-    private TeamOwner owner;
+    private List<TeamOwner> owners;
     private TeamManager manager;
     private HashMap<Season, Budget> budgets;
     private HashMap<String, Double> quartersBalance;
     private List<Transaction> transactionList;
+    private Stadium homeStadium;
 
     /**
      * Empty constructor
@@ -26,6 +35,7 @@ public class Team {
         transactionList = new LinkedList<Transaction>();
         budgets = new HashMap<Season, Budget>();
         teamFacilities = new LinkedList<Stadium>();
+        owners = new LinkedList<>();
         initializeFinanceYear();
     }
 
@@ -43,7 +53,7 @@ public class Team {
         this.name = name;
         this.homeStadium = homeStadium;
         this.players = players;
-        this.owner = owner;
+        this.owners.add(owner);
         this.manager = manager;
         this.transactionList = transactionList;
         this.budgets = budgets;
@@ -170,19 +180,11 @@ public class Team {
     }
 
     /**
-     * The function return the team owner
+     * The function returns the team owners
      * @return
      */
-    public TeamOwner getOwner() {
-        return owner;
-    }
-
-    /**
-     * The function sets the team owner
-     * @param owner
-     */
-    public void setOwner(TeamOwner owner) {
-        this.owner = owner;
+    public List<TeamOwner> getOwners() {
+        return this.owners;
     }
 
     /**
@@ -199,5 +201,16 @@ public class Team {
      */
     public void setTransactionList(List<Transaction> transactionList) {
         this.transactionList = transactionList;
+    }
+
+    /**
+     * The function adds another team owner
+     * @param teamOwner
+     */
+    public void addTeamOwner(TeamOwner teamOwner) {
+        this.owners.add(teamOwner);
+    }
+
+    public void addBudget(Season season, Budget budget) {
     }
 }

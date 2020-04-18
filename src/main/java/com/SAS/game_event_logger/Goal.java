@@ -1,5 +1,8 @@
 package com.SAS.game_event_logger;
 
+import com.SAS.User.Player;
+import com.SAS.team.Team;
+
 import java.time.LocalDate;
 
 public class Goal extends GameEvent {

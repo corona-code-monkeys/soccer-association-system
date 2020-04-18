@@ -9,7 +9,7 @@ import java.util.HashSet;
 public abstract class User {
 
     public static int counter = 0;
-    private HashSet<String> myPrivileges;
+    protected HashSet<String> myPrivileges;
     private int userID;
 
     /**
@@ -17,6 +17,7 @@ public abstract class User {
      */
     public User() {
         this.userID = counter++;
+        this.myPrivileges = new HashSet<>();
     }
 
     /**
@@ -34,4 +35,13 @@ public abstract class User {
     public void setPrivileges(HashSet<String> privileges) {
         this.myPrivileges.addAll(privileges);
     }
+
+    /**
+     * The function returns all the privileges of the user
+     * @return
+     */
+    public HashSet<String> getMyPrivileges() {
+        return myPrivileges;
+    }
+
 }
