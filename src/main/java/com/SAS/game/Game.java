@@ -3,6 +3,7 @@ package com.SAS.game;
 import com.SAS.League.League;
 import com.SAS.League.Season;
 import com.SAS.User.Referee;
+import com.SAS.facility.Facility;
 import com.SAS.game_event_logger.GameEvent;
 import com.SAS.game_event_logger.GameEventLogger;
 import com.SAS.report.GameReport;

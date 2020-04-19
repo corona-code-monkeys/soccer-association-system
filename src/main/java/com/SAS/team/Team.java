@@ -177,6 +177,7 @@ public class Team {
      */
     public boolean setTeamManager(TeamManager newManager) {
         this.manager = newManager;
+        return true;
     }
 
     /**
