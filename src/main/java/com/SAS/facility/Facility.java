@@ -29,7 +29,7 @@ public class Facility {
      * @param gamesList
      * @param homeTeam
      */
-    public Facility(String location, List<Game> gamesList, Team homeTeam,facilityType facilityType) {
+    public Facility(String location, List<Game> gamesList, Team homeTeam, facilityType facilityType) {
         this.location = location;
         this.gamesList = gamesList;
         this.homeTeam = homeTeam;
