@@ -7,10 +7,7 @@ import com.SAS.facility.Facility;
 import com.SAS.game_event_logger.GameEvent;
 import com.SAS.game_event_logger.GameEventLogger;
 import com.SAS.report.GameReport;
-<<<<<<< HEAD
 import com.SAS.facility.Facility;
-=======
->>>>>>> SAS-65 #initiate jdbc in the system
 import com.SAS.team.Team;
 
 import java.time.LocalDate;
