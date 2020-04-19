@@ -1,6 +1,10 @@
-package com.SAS.soccer_association_system.facility;
+package com.SAS.facility;
+
+import com.SAS.game.Game;
+import com.SAS.team.Team;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * The class represent a soccer stadium of a team
@@ -25,7 +29,7 @@ public class Facility {
      * @param gamesList
      * @param homeTeam
      */
-    public Facility(String location, List<Game> gamesList, Team homeTeam, facilityType facilityType) {
+    public Facility(String location, List<Game> gamesList, Team homeTeam,facilityType facilityType) {
         this.location = location;
         this.gamesList = gamesList;
         this.homeTeam = homeTeam;

@@ -2,9 +2,9 @@ package com.SAS.crudoperations;
 
 import com.SAS.League.*;
 import com.SAS.User.*;
+import com.SAS.facility.Facility;
 import com.SAS.game.Game;
 import com.SAS.game_event_logger.GameEvent;
-import com.SAS.stadium.Stadium;
 import com.SAS.team.Team;
 import com.SAS.transaction.Transaction;
 
@@ -110,7 +110,7 @@ public class CRUD {
     }
 
     //game
-    public boolean createGame(Season season, League league, LocalDate date, Team host, Team guest, Stadium stadium) {
+    public boolean createGame(Season season, League league, LocalDate date, Team host, Team guest, Facility stadium) {
         return true;
     }
 
@@ -134,7 +134,7 @@ public class CRUD {
         return true;
     }
 
-    public boolean ctreateTeam(String name,List<Player> players, TeamOwner owner, TeamManager manager, List<Stadium> teamFacilities) {
+    public boolean ctreateTeam(String name,List<Player> players, TeamOwner owner, TeamManager manager, List<Facility> teamFacilities) {
         return true;
     }
 
@@ -150,11 +150,11 @@ public class CRUD {
         return true;
     }
 
-    public boolean addFacility(Team team, Stadium facility) {
+    public boolean addFacility(Team team, Facility facility) {
         return true;
     }
 
-    public Stadium getFacilities(Team team) {
+    public Facility getFacilities(Team team) {
         return null;
     }
 
