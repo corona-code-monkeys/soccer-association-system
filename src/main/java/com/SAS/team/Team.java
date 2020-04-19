@@ -6,7 +6,9 @@ import com.SAS.User.Player;
 import com.SAS.User.TeamManager;
 import com.SAS.User.TeamOwner;
 import com.SAS.stadium.Facility;
+import com.SAS.stadium.facilityType;
 import com.SAS.transaction.Transaction;
+import com.SAS.transaction.transactionType;
 
 import java.time.LocalDate;
 import java.time.temporal.IsoFields;
@@ -146,7 +148,7 @@ public class Team {
      */
     public Facility getHomeStadium() {
         for(Facility facility: teamFacilities){
-            if (facility.facilityType == STADIUM){
+            if (facility.facilityType == facilityType.STADIUM){
                 return facility;
             }
         }
