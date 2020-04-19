@@ -6,7 +6,7 @@ import com.SAS.User.Referee;
 import com.SAS.game_event_logger.GameEvent;
 import com.SAS.game_event_logger.GameEventLogger;
 import com.SAS.report.GameReport;
-import com.SAS.stadium.Stadium;
+import com.SAS.facility.Facility;
 import com.SAS.team.Team;
 
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ public class Game {
     private Team guest;
     private int hostScore;
     private int guestScore;
-    private Stadium stadium;
+    private Facility stadium;
     private GameEventLogger events;
     private GameReport gameReport;
     private List<Referee> referees;
@@ -34,7 +34,7 @@ public class Game {
         referees = new LinkedList<Referee>();
     }
 
-    public Game(Season season, League league, LocalDate date, Team host, Team guest, int hostScore, int guestScore, Stadium stadium, GameEventLogger events, GameReport gameReport, List<Referee> referees) {
+    public Game(Season season, League league, LocalDate date, Team host, Team guest, int hostScore, int guestScore, Facility stadium, GameEventLogger events, GameReport gameReport, List<Referee> referees) {
         this.season = season;
         this.league = league;
         this.date = date;
@@ -198,7 +198,7 @@ public class Game {
      *
      * @return
      */
-    public Stadium getStadium() {
+    public Facility getStadium() {
         return stadium;
     }
 
@@ -207,7 +207,7 @@ public class Game {
      *
      * @return
      */
-    public void setStadium(Stadium stadium) {
+    public void setStadium(Facility stadium) {
         this.stadium = stadium;
     }
 

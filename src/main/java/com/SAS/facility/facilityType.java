@@ -1,4 +1,4 @@
-package com.SAS.soccer_association_system.facility;
+package com.SAS.facility;
 
 public enum facilityType {
     STADIUM,
