@@ -2,7 +2,14 @@ package com.SAS.facility;
 
 import com.SAS.game.Game;
 import com.SAS.team.Team;
+<<<<<<< HEAD
 import com.SAS.teamManagenemt.TeamAsset;
+=======
+
+import com.SAS.game.Game;
+import com.SAS.team.Team;
+
+>>>>>>> SAS-65 #initiate jdbc in the system
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +17,7 @@ import java.util.List;
 /**
  * The class represent a soccer stadium of a team
  */
+<<<<<<< HEAD
 public class Facility implements TeamAsset{
 
     private String name;
@@ -17,6 +25,14 @@ public class Facility implements TeamAsset{
     private List<Game> gamesList;
     private Team homeTeam;
     private facilityType facilityT;
+=======
+public class Facility {
+
+    private String location;
+    private List<Game> gamesList;
+    private Team homeTeam;
+    private facilityType facilityType;
+>>>>>>> SAS-65 #initiate jdbc in the system
 
     /**
      * Empty constructor
@@ -27,17 +43,28 @@ public class Facility implements TeamAsset{
 
     /**
      * The method adds a game to the stadium games list
+<<<<<<< HEAD
      * @param name
+=======
+>>>>>>> SAS-65 #initiate jdbc in the system
      * @param location
      * @param gamesList
      * @param homeTeam
      */
+<<<<<<< HEAD
     public Facility(String name, String location, List<Game> gamesList, Team homeTeam, facilityType facilityT) {
         this.name = name;
         this.location = location;
         this.gamesList = gamesList;
         this.homeTeam = homeTeam;
         this.facilityT = facilityT;
+=======
+    public Facility(String location, List<Game> gamesList, Team homeTeam,facilityType facilityType) {
+        this.location = location;
+        this.gamesList = gamesList;
+        this.homeTeam = homeTeam;
+        this.facilityType = facilityType;
+>>>>>>> SAS-65 #initiate jdbc in the system
     }
 
     public boolean addGame(Game newGame){
@@ -50,6 +77,7 @@ public class Facility implements TeamAsset{
     }
 
     /**
+<<<<<<< HEAD
      * This function returns the name of the stadium
      * @return String
      */
@@ -65,6 +93,8 @@ public class Facility implements TeamAsset{
     }
 
     /**
+=======
+>>>>>>> SAS-65 #initiate jdbc in the system
      * The function returns the location of the stadium
      * @return
      */
@@ -100,7 +130,11 @@ public class Facility implements TeamAsset{
      * The function returns the team that owns the stadium
      * @return
      */
+<<<<<<< HEAD
     public Team getTeam() {
+=======
+    public Team getHomeTeam() {
+>>>>>>> SAS-65 #initiate jdbc in the system
         return homeTeam;
     }
 
@@ -108,6 +142,7 @@ public class Facility implements TeamAsset{
      * The function sets a team that owns the stadium
      * @param homeTeam
      */
+<<<<<<< HEAD
     public void setTeam(Team homeTeam) {
         this.homeTeam = homeTeam;
     }
@@ -168,4 +203,9 @@ public class Facility implements TeamAsset{
                 return null;
         }
     }
+=======
+    public void setHomeTeam(Team homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+>>>>>>> SAS-65 #initiate jdbc in the system
 }

@@ -7,7 +7,10 @@ import com.SAS.User.Player;
 import com.SAS.User.TeamManager;
 import com.SAS.User.TeamOwner;
 import com.SAS.facility.Facility;
+<<<<<<< HEAD
 import com.SAS.facility.facilityType;
+=======
+>>>>>>> SAS-65 #initiate jdbc in the system
 import com.SAS.transaction.Transaction;
 import com.SAS.transaction.TransactionType;
 
@@ -31,8 +34,11 @@ public class Team {
     private HashMap<Integer, Double> quartersBalance;
     private List<Transaction> transactionList;
     private Facility homeStadium;
+<<<<<<< HEAD
     private Coach coach;
     private boolean active;
+=======
+>>>>>>> SAS-65 #initiate jdbc in the system
 
     /**
      * Empty constructor
@@ -54,14 +60,23 @@ public class Team {
      * @param owner
      * @param manager
      */
+<<<<<<< HEAD
     public Team(String name, List<Player> players, TeamOwner owner, TeamManager manager, List<Facility> teamFacilities) {
+=======
+    public Team(String name, Facility homeStadium, List<Player> players, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets, List<Facility> teamFacilities, HashMap<String, Double> quartersBalance) {
+>>>>>>> SAS-65 #initiate jdbc in the system
         this.name = name;
         this.players = players;
         owners = new LinkedList<>();
         this.owners.add(owner);
         this.manager = manager;
+<<<<<<< HEAD
         this.transactionList = new LinkedList<>();
         budgets = new HashMap<>();
+=======
+        this.transactionList = transactionList;
+        this.budgets = budgets;
+>>>>>>> SAS-65 #initiate jdbc in the system
         this.teamFacilities = teamFacilities;
         this.coach = coach;
         active = true;
@@ -151,6 +166,7 @@ public class Team {
      * @return
      */
     public Facility getHomeStadium() {
+<<<<<<< HEAD
         for(Facility facility: teamFacilities){
             if (facility.getFacilityType() == facilityType.STADIUM){
                 return facility;
@@ -158,16 +174,24 @@ public class Team {
         }
 
         return null;
+=======
+        return homeStadium;
+>>>>>>> SAS-65 #initiate jdbc in the system
     }
 
     /**
      * The function adds new facility to team facilities list
      * @param newFacility
      */
+<<<<<<< HEAD
     public void addFacility(Facility newFacility) {
         if (newFacility != null) {
             teamFacilities.add(newFacility);
         }
+=======
+    public void setHomeStadium(Facility homeStadium) {
+        this.homeStadium = homeStadium;
+>>>>>>> SAS-65 #initiate jdbc in the system
     }
 
 
@@ -199,11 +223,19 @@ public class Team {
      * The function sets the new manager to the team
      * @param newManager
      */
+<<<<<<< HEAD
     public void setTeamManager(TeamManager newManager) {
         this.manager = newManager;
     }
 
 
+=======
+    public boolean setTeamManager(TeamManager newManager) {
+        this.manager = newManager;
+        return true;
+
+    }
+>>>>>>> SAS-65 #initiate jdbc in the system
     /**
      * The function returns the team owners
      * @return
