@@ -13,7 +13,7 @@ class LeagueManagementControllerTest extends LeagueManagementController {
     void initLeague() {
         {
             String name = "Ligat Ha'al";
-            LeagueInitUseCase LeagueInitUseCase = new LeagueInitUseCase();
+            LeagueManagementController LeagueInitUseCase = new LeagueManagementController();
             League league = LeagueInitUseCase.initLeague(name);
             try {
                 Assertions.assertTrue(league.getName().equals(name));
@@ -45,7 +45,7 @@ class LeagueManagementControllerTest extends LeagueManagementController {
         {
             String name = "Ligat Ha'al";
             int year = 2020;
-            DefineSeasonForLeagueUseCase DefineSeasonForLeagueUseCase = new DefineSeasonForLeagueUseCase();
+            LeagueManagementController DefineSeasonForLeagueUseCase = new LeagueManagementController();
             League league = DefineSeasonForLeagueUseCase.addSeasonToALeague(name, year);
             try {
                 Assertions.assertTrue(!league.getSeasonList().isEmpty());
