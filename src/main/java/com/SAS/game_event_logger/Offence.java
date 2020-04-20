@@ -1,5 +1,7 @@
 package com.SAS.game_event_logger;
 
+import com.SAS.User.Player;
+
 import java.time.LocalDate;
 
 public class Offence extends GameEvent {

@@ -6,6 +6,7 @@ package com.SAS.User;
 
 import com.SAS.game.Game;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +20,8 @@ public class Referee extends Role {
      * Constructor
      * @param user
      */
-    public Referee(User user) {
+    public Referee(User user, String fullName) {
+        super(fullName);
         this.user = user;
         games = new LinkedList<>();
     }
@@ -48,12 +50,33 @@ public class Referee extends Role {
         this.level = level;
     }
 
+    /**
+     * The function receives a game and adds it to the games list
+     * @param game
+     */
     public void addGame (Game game) {
         games.add(game);
     }
 
+    /**
+     * The function receives a game and removes it from the games list
+     * @param game
+     */
     public void removeGame (Game game) {
         games.remove(game);
+    }
+
+    /**
+     * The function returns all the privileges of the user
+     * @return
+     */
+    public HashSet<String> getMyPrivileges() {
+        return myPrivileges;
+    }
+
+    @Override
+    public String getRole() {
+        return "Referee";
     }
 
 }

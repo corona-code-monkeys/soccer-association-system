@@ -1,4 +1,4 @@
-package com.SAS.stadium;
+package com.SAS.facility;
 
 public enum facilityType {
     STADIUM,

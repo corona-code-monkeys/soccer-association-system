@@ -4,7 +4,10 @@
 
 package com.SAS.User;
 
+import com.SAS.team.Team;
+
 import java.time.LocalDate;
+import java.util.HashSet;
 
 public class Player extends Role {
 
@@ -12,13 +15,16 @@ public class Player extends Role {
     private LocalDate dateOfBirth;
     private FieldRole fieldRole;
     private PersonalPage personalPage;
+    private Team team;
 
     /**
      * Constructor
      * @param user
      */
-    public Player(User user) {
+    public Player(User user, String fullName) {
+        super(fullName);
         this.user = user;
+        myPrivileges.addAll(user.myPrivileges);
     }
 
     /**
@@ -77,4 +83,32 @@ public class Player extends Role {
         return personalPage.getPageID();
     }
 
+    /**
+     * The function returns all the privileges of the user
+     * @return
+     */
+    public HashSet<String> getMyPrivileges() {
+        return myPrivileges;
+    }
+
+    @Override
+    public String getRole() {
+        return "Player";
+    }
+
+    /**
+     * The function returns the team of the player
+     * @return
+     */
+    public Team getTeam() {
+        return team;
+    }
+
+    /**
+     * The fucntion sets the team of the player
+     * @param team
+     */
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 }

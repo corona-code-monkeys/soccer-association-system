@@ -1,13 +1,11 @@
 package com.SAS.League;
 
+import com.SAS.game.Game;
+
 import java.util.HashSet;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-
-class Table {
-}//to be removed
 
 /**
  * class league that create a league according to the features in the black class diagram
@@ -15,7 +13,7 @@ class Table {
 public class League {
     private String name;
     private HashSet<Season> seasonList;
-    private HashMap<Season, GamesArrangment> gamesList;
+    private HashMap<Season, GamesArrangement> gamesList;
     private HashMap<Season, Table> tables;
     private HashMap<Season, PointsPolicy> pointsPolicy;
     private HashMap<Season, GamesPolicy> gamesPolicy;
@@ -30,7 +28,7 @@ public class League {
     public League(String name) {
         this.name = name;
         this.seasonList = new HashSet<>();
-        this.gamesList = new HashMap<Season, GamesArrangment>();
+        this.gamesList = new HashMap<Season, GamesArrangement>();
         this.tables = new HashMap<Season, Table>();
         this.pointsPolicy = new HashMap<Season, PointsPolicy>();
         this.gamesPolicy = new HashMap<Season, GamesPolicy>();
@@ -71,7 +69,7 @@ public class League {
      * @param season the season you want to get her game list
      * @return the games list for this league in specific season
      */
-    public GamesArrangment getGamesList(Season season) {
+    public GamesArrangement getGamesList(Season season) {
         return gamesList.get(season);
     }
 
@@ -83,7 +81,7 @@ public class League {
      */
     public void addGamesList(Season season, LinkedList<Game> games) {
         if (this.seasonList.contains(season) && !this.gamesList.containsKey(season)) {
-            GamesArrangment gamesArrangment = new GamesArrangment(this, season, games);
+            GamesArrangement gamesArrangment = new GamesArrangement(this, season, games);
             this.gamesList.put(season, gamesArrangment);
             season.addGamesList(this, games);
         }
