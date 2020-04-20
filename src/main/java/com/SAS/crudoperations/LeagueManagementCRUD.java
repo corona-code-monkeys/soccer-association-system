@@ -33,6 +33,6 @@ public class LeagueManagementCRUD {
     }
 
     public void addSeasonToLeague(int league, Season season) {
-        
+
     }
 }
