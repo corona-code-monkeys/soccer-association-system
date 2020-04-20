@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TeamAsset {
 
-    void editDetails(List<String> details);
+    boolean editDetails(List<String> details);
     void setTeam(Team team);
     void removeAssetFromTeam();
 

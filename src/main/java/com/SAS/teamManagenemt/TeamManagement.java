@@ -52,9 +52,12 @@ public class TeamManagement {
      * This function receives a list of details and a teamAsset and updates the asset's details
      * @param asset
      * @param details
+     * @return true if details have been edited successfully, false otherwise.
+     * If return false should ask the user to enter the details again
      */
-    public void editAssetDetails(TeamAsset asset, List<String> details){
-        asset.editDetails(details);
+    public boolean editAssetDetails(TeamAsset asset, List<String> details)
+    {
+        return asset.editDetails(details);
     }
 
     /**

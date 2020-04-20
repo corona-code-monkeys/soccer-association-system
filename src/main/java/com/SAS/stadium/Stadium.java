@@ -139,13 +139,20 @@ public class Stadium implements TeamAsset {
     /**
      * This functions edits the stadiums details
      * @param details
+     * @return true if details have been edited successfully, false otherwise.
      */
     @Override
-    public void editDetails(List<String> details) {
+    public boolean editDetails(List<String> details) {
         //first is name, second is location, third is type
-        setName(details.get(0));
-        setLocation(details.get(1));
-        setFacilityType(convertStringToFacilityType(details.get(2)));
+        FacilityType facilityType = convertStringToFacilityType(details.get(2));
+        if (facilityType == null)
+            return false;
+        else{
+            setName(details.get(0));
+            setLocation(details.get(1));
+            setFacilityType(facilityType);
+            return true;
+        }
     }
 
     /**

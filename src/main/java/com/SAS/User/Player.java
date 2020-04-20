@@ -127,12 +127,20 @@ public class Player extends Role implements TeamAsset {
     /**
      * This function edits the player details
      * @param details
+     * @return true if details have been edited successfully, false otherwise.
      */
     @Override
-    public void editDetails(List<String> details) {
+    public boolean editDetails(List<String> details) {
         //first is dateOfBirth, second is fieldRole
-        setDateOfBirth(LocalDate.parse(details.get(0)));
-        setFieldRole(convertStringToFieldRole(details.get(1)));
+        FieldRole fieldRole = convertStringToFieldRole((details.get(1)));
+        LocalDate dateOfBirth = LocalDate.parse(details.get(0));
+        if (fieldRole == null || dateOfBirth == null) {
+            return false;
+        }else {
+            setDateOfBirth(dateOfBirth);
+            setFieldRole(fieldRole);
+            return true;
+        }
     }
 
 

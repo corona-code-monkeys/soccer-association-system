@@ -134,14 +134,26 @@ public class Coach extends Role implements TeamAsset {
 
     /**
      * This function edits the player details
-     *
-     * @param details
+     *@param details
+     * @return true if details have been edited successfully, false otherwise.
      */
     @Override
-    public void editDetails(List<String> details) {
+    public boolean editDetails(List<String> details) {
         //first is level, second is fieldRole
-        setLevel(Integer.parseInt(details.get(0)));
-        setFieldRole(convertStringToFieldRole(details.get(1)));
+        FieldRole fieldRole = convertStringToFieldRole((details.get(1)));
+        int level = -1;
+        try{
+            level = Integer.parseInt(details.get(0));
+        }catch (Exception e){
+
+        }
+        if (fieldRole == null || level == -1) {
+            return false;
+        }else {
+            setLevel(Integer.parseInt(details.get(0)));
+            setFieldRole(convertStringToFieldRole(details.get(1)));
+            return true;
+        }
     }
 
 
