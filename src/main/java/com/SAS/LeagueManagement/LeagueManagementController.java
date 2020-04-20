@@ -9,6 +9,7 @@ public class LeagueManagementController {
 
     private LinkedList<LeagueRankPolicy> rankPolicies;
     private LinkedList<PointsPolicy> pointsPolicies;
+    private LinkedList<GamesPolicy> gamesPolicies;
 
     /**
      * Constructor
@@ -16,6 +17,7 @@ public class LeagueManagementController {
     public LeagueManagementController() {
         this.rankPolicies = new LinkedList<>();
         this.pointsPolicies = new LinkedList<>();
+        this.gamesPolicies = new LinkedList<>();
         initPolicies();
     }
 
@@ -31,6 +33,11 @@ public class LeagueManagementController {
         pointsPolicies.add(new OnePointForWinAndNoneForDraw());
         pointsPolicies.add(new TwoForWinOneForDraw());
         pointsPolicies.add(new ThreeForWinOneForDrawPolicy());
+
+        //add games policies
+        gamesPolicies.add(new OneRoundLeague());
+        gamesPolicies.add(new TwoRoundsLeague());
+        gamesPolicies.add(new ThreeRoundsLeague());
     }
 
     /**
@@ -58,6 +65,22 @@ public class LeagueManagementController {
         StringBuilder policies = new StringBuilder();
 
         for (PointsPolicy policy : pointsPolicies) {
+            policies.append(counter + ". " + policy.getName() + "\n");
+        }
+
+        policies.setLength(policies.length() - 1);
+        return policies.toString();
+    }
+
+    /**
+     * The function returns all the available game policies in our system
+     * @return
+     */
+    public String showGamePolicies(){
+        int counter = 1;
+        StringBuilder policies = new StringBuilder();
+
+        for (GamesPolicy policy : gamesPolicies) {
             policies.append(counter + ". " + policy.getName() + "\n");
         }
 
@@ -102,7 +125,7 @@ public class LeagueManagementController {
                 return false;
         }
 
-        System.out.println("The policy added successfully");
+        System.out.println("The policy was added successfully");
         return true;
     }
 
@@ -149,7 +172,54 @@ public class LeagueManagementController {
                 return false;
         }
 
-        System.out.println("The policy added successfully");
+        System.out.println("The policy was added successfully");
+        return true;
+    }
+
+    /**
+     * The function receives league, season and game policy id and set the game policy to the league according to the season
+     * @param league
+     * @param season
+     * @param gamePolicyId
+     * @return
+     */
+    public boolean addGamePolicy(League league, Season season, String gamePolicyId){
+        if (league == null || season == null) {
+            return false;
+        }
+
+        if (gamePolicyId.length() == 0) {
+            return false;
+        }
+
+        GamesPolicy gamePolicy;
+
+        //TODO: check permissions
+        switch (gamePolicyId) {
+            case "1":
+                gamePolicy = new OneRoundLeague(league,season);
+                league.addGamePolicy(season,gamePolicy);
+                season.addGamePolicy(league,gamePolicy);
+                break;
+
+            case "2":
+                gamePolicy = new TwoRoundsLeague(league,season);
+                league.addGamePolicy(season,gamePolicy);
+                season.addGamePolicy(league,gamePolicy);
+                break;
+
+            case "3":
+                gamePolicy = new ThreeRoundsLeague(league,season);
+                league.addGamePolicy(season,gamePolicy);
+                season.addGamePolicy(league,gamePolicy);
+                break;
+
+            default:
+                System.out.println("No policy was found with this id");
+                return false;
+        }
+
+        System.out.println("The policy was added successfully");
         return true;
     }
 
