@@ -1,4 +1,4 @@
-package com.SAS.stadium;
+package com.SAS.facility;
 
 import com.SAS.game.Game;
 import com.SAS.team.Team;
@@ -10,18 +10,18 @@ import java.util.List;
 /**
  * The class represent a soccer stadium of a team
  */
-public class Stadium implements TeamAsset {
+public class Facility implements TeamAsset{
 
     private String name;
     private String location;
     private List<Game> gamesList;
     private Team homeTeam;
-    private FacilityType facilityType;
+    private com.SAS.facility.facilityType facilityType;
 
     /**
      * Empty constructor
      */
-    public Stadium() {
+    public Facility() {
         gamesList = new LinkedList<Game>();
     }
 
@@ -31,8 +31,7 @@ public class Stadium implements TeamAsset {
      * @param gamesList
      * @param homeTeam
      */
-    public Stadium(String name, String location, List<Game> gamesList, Team homeTeam, FacilityType facilityType) {
-        this.name = name;
+    public Facility(String location, List<Game> gamesList, Team homeTeam, com.SAS.facility.facilityType facilityType) {
         this.location = location;
         this.gamesList = gamesList;
         this.homeTeam = homeTeam;
@@ -111,6 +110,10 @@ public class Stadium implements TeamAsset {
         this.homeTeam = homeTeam;
     }
 
+    public com.SAS.facility.facilityType getFacilityType() {
+        return facilityType;
+    }
+
     /**
      * This function removes the facility from being in the team's facilities
      */
@@ -121,22 +124,14 @@ public class Stadium implements TeamAsset {
     }
 
     /**
-     * This function sets the FacilityType
+     * This function sets the facilityType
      * @param facilityType
      */
-    public void setFacilityType(FacilityType facilityType) {
+    public void setFacilityType(com.SAS.facility.facilityType facilityType) {
         this.facilityType = facilityType;
     }
 
-    /**
-     * This function returns the FacilityType
-     * @return FacilityType
-     */
-    public FacilityType getFacilityType() {
-        return facilityType;
-    }
-
-    /**
+       /**
      * This functions edits the stadiums details
      * @param details
      * @return true if details have been edited successfully, false otherwise.
@@ -144,7 +139,7 @@ public class Stadium implements TeamAsset {
     @Override
     public boolean editDetails(List<String> details) {
         //first is name, second is location, third is type
-        FacilityType facilityType = convertStringToFacilityType(details.get(2));
+        com.SAS.facility.facilityType facilityType = convertStringToFacilityType(details.get(2));
         if (facilityType == null)
             return false;
         else{
@@ -156,16 +151,16 @@ public class Stadium implements TeamAsset {
     }
 
     /**
-     * This function converts string to FacilityType
+     * This function converts string to facilityType
      * @param facilityType
      * @return facilityType
      */
-    private FacilityType convertStringToFacilityType(String facilityType){
+    private facilityType convertStringToFacilityType(String facilityType){
         switch(facilityType){
            case "Stadium":
-               return FacilityType.STADIUM;
+               return facilityType.STADIUM;
             case "Training":
-                return FacilityType.TRAINING;
+                return facilityType.TRAINING;
             default:
                 System.out.println("Error, no such type");
                 return null;

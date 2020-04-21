@@ -3,6 +3,11 @@ package com.SAS.League;
  * class for the policy of which we break tie according to which team has a bigger goal difference
  */
 public class GoalDifference extends LeagueRankPolicy {
+
+    public GoalDifference() {
+        this.name="The bigger goal difference";
+    }
+
     /**
      * constructor that init the object and gives him name
      */
