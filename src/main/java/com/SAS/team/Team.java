@@ -175,9 +175,8 @@ public class Team {
      * @param newManager
      * @return
      */
-    public boolean setTeamManager(TeamManager newManager) {
+    public void setTeamManager(TeamManager newManager) {
         this.manager = newManager;
-        return true;
     }
 
     /**
@@ -210,6 +209,14 @@ public class Team {
      */
     public void addTeamOwner(TeamOwner teamOwner) {
         this.owners.add(teamOwner);
+    }
+
+    /**
+     * The function removes a team owner from the owners of the team
+     * @param teamOwner
+     */
+    public void removeTeamOwner(TeamOwner teamOwner) {
+        this.owners.remove(teamOwner);
     }
 
     public void addBudget(Season season, Budget budget) {
