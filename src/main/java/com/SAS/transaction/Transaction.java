@@ -1,5 +1,6 @@
 package com.SAS.transaction;
 
+import com.SAS.User.TeamOwner;
 import com.SAS.team.Team;
 
 import java.time.LocalDate;
@@ -9,11 +10,12 @@ import java.time.LocalDate;
  */
 public class Transaction {
 
-    private float amount;
-    private transactionType type;
+    private double amount;
+    private TransactionType type;
     private LocalDate date;
     private Team team;
     private String description;
+    private TeamOwner reportedBy;
 
     /**
      * Params constructor
@@ -22,19 +24,20 @@ public class Transaction {
      * @param date
      * @param team
      */
-    public Transaction(float amount, transactionType type, LocalDate date, Team team, String description) {
+    public Transaction(double amount, TransactionType type, LocalDate date, Team team, String description, TeamOwner reportedBy) {
         this.amount = amount;
         this.description = description;
         this.type = type;
         this.date = date;
         this.team = team;
+        this.reportedBy = reportedBy;
     }
 
     /**
      * The function returns the amount of the transactions
      * @return
      */
-    public float getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -50,7 +53,7 @@ public class Transaction {
      * The function returns the type the transaction
      * @return
      */
-    public transactionType getType() {
+    public TransactionType getType() {
         return type;
     }
 
@@ -66,7 +69,7 @@ public class Transaction {
      * The function sets the type of the transaction
      * @param type
      */
-    public void setType(transactionType type) {
+    public void setType(TransactionType type) {
         this.type = type;
     }
 
@@ -100,5 +103,13 @@ public class Transaction {
      */
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    /**
+     * The function returns the team owner that reported this transaction
+     * @return
+     */
+    public TeamOwner getReportedBy() {
+        return reportedBy;
     }
 }
