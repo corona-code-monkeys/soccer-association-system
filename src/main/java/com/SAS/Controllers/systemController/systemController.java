@@ -166,7 +166,7 @@ public class systemController {
             return false;
         }
 
-        admin = userController.createUser(userName, password, fullName, SYSTEM_ADMIN, true);
+        admin = userController.createUser(userName, password, fullName, UserType.SYSTEM_ADMIN, true);
         return true;
     }
 
