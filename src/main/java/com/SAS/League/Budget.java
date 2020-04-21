@@ -2,9 +2,6 @@ package com.SAS.League;
 
 import com.SAS.team.Team;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Budget {
     private Team team;
@@ -12,7 +9,7 @@ public class Budget {
     private double amount;
 
     /**
-     * GamesArrangment constructor with attributes
+     * GamesArrangement constructor with attributes
      *
      * @param team:   the team the budget belong
      * @param season: the budget's season

@@ -3,6 +3,9 @@ import com.SAS.team.Team;
 import com.SAS.game.Game;
 import com.SAS.User.Referee;
 
+import com.SAS.game.Game;
+import com.SAS.team.Team;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -14,7 +17,7 @@ import java.util.LinkedList;
  */
 public class Season {
     private int year;
-    private HashMap<League, GamesArrangment> gamesList;
+    private HashMap<League, GamesArrangement> gamesList;
     private HashMap<Team, Budget> budgets;
     private HashMap<League, Table> tables;
     private HashSet<Team> teamsList;
@@ -37,7 +40,7 @@ public class Season {
         this.gamesList = new HashMap<>();
         this.teamsList = teamsList;
         this.leaguesList = leaguesList;
-        this.budgets = new HashMap<Team, Budget>();
+        this.budgets = new HashMap<>();
         this.referees= new HashMap<>();
         this.tables = new HashMap<>();
         this.pointsPolicy = new HashMap<>();
@@ -99,7 +102,7 @@ public class Season {
      * @param league the league that you want to get her table
      * @return the games list for this season in specific league
      */
-    public GamesArrangment getGamesList(League league) {
+    public GamesArrangement getGamesList(League league) {
         return this.gamesList.get(league);
 
     }
@@ -147,7 +150,7 @@ public class Season {
      */
     public void addGamesList(League league, LinkedList<Game> games) {
         if (this.leaguesList.contains(league)&&!this.gamesList.containsKey(league)) {
-            GamesArrangment gamesArrangment = new GamesArrangment(league, this, games);
+            GamesArrangement gamesArrangment = new GamesArrangement(league, this, games);
             this.gamesList.put(league, gamesArrangment);
             league.addGamesList(this, games);
         }
