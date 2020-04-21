@@ -5,18 +5,14 @@ import com.SAS.League.Season;
 import com.SAS.User.Player;
 import com.SAS.User.TeamManager;
 import com.SAS.User.TeamOwner;
-import com.SAS.stadium.Facility;
-import com.SAS.stadium.facilityType;
+import com.SAS.facility.Facility;
+import com.SAS.facility.facilityType;
 import com.SAS.transaction.Transaction;
-import com.SAS.transaction.transactionType;
-
 import java.time.LocalDate;
 import java.time.temporal.IsoFields;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
-import static com.SAS.stadium.facilityType.STADIUM;
 import static com.SAS.transaction.transactionType.INCOME;
 
 /**
@@ -148,7 +144,7 @@ public class Team {
      */
     public Facility getHomeStadium() {
         for(Facility facility: teamFacilities){
-            if (facility.facilityType == facilityType.STADIUM){
+            if (facility.getFacilityType() == facilityType.STADIUM){
                 return facility;
             }
         }
@@ -160,8 +156,8 @@ public class Team {
      * The function adds new facility to team facilities list
      * @param newFacility
      */
-    public void addFacility(Facility newFacility){
-        if (newFacility != null){
+    public void addFacility(Facility newFacility) {
+        if (newFacility != null) {
             teamFacilities.add(newFacility);
         }
     }
@@ -198,6 +194,7 @@ public class Team {
      */
     public boolean setTeamManager(TeamManager newManager) {
         this.manager = newManager;
+        return true;
     }
 
     /**
