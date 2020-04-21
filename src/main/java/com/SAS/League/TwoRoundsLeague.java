@@ -4,6 +4,11 @@ package com.SAS.League;
  * class for two rounds league
  */
 public class TwoRoundsLeague extends GamesPolicy {
+
+    public TwoRoundsLeague() {
+        this.name="Two rounds league";
+    }
+
     /**
      * constructor that init the object and gives him name
      */
