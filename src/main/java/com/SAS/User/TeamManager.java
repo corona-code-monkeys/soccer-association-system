@@ -13,6 +13,7 @@ public class TeamManager extends Role {
 
     private User user;
     private Team team;
+    private TeamOwner nominatedBy;
 
     /**
      * Constructor
@@ -48,6 +49,23 @@ public class TeamManager extends Role {
     }
 
     /**
+     * The function returns the user that nominated this user to team manager
+     * @return user
+     */
+    public User getNominatedBy() {
+        return nominatedBy;
+    }
+
+    /**
+     * The function sets the user that nominated this user to team manager
+     * @param nominatedBy
+     */
+    public void setNominatedBy(TeamOwner nominatedBy) {
+        this.nominatedBy = nominatedBy;
+    }
+
+
+    /**
      * The function returns all the privileges of the user
      * @return
      */
@@ -58,5 +76,28 @@ public class TeamManager extends Role {
     @Override
     public String getRole() {
         return "TeamManager";
+    }
+
+    /**
+     * This function sets the team owner that nominated the team manager
+     * @param nominatedBy
+     */
+    public void setNominatedBy(TeamOwner nominatedBy) {
+        this.nominatedBy = nominatedBy;
+    }
+
+    /**
+     * This function returns the team owner that nominated the team manager
+     * @return TeamOwner
+     */
+    public TeamOwner getNominatedBy() {
+        return nominatedBy;
+    }
+
+    /**
+     * This function removes the team
+     */
+    public void removeTeam(){
+        this.team = null;
     }
 }

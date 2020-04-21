@@ -40,18 +40,102 @@ public class TeamManagement {
             team.addTeamOwner((TeamOwner)newTeamOwner);
             ((TeamOwner) newTeamOwner).setTeam(team);
             ((TeamOwner) newTeamOwner).setNominatedBy((TeamOwner)nominatedBy);
-
-            return newTeamOwner;
         }
 
         else {
             System.out.println("The user is unauthorized to own the team");
-            return null;
         }
+
+        return newTeamOwner;
     }
 
     /**
-     * The function receives a team owner, the team and the nominated user and removes the owner from the team owners
+     * The function receives a user and a team and adds the user as the team manager
+     * TODO: UI will need to popup a window to get approval
+     * @param newTeamManager
+     * @param team
+     * @param nominatedBy
+     * @param approval - a boolean which determines if the manager got privileges from the team owner
+     * @return newTeamManager - the team manager
+     */
+    public User addTeamManager(User newTeamManager, Team team, User nominatedBy, boolean approval){
+        //check if the team already has a manager
+        if(teamHasManager(team)){
+            System.out.println("The team already has a manager, please remove it first to nominate a new manager");
+            return newTeamManager;
+        }
+        //check if the user can manage this team and that the user that nominates him is the team owner
+        if (validateTeamManager(newTeamManager, team) && ownsTeam(team, nominatedBy)){
+            newTeamManager = userController.addRoleToUser(newTeamManager, UserType.TEAM_MANAGER,approval);
+            team.setTeamManager((TeamManager)newTeamManager);
+            ((TeamManager)newTeamManager).setTeam(team);
+            ((TeamManager)newTeamManager).setNominatedBy((TeamOwner)nominatedBy);
+        }
+        else{
+            System.out.println("The user is unauthorized to manage the team");
+        }
+        return newTeamManager;
+    }
+
+    /**
+     * This function checks if the team already has a manager, if so returns true, otherwise returns false
+     * @param team
+     * @return true or false
+     */
+    private boolean teamHasManager(Team team) {
+        return team.getManager() != null;
+    }
+
+    /**
+     * This function checks if the user is not already a team manager or owner
+     * @param newTeamManager
+     * @param team
+     * @return true or false
+     */
+    private boolean validateTeamManager(User newTeamManager, Team team) {
+        if ((newTeamManager instanceof TeamManager || newTeamManager instanceof TeamOwner)){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * This function removes a user from being a team manager by the team owner
+     * @param teamManager
+     * @param team
+     * @param removedBy
+     * @return
+     */
+    public User removeTeamManager(User teamManager, Team team, User removedBy) {
+        //checks if the user manages the team and that the removing user is the owner of the team and nominated him
+        if (validateTeamManager(teamManager, team, removedBy) && ownsTeam(team, removedBy)) {
+            team.removeTeamManager((TeamManager)teamManager);
+            ((TeamManager)teamManager).removeTeam();
+            //get the inner user (previous role)
+            teamManager = ((TeamManager) teamManager).getUser();
+        }
+
+        else {
+            System.out.println("The user is unauthorized to remove the team manager");
+        }
+
+        return teamManager;
+    }
+
+    /**
+     * This function verify whether the user is the team manager of the team,
+     * and that the team owner that nominated him is the same user trying to remove him
+     * @param teamManager
+     * @param team
+     * @param removedBy
+     * @return true or false
+     */
+    private boolean validateTeamManager(User teamManager, Team team, User removedBy) {
+        return teamManager instanceof TeamManager && ((TeamManager)teamManager).getTeam() == team &&
+                removedBy instanceof TeamOwner && ((TeamManager)teamManager).getNominatedBy() == removedBy;
+    }
+
+     /* The function receives a team owner, the team and the nominated user and removes the owner from the team owners
      * if the user authorized to do so
      * @param teamOwner
      * @param team
@@ -205,5 +289,63 @@ public class TeamManagement {
                 return null;
         }
     }
+  
+    /**
+     * The function receives a team and a team owner and closes this team
+     * @param team
+     * @param teamOwner
+     */
+    public void closeTeam(Team team, User teamOwner) {
+        if (ownsTeam(team, teamOwner) && team.isActive()) {
+            team.inactivateTeam();
+            sendNotificationClose(team, "closed");
+        }
+
+        else {
+            System.out.println("The user is unauthorized to close the team");
+        }
+    }
+
+    /**
+     * The function receives a team and a team owner and opens this team
+     * @param team
+     * @param teamOwner
+     */
+    public void openTeam(Team team, User teamOwner) {
+        if (ownsTeam(team, teamOwner) && !team.isActive()) {
+            team.reactivateTeam();
+            sendNotificationClose(team, "opened");
+        }
+
+        else {
+            System.out.println("The user is unauthorized to open the team");
+        }
+    }
+
+    /**
+     * The function receives a team that has been closed and send the message to all the team management
+     * and the system admins
+     * @param team
+     */
+    //TODO: add system admins from DB
+    private void sendNotificationClose(Team team, String message) {
+        String close = "The team " + team.getName() + " has been " + message + ".";
+
+        //get all the management of the team
+        List<User> management = new LinkedList<>();
+        management.addAll(team.getOwners());
+        User manager = team.getManager();
+        if (manager != null) {
+            management.add(manager);
+        }
+
+        //add the system admins from DB
+
+        for (User user: management) {
+            ((Role)user).getNotification(close);
+        }
+
+    }
+
 
 }

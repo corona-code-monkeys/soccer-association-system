@@ -1,6 +1,8 @@
 package com.SAS.League;
 
+import com.SAS.User.Referee;
 import com.SAS.game.Game;
+
 
 import java.util.HashSet;
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import java.util.LinkedList;
 public class League {
     private String name;
     private HashSet<Season> seasonList;
+    private HashMap<Season, HashSet<Referee>> referees;
     private HashMap<Season, GamesArrangement> gamesList;
     private HashMap<Season, Table> tables;
     private HashMap<Season, PointsPolicy> pointsPolicy;
@@ -137,7 +140,7 @@ public class League {
      * @param pointsPolicy the points policy you want to add
      */
     public void addPointsPolicy(Season season, PointsPolicy pointsPolicy) {
-        if (this.seasonList.contains(season)&&!this.pointsPolicy.containsKey(season)) {
+        if (this.seasonList.contains(season) && !this.pointsPolicy.containsKey(season)) {
             this.pointsPolicy.put(season, pointsPolicy);
             season.addPointsPolicy(this, pointsPolicy);
         }
@@ -148,9 +151,28 @@ public class League {
      * @param rankPolicy the rank policy you want to add
      */
     public void addRankPolicy(Season season, LeagueRankPolicy rankPolicy) {
-        if (this.seasonList.contains(season)&&!this.rankPolicy.containsKey(season)) {
+        if (this.seasonList.contains(season) && !this.rankPolicy.containsKey(season)) {
             this.rankPolicy.put(season, rankPolicy);
             season.addRankPolicy(this, rankPolicy);
+        }
+    }
+
+    /**
+     *
+     * @return the hashmap of the referees for this league for each season
+     */
+    public HashMap<Season,HashSet<Referee>> getReferees() {
+        return referees;
+    }
+
+    /**
+     * @param season     the season that the  referee is relevant to
+     * @param ref the referee you want to add to the list of referees
+     */
+    public void addReferee(Season season, Referee ref) {
+        if (this.seasonList.contains(season) && this.referees.containsKey(season)) {
+            this.referees.get(season).add(ref);
+            season.addReferee(this, ref);
         }
     }
 }

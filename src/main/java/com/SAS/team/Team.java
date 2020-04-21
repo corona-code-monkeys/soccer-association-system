@@ -6,11 +6,14 @@ import com.SAS.User.Player;
 import com.SAS.User.TeamManager;
 import com.SAS.User.TeamOwner;
 import com.SAS.facility.Facility;
+import com.SAS.facility.facilityType;
 import com.SAS.transaction.Transaction;
-
+import java.time.LocalDate;
+import java.time.temporal.IsoFields;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import static com.SAS.transaction.transactionType.INCOME;
 
 /**
  * The class represent a team in the football association system
@@ -23,9 +26,9 @@ public class Team {
     private List<TeamOwner> owners;
     private TeamManager manager;
     private HashMap<Season, Budget> budgets;
-    private HashMap<String, Double> quartersBalance;
+    private HashMap<Integer, Double> quartersBalance;
     private List<Transaction> transactionList;
-    private Facility homeStadium;
+    private boolean active;
 
     /**
      * Empty constructor
@@ -36,28 +39,27 @@ public class Team {
         budgets = new HashMap<Season, Budget>();
         teamFacilities = new LinkedList<Facility>();
         owners = new LinkedList<>();
+        active = true;
         initializeFinanceYear();
     }
 
     /**
      * Params constructor
      * @param name
-     * @param homeStadium
      * @param players
      * @param owner
      * @param manager
-     * @param transactionList
-     * @param budgets
      */
-    public Team(String name, Facility homeStadium, List<Player> players, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets, List<Facility> teamFacilities, HashMap<String, Double> quartersBalance) {
+    public Team(String name, List<Player> players, TeamOwner owner, TeamManager manager, List<Facility> teamFacilities) {
         this.name = name;
-        this.homeStadium = homeStadium;
         this.players = players;
+        owners = new LinkedList<>();
         this.owners.add(owner);
         this.manager = manager;
-        this.transactionList = transactionList;
-        this.budgets = budgets;
+        this.transactionList = new LinkedList<>();
+        budgets = new HashMap<>();
         this.teamFacilities = teamFacilities;
+        active = true;
         initializeFinanceYear();
 
     }
@@ -68,11 +70,11 @@ public class Team {
      * The function initialize the quarters map with the keys and zero balance
      */
     private void initializeFinanceYear() {
-        this.quartersBalance  = new HashMap<String, Double>() {{
-            put("1", 0.0);
-            put("2", 0.0);
-            put("3", 0.0);
-            put("4", 0.0);
+        this.quartersBalance  = new HashMap<Integer, Double>() {{
+            put(1, 0.0);
+            put(2, 0.0);
+            put(3, 0.0);
+            put(4, 0.0);
         }};
     }
 
@@ -90,25 +92,34 @@ public class Team {
         return true;
     }
 
-  //TODO: remove player from team
 
     /**
-     * The function add a transaction that made by the team
+     * The function add a transaction that made by the team owner and updates the team budget according to a new transaction
      * @param newTransaction
-     * @return
+     * @return true if the income is bigger then expense in the quarter, else return false
      */
     public boolean addTransactionToTeam(Transaction newTransaction) {
         if (newTransaction == null) {
             return false;
         }
 
-        transactionList.add(newTransaction);
-        updateBudget(newTransaction);
-        return true;
-    }
+        double transactionAmount = 0.0, quarterBalance = 0.0;
+        int quarter;
+        LocalDate transactionDate = newTransaction.getDate();
+        //get the year quarter: 1/2/3/4
+        quarter = transactionDate.get(IsoFields.QUARTER_OF_YEAR);
+        //check if transaction amount is positive or negative
+        transactionAmount = (newTransaction.getType() == INCOME) ? newTransaction.getAmount(): -newTransaction.getAmount();
+        quarterBalance = quartersBalance.get(quarter);
 
-    //TODO: to be implement later
-    private void updateBudget(Transaction newTransaction) {
+        if (quarterBalance + transactionAmount >= 0){
+            transactionList.add(newTransaction);
+            quartersBalance.put(quarter, quarterBalance + transactionAmount);
+            return true;
+        }
+
+        //the quarter balance is less then zero so we cant approve the transaction
+        return false;
 
     }
 
@@ -135,16 +146,25 @@ public class Team {
      * @return
      */
     public Facility getHomeStadium() {
-        return homeStadium;
+        for(Facility facility: teamFacilities){
+            if (facility.getFacilityType() == facilityType.STADIUM){
+                return facility;
+            }
+        }
+
+        return null;
     }
 
     /**
-     * The function sets the home stadium of the team
-     * @param homeStadium
+     * The function adds new facility to team facilities list
+     * @param newFacility
      */
-    public void setHomeStadium(Facility homeStadium) {
-        this.homeStadium = homeStadium;
+    public void addFacility(Facility newFacility) {
+        if (newFacility != null) {
+            teamFacilities.add(newFacility);
+        }
     }
+
 
     /**
      * The function returns a list of players of the team
@@ -173,7 +193,6 @@ public class Team {
     /**
      * The function sets the new manager to the team
      * @param newManager
-     * @return
      */
     public void setTeamManager(TeamManager newManager) {
         this.manager = newManager;
@@ -220,5 +239,30 @@ public class Team {
     }
 
     public void addBudget(Season season, Budget budget) {
+    }
+
+    public void removeTeamManager(TeamManager teamManager) {
+        this.manager = null;
+
+    /**
+     * The function sets the team to be inactive
+     */
+    public void inactivateTeam() {
+        this.active = false;
+    }
+
+    /**
+     * The function sets the team to be active
+     */
+    public void reactivateTeam() {
+        this.active = true;
+    }
+
+    /**
+     * The function returns true if the team is active, otherwise returns false
+     * @return treu or false
+     */
+    public boolean isActive() {
+        return active;
     }
 }
