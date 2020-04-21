@@ -49,6 +49,23 @@ public class TeamManager extends Role {
     }
 
     /**
+     * The function returns the user that nominated this user to team manager
+     * @return user
+     */
+    public User getNominatedBy() {
+        return nominatedBy;
+    }
+
+    /**
+     * The function sets the user that nominated this user to team manager
+     * @param nominatedBy
+     */
+    public void setNominatedBy(TeamOwner nominatedBy) {
+        this.nominatedBy = nominatedBy;
+    }
+
+
+    /**
      * The function returns all the privileges of the user
      * @return
      */

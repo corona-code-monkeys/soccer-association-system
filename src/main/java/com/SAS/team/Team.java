@@ -193,7 +193,6 @@ public class Team {
     /**
      * The function sets the new manager to the team
      * @param newManager
-     * @return
      */
     public void setTeamManager(TeamManager newManager) {
         this.manager = newManager;
