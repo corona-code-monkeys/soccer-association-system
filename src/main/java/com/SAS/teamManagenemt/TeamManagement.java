@@ -4,7 +4,10 @@
 package com.SAS.teamManagenemt;
 
 import com.SAS.User.*;
+import com.SAS.stadium.Stadium;
 import com.SAS.team.Team;
+
+import java.util.List;
 
 public class TeamManagement {
 
@@ -16,6 +19,55 @@ public class TeamManagement {
      */
     public TeamManagement(UserController userController) {
         this.userController = userController;
+    }
+
+    /**
+     * This function allows the team owner to add an asset to the team. Assets are facility, player, coach.
+     * @param assetType
+     * @param team
+     * @return the created asset
+     */
+    public TeamAsset AddAssetToTeam (String assetType, Team team) {
+        TeamAsset asset = null;
+        //create the asset
+        switch (assetType) {
+            case "Player":
+                asset = (Player) userController.createUser(null, null, null, UserType.PLAYER, true);
+                team.addPlayerToTeam((Player)asset);
+                break;
+            case "Facility":
+                asset = new Stadium();
+//                team.addFacility((Facility)asset);
+                break;
+            case "Coach":
+                asset = (Coach) userController.createUser(null, null, null, UserType.COACH, true);
+                team.setCoach((Coach)asset);
+                break;
+        }
+        asset.setTeam(team);
+        return asset;
+    }
+
+    /**
+     * This function receives a list of details and a teamAsset and updates the asset's details
+     * @param asset
+     * @param details
+     * @return true if details have been edited successfully, false otherwise.
+     * If return false should ask the user to enter the details again
+     */
+    public boolean editAssetDetails(TeamAsset asset, List<String> details)
+    {
+        return asset.editDetails(details);
+    }
+
+    /**
+     * This function removes a team asset
+     * @param asset
+     * @param team
+     */
+    public void removeAsset(TeamAsset asset, Team team){
+        asset.removeAssetFromTeam();
+        asset = null;
     }
 
     /**
