@@ -46,9 +46,11 @@ class LeagueManagementControllerTest extends LeagueManagementController {
             String name = "Ligat Ha'al";
             int year = 2020;
             LeagueManagementController DefineSeasonForLeagueUseCase = new LeagueManagementController();
-            League league = DefineSeasonForLeagueUseCase.addSeasonToALeague(name, year);
+            int [] seasonAndLeague= DefineSeasonForLeagueUseCase.addSeasonToALeague(name, year);
+            int season=seasonAndLeague[0];
+            int league=seasonAndLeague[1];
             try {
-                Assertions.assertTrue(!league.getSeasonList().isEmpty());
+                Assertions.assertTrue(isLeagueScoreExist(league,season));
             } catch (AssertionError e) {
                 System.out.println("There is no season exists in this league");
                 throw e;
@@ -70,5 +72,10 @@ class LeagueManagementControllerTest extends LeagueManagementController {
             System.out.println("The season of the year" + year + " exist in the league " + league.getName());
 
         }
+    }
+
+    @Test
+    void assignAndRemoveRefereesFromLeague() {
+
     }
 }
