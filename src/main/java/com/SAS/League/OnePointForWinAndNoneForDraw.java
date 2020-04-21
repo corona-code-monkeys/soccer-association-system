@@ -4,6 +4,11 @@ package com.SAS.League;
  * class for policy that gives one point per win and none per draws
  */
 public class OnePointForWinAndNoneForDraw extends PointsPolicy {
+
+    public OnePointForWinAndNoneForDraw() {
+        this.name="one point per win and none for draw";
+    }
+
     /**
      * constructor that init the object and gives him name
      */

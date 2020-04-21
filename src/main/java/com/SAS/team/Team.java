@@ -5,7 +5,7 @@ import com.SAS.League.Season;
 import com.SAS.User.Player;
 import com.SAS.User.TeamManager;
 import com.SAS.User.TeamOwner;
-import com.SAS.stadium.Stadium;
+import com.SAS.facility.Facility;
 import com.SAS.transaction.Transaction;
 
 import java.util.HashMap;
@@ -18,14 +18,14 @@ import java.util.List;
 public class Team {
 
     private String name;
-    private List<Stadium> teamFacilities;
+    private List<Facility> teamFacilities;
     private List<Player> players;
     private List<TeamOwner> owners;
     private TeamManager manager;
     private HashMap<Season, Budget> budgets;
     private HashMap<String, Double> quartersBalance;
     private List<Transaction> transactionList;
-    private Stadium homeStadium;
+    private Facility homeStadium;
     private boolean active;
 
     /**
@@ -35,7 +35,7 @@ public class Team {
         players = new LinkedList<Player>();
         transactionList = new LinkedList<Transaction>();
         budgets = new HashMap<Season, Budget>();
-        teamFacilities = new LinkedList<Stadium>();
+        teamFacilities = new LinkedList<Facility>();
         owners = new LinkedList<>();
         active = true;
         initializeFinanceYear();
@@ -51,7 +51,7 @@ public class Team {
      * @param transactionList
      * @param budgets
      */
-    public Team(String name, Stadium homeStadium, List<Player> players, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets, List<Stadium> teamFacilities, HashMap<String, Double> quartersBalance) {
+    public Team(String name, Facility homeStadium, List<Player> players, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets, List<Facility> teamFacilities, HashMap<String, Double> quartersBalance) {
         this.name = name;
         this.homeStadium = homeStadium;
         this.players = players;
@@ -137,7 +137,7 @@ public class Team {
      * The function return the home stadium of the team
      * @return
      */
-    public Stadium getHomeStadium() {
+    public Facility getHomeStadium() {
         return homeStadium;
     }
 
@@ -145,7 +145,7 @@ public class Team {
      * The function sets the home stadium of the team
      * @param homeStadium
      */
-    public void setHomeStadium(Stadium homeStadium) {
+    public void setHomeStadium(Facility homeStadium) {
         this.homeStadium = homeStadium;
     }
 
@@ -212,6 +212,14 @@ public class Team {
      */
     public void addTeamOwner(TeamOwner teamOwner) {
         this.owners.add(teamOwner);
+    }
+
+    /**
+     * The function removes a team owner from the owners of the team
+     * @param teamOwner
+     */
+    public void removeTeamOwner(TeamOwner teamOwner) {
+        this.owners.remove(teamOwner);
     }
 
     public void addBudget(Season season, Budget budget) {
