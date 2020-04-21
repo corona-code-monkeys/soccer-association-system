@@ -38,7 +38,7 @@ public class Season {
         this.teamsList = teamsList;
         this.leaguesList = leaguesList;
         this.budgets = new HashMap<Team, Budget>();
-        this.referees= new HashMap<Referee, Budget>();
+        this.referees= new HashMap<>();
         this.tables = new HashMap<>();
         this.pointsPolicy = new HashMap<>();
         this.gamesPolicy = new HashMap<>();
@@ -225,7 +225,7 @@ public class Season {
      * @param ref the referee you want to add to the list of referees
      */
     public void addReferee(League league, Referee ref) {
-        if (this.leaguesList.contains(league)&&!this.rankPolicy.containsKey(league)) {
+        if (this.leaguesList.contains(league)&&!this.getReferees().containsKey(league)) {
             this.referees.get(league).add(ref);
             league.addReferee(this, ref);
         }
