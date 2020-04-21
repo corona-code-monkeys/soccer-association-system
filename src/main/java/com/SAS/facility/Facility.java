@@ -16,7 +16,7 @@ public class Facility implements TeamAsset{
     private String location;
     private List<Game> gamesList;
     private Team homeTeam;
-    private com.SAS.facility.facilityType facilityType;
+    private facilityType facilityT;
 
     /**
      * Empty constructor
@@ -31,11 +31,11 @@ public class Facility implements TeamAsset{
      * @param gamesList
      * @param homeTeam
      */
-    public Facility(String location, List<Game> gamesList, Team homeTeam, com.SAS.facility.facilityType facilityType) {
+    public Facility(String location, List<Game> gamesList, Team homeTeam, facilityType facilityT) {
         this.location = location;
         this.gamesList = gamesList;
         this.homeTeam = homeTeam;
-        this.facilityType = facilityType;
+        this.facilityT = facilityT;
     }
 
     public boolean addGame(Game newGame){
@@ -110,8 +110,8 @@ public class Facility implements TeamAsset{
         this.homeTeam = homeTeam;
     }
 
-    public com.SAS.facility.facilityType getFacilityType() {
-        return facilityType;
+    public facilityType getFacilityType() {
+        return facilityT;
     }
 
     /**
@@ -125,10 +125,10 @@ public class Facility implements TeamAsset{
 
     /**
      * This function sets the facilityType
-     * @param facilityType
+     * @param facilityT
      */
-    public void setFacilityType(com.SAS.facility.facilityType facilityType) {
-        this.facilityType = facilityType;
+    public void setFacilityType(facilityType facilityT) {
+        this.facilityT = facilityT;
     }
 
        /**
@@ -139,24 +139,24 @@ public class Facility implements TeamAsset{
     @Override
     public boolean editDetails(List<String> details) {
         //first is name, second is location, third is type
-        com.SAS.facility.facilityType facilityType = convertStringToFacilityType(details.get(2));
-        if (facilityType == null)
+        facilityType ft = convertStringToFacilityType(details.get(2));
+        if (ft == null)
             return false;
         else{
             setName(details.get(0));
             setLocation(details.get(1));
-            setFacilityType(facilityType);
+            setFacilityType(ft);
             return true;
         }
     }
 
     /**
      * This function converts string to facilityType
-     * @param facilityType
-     * @return facilityType
+     * @param ft
+     * @return
      */
-    private facilityType convertStringToFacilityType(String facilityType){
-        switch(facilityType){
+    private facilityType convertStringToFacilityType(String ft){
+        switch(ft){
            case "Stadium":
                return facilityType.STADIUM;
             case "Training":

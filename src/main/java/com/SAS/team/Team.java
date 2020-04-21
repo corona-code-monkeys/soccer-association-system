@@ -9,12 +9,13 @@ import com.SAS.User.TeamOwner;
 import com.SAS.facility.Facility;
 import com.SAS.facility.facilityType;
 import com.SAS.transaction.Transaction;
+import com.SAS.transaction.TransactionType;
+
 import java.time.LocalDate;
 import java.time.temporal.IsoFields;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import static com.SAS.transaction.transactionType.INCOME;
 
 /**
  * The class represent a team in the football association system
@@ -112,7 +113,7 @@ public class Team {
         //get the year quarter: 1/2/3/4
         quarter = transactionDate.get(IsoFields.QUARTER_OF_YEAR);
         //check if transaction amount is positive or negative
-        transactionAmount = (newTransaction.getType() == INCOME) ? newTransaction.getAmount(): -newTransaction.getAmount();
+        transactionAmount = (newTransaction.getType() == TransactionType.INCOME) ? newTransaction.getAmount(): -newTransaction.getAmount();
         quarterBalance = quartersBalance.get(quarter);
 
         if (quarterBalance + transactionAmount >= 0){
