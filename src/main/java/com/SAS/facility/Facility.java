@@ -95,4 +95,10 @@ public class Facility {
     public void setHomeTeam(Team homeTeam) {
         this.homeTeam = homeTeam;
     }
+
+    public facilityType getFacilityType() {
+        return facilityType;
+    }
 }
+
+
