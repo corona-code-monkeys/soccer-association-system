@@ -27,11 +27,13 @@ public class Facility implements TeamAsset{
 
     /**
      * The method adds a game to the stadium games list
+     * @param name
      * @param location
      * @param gamesList
      * @param homeTeam
      */
-    public Facility(String location, List<Game> gamesList, Team homeTeam, facilityType facilityT) {
+    public Facility(String name, String location, List<Game> gamesList, Team homeTeam, facilityType facilityT) {
+        this.name = name;
         this.location = location;
         this.gamesList = gamesList;
         this.homeTeam = homeTeam;
