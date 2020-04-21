@@ -242,6 +242,9 @@ public class Team {
     public void addBudget(Season season, Budget budget) {
     }
 
+    public void removeTeamManager(TeamManager teamManager) {
+        this.manager = null;
+
     /**
      * The function sets the team to be inactive
      */

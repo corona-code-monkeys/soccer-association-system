@@ -40,6 +40,7 @@ public abstract class Role extends User {
         this.fullName = fullName;
     }
 
+
     /**
      * The function receives a notification and adds it to the notification list
      * @param message
