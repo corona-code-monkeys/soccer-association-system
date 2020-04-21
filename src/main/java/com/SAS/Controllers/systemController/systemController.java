@@ -1,24 +1,24 @@
 package com.SAS.Controllers.systemController;
 
 import com.SAS.User.User;
-
+import com.SAS.User.UserController;
 import java.util.LinkedList;
-import java.util.List;
+
 
 public class systemController {
 
     private LinkedList<String> externalSystemsAvailable;
     private LinkedList<externalSystem> connectedExternalSystems;
-    private userController userController;
+    private UserController userController;
     private User admin;
 
     /**
      * Constructor
      */
-    public systemController(userController userController) {
-        connectedExternalSystems = new LinkedList<>();
-        externalSystemsAvailable = new LinkedList<>();
-        this.userController = userController;
+    public systemController() {
+        this.connectedExternalSystems = new LinkedList<>();
+        this.externalSystemsAvailable = new LinkedList<>();
+        this.userController = new UserController();
         initExternalSystemsAvailable();
     }
 
