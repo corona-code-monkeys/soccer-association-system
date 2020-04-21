@@ -102,12 +102,13 @@ public class systemController {
 
     /**
      * The function receives system name and check if our system already connect to it
+     *
      * @param name
      * @return
      */
     private boolean searchSystem(String name) {
         for (externalSystem system : connectedExternalSystems) {
-            if (system.getSystemName().equals(name)){
+            if (system.getSystemName().equals(name)) {
                 return true;
             }
         }
@@ -133,6 +134,7 @@ public class systemController {
     }
 
     //TODO create user
+
     /**
      * The function receives userName and password from the user and creates admin user for the system
      *
@@ -142,6 +144,22 @@ public class systemController {
      * @return
      */
     public boolean createSystemAdmin(String userName, String password, String fullName) {
+        if (!validateParams(userName, password, fullName)) {
+            return false;
+        }
+
+        admin = userController.createUser(userName, password, fullName, UserType.SYSTEM_ADMIN, true);
+        return true;
+    }
+
+    /**
+     * The method receives userName, password and full name as string and checks that they are valid
+     *
+     * @param userName
+     * @param password
+     * @param fullName
+     */
+    private boolean validateParams(String userName, String password, String fullName) {
         if (userName == null || password == null || fullName == null) {
             return false;
         }
@@ -150,8 +168,6 @@ public class systemController {
             return false;
         }
 
-        admin = userController.createUser(userName, password, fullName, SYSTEM_ADMIN, true);
         return true;
     }
-
 }
