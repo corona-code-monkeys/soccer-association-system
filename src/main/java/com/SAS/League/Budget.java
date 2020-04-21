@@ -2,22 +2,23 @@ package com.SAS.League;
 
 import com.SAS.team.Team;
 
+
 public class Budget {
     private Team team;
     private Season season;
-    private int budget;
+    private double amount;
 
     /**
      * GamesArrangement constructor with attributes
      *
      * @param team:   the team the budget belong
      * @param season: the budget's season
-     * @param budget: the list of the games
+     * @param amount: the list of the games
      */
-    public Budget(Team team, Season season, int budget) {
+    public Budget(Team team, Season season, double amount) {
         this.team = team;
         this.season = season;
-        this.budget = budget;
+        this.amount = amount;
 
     }
 
@@ -40,14 +41,14 @@ public class Budget {
     /**
      * @return the size of the budget
      */
-    public int getBudget() {
-        return budget;
+    public double getBudget() {
+        return amount;
     }
 
     /**
-     * @param budget the new budget you want to set
+     * @param amount the new budget you want to set
      */
-    public void setBudget(int budget) {
-        this.budget = budget;
+    public void setBudget(int amount) {
+        this.amount = amount;
     }
 }
