@@ -2,6 +2,7 @@ package com.SAS.Controllers.systemController;
 
 import com.SAS.User.User;
 import com.SAS.User.UserController;
+import com.SAS.User.UserType;
 import java.util.LinkedList;
 
 
@@ -70,7 +71,6 @@ public class systemController {
             return false;
         }
 
-        //TODO: check permissions
         switch (name) {
             case "Accounting":
                 if (!searchSystem(name)) {
@@ -132,7 +132,6 @@ public class systemController {
         return systems.toString();
     }
 
-    //TODO create user
     /**
      * The function receives userName and password from the user and creates admin user for the system
      *
@@ -166,7 +165,6 @@ public class systemController {
             return false;
         }
 
-        admin = userController.createUser(userName, password, fullName, UserType.SYSTEM_ADMIN, true);
         return true;
     }
 
