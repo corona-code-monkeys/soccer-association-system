@@ -75,4 +75,11 @@ public class TeamOwner extends Role {
     public String getRole() {
         return "TeamOwner";
     }
+
+    /**
+     * This function removes the team of the owner
+     */
+    public void removeTeam() {
+        this.team = null;
+    }
 }
