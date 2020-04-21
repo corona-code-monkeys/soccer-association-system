@@ -77,4 +77,27 @@ public class TeamManager extends Role {
     public String getRole() {
         return "TeamManager";
     }
+
+    /**
+     * This function sets the team owner that nominated the team manager
+     * @param nominatedBy
+     */
+    public void setNominatedBy(TeamOwner nominatedBy) {
+        this.nominatedBy = nominatedBy;
+    }
+
+    /**
+     * This function returns the team owner that nominated the team manager
+     * @return TeamOwner
+     */
+    public TeamOwner getNominatedBy() {
+        return nominatedBy;
+    }
+
+    /**
+     * This function removes the team
+     */
+    public void removeTeam(){
+        this.team = null;
+    }
 }

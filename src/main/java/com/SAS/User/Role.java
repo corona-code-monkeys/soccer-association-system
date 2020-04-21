@@ -4,12 +4,17 @@
 
 package com.SAS.User;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public abstract class Role extends User {
 
     protected String fullName;
+    private List<String> notifications;
 
     public Role(String fullName) {
         this.fullName = fullName;
+        notifications = new LinkedList<>();
     }
 
     /**
@@ -34,4 +39,15 @@ public abstract class Role extends User {
     public void setFullName (String fullName){
         this.fullName = fullName;
     }
+
+
+    /**
+     * The function receives a notification and adds it to the notification list
+     * @param message
+     */
+    public void getNotification(String message) {
+        notifications.add(message);
+        System.out.println(getRole() + " got the message: " + message);
+    }
+
 }
