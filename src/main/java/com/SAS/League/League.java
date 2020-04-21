@@ -33,6 +33,7 @@ public class League {
         this.seasonList = new HashSet<>();
         this.gamesList = new HashMap<Season, GamesArrangement>();
         this.tables = new HashMap<Season, Table>();
+        this.referees= new HashMap<>();
         this.pointsPolicy = new HashMap<Season, PointsPolicy>();
         this.gamesPolicy = new HashMap<Season, GamesPolicy>();
         this.rankPolicy = new HashMap<Season, LeagueRankPolicy>();
@@ -50,6 +51,7 @@ public class League {
      */
     public void addSeason(Season season) {
         this.seasonList.add(season);
+        this.referees.put(season,new HashSet<>());
     }
 
     /**
