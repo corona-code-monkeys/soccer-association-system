@@ -8,7 +8,7 @@ import java.util.List;
 public class GameEventLogger {
     private String gameID;
     private LocalDate gameDate;
-    private List<GameEvent> eventList;
+    public List<GameEvent> eventList;
 
     public GameEventLogger(String gameID, LocalDate gameDate) {
         this.gameID = gameID;
@@ -23,5 +23,14 @@ public class GameEventLogger {
     //when game end
     public void sort() {
         eventList.sort(Comparator.comparing(GameEvent::getGameMinute));
+    }
+
+    public boolean removeEvent(GameEvent event) {
+        if (eventList.contains(event)) {
+            eventList.remove(event);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
