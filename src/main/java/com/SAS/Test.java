@@ -3,7 +3,7 @@ package com.SAS;
 import com.SAS.team.Team;
 import com.SAS.transaction.Transaction;
 import com.SAS.crudoperations.TransactionCRUD;
-import com.SAS.transaction.transactionType;
+import com.SAS.transaction.TransactionType;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -17,7 +17,7 @@ public class Test {
         TransactionCRUD tadao = (TransactionCRUD)ctx.getBean("tadao");
         LocalDate date = LocalDate.now();
         Team team = new Team();
-        int status = tadao.saveTransaction(new Transaction(1000, transactionType.INCOME, date, team, "bought arnon"));
+        int status = tadao.saveTransaction(new Transaction(1000, TransactionType.INCOME, date, team, "bought arnon",null));
         System.out.println(status);
 
     /*int status=dao.updateEmployee(new Employee(102,"Sonoo",15000));
