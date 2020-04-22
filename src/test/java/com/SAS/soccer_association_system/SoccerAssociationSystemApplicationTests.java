@@ -9,7 +9,7 @@ class SoccerAssociationSystemApplicationTests {
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(SoccerAssociationSystemApplication.class, args);
+		//SpringApplication.run(SoccerAssociationSystemApplication.class, args);
 
 	}
 
