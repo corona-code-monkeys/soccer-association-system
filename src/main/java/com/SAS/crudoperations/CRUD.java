@@ -208,7 +208,7 @@ public class CRUD {
             String[] arr = new String[3];
             arr[0] = "The bigger goal difference";
             arr[1] = "Number of wins";
-            arr[2] = "Three points for win and one point for draw policy";
+            arr[2] = "Two rounds league";
             return arr;
         }
     }
@@ -254,7 +254,7 @@ public class CRUD {
         if (league == null || season == null) {
             return null;
         } else {
-            return new OneRoundLeague();
+            return new TwoRoundsLeague();
         }
     }
 
