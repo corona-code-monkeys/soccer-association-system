@@ -6,10 +6,9 @@ import org.junit.jupiter.api.Test;
 class GoalDifferenceTest {
 
     @Test
-    public String toString() {
+    void toStringTest() {
         GoalDifference difference= new GoalDifference();
-        Assertions.assertTrue(difference.toString().equals("The bigger goal difference"));
-        return null;
+        Assertions.assertTrue(difference.toString().equals("The bigger goal difference")); //need to solve it
     }
 
 

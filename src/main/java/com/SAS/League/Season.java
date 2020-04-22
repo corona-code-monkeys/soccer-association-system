@@ -96,6 +96,7 @@ public class Season {
      */
     public void addLeague(League league) {
         this.leaguesList.add(league);
+        this.referees.put(league,new HashSet<>());
     }
 
     /**
@@ -162,7 +163,8 @@ public class Season {
      * @param budget the budget of the input team for this season
      */
     public void addBudget(Team team, double budget) {
-        if (this.leaguesList.contains(team)&&!this.budgets.containsKey(team)) {
+        if (this.teamsList.contains(team)&&!this.budgets.containsKey(team)) {
+            teamsList.add(team);
             Budget budgetToAdd = new Budget(team, this, budget);
             this.budgets.put(team, budgetToAdd);
         }
@@ -228,7 +230,7 @@ public class Season {
      * @param ref the referee you want to add to the list of referees
      */
     public void addReferee(League league, Referee ref) {
-        if (this.leaguesList.contains(league)&&!this.getReferees().containsKey(league)) {
+        if (this.leaguesList.contains(league)) {
             this.referees.get(league).add(ref);
             league.addReferee(this, ref);
         }

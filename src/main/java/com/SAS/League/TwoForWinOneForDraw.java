@@ -6,14 +6,14 @@ package com.SAS.League;
 public class TwoForWinOneForDraw extends PointsPolicy {
 
     public TwoForWinOneForDraw() {
-        this.name = "Two point for a win and one point for draw";
+        this.name = "Two points for a win and one point for draw";
     }
 
     /**
      * constructor that init the object and gives him name
      */
     public TwoForWinOneForDraw(League league, Season season) {
-        this.name = "Two point for a win and one point for draw";
+        this();
         this.league = league;
         this.season = season;
     }

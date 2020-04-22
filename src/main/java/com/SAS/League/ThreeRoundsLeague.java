@@ -13,7 +13,7 @@ public class ThreeRoundsLeague extends GamesPolicy {
      * constructor that init the object and gives him name
      */
     public ThreeRoundsLeague(League league, Season season) {
-        this.name="Three rounds league";
+this();
         this.league=league;
         this.season=season;
     }
