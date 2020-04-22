@@ -1,6 +1,9 @@
 package com.SAS.LeagueManagement;
 
 import com.SAS.League.*;
+import com.SAS.User.Referee;
+import com.SAS.crudoperations.LeagueManagementCRUD;
+import com.SAS.team.Team;
 
 import java.util.LinkedList;
 
@@ -9,6 +12,7 @@ public class LeagueManagementController {
     private LinkedList<LeagueRankPolicy> rankPolicies;
     private LinkedList<PointsPolicy> pointsPolicies;
     private LinkedList<GamesPolicy> gamesPolicies;
+    private LeagueManagementCRUD crud = new LeagueManagementCRUD();
 
     /**
      * Constructor
@@ -50,9 +54,39 @@ public class LeagueManagementController {
         for (LeagueRankPolicy policy : rankPolicies) {
             policies.append(counter + ". " + policy.getName() + "\n");
         }
+    public League initLeague(String name) {
+        League league = null;
+        if (crud.isLeagueExist(name) == false) {
+             league = new League(name);
+            crud.addLeague(league);
+        }
+        return league;
+    }
 
         policies.setLength(policies.length() - 1);
         return policies.toString();
+    public void addSeasonToALeague(Season season, League league) {
+        season.addLeague(league);
+        league.addSeason(season);
+    }
+
+    public void assignAndRemoveRefereesFromLeague(League league, Referee ref) {
+        if (crud.isLeagueExist(league.getName())) {
+            if (crud.isRefExist(ref.getUser().getUserID()) == false) {
+                crud.removeRefFromLeague(ref);
+            }
+            else{
+                crud.addRefToLeague(ref);
+            }
+        }
+    }
+    public boolean assignRefereesToLeagueInSpecificSeason(int league,int season, Referee ref) {
+        if(crud.isRefExistInLeague(ref.getUserID())){
+            if(crud.addRefereeToLeagueInSeason(league, season, ref.getUserID(),ref.getLevel())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

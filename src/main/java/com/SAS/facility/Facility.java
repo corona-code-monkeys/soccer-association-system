@@ -4,6 +4,10 @@ import com.SAS.game.Game;
 import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamAsset;
 
+import com.SAS.game.Game;
+import com.SAS.team.Team;
+
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -50,6 +54,7 @@ public class Facility implements TeamAsset{
     }
 
     /**
+<<<<<<< HEAD
      * This function returns the name of the stadium
      * @return String
      */
@@ -65,6 +70,8 @@ public class Facility implements TeamAsset{
     }
 
     /**
+=======
+>>>>>>> SAS-65 #initiate jdbc in the system
      * The function returns the location of the stadium
      * @return
      */
@@ -168,4 +175,5 @@ public class Facility implements TeamAsset{
                 return null;
         }
     }
+
 }
