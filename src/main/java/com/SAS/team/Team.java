@@ -7,10 +7,7 @@ import com.SAS.User.Player;
 import com.SAS.User.TeamManager;
 import com.SAS.User.TeamOwner;
 import com.SAS.facility.Facility;
-<<<<<<< HEAD
 import com.SAS.facility.facilityType;
-=======
->>>>>>> SAS-65 #initiate jdbc in the system
 import com.SAS.transaction.Transaction;
 import com.SAS.transaction.TransactionType;
 
@@ -34,11 +31,9 @@ public class Team {
     private HashMap<Integer, Double> quartersBalance;
     private List<Transaction> transactionList;
     private Facility homeStadium;
-<<<<<<< HEAD
     private Coach coach;
     private boolean active;
-=======
->>>>>>> SAS-65 #initiate jdbc in the system
+
 
     /**
      * Empty constructor
@@ -55,28 +50,25 @@ public class Team {
 
     /**
      * Params constructor
+     *
      * @param name
      * @param players
      * @param owner
      * @param manager
      */
-<<<<<<< HEAD
-    public Team(String name, List<Player> players, TeamOwner owner, TeamManager manager, List<Facility> teamFacilities) {
-=======
+
+
     public Team(String name, Facility homeStadium, List<Player> players, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets, List<Facility> teamFacilities, HashMap<String, Double> quartersBalance) {
->>>>>>> SAS-65 #initiate jdbc in the system
+
         this.name = name;
         this.players = players;
         owners = new LinkedList<>();
         this.owners.add(owner);
         this.manager = manager;
-<<<<<<< HEAD
         this.transactionList = new LinkedList<>();
         budgets = new HashMap<>();
-=======
         this.transactionList = transactionList;
         this.budgets = budgets;
->>>>>>> SAS-65 #initiate jdbc in the system
         this.teamFacilities = teamFacilities;
         this.coach = coach;
         active = true;
@@ -90,7 +82,7 @@ public class Team {
      * The function initialize the quarters map with the keys and zero balance
      */
     private void initializeFinanceYear() {
-        this.quartersBalance  = new HashMap<Integer, Double>() {{
+        this.quartersBalance = new HashMap<Integer, Double>() {{
             put(1, 0.0);
             put(2, 0.0);
             put(3, 0.0);
@@ -100,6 +92,7 @@ public class Team {
 
     /**
      * The function adds a new player to the team
+     *
      * @param newPlayer
      * @return
      */
@@ -115,6 +108,7 @@ public class Team {
 
     /**
      * The function add a transaction that made by the team owner and updates the team budget according to a new transaction
+     *
      * @param newTransaction
      * @return true if the income is bigger then expense in the quarter, else return false
      */
@@ -129,10 +123,10 @@ public class Team {
         //get the year quarter: 1/2/3/4
         quarter = transactionDate.get(IsoFields.QUARTER_OF_YEAR);
         //check if transaction amount is positive or negative
-        transactionAmount = (newTransaction.getType() == TransactionType.INCOME) ? newTransaction.getAmount(): -newTransaction.getAmount();
+        transactionAmount = (newTransaction.getType() == TransactionType.INCOME) ? newTransaction.getAmount() : -newTransaction.getAmount();
         quarterBalance = quartersBalance.get(quarter);
 
-        if (quarterBalance + transactionAmount >= 0){
+        if (quarterBalance + transactionAmount >= 0) {
             transactionList.add(newTransaction);
             quartersBalance.put(quarter, quarterBalance + transactionAmount);
             return true;
@@ -147,6 +141,7 @@ public class Team {
 
     /**
      * The function returns the name of the team
+     *
      * @return
      */
     public String getName() {
@@ -155,6 +150,7 @@ public class Team {
 
     /**
      * The function sets the name of the team
+     *
      * @param name
      */
     public void setName(String name) {
@@ -163,40 +159,40 @@ public class Team {
 
     /**
      * The function return the home stadium of the team
+     *
      * @return
      */
     public Facility getHomeStadium() {
-<<<<<<< HEAD
-        for(Facility facility: teamFacilities){
-            if (facility.getFacilityType() == facilityType.STADIUM){
+
+        for (Facility facility : teamFacilities) {
+            if (facility.getFacilityType() == facilityType.STADIUM) {
                 return facility;
             }
         }
-
-        return null;
-=======
         return homeStadium;
->>>>>>> SAS-65 #initiate jdbc in the system
     }
 
     /**
      * The function adds new facility to team facilities list
+     *
      * @param newFacility
      */
-<<<<<<< HEAD
+
+
     public void addFacility(Facility newFacility) {
         if (newFacility != null) {
             teamFacilities.add(newFacility);
         }
-=======
+    }
+
     public void setHomeStadium(Facility homeStadium) {
         this.homeStadium = homeStadium;
->>>>>>> SAS-65 #initiate jdbc in the system
     }
 
 
     /**
      * The function returns a list of players of the team
+     *
      * @return
      */
     public List<Player> getPlayers() {
@@ -205,6 +201,7 @@ public class Team {
 
     /**
      * The function sets a list of players of the team
+     *
      * @param players
      */
     public void setPlayers(List<Player> players) {
@@ -213,31 +210,24 @@ public class Team {
 
     /**
      * The function return the manager of the team
+     *
      * @return
      */
     public TeamManager getManager() {
         return manager;
     }
 
-    /**
-     * The function sets the new manager to the team
-     * @param newManager
-     */
-<<<<<<< HEAD
-    public void setTeamManager(TeamManager newManager) {
-        this.manager = newManager;
-    }
 
-
-=======
     public boolean setTeamManager(TeamManager newManager) {
         this.manager = newManager;
         return true;
 
     }
->>>>>>> SAS-65 #initiate jdbc in the system
+
+
     /**
      * The function returns the team owners
+     *
      * @return
      */
     public List<TeamOwner> getOwners() {
@@ -246,6 +236,7 @@ public class Team {
 
     /**
      * The function return a list of transactions made by the team
+     *
      * @return
      */
     public List<Transaction> getTransactionList() {
@@ -254,6 +245,7 @@ public class Team {
 
     /**
      * The function sets the transaction list
+     *
      * @param transactionList
      */
     public void setTransactionList(List<Transaction> transactionList) {
@@ -262,6 +254,7 @@ public class Team {
 
     /**
      * The function adds another team owner
+     *
      * @param teamOwner
      */
     public void addTeamOwner(TeamOwner teamOwner) {
@@ -270,6 +263,7 @@ public class Team {
 
     /**
      * The function removes a team owner from the owners of the team
+     *
      * @param teamOwner
      */
     public void removeTeamOwner(TeamOwner teamOwner) {
@@ -281,6 +275,7 @@ public class Team {
 
     /**
      * This function returns the team's coach
+     *
      * @return coach
      */
     public Coach getCoach() {
@@ -289,6 +284,7 @@ public class Team {
 
     /**
      * This function sets the team's coach
+     *
      * @param coach
      */
     public void setCoach(Coach coach) {
@@ -297,6 +293,7 @@ public class Team {
 
     /**
      * This function removes the player from the team players
+     *
      * @param player
      */
     public void removePlayer(Player player) {
@@ -305,16 +302,18 @@ public class Team {
 
     /**
      * This function removes the coach from being the coach of the team
+     *
      * @param coach
      */
-    public void removeCoach (Coach coach){
-        if (this.coach == coach){
-            this.coach=null;
+    public void removeCoach(Coach coach) {
+        if (this.coach == coach) {
+            this.coach = null;
         }
     }
 
     /**
      * This function removes the facility from the facilities list
+     *
      * @param facility
      */
     public void removeFacility(Facility facility) {
@@ -322,8 +321,8 @@ public class Team {
     }
 
 
-    public void removeTeamManager(TeamManager teamManager){
-            this.manager = null;
+    public void removeTeamManager(TeamManager teamManager) {
+        this.manager = null;
     }
 
     /**
@@ -342,6 +341,7 @@ public class Team {
 
     /**
      * The function returns true if the team is active, otherwise returns false
+     *
      * @return treu or false
      */
     public boolean isActive() {
