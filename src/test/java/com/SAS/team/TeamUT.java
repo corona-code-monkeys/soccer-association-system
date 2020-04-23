@@ -1,7 +1,5 @@
 package com.SAS.team;
 
-import com.SAS.User.Player;
-import com.SAS.User.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,67 +15,40 @@ class TeamUT {
     }
 
     @Test
-    void addValidPlayerToTeam() {
+    void setValidNameTest() {
+        String name = "team";
+        team.setName(name);
+        assertEquals(name, team.getName());
     }
 
     @Test
-    void addInvalidPlayerToTeam() {
+    void setNullNameTest() {
+        String name = "team";
+        team.setName(name);
+        String nullName = null;
+        team.setName(nullName);
+        assertEquals(name, team.getName());
     }
 
     @Test
-    void addSeason() {
-
-    }
-
-    @Test
-    void addTransactionToTeam() {
-    }
-
-    @Test
-    void setName() {
-    }
-
-    @Test
-    void addFacility() {
-    }
-
-    @Test
-    void setTeamManager() {
-    }
-
-    @Test
-    void addTeamOwner() {
-    }
-
-    @Test
-    void setCoach() {
-    }
-
-    @Test
-    void removePlayer() {
-    }
-
-    @Test
-    void removeCoach() {
-    }
-
-    @Test
-    void removeFacility() {
-    }
-
-    @Test
-    void removeTeamManager() {
+    void setZeroLengthNameTest() {
+        String name = "team";
+        team.setName(name);
+        String noName = "";
+        team.setName(noName);
+        assertEquals(name, team.getName());
     }
 
     @Test
     void inactivateTeam() {
+        team.inactivateTeam();
+        assertFalse(team.isActive());
     }
 
     @Test
     void reactivateTeam() {
-    }
-
-    @Test
-    void isActive() {
+        team.inactivateTeam();
+        team.reactivateTeam();
+        assertTrue(team.isActive());
     }
 }
