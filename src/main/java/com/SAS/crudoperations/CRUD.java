@@ -194,6 +194,18 @@ public class CRUD {
         return true;
     }
 
+
+    /**
+     * too hard to moc, if will be needed, will find a way
+     *
+     * @param league
+     * @param season
+     * @return
+     */
+    public static boolean isSeasonPartOfLeague(League league, Season season) {
+        return true;
+    }
+
     /**
      * send null for wrong input, not null for real input (will return list of three policies, as mentioned bellow)
      *
@@ -297,13 +309,30 @@ public class CRUD {
      * @param referees
      * @return
      */
-    public static boolean addRefereesToLeague(League league, Season season, List<Referee> referees) {
+    public static boolean addRefereesToLeagueInSeason(League league, Season season, List<Referee> referees) {
         if (league == null || season == null || referees == null) {
             return false;
         } else {
             return true;
         }
     }
+
+
+    /**
+     * add or remove referees from a league
+     *
+     * @param league
+     * @param referees
+     * @return
+     */
+    public static boolean addAndRemoveRefereesFromLeague(League league, List<Referee> referees) {
+        if (league != null && referees != null) {
+            return true;
+        }
+        return false;
+    }
+
+
 
     /**
      * send null for wrong input, not null for real input (u'll get a list of three referees)
@@ -559,5 +588,19 @@ public class CRUD {
      */
     public static boolean init(String path) {
         return path != null && path.equals("good path");
+    }
+
+    public boolean isLeagueExist(String name) {
+        if (name == null || name == ""){
+            return true;
+    }
+        return false;
+    }
+
+    public boolean addLeague(League league) {
+        if(!isLeagueExist(league.getName())){
+            return true;
+        }
+        return false;
     }
 }

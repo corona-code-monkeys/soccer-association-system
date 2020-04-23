@@ -2,17 +2,19 @@ package com.SAS.LeagueManagement;
 
 import com.SAS.League.*;
 import com.SAS.User.Referee;
+import com.SAS.crudoperations.CRUD;
 import com.SAS.crudoperations.LeagueManagementCRUD;
 import com.SAS.team.Team;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class LeagueManagementController {
 
     private LinkedList<LeagueRankPolicy> rankPolicies;
     private LinkedList<PointsPolicy> pointsPolicies;
     private LinkedList<GamesPolicy> gamesPolicies;
-    private LeagueManagementCRUD crud = new LeagueManagementCRUD();
+    private CRUD crud = new CRUD();
 
     /**
      * Constructor
@@ -59,12 +61,14 @@ public class LeagueManagementController {
     }
 
     public League initLeague(String name) {
-        League league = null;
+        League league;
         if (crud.isLeagueExist(name) == false) {
             league = new League(name);
-            crud.addLeague(league);
+            if(crud.addLeague(league)){
+                return league;
+            }
         }
-        return league;
+        return null;
     }
 
     public void addSeasonToALeague(Season season, League league) {
@@ -72,22 +76,16 @@ public class LeagueManagementController {
         league.addSeason(season);
     }
 
-    public void assignAndRemoveRefereesFromLeague(League league, Referee ref) {
+    public void assignAndRemoveRefereesFromLeague(League league, List<Referee> referees) {
         if (crud.isLeagueExist(league.getName())) {
-            if (crud.isRefExist(ref.getUser().getUserID()) == false) {
-                crud.removeRefFromLeague(ref);
-            } else {
-                crud.addRefToLeague(ref);
-            }
+            crud.addAndRemoveRefereesFromLeague(league,referees);
         }
     }
 
-    public boolean assignRefereesToLeagueInSpecificSeason(int league, int season, Referee ref) {
-        if (crud.isRefExistInLeague(ref.getUserID())) {
-            if (crud.addRefereeToLeagueInSeason(league, season, ref.getUserID(), ref.getLevel())) {
+    public boolean assignRefereesToLeagueInSpecificSeason(League league, Season season, List<Referee> referees) {
+            if (crud.addRefereesToLeagueInSeason(league, season, referees)) {
                 return true;
             }
-        }
         return false;
     }
 
