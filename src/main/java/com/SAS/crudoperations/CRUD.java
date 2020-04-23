@@ -189,7 +189,22 @@ public class CRUD {
      * @param gamesPolicy
      * @return
      */
-    public static boolean addSSeasonToLeauge(League league, Season season, LeagueRankPolicy leagueRankPolicy,
+    public static boolean addSeasonToLeague(League league, Season season, LeagueRankPolicy leagueRankPolicy,
+                                             PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
+        return true;
+    }
+
+    /**
+     * to hard to moc, if will be needed, will find a way
+     *
+     * @param league
+     * @param season
+     * @param leagueRankPolicy
+     * @param pointsPolicy
+     * @param gamesPolicy
+     * @return
+     */
+    public static boolean addLeagueToSeason(Season season,League league, LeagueRankPolicy leagueRankPolicy,
                                              PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
         return true;
     }
@@ -590,15 +605,34 @@ public class CRUD {
         return path != null && path.equals("good path");
     }
 
-    public boolean isLeagueExist(String name) {
-        if (name == null || name == ""){
+    /**
+     * return false if the league is unknown and true if its known
+     * @param league
+     * @return
+     */
+    public boolean isLeagueExist(League league) {
+        if (league == null){
             return true;
     }
         return false;
     }
 
+    /**
+     *opposite to isLeagueExist
+     * @param league
+     * @return
+     */
     public boolean addLeague(League league) {
-        if(!isLeagueExist(league.getName())){
+        return(!isLeagueExist(league));
+    }
+
+    /**
+     * return false if the league is unknown and true if its known
+     * @param season
+     * @return
+     */
+    public boolean isSeasonExist(Season season) {
+        if (season == null){
             return true;
         }
         return false;

@@ -61,10 +61,9 @@ public class LeagueManagementController {
     }
 
     public League initLeague(String name) {
-        League league;
-        if (crud.isLeagueExist(name) == false) {
-            league = new League(name);
-            if(crud.addLeague(league)){
+        League league= new League(name);
+        if (!crud.isLeagueExist(league)) {
+            if (crud.addLeague(league)) {
                 return league;
             }
         }
@@ -72,20 +71,24 @@ public class LeagueManagementController {
     }
 
     public void addSeasonToALeague(Season season, League league) {
-        season.addLeague(league);
-        league.addSeason(season);
+        if (crud.isLeagueExist(league) && crud.isSeasonExist(season)) {
+            crud.addLeagueToSeason(season, league, null, null, null);
+            crud.addSeasonToLeague(league, season, null, null, null);
+        }
     }
 
     public void assignAndRemoveRefereesFromLeague(League league, List<Referee> referees) {
-        if (crud.isLeagueExist(league.getName())) {
-            crud.addAndRemoveRefereesFromLeague(league,referees);
+        if (crud.isLeagueExist(league)) {
+            crud.addAndRemoveRefereesFromLeague(league, referees);
         }
     }
 
     public boolean assignRefereesToLeagueInSpecificSeason(League league, Season season, List<Referee> referees) {
+        if (crud.isLeagueExist(league) && crud.isSeasonExist(season)) {
             if (crud.addRefereesToLeagueInSeason(league, season, referees)) {
                 return true;
             }
+        }
         return false;
     }
 
