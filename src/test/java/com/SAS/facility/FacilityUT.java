@@ -1,6 +1,8 @@
 package com.SAS.facility;
 
 import com.SAS.game.Game;
+import com.SAS.team.Team;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +20,28 @@ class FacilityUT {
         facility = new Facility();
         game = new Game();
     }
+
+    @Test
+    void setNameTest() {
+        String name = "Camp Nou";
+        facility.setName("Camp Nou");
+        assertEquals(name, facility.getName());
+    }
+
+    @Test
+    void setLocationTest() {
+        String location = "Barcelona";
+        facility.setLocation("Barcelona");
+        assertEquals(location, facility.getLocation());
+    }
+
+    @Test
+    void setTeamTest() {
+        Team team = new Team();
+        facility.setTeam(team);
+        assertEquals(team, facility.getTeam());
+    }
+
 
     @Test
     void addValidGameToFacilityBooleanCheck() {
@@ -101,4 +125,5 @@ class FacilityUT {
         boolean result = facility.editDetails(details);
         assertFalse(result);
     }
+
 }
