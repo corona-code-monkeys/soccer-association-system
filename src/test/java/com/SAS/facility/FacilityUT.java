@@ -22,23 +22,64 @@ class FacilityUT {
     }
 
     @Test
-    void setNameTest() {
+    void setValidNameTest() {
         String name = "Camp Nou";
         facility.setName("Camp Nou");
         assertEquals(name, facility.getName());
     }
 
     @Test
-    void setLocationTest() {
+    void setValidLocationTest() {
         String location = "Barcelona";
         facility.setLocation("Barcelona");
         assertEquals(location, facility.getLocation());
     }
 
     @Test
-    void setTeamTest() {
+    void setValidTeamTest() {
         Team team = new Team();
         facility.setTeam(team);
+        assertEquals(team, facility.getTeam());
+    }
+
+    @Test
+    void setNullNameTest() {
+        facility.setName("Camp Nou");
+        String name = null;
+        facility.setName(name);
+        assertEquals("Camp Nou", facility.getName());
+    }
+
+    @Test
+    void setZeroLenthNameTest() {
+        facility.setName("Camp Nou");
+        String name = "";
+        facility.setName(name);
+        assertEquals("Camp Nou", facility.getName());
+    }
+
+    @Test
+    void setNullLocationTest() {
+        facility.setLocation("Barcelona");
+        String location = null;
+        facility.setLocation(location);
+        assertEquals("Barcelona", facility.getLocation());
+    }
+
+    @Test
+    void setZeroLengthLocationTest() {
+        facility.setLocation("Barcelona");
+        String location = "";
+        facility.setLocation(location);
+        assertEquals("Barcelona", facility.getLocation());
+    }
+
+    @Test
+    void setNullTeamTest() {
+        Team team = new Team();
+        facility.setTeam(team);
+        Team nullTeam = null;
+        facility.setTeam(nullTeam);
         assertEquals(team, facility.getTeam());
     }
 
