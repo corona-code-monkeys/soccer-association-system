@@ -2,10 +2,7 @@ package com.SAS.team;
 
 import com.SAS.League.Budget;
 import com.SAS.League.Season;
-import com.SAS.User.Coach;
-import com.SAS.User.Player;
-import com.SAS.User.TeamManager;
-import com.SAS.User.TeamOwner;
+import com.SAS.User.*;
 import com.SAS.facility.Facility;
 import com.SAS.facility.facilityType;
 import com.SAS.transaction.Transaction;
@@ -33,6 +30,7 @@ public class Team {
     private List<Transaction> transactionList;
     private Coach coach;
     private boolean active;
+    private PersonalPage personalPage;
 
 
     /**
@@ -65,6 +63,7 @@ public class Team {
         this.teamFacilities = new LinkedList<>();
         this.active = true;
         initializeFinanceYear();
+        personalPage = new PersonalPage("Team name: " + name + ", Team owner: " + owner.getFullName());
     }
 
     /**
@@ -345,5 +344,35 @@ public class Team {
      */
     public boolean isActive() {
         return active;
+    }
+
+    /**
+     * This function sets the personal page of the team.
+     * @param personalPage
+     * @return true if was set, otherwise false
+     */
+    public boolean setPersonalPage(PersonalPage personalPage) {
+        if (personalPage != null){
+            this.personalPage = personalPage;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This function returns the personal page of the team
+     * @return PersonalPage
+     */
+    public PersonalPage getPersonalPage() {
+        return this.personalPage;
+    }
+
+
+    /**
+     * This function returns the team facilities
+     * @return
+     */
+    public List<Facility> getFacilities() {
+        return this.teamFacilities;
     }
 }
