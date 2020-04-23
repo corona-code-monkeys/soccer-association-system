@@ -66,7 +66,9 @@ public class Facility implements TeamAsset{
      * This function sets the name of the stadium
      */
     public void setName(String name) {
-        this.name = name;
+        if(name != null && name.length() > 0) {
+            this.name = name;
+        }
     }
 
     /**
@@ -84,7 +86,9 @@ public class Facility implements TeamAsset{
      * @param location
      */
     public void setLocation(String location) {
-        this.location = location;
+        if(location != null && location.length() > 0) {
+            this.location = location;
+        }
     }
 
     /**
@@ -116,7 +120,9 @@ public class Facility implements TeamAsset{
      * @param homeTeam
      */
     public void setTeam(Team homeTeam) {
-        this.homeTeam = homeTeam;
+        if(homeTeam != null) {
+            this.homeTeam = homeTeam;
+        }
     }
 
     public facilityType getFacilityType() {
@@ -147,6 +153,16 @@ public class Facility implements TeamAsset{
      */
     @Override
     public boolean editDetails(List<String> details) {
+        if(details == null){
+            return false;
+        }
+
+        for(String value: details){
+            if(value == null || value.length() == 0){
+                return false;
+            }
+        }
+
         //first is name, second is location, third is type
         facilityType ft = convertStringToFacilityType(details.get(2));
         if (ft == null)
