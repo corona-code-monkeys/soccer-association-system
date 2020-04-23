@@ -10,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.time.LocalDate;
 
 public class Test {
-
+/*
     public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 
@@ -29,5 +29,7 @@ public class Test {
     int status=dao.deleteEmployee(e);
     System.out.println(status);*/
 
-    }
+    //}
+
+
 }

@@ -42,9 +42,15 @@ public class Registered extends User {
     /**
      * The function sets the password of the user
      * @param password
+     * @return true if success, otherwise false
      */
-    public void setPassword(String password) {
-        this.password = password;
+    public boolean setPassword(String password) {
+        if (password != null && !password.trim().isEmpty()) {
+            this.password = password;
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -52,7 +58,9 @@ public class Registered extends User {
      * @param fullName - String
      */
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        if (fullName != null && !fullName.trim().isEmpty()) {
+            this.fullName = fullName;
+        }
     }
 
 }

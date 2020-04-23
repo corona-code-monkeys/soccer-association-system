@@ -44,7 +44,9 @@ public class TeamOwner extends Role {
      * @param team
      */
     public void setTeam(Team team) {
-        this.team = team;
+        if (team != null) {
+            this.team = team;
+        }
     }
 
     /**
@@ -60,7 +62,9 @@ public class TeamOwner extends Role {
      * @param nominatedBy
      */
     public void setNominatedBy(TeamOwner nominatedBy) {
-        this.nominatedBy = nominatedBy;
+        if (nominatedBy != null) {
+            this.nominatedBy = nominatedBy;
+        }
     }
 
     /**
