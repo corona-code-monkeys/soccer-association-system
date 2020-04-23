@@ -45,9 +45,10 @@ public class Budget {
     }
 
     /**
-     * @param budget the new budget you want to set
+     * The function receives amount to add to budget
+     * @param amount the new budget you want to set
      */
-    public void setBudget(int budget) {
-        this.budget = budget;
+    public void addToBudget(double amount) {
+        this.budget += amount;
     }
 }

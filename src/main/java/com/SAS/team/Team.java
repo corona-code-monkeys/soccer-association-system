@@ -16,6 +16,7 @@ import java.time.temporal.IsoFields;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The class represent a team in the football association system
@@ -30,7 +31,6 @@ public class Team {
     private HashMap<Season, Budget> budgets;
     private HashMap<Integer, Double> quartersBalance;
     private List<Transaction> transactionList;
-    private Facility homeStadium;
     private Coach coach;
     private boolean active;
 
@@ -39,12 +39,12 @@ public class Team {
      * Empty constructor
      */
     public Team() {
-        players = new LinkedList<Player>();
-        transactionList = new LinkedList<Transaction>();
-        budgets = new HashMap<Season, Budget>();
-        teamFacilities = new LinkedList<Facility>();
-        owners = new LinkedList<>();
-        active = true;
+        this.players = new LinkedList<>();
+        this.transactionList = new LinkedList<>();
+        this.budgets = new HashMap<>();
+        this.teamFacilities = new LinkedList<>();
+        this.owners = new LinkedList<>();
+        this.active = true;
         initializeFinanceYear();
     }
 
@@ -52,31 +52,20 @@ public class Team {
      * Params constructor
      *
      * @param name
-     * @param players
      * @param owner
-     * @param manager
      */
-
-
-    public Team(String name, Facility homeStadium, List<Player> players, TeamOwner owner, TeamManager manager, List<Transaction> transactionList, HashMap<Season, Budget> budgets, List<Facility> teamFacilities, HashMap<String, Double> quartersBalance) {
+    public Team(String name, TeamOwner owner) {
 
         this.name = name;
-        this.players = players;
-        owners = new LinkedList<>();
+        this.players = new LinkedList<>();
+        this.owners = new LinkedList<>();
         this.owners.add(owner);
-        this.manager = manager;
         this.transactionList = new LinkedList<>();
-        budgets = new HashMap<>();
-        this.transactionList = transactionList;
-        this.budgets = budgets;
-        this.teamFacilities = teamFacilities;
-        this.coach = coach;
-        active = true;
+        this.budgets = new HashMap<>();
+        this.teamFacilities = new LinkedList<>();
+        this.active = true;
         initializeFinanceYear();
-
     }
-
-    //TODO: set the starting budget for the season as sum of income in Q1
 
     /**
      * The function initialize the quarters map with the keys and zero balance
@@ -105,6 +94,20 @@ public class Team {
         return true;
     }
 
+    /**
+     * The function adds new season to team
+     * @param season
+     * @return
+     */
+    public boolean addSeason(Season season) {
+        if (!budgets.containsKey(season)) {
+            budgets.put(season, new Budget(this, season, 0.0));
+            return true;
+        }
+
+        return false;
+    }
+
 
     /**
      * The function add a transaction that made by the team owner and updates the team budget according to a new transaction
@@ -129,6 +132,7 @@ public class Team {
         if (quarterBalance + transactionAmount >= 0) {
             transactionList.add(newTransaction);
             quartersBalance.put(quarter, quarterBalance + transactionAmount);
+            addTransactionToBudget(transactionDate, transactionAmount);
             return true;
         }
 
@@ -137,7 +141,19 @@ public class Team {
 
     }
 
-    //TODO: remove transaction from team
+    /**
+     *The function receives the transaction date and the amount and add it to the season budget
+     * @param transactionDate
+     * @param transactionAmount
+     */
+    private void addTransactionToBudget(LocalDate transactionDate, double transactionAmount) {
+        int currYear = transactionDate.getYear();
+        for(Map.Entry<Season, Budget> pair : budgets.entrySet()){
+            if (pair.getKey().getYear() == currYear){
+                pair.getValue().addToBudget(transactionAmount);
+            }
+        }
+    }
 
     /**
      * The function returns the name of the team
@@ -169,7 +185,7 @@ public class Team {
                 return facility;
             }
         }
-        return homeStadium;
+        return null;
     }
 
     /**
@@ -185,10 +201,6 @@ public class Team {
         }
     }
 
-    public void setHomeStadium(Facility homeStadium) {
-        this.homeStadium = homeStadium;
-    }
-
 
     /**
      * The function returns a list of players of the team
@@ -199,14 +211,6 @@ public class Team {
         return players;
     }
 
-    /**
-     * The function sets a list of players of the team
-     *
-     * @param players
-     */
-    public void setPlayers(List<Player> players) {
-        this.players = players;
-    }
 
     /**
      * The function return the manager of the team
@@ -218,10 +222,15 @@ public class Team {
     }
 
 
+    /**
+     * The sets the team manager
+     *
+     * @param newManager
+     * @return
+     */
     public boolean setTeamManager(TeamManager newManager) {
         this.manager = newManager;
         return true;
-
     }
 
 
@@ -243,14 +252,6 @@ public class Team {
         return transactionList;
     }
 
-    /**
-     * The function sets the transaction list
-     *
-     * @param transactionList
-     */
-    public void setTransactionList(List<Transaction> transactionList) {
-        this.transactionList = transactionList;
-    }
 
     /**
      * The function adds another team owner
@@ -270,8 +271,6 @@ public class Team {
         this.owners.remove(teamOwner);
     }
 
-    public void addBudget(Season season, Budget budget) {
-    }
 
     /**
      * This function returns the team's coach
