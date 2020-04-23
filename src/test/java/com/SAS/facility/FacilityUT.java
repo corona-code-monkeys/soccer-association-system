@@ -1,8 +1,5 @@
 package com.SAS.facility;
 
-import com.SAS.game.Game;
-import com.SAS.team.Team;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,12 +10,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class FacilityUT {
 
     private Facility facility;
-    private Game game;
 
     @BeforeEach
     void setUp() {
         facility = new Facility();
-        game = new Game();
     }
 
     @Test
@@ -26,20 +21,6 @@ class FacilityUT {
         String name = "Camp Nou";
         facility.setName("Camp Nou");
         assertEquals(name, facility.getName());
-    }
-
-    @Test
-    void setValidLocationTest() {
-        String location = "Barcelona";
-        facility.setLocation("Barcelona");
-        assertEquals(location, facility.getLocation());
-    }
-
-    @Test
-    void setValidTeamTest() {
-        Team team = new Team();
-        facility.setTeam(team);
-        assertEquals(team, facility.getTeam());
     }
 
     @Test
@@ -59,6 +40,13 @@ class FacilityUT {
     }
 
     @Test
+    void setValidLocationTest() {
+        String location = "Barcelona";
+        facility.setLocation("Barcelona");
+        assertEquals(location, facility.getLocation());
+    }
+
+    @Test
     void setNullLocationTest() {
         facility.setLocation("Barcelona");
         String location = null;
@@ -72,51 +60,6 @@ class FacilityUT {
         String location = "";
         facility.setLocation(location);
         assertEquals("Barcelona", facility.getLocation());
-    }
-
-    @Test
-    void setNullTeamTest() {
-        Team team = new Team();
-        facility.setTeam(team);
-        Team nullTeam = null;
-        facility.setTeam(nullTeam);
-        assertEquals(team, facility.getTeam());
-    }
-
-
-    @Test
-    void addValidGameToFacilityBooleanCheck() {
-        facility.addGame(game);
-        boolean result = facility.addGame(game);
-        assertTrue(result);
-    }
-
-    @Test
-    void addValidGameToFacilityListCheck() {
-        facility.addGame(game);
-        int result = facility.getGamesList().size();
-        assertEquals(1, result);
-    }
-
-    @Test
-    void addInvalidGameToFacilityBooleanCheck() {
-        game = null;
-        facility.addGame(game);
-        boolean result = facility.addGame(game);
-        assertFalse(result);
-    }
-
-    @Test
-    void addInvalidGameToFacilityListCheck() {
-        game = null;
-        facility.addGame(game);
-        int result = facility.getGamesList().size();
-        assertEquals(0, result);
-    }
-
-    @Test
-    void removeAssetFromTeamBooleanCheck() {
-        facility.addGame(game);
     }
 
     @Test
@@ -166,5 +109,4 @@ class FacilityUT {
         boolean result = facility.editDetails(details);
         assertFalse(result);
     }
-
 }
