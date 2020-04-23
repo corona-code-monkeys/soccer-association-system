@@ -169,7 +169,9 @@ public class Team {
      * @param name
      */
     public void setName(String name) {
-        this.name = name;
+        if(name != null && name.length() > 0) {
+            this.name = name;
+        }
     }
 
     /**
