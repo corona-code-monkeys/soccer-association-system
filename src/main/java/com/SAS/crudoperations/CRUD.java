@@ -27,7 +27,7 @@ public class CRUD {
      * @param type
      * @return
      */
-    public User createUser(String userName, String password, String fullName, UserType type) {
+    public static User createUser(String userName, String password, String fullName, UserType type) {
         if (userName == null || password == null || fullName == null) {
             return null;
         } else if (userName.equals("wrong")) {
@@ -47,7 +47,7 @@ public class CRUD {
      * @param team
      * @return
      */
-    public boolean setPlayer(int userID, FieldRole fieldRole, LocalDate dateOfBirth, Team team) {
+    public static boolean setPlayer(int userID, FieldRole fieldRole, LocalDate dateOfBirth, Team team) {
         return userID >= 0;
     }
 
@@ -60,7 +60,7 @@ public class CRUD {
      * @param team
      * @return
      */
-    public boolean setCoach(int userID, int level, FieldRole fieldRole, Team team) {
+    public static boolean setCoach(int userID, int level, FieldRole fieldRole, Team team) {
         return userID >= 0;
     }
 
@@ -71,7 +71,7 @@ public class CRUD {
      * @param level
      * @return
      */
-    public boolean setReferee(int userID, int level) {
+    public static boolean setReferee(int userID, int level) {
         return userID >= 0;
     }
 
@@ -83,7 +83,7 @@ public class CRUD {
      * @param userIDNominatedBy
      * @return
      */
-    public boolean setTeamOwner(int userID, Team team, int userIDNominatedBy) {
+    public static boolean setTeamOwner(int userID, Team team, int userIDNominatedBy) {
         return userID >= 0;
     }
 
@@ -94,7 +94,7 @@ public class CRUD {
      * @param team
      * @return
      */
-    public boolean setTeamManager(int userID, Team team) {
+    public static boolean setTeamManager(int userID, Team team) {
         return userID >= 0;
     }
 
@@ -105,7 +105,7 @@ public class CRUD {
      * @param type
      * @return
      */
-    public boolean verifyInDB(String fullName, UserType type) {
+    public static boolean verifyInDB(String fullName, UserType type) {
         if (fullName == null || fullName.equals("wrong")) {
             return false;
         } else {
@@ -120,7 +120,7 @@ public class CRUD {
      * @param type
      * @return
      */
-    public boolean addRole(int userID, UserType type) {
+    public static boolean addRole(int userID, UserType type) {
         return userID >= 0;
     }
 
@@ -131,7 +131,7 @@ public class CRUD {
      * @param type
      * @return
      */
-    public boolean removeRole(int userID, UserType type) {
+    public static boolean removeRole(int userID, UserType type) {
         return userID >= 0;
     }
 
@@ -142,7 +142,7 @@ public class CRUD {
      * @param password
      * @return
      */
-    public User getUser(String userName, String password) {
+    public static User getUser(String userName, String password) {
         if (userName == null || password == null) {
             return null;
         } else if (password.equals("wrong")) {
@@ -161,7 +161,7 @@ public class CRUD {
      * @param name
      * @return
      */
-    public boolean createLeague(String name) {
+    public static boolean createLeague(String name) {
         if (name == null || name.equals("matan")) {
             return false;
         } else {
@@ -175,7 +175,7 @@ public class CRUD {
      * @param year
      * @return
      */
-    public boolean createSeason(int year) {
+    public static boolean createSeason(int year) {
         return year >= 0;
     }
 
@@ -189,8 +189,8 @@ public class CRUD {
      * @param gamesPolicy
      * @return
      */
-    public boolean addSSeasonToLeauge(League league, Season season, LeagueRankPolicy leagueRankPolicy,
-                                      PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
+    public static boolean addSSeasonToLeauge(League league, Season season, LeagueRankPolicy leagueRankPolicy,
+                                             PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
         return true;
     }
 
@@ -201,7 +201,7 @@ public class CRUD {
      * @param season
      * @return
      */
-    public String[] getPolicies(League league, Season season) {
+    public static String[] getPolicies(League league, Season season) {
         if (league == null || season == null) {
             return null;
         } else {
@@ -220,7 +220,7 @@ public class CRUD {
      * @param season
      * @return
      */
-    public LeagueRankPolicy getLeagueRankPolicy(League league, Season season) {
+    public static LeagueRankPolicy getLeagueRankPolicy(League league, Season season) {
         if (league == null || season == null) {
             return null;
         } else {
@@ -235,7 +235,7 @@ public class CRUD {
      * @param season
      * @return
      */
-    public PointsPolicy getPointsPolicy(League league, Season season) {
+    public static PointsPolicy getPointsPolicy(League league, Season season) {
         if (league == null || season == null) {
             return null;
         } else {
@@ -250,7 +250,7 @@ public class CRUD {
      * @param season
      * @return
      */
-    public GamesPolicy getGamesPolicy(League league, Season season) {
+    public static GamesPolicy getGamesPolicy(League league, Season season) {
         if (league == null || season == null) {
             return null;
         } else {
@@ -265,7 +265,7 @@ public class CRUD {
      * @param season
      * @return
      */
-    public Object getTable(League league, Season season) {
+    public static Object getTable(League league, Season season) {
         return null;
     }
 
@@ -276,7 +276,7 @@ public class CRUD {
      * @param season
      * @return
      */
-    public List<Game> getGamesList(League league, Season season) {
+    public static List<Game> getGamesList(League league, Season season) {
         if (league == null || season == null) {
             return null;
         } else {
@@ -297,7 +297,7 @@ public class CRUD {
      * @param referees
      * @return
      */
-    public boolean addRefereesToLeague(League league, Season season, List<Referee> referees) {
+    public static boolean addRefereesToLeague(League league, Season season, List<Referee> referees) {
         if (league == null || season == null || referees == null) {
             return false;
         } else {
@@ -312,7 +312,7 @@ public class CRUD {
      * @param season
      * @return
      */
-    public List<Referee> getRefereesList(League league, Season season) {
+    public static List<Referee> getRefereesList(League league, Season season) {
         if (league == null || season == null) {
             return null;
         } else {
@@ -333,7 +333,7 @@ public class CRUD {
      * @param amount
      * @return
      */
-    public boolean addBudget(Team team, Season season, double amount) {
+    public static boolean addBudget(Team team, Season season, double amount) {
         if (team == null || season == null) {
             return false;
         } else {
@@ -348,7 +348,7 @@ public class CRUD {
      * @param season
      * @return
      */
-    public double getBudget(Team team, Season season) {
+    public static double getBudget(Team team, Season season) {
         if (team == null || season == null) {
             return -1;
         } else {
@@ -370,7 +370,7 @@ public class CRUD {
      * @param stadium
      * @return
      */
-    public boolean createGame(Season season, League league, LocalDate date, Team host, Team guest, Facility stadium) {
+    public static boolean createGame(Season season, League league, LocalDate date, Team host, Team guest, Facility stadium) {
         return true;
     }
 
@@ -381,7 +381,7 @@ public class CRUD {
      * @param events
      * @return
      */
-    public boolean insertGameEvents(Game game, List<GameEvent> events) {
+    public static boolean insertGameEvents(Game game, List<GameEvent> events) {
         if (game == null || events == null) {
             return false;
         } else {
@@ -400,7 +400,7 @@ public class CRUD {
      * @param event
      * @return
      */
-    public boolean addGameEvent(Game game, GameEvent event) {
+    public static boolean addGameEvent(Game game, GameEvent event) {
         if (game == null || event == null) {
             return false;
         } else {
@@ -417,7 +417,7 @@ public class CRUD {
      * @param newEvent
      * @return
      */
-    public boolean editGameEvent(Game game, GameEvent oldEvent, GameEvent newEvent) {
+    public static boolean editGameEvent(Game game, GameEvent oldEvent, GameEvent newEvent) {
         if (removeGameEvent(game, oldEvent)) {
             return addGameEvent(game, newEvent);
         } else {
@@ -432,7 +432,7 @@ public class CRUD {
      * @param event
      * @return
      */
-    public boolean removeGameEvent(Game game, GameEvent event) {
+    public static boolean removeGameEvent(Game game, GameEvent event) {
         if (game == null || event == null) {
             return false;
         } else {
@@ -446,7 +446,7 @@ public class CRUD {
      * @param game
      * @return
      */
-    public List<GameEvent> getGameEvents(Game game) {
+    public static List<GameEvent> getGameEvents(Game game) {
         if (game == null) {
             return null;
         } else {
@@ -465,14 +465,14 @@ public class CRUD {
      * @param teamFacilities
      * @return
      */
-    public boolean createTeam(String name, List<Player> players, TeamOwner owner, TeamManager manager, List<Facility> teamFacilities) {
+    public static boolean createTeam(String name, List<Player> players, TeamOwner owner, TeamManager manager, List<Facility> teamFacilities) {
         if (name == null || name.equals("matan")) {
             return false;
         }
         return true;
     }
 
-    public boolean addTeamOwner(Team team, TeamOwner teamOwner) {
+    public static boolean addTeamOwner(Team team, TeamOwner teamOwner) {
         return true;
     }
 
@@ -481,7 +481,7 @@ public class CRUD {
      * @param teamManager on the mock send null for wrong teamManager, and real teamManager for good teamManager
      * @return true if the insert successes, false otherwise
      */
-    public boolean addTeamManager(Team team, TeamManager teamManager) {
+    public static boolean addTeamManager(Team team, TeamManager teamManager) {
         if (team == null || teamManager == null) {
             return false;
         } else {
@@ -496,7 +496,7 @@ public class CRUD {
      * @param transaction on the mock send null for wrong transaction, and real transaction for good transaction
      * @return true if the insert successes, false otherwise
      */
-    public boolean addTransaction(Team team, Transaction transaction) {
+    public static boolean addTransaction(Team team, Transaction transaction) {
         if (team == null || transaction == null) {
             return false;
         } else {
@@ -510,7 +510,7 @@ public class CRUD {
      * @param facility on the mock send null for wrong facility, and real facility for good team
      * @return true if the insert successes, false otherwise
      */
-    public boolean addFacility(Team team, Facility facility) {
+    public static boolean addFacility(Team team, Facility facility) {
         if (team == null || facility == null) {
             return false;
         } else {
@@ -524,7 +524,7 @@ public class CRUD {
      * @param team on the mock send null for wrong team, and real team for good team
      * @return list of Facilities that this team has
      */
-    public List<Facility> getFacilities(Team team) {
+    public static List<Facility> getFacilities(Team team) {
         if (team == null) {
             return null;
         } else {
@@ -540,15 +540,15 @@ public class CRUD {
      * @param team on the mock send null for wrong team, and real team for good team
      * @return list of transactions that this team has
      */
-    public List<Transaction> getTransactions(Team team) {
+    public static List<Transaction> getTransactions(Team team) {
         if (team == null) {
             return null;
         } else {
             List<Transaction> list = new ArrayList<>();
-            list.add(new Transaction(100, TransactionType.EXPENSE, LocalDate.now(), team, "description1",null));
-            list.add(new Transaction(5000, TransactionType.INCOME, LocalDate.now(), team, "description2",null));
-            list.add(new Transaction(1400, TransactionType.EXPENSE, LocalDate.now(), team, "description3",null));
-            list.add(new Transaction(30, TransactionType.INCOME, LocalDate.now(), team, "description4",null));
+            list.add(new Transaction(100, TransactionType.EXPENSE, LocalDate.now(), team, "description1", null));
+            list.add(new Transaction(5000, TransactionType.INCOME, LocalDate.now(), team, "description2", null));
+            list.add(new Transaction(1400, TransactionType.EXPENSE, LocalDate.now(), team, "description3", null));
+            list.add(new Transaction(30, TransactionType.INCOME, LocalDate.now(), team, "description4", null));
             return list;
         }
     }
@@ -557,7 +557,7 @@ public class CRUD {
      * @param path on the mock should equals "good path"
      * @return if the database connection good or not
      */
-    public boolean init(String path) {
+    public static boolean init(String path) {
         return path != null && path.equals("good path");
     }
 }
