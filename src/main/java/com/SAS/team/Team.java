@@ -175,6 +175,14 @@ public class Team {
     }
 
     /**
+     * The function returns a list of all the team facilities
+     * @return
+     */
+    public List<Facility> getTeamFacilities() {
+        return teamFacilities;
+    }
+
+    /**
      * The function return the home stadium of the team
      *
      * @return
