@@ -1,0 +1,104 @@
+package com.SAS.facility;
+
+import com.SAS.game.Game;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.LinkedList;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class FacilityUT {
+
+    private Facility facility;
+    private Game game;
+
+    @BeforeEach
+    void setUp() {
+        facility = new Facility();
+        game = new Game();
+    }
+
+    @Test
+    void addValidGameToFacilityBooleanCheck() {
+        facility.addGame(game);
+        boolean result = facility.addGame(game);
+        assertTrue(result);
+    }
+
+    @Test
+    void addValidGameToFacilityListCheck() {
+        facility.addGame(game);
+        int result = facility.getGamesList().size();
+        assertEquals(1, result);
+    }
+
+    @Test
+    void addInvalidGameToFacilityBooleanCheck() {
+        game = null;
+        facility.addGame(game);
+        boolean result = facility.addGame(game);
+        assertFalse(result);
+    }
+
+    @Test
+    void addInvalidGameToFacilityListCheck() {
+        game = null;
+        facility.addGame(game);
+        int result = facility.getGamesList().size();
+        assertEquals(0, result);
+    }
+
+    @Test
+    void removeAssetFromTeamBooleanCheck() {
+        facility.addGame(game);
+    }
+
+    @Test
+    void editValidDetailsBooleanCheckWithTraining() {
+        //set first facility details
+        facility.setName("facility");
+        facility.setLocation("Beer Sheva");
+        facility.setFacilityType(facilityType.STADIUM);
+
+        LinkedList<String> details = new LinkedList<>();
+        details.add("newFacility");
+        details.add("Tel Aviv");
+        details.add("Training");
+
+        boolean result = facility.editDetails(details);
+        assertTrue(result);
+    }
+
+    @Test
+    void editValidDetailsBooleanCheckWithStadium() {
+        //set first facility details
+        facility.setName("facility");
+        facility.setLocation("Beer Sheva");
+        facility.setFacilityType(facilityType.TRAINING);
+
+        LinkedList<String> details = new LinkedList<>();
+        details.add("newFacility");
+        details.add("Tel Aviv");
+        details.add("Stadium");
+
+        boolean result = facility.editDetails(details);
+        assertTrue(result);
+    }
+
+    @Test
+    void editInvalidFacilityTypeDetailsParamsCheck() {
+        //set first facility details
+        facility.setName("facility");
+        facility.setLocation("Beer Sheva");
+        facility.setFacilityType(facilityType.TRAINING);
+
+        LinkedList<String> details = new LinkedList<>();
+        details.add("newFacility");
+        details.add("Tel Aviv");
+        details.add("field");
+
+        boolean result = facility.editDetails(details);
+        assertFalse(result);
+    }
+}
