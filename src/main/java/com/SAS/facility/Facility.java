@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * The class represent a soccer stadium of a team
  */
-public class Facility implements TeamAsset{
+public class Facility implements TeamAsset {
 
     private String name;
     private String location;
@@ -31,6 +31,7 @@ public class Facility implements TeamAsset{
 
     /**
      * The method adds a game to the stadium games list
+     *
      * @param name
      * @param location
      * @param gamesList
@@ -44,8 +45,8 @@ public class Facility implements TeamAsset{
         this.facilityT = facilityT;
     }
 
-    public boolean addGame(Game newGame){
-        if(newGame == null){
+    public boolean addGame(Game newGame) {
+        if (newGame == null) {
             return false;
         }
 
@@ -75,6 +76,7 @@ public class Facility implements TeamAsset{
 
     /**
      * The function returns the location of the stadium
+     *
      * @return
      */
     public String getLocation() {
@@ -83,6 +85,7 @@ public class Facility implements TeamAsset{
 
     /**
      * The function sets the location of the stadium
+     *
      * @param location
      */
     public boolean setLocation(String location) {
@@ -94,6 +97,7 @@ public class Facility implements TeamAsset{
 
     /**
      * The function returns list of the games in the stadium
+     *
      * @return
      */
     public List<Game> getGamesList() {
@@ -102,6 +106,7 @@ public class Facility implements TeamAsset{
 
     /**
      * The function sets the game list of the stadium
+     *
      * @param gamesList
      */
     public boolean setGamesList(List<Game> gamesList) {
@@ -113,6 +118,7 @@ public class Facility implements TeamAsset{
 
     /**
      * The function returns the team that owns the stadium
+     *
      * @return
      */
     public Team getTeam() {
@@ -121,6 +127,7 @@ public class Facility implements TeamAsset{
 
     /**
      * The function sets a team that owns the stadium
+     *
      * @param homeTeam
      */
     public boolean setTeam(Team homeTeam) {
@@ -145,6 +152,7 @@ public class Facility implements TeamAsset{
 
     /**
      * This function sets the facilityType
+     *
      * @param facilityT
      */
     public boolean setFacilityType(facilityType facilityT) {
@@ -154,49 +162,43 @@ public class Facility implements TeamAsset{
         return true;
     }
 
-       /**
+    /**
      * This functions edits the stadiums details
+     *
      * @param details
      * @return true if details have been edited successfully, false otherwise.
      */
     @Override
     public boolean editDetails(List<String> details) {
-        if (details == null || checkItems(details) == false)
+        if (details == null) {
             return false;
+        }
+        for (String value : details) {
+            if (value == null || value.length() == 0) {
+                return false;
+            }
+        }
         //first is name, second is location, third is type
         facilityType ft = convertStringToFacilityType(details.get(2));
         if (ft == null)
             return false;
-        else{
+        else {
             setName(details.get(0));
             setLocation(details.get(1));
             setFacilityType(ft);
             return true;
         }
     }
-
-    /**
-     * This function returns true if all items in the list are valid, otherwise false
-     * @param details
-     * @return true or false
-     */
-    private boolean checkItems(List<String> details) {
-        for (String item: details){
-            if (item == null || item.trim().isEmpty())
-                return false;
-        }
-        return true;
-    }
-
     /**
      * This function converts string to facilityType
+     *
      * @param ft
      * @return
      */
-    private facilityType convertStringToFacilityType(String ft){
-        switch(ft){
-           case "Stadium":
-               return facilityType.STADIUM;
+    private facilityType convertStringToFacilityType(String ft) {
+        switch (ft) {
+            case "Stadium":
+                return facilityType.STADIUM;
             case "Training":
                 return facilityType.TRAINING;
             default:

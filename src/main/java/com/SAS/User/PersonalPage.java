@@ -41,7 +41,9 @@ public class PersonalPage {
      * @param description
      */
     public void setDescription(String description) {
-        this.description = description;
+        if (description != null & !description.trim().isEmpty()) {
+            this.description = description;
+        }
     }
 
     /**

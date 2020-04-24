@@ -3,6 +3,7 @@ package com.SAS.Controllers.systemController;
 import com.SAS.User.User;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
+
 import java.util.LinkedList;
 
 
@@ -145,7 +146,7 @@ public class systemController {
             return false;
         }
 
-        admin = userController.createUser(userName, password, fullName, UserType.SYSTEM_ADMIN, true);
+        admin = userController.createUser(userName, password, fullName, UserType.SYSTEM_ADMIN, true, null);
         return true;
     }
 

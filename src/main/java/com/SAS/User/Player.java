@@ -80,11 +80,12 @@ public class Player extends Role implements TeamAsset {
      * The function adds a personal page to the player
      * @param description
      */
-    public boolean addPage(String description) {
-        if (description == null || description.trim().isEmpty())
-            return false;
-        this.personalPage = new PersonalPage(description);
-        return true;
+    public int addPage(String description) {
+        if (description != null && !description.trim().isEmpty()) {
+            this.personalPage = new PersonalPage(description);
+            return this.personalPage.getPageID();
+        }
+        return -1;
     }
 
     /**
@@ -144,8 +145,16 @@ public class Player extends Role implements TeamAsset {
     @Override
     public boolean editDetails(List<String> details) {
         //first is dateOfBirth, second is fieldRole
-        FieldRole fieldRole = convertStringToFieldRole((details.get(1)));
-        LocalDate dateOfBirth = LocalDate.parse(details.get(0));
+        FieldRole fieldRole = null;
+        LocalDate dateOfBirth = null;
+
+        try {
+            fieldRole = convertStringToFieldRole((details.get(1)));
+            dateOfBirth = LocalDate.parse(details.get(0));
+        }
+        catch (Exception e) {
+        }
+
         if (fieldRole == null || dateOfBirth == null) {
             return false;
         }else {
