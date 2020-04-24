@@ -5,7 +5,6 @@ import com.SAS.League.Season;
 import com.SAS.User.Referee;
 import com.SAS.User.Registered;
 import com.SAS.crudoperations.CRUD;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

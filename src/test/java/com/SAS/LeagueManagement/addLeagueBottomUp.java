@@ -23,7 +23,7 @@ public class addLeagueBottomUp {
 }
 
     @Test
-    public void isLeagueExistTester() {
+    public void addLeagueTester() {
         League league= driverInitLeague("Ligat Ha'al");
         Assertions.assertTrue(league!=null);
     }
