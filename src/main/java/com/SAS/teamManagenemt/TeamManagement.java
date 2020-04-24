@@ -527,6 +527,7 @@ public class TeamManagement {
      */
     public boolean canCloseOpenTeam(User user) {
         return user.getMyPrivileges().contains("closeTNP");
+    }
 
      /** 
      * This function returns all the team assets
