@@ -13,9 +13,9 @@ public class NumberOfWins extends LeagueRankPolicy {
      * constructor that init the object and gives him name
      */
     public NumberOfWins(League league, Season season) {
-        this.name = "Number of wins";
-        this.league=league;
-        this.season=season;
+        this();
+        this.league = league;
+        this.season = season;
     }
 
     @Override

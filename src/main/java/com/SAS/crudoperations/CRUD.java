@@ -34,17 +34,8 @@ public class CRUD {
             return null;
         } else {
             UserController c = new UserController();
-            return c.createUser(userName, password, fullName, type, true, null);
+            return c.createUser(userName, password, fullName, type, true,null);
         }
-    }
-
-    /**
-     * The function return true if there's a this userName exists in the DB, otherwise returns false
-     * @param userName
-     * @return true or false
-     */
-    public static boolean isUserNameExist(String userName) {
-        return userName.equals("shaharf");
     }
 
     /**
@@ -158,7 +149,7 @@ public class CRUD {
             return null;
         } else {
             UserController controller = new UserController();
-            return controller.createUser(userName, password, "Yossi Cohen", UserType.FAN, true, null);
+            return controller.createUser(userName, password, "chen gelad", UserType.FAN, true,null);
         }
     }
 
@@ -198,8 +189,35 @@ public class CRUD {
      * @param gamesPolicy
      * @return
      */
-    public static boolean addSSeasonToLeauge(League league, Season season, LeagueRankPolicy leagueRankPolicy,
-                                             PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
+    public static boolean addSeasonToLeague(League league, Season season, LeagueRankPolicy leagueRankPolicy,
+                                            PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
+        return true;
+    }
+
+    /**
+     * to hard to moc, if will be needed, will find a way
+     *
+     * @param league
+     * @param season
+     * @param leagueRankPolicy
+     * @param pointsPolicy
+     * @param gamesPolicy
+     * @return
+     */
+    public static boolean addLeagueToSeason(Season season,League league, LeagueRankPolicy leagueRankPolicy,
+                                            PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
+        return true;
+    }
+
+
+    /**
+     * too hard to moc, if will be needed, will find a way
+     *
+     * @param league
+     * @param season
+     * @return
+     */
+    public static boolean isSeasonPartOfLeague(League league, Season season) {
         return true;
     }
 
@@ -306,13 +324,30 @@ public class CRUD {
      * @param referees
      * @return
      */
-    public static boolean addRefereesToLeague(League league, Season season, List<Referee> referees) {
+    public static boolean addRefereesToLeagueInSeason(League league, Season season, List<Referee> referees) {
         if (league == null || season == null || referees == null) {
             return false;
         } else {
             return true;
         }
     }
+
+
+    /**
+     * add or remove referees from a league
+     *
+     * @param league
+     * @param referees
+     * @return
+     */
+    public static boolean addAndRemoveRefereesFromLeague(League league, List<Referee> referees) {
+        if (league != null && referees != null) {
+            return true;
+        }
+        return false;
+    }
+
+
 
     /**
      * send null for wrong input, not null for real input (u'll get a list of three referees)
@@ -327,9 +362,9 @@ public class CRUD {
         } else {
             List<Referee> list = new ArrayList<>();
             UserController c = new UserController();
-            list.add(new Referee(c.createUser("name1", "password1", "fullname1", UserType.REFEREE, true, null), "fullname1"));
-            list.add(new Referee(c.createUser("name2", "password2", "fullname2", UserType.REFEREE, true, null), "fullname2"));
-            list.add(new Referee(c.createUser("name3", "password3", "fullname3", UserType.REFEREE, true, null), "fullname3"));
+            list.add(new Referee(c.createUser("name1", "password1", "fullname1", UserType.REFEREE, true,null), "fullname1"));
+            list.add(new Referee(c.createUser("name2", "password2", "fullname2", UserType.REFEREE, true,null), "fullname2"));
+            list.add(new Referee(c.createUser("name3", "password3", "fullname3", UserType.REFEREE, true,null), "fullname3"));
             return list;
         }
     }
@@ -568,5 +603,47 @@ public class CRUD {
      */
     public static boolean init(String path) {
         return path != null && path.equals("good path");
+    }
+
+    /**
+     * return false if the league is unknown and true if its known
+     * @param league
+     * @return
+     */
+    public static boolean isLeagueExist(League league) {
+        if (league == null){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *opposite to isLeagueExist
+     * @param league
+     * @return
+     */
+    public static boolean addLeague(League league) {
+        return(!isLeagueExist(league));
+    }
+
+    /**
+     * return false if the league is unknown and true if its known
+     * @param season
+     * @return
+     */
+    public static boolean isSeasonExist(Season season) {
+        if (season == null){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * The function return true if there's a this userName exists in the DB, otherwise returns false
+     * @param userName
+     * @return true or false
+     */
+    public static boolean isUserNameExist(String userName) {
+        return userName.equals("shaharf");
     }
 }

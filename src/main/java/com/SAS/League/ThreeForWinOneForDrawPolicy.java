@@ -13,9 +13,9 @@ public class ThreeForWinOneForDrawPolicy extends PointsPolicy {
      * constructor that init the object and gives him name
      */
     public ThreeForWinOneForDrawPolicy(League league, Season season) {
-        this.name = "Three points for win and one point for draw policy";
+        this();
         this.league = league;
-        this.season=season;
+        this.season = season;
     }
 
     @Override
