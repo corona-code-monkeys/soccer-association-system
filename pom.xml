@@ -67,8 +67,8 @@
                 <version>2.22.2</version>
                 <configuration>
                     <includes>
-                        <include>*/*UT</include>
-                        <include>*/*IT</include>
+                        <include>**/*UT*</include>
+                        <include>**/*IT*</include>
                     </includes>
                 </configuration>
             </plugin>
@@ -86,7 +86,7 @@
                         <version>2.22.2</version>
                         <configuration>
                             <includes>
-                                <include>*/*AT</include>
+                                <include>**/*AT*</include>
                             </includes>
                         </configuration>
                     </plugin>
