@@ -95,6 +95,7 @@ public class Team {
 
     /**
      * The function adds new season to team
+     *
      * @param season
      * @return
      */
@@ -141,14 +142,15 @@ public class Team {
     }
 
     /**
-     *The function receives the transaction date and the amount and add it to the season budget
+     * The function receives the transaction date and the amount and add it to the season budget
+     *
      * @param transactionDate
      * @param transactionAmount
      */
     private void addTransactionToBudget(LocalDate transactionDate, double transactionAmount) {
         int currYear = transactionDate.getYear();
-        for(Map.Entry<Season, Budget> pair : budgets.entrySet()){
-            if (pair.getKey().getYear() == currYear){
+        for (Map.Entry<Season, Budget> pair : budgets.entrySet()) {
+            if (pair.getKey().getYear() == currYear) {
                 pair.getValue().addToBudget(transactionAmount);
             }
         }
@@ -169,13 +171,14 @@ public class Team {
      * @param name
      */
     public void setName(String name) {
-        if(name != null && name.length() > 0) {
+        if (name != null && name.length() > 0) {
             this.name = name;
         }
     }
 
     /**
      * The function returns a list of all the team facilities
+     *
      * @return
      */
     public List<Facility> getTeamFacilities() {
@@ -238,6 +241,10 @@ public class Team {
      * @return
      */
     public boolean setTeamManager(TeamManager newManager) {
+        if (newManager == null) {
+            return false;
+        }
+
         this.manager = newManager;
         return true;
     }
@@ -268,7 +275,9 @@ public class Team {
      * @param teamOwner
      */
     public void addTeamOwner(TeamOwner teamOwner) {
-        this.owners.add(teamOwner);
+        if (teamOwner != null) {
+            this.owners.add(teamOwner);
+        }
     }
 
     /**
@@ -296,7 +305,9 @@ public class Team {
      * @param coach
      */
     public void setCoach(Coach coach) {
-        this.coach = coach;
+        if (coach != null) {
+            this.coach = coach;
+        }
     }
 
     /**
