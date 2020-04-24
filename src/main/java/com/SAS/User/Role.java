@@ -37,7 +37,9 @@ public abstract class Role extends User {
      * @param fullName - String
      */
     public void setFullName (String fullName){
-        this.fullName = fullName;
+        if (fullName != null && !fullName.trim().isEmpty()) {
+            this.fullName = fullName;
+        }
     }
 
     /**

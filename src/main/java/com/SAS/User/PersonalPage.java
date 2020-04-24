@@ -41,6 +41,18 @@ public class PersonalPage {
      * @param description
      */
     public void setDescription(String description) {
-        this.description = description;
+        if (description != null & !description.trim().isEmpty()) {
+            this.description = description;
+        }
     }
+
+    /**
+     * This function presents the personal page
+     */
+    public void showPersonalPage(){
+        System.out.println("Illustration of the personal page view: " + '\n' +
+                "⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽ " + this.description + " ⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽" + '\n' + '\n');
+    }
+
+
 }
