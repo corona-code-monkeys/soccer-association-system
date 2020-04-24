@@ -96,6 +96,7 @@ public class Team {
 
     /**
      * The function adds new season to team
+     *
      * @param season
      * @return
      */
@@ -142,14 +143,15 @@ public class Team {
     }
 
     /**
-     *The function receives the transaction date and the amount and add it to the season budget
+     * The function receives the transaction date and the amount and add it to the season budget
+     *
      * @param transactionDate
      * @param transactionAmount
      */
     private void addTransactionToBudget(LocalDate transactionDate, double transactionAmount) {
         int currYear = transactionDate.getYear();
-        for(Map.Entry<Season, Budget> pair : budgets.entrySet()){
-            if (pair.getKey().getYear() == currYear){
+        for (Map.Entry<Season, Budget> pair : budgets.entrySet()) {
+            if (pair.getKey().getYear() == currYear) {
                 pair.getValue().addToBudget(transactionAmount);
             }
         }
@@ -169,8 +171,22 @@ public class Team {
      *
      * @param name
      */
-    public void setName(String name) {
+    public boolean setName(String name) {
+        if (name == null || name.length() == 0) {
+            return false;
+        }
+
         this.name = name;
+        return true;
+    }
+
+    /**
+     * The function returns a list of all the team facilities
+     *
+     * @return
+     */
+    public List<Facility> getTeamFacilities() {
+        return teamFacilities;
     }
 
     /**
@@ -196,10 +212,11 @@ public class Team {
 
 
     public boolean addFacility(Facility newFacility) {
-        if (newFacility != null) {
-            teamFacilities.add(newFacility);
+        if (newFacility == null) {
+            return false;
         }
-        return false;
+        teamFacilities.add(newFacility);
+        return true;
     }
 
 
@@ -230,12 +247,12 @@ public class Team {
      * @return
      */
     public boolean setTeamManager(TeamManager newManager) {
-        if (newManager == null)
+        if (newManager == null) {
             return false;
+        }
         this.manager = newManager;
         return true;
     }
-
 
     /**
      * The function returns the team owners
@@ -262,8 +279,9 @@ public class Team {
      * @param teamOwner
      */
     public boolean addTeamOwner(TeamOwner teamOwner) {
-        if (teamOwner == null)
+        if (teamOwner == null) {
             return false;
+        }
         this.owners.add(teamOwner);
         return true;
     }
@@ -292,8 +310,13 @@ public class Team {
      *
      * @param coach
      */
-    public void setCoach(Coach coach) {
+    public boolean setCoach(Coach coach) {
+        if (coach == null) {
+            return false;
+        }
+
         this.coach = coach;
+        return true;
     }
 
     /**
@@ -384,6 +407,7 @@ public class Team {
     }
 
     /**
+<<<<<<< HEAD
      * This function returns all the team assets
      * @return List<TeamAsset>
      */
@@ -403,19 +427,19 @@ public class Team {
      * @return TeamAsset
      */
     public TeamAsset getAssetByNameAndType(String type, String name) {
-        if (type == null  || name == null || name.trim().isEmpty())
+        if (type == null || name == null || name.trim().isEmpty())
             return null;
-        switch(type){
+        switch (type) {
             case "Coach":
                 return this.coach;
             case "Player":
-                for (Player player: this.players) {
+                for (Player player : this.players) {
                     if (player.getFullName().equals(name))
                         return player;
                 }
                 return null;
             case "Facility":
-                for (Facility facility: this.teamFacilities) {
+                for (Facility facility : this.teamFacilities) {
                     if (facility.getName().equals(name))
                         return facility;
                 }
@@ -423,5 +447,62 @@ public class Team {
             default:
                 return null;
         }
+    }
+
+     /**
+     * The function returns the optional nominees for team owner - coach, team manager and players
+     * @return
+     */
+    public List<User> getOptionalNomineesForTeamOwner() {
+        List<User> optionalNominees = new LinkedList<User>();
+        if (this.manager != null) {
+            optionalNominees.add(getManager());
+        }
+
+        if (this.coach != null) {
+            optionalNominees.add(getCoach());
+        }
+
+        if (this.players.size() > 0) {
+            optionalNominees.addAll(getPlayers());
+        }
+
+        return optionalNominees;
+    }
+
+    /**
+     * The function receives a full name of a user and returns the user if it's an optional for team owner nominee,
+     * otherwise return null
+     * @param fullName
+     * @return
+     */
+    public User getUserForTeamOwner(String fullName) {
+        if (this.manager != null && this.manager.getFullName().equals(fullName)) {
+            return manager;
+        }
+
+        else if (this.coach != null && this.coach.getFullName().equals(fullName)) {
+            return coach;
+        }
+
+        else {
+            for (Player player : this.players) {
+                if (player.getFullName().equals(fullName)) {
+                    return player;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public User getTeamOwnerByFullName(String fullName) {
+        for (TeamOwner owner : this.owners) {
+            if (owner.getFullName().equals(fullName)) {
+                return owner;
+            }
+        }
+
+        return null;
     }
 }

@@ -45,9 +45,15 @@ public class Referee extends Role {
     /**
      * The function sets the level of the referee
      * @param level - int
+     * @return true - if succeeded, otherwise returns false
      */
-    public void setLevel(int level) {
-        this.level = level;
+    public boolean setLevel(int level) {
+        if (level > 0) {
+            this.level = level;
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -55,7 +61,9 @@ public class Referee extends Role {
      * @param game
      */
     public void addGame (Game game) {
-        games.add(game);
+        if (game != null) {
+            games.add(game);
+        }
     }
 
     /**
@@ -63,7 +71,17 @@ public class Referee extends Role {
      * @param game
      */
     public void removeGame (Game game) {
-        games.remove(game);
+        if (game != null) {
+            games.remove(game);
+        }
+    }
+
+    /**
+     * The function returns the games of the referee
+     * @return
+     */
+    public List<Game> getGames() {
+        return games;
     }
 
     /**

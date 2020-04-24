@@ -57,11 +57,16 @@ public class Coach extends Role implements TeamAsset {
 
     /**
      * The function sets the level of the coach
-     *
      * @param level - int
+     * @return true if succeeded, otherwise returns false
      */
-    public void setLevel(int level) {
-        this.level = level;
+    public boolean setLevel(int level) {
+        if (level > 0) {
+            this.level = level;
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -108,14 +113,15 @@ public class Coach extends Role implements TeamAsset {
 
     /**
      * The function adds personal page to the coach
-     *
      * @param description
+     * @return pageID - int
      */
-    public boolean addPage(String description) {
-        if (description == null || description.trim().isEmpty())
-            return false;
-        this.personalPage = new PersonalPage(description);
-        return true;
+    public int addPage(String description) {
+        if (description != null && !description.trim().isEmpty()) {
+            this.personalPage = new PersonalPage(description);
+            return this.personalPage.getPageID();
+        }
+        return -1;
     }
 
     /**
@@ -124,6 +130,9 @@ public class Coach extends Role implements TeamAsset {
      * @return pageID - int
      */
     public int getPageID() {
+        if (personalPage == null) {
+            return -1;
+        }
         return personalPage.getPageID();
     }
 
@@ -149,16 +158,20 @@ public class Coach extends Role implements TeamAsset {
     @Override
     public boolean editDetails(List<String> details) {
         //first is level, second is fieldRole
-        FieldRole fieldRole = convertStringToFieldRole((details.get(1)));
+        FieldRole fieldRole = null;
         int level = -1;
+
         try{
             level = Integer.parseInt(details.get(0));
+            fieldRole = convertStringToFieldRole((details.get(1)));
         }catch (Exception e){
 
         }
+
         if (fieldRole == null || level == -1) {
             return false;
-        }else {
+        }
+        else {
             setLevel(level);
             setFieldRole(fieldRole);
             return true;

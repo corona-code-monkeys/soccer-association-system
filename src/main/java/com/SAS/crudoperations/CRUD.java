@@ -34,8 +34,17 @@ public class CRUD {
             return null;
         } else {
             UserController c = new UserController();
-            return c.createUser(userName, password, fullName, type, true);
+            return c.createUser(userName, password, fullName, type, true, null);
         }
+    }
+
+    /**
+     * The function return true if there's a this userName exists in the DB, otherwise returns false
+     * @param userName
+     * @return true or false
+     */
+    public static boolean isUserNameExist(String userName) {
+        return userName.equals("shaharf");
     }
 
     /**
@@ -149,7 +158,7 @@ public class CRUD {
             return null;
         } else {
             UserController controller = new UserController();
-            return controller.createUser(userName, password, "chen gelad", UserType.FAN, true);
+            return controller.createUser(userName, password, "Yossi Cohen", UserType.FAN, true, null);
         }
     }
 
@@ -318,9 +327,9 @@ public class CRUD {
         } else {
             List<Referee> list = new ArrayList<>();
             UserController c = new UserController();
-            list.add(new Referee(c.createUser("name1", "password1", "fullname1", UserType.REFEREE, true), "fullname1"));
-            list.add(new Referee(c.createUser("name2", "password2", "fullname2", UserType.REFEREE, true), "fullname2"));
-            list.add(new Referee(c.createUser("name3", "password3", "fullname3", UserType.REFEREE, true), "fullname3"));
+            list.add(new Referee(c.createUser("name1", "password1", "fullname1", UserType.REFEREE, true, null), "fullname1"));
+            list.add(new Referee(c.createUser("name2", "password2", "fullname2", UserType.REFEREE, true, null), "fullname2"));
+            list.add(new Referee(c.createUser("name3", "password3", "fullname3", UserType.REFEREE, true, null), "fullname3"));
             return list;
         }
     }
@@ -451,7 +460,7 @@ public class CRUD {
             return null;
         } else {
             GameEventLogger logger = game.getEvents();
-            return logger.eventList;
+            return logger.getEventList();
         }
     }
 
