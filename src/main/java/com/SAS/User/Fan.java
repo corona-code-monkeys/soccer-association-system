@@ -44,7 +44,9 @@ public class Fan extends Role {
      * @param personalPage
      */
     public void addPageToFollow(PersonalPage personalPage) {
-        followedPages.add(personalPage);
+        if (personalPage != null) {
+            followedPages.add(personalPage);
+        }
     }
 
     /**
@@ -52,7 +54,21 @@ public class Fan extends Role {
      * @param personalPage
      */
     public void removePageFromFollow(PersonalPage personalPage) {
-        followedPages.remove(personalPage);
+        if (personalPage != null) {
+            followedPages.remove(personalPage);
+        }
+    }
+
+    /**
+     * The function returns all the pages Id of the followed pages
+     * @return
+     */
+    public HashSet<Integer> getFollowedPages() {
+        HashSet<Integer> pagesID = new HashSet<>();
+        for (PersonalPage page : this.followedPages) {
+            pagesID.add(page.getPageID());
+        }
+        return pagesID;
     }
 
     @Override

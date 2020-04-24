@@ -1,6 +1,6 @@
 package com.SAS.User;
 
-import java.util.HashSet;
+import com.SAS.crudoperations.CRUD;
 
 public class UserController {
 
@@ -17,13 +17,33 @@ public class UserController {
     }
 
     /**
+     * The function returns new guest
+     * @return
+     */
+    public User createGuest() {
+        return new Guest();
+    }
+
+    /**
      * The function receives userName, password, fullName and user type and creates a user
      * @param userName
      * @param password
      * @param fullName
      */
-    public User createUser(String userName, String password, String fullName, UserType type, boolean approval){
-        User newUser = new Registered(userName, password, fullName);
+    public User createUser(String userName, String password, String fullName, UserType type, boolean approval, User newUser){
+         //check user parameters
+         if (!validateDetails(userName, password, fullName, type)) {
+             System.out.println("The parameters aren't valid. Pleas enter the details again.");
+             return newUser;
+         }
+
+         //checks if the userName already exists
+         if (CRUD.isUserNameExist(userName)) {
+             System.out.println("The userName already exist. Please enter your details again.");
+             return newUser;
+         }
+
+         newUser = new Registered(userName, password, fullName);
          if (validateUser(fullName, type)) {
 
              switch (type) {
@@ -74,6 +94,27 @@ public class UserController {
     }
 
     /**
+     * The method receives userName, password and full name as string and checks that they are valid
+     *
+     * @param userName
+     * @param password
+     * @param fullName
+     */
+    private boolean validateDetails(String userName, String password, String fullName, UserType type) {
+        return  !(empty(userName) || empty(password)|| empty(fullName) || type == null);
+    }
+
+
+    /**
+     * The function returns true if the param is null or empty, otherwise returns false
+     * @param param
+     * @return true or false
+     */
+    private boolean empty(String param) {
+        return param == null || param.trim().isEmpty();
+    }
+
+    /**
      * The function returns true if the user is authorize, otherwise - returns false
      * @param fullName
      * @param type
@@ -107,7 +148,7 @@ public class UserController {
      * @return
      */
     public User addRoleToUser(User user, UserType type, boolean approval) {
-        if (user == null) {
+        if (user == null || type == null) {
             return null;
         }
 
@@ -180,6 +221,9 @@ public class UserController {
      * @param approval
      */
     public void setPrivilegesforUser(User user, String role, boolean  approval) {
-        user.setPrivileges(globalPrivileges.getPrivileges(role, approval));
+        if (user != null && !empty(role)) {
+            user.setPrivileges(globalPrivileges.getPrivileges(role, approval));
+        }
     }
+
 }

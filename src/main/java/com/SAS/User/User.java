@@ -33,7 +33,9 @@ public abstract class User {
      * @param privileges- privileges to add to myPrivileges
      */
     public void setPrivileges(HashSet<String> privileges) {
-        this.myPrivileges.addAll(privileges);
+        if (privileges != null) {
+            this.myPrivileges.addAll(privileges);
+        }
     }
 
     /**

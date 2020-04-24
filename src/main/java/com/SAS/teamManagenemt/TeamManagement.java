@@ -43,7 +43,7 @@ public class TeamManagement {
         //create the asset
         switch (assetType) {
             case "Player":
-                asset = (Player) userController.createUser(null, null, null, UserType.PLAYER, true);
+                asset = (Player) userController.createUser(null, null, null, UserType.PLAYER, true, null);
                 team.addPlayerToTeam((Player)asset);
                 break;
             case "Facility":
@@ -51,7 +51,7 @@ public class TeamManagement {
                 team.addFacility((Facility)asset);
                 break;
             case "Coach":
-                asset = (Coach) userController.createUser(null, null, null, UserType.COACH, true);
+                asset = (Coach) userController.createUser(null, null, null, UserType.COACH, true, null);
                 team.setCoach((Coach)asset);
                 break;
         }

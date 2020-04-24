@@ -7,7 +7,6 @@ package com.SAS.User;
 import com.SAS.team.Team;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 
 public class TeamManager extends Role {
 
@@ -38,7 +37,9 @@ public class TeamManager extends Role {
      * @param team
      */
     public void setTeam (Team team) {
-        this.team = team;
+        if (team != null) {
+            this.team = team;
+        }
     }
 
     /**
@@ -66,7 +67,9 @@ public class TeamManager extends Role {
      * @param nominatedBy
      */
     public void setNominatedBy(TeamOwner nominatedBy) {
-        this.nominatedBy = nominatedBy;
+        if (nominatedBy != null) {
+            this.nominatedBy = nominatedBy;
+        }
     }
 
     /**

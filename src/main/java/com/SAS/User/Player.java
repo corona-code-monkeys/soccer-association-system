@@ -51,7 +51,9 @@ public class Player extends Role implements TeamAsset {
      * @param dateOfBirth
      */
     public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+        if (dateOfBirth != null) {
+            this.dateOfBirth = dateOfBirth;
+        }
     }
 
     /**
@@ -67,7 +69,9 @@ public class Player extends Role implements TeamAsset {
      * @param fieldRole
      */
     public void setFieldRole(FieldRole fieldRole) {
-        this.fieldRole = fieldRole;
+        if (fieldRole != null) {
+            this.fieldRole = fieldRole;
+        }
     }
 
     /**
@@ -75,7 +79,9 @@ public class Player extends Role implements TeamAsset {
      * @param description
      */
     public void addPage(String description) {
-        this.personalPage = new PersonalPage(description);
+        if (description != null && !description.trim().isEmpty()) {
+            this.personalPage = new PersonalPage(description);
+        }
     }
 
     /**
@@ -112,7 +118,9 @@ public class Player extends Role implements TeamAsset {
      * @param team
      */
     public void setTeam(Team team) {
-        this.team = team;
+        if (team != null) {
+            this.team = team;
+        }
     }
 
     /**
@@ -132,8 +140,16 @@ public class Player extends Role implements TeamAsset {
     @Override
     public boolean editDetails(List<String> details) {
         //first is dateOfBirth, second is fieldRole
-        FieldRole fieldRole = convertStringToFieldRole((details.get(1)));
-        LocalDate dateOfBirth = LocalDate.parse(details.get(0));
+        FieldRole fieldRole = null;
+        LocalDate dateOfBirth = null;
+
+        try {
+            fieldRole = convertStringToFieldRole((details.get(1)));
+            dateOfBirth = LocalDate.parse(details.get(0));
+        }
+        catch (Exception e) {
+        }
+
         if (fieldRole == null || dateOfBirth == null) {
             return false;
         }else {
