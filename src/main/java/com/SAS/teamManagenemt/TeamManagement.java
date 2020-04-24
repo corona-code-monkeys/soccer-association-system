@@ -358,34 +358,53 @@ public class TeamManagement {
     }
   
     /**
-     * The function receives a team and a team owner and closes this team
+     * The function receives a team and a team owner and closes this team and returns true if it succeeded,
+     * otherwise returns false
      * @param team
      * @param teamOwner
+     * @return true or false
      */
-    public void closeTeam(Team team, User teamOwner) {
-        if (ownsTeam(team, teamOwner) && team.isActive()) {
-            team.inactivateTeam();
-            sendNotificationClose(team, "closed");
+    public boolean closeTeam(Team team, User teamOwner) {
+        if (ownsTeam(team, teamOwner)) {
+            if (team.isActive()) {
+                team.inactivateTeam();
+                sendNotificationClose(team, "closed");
+                return true;
+            }
+
+            System.out.println("The team is already closed.");
+            return false;
         }
 
         else {
             System.out.println("The user is unauthorized to close the team");
+            return false;
         }
     }
 
     /**
-     * The function receives a team and a team owner and opens this team
+     * The function receives a team and a team owner and opens this team and returns true if it succeeded,
+     * otherwise returns false
      * @param team
      * @param teamOwner
      */
-    public void openTeam(Team team, User teamOwner) {
-        if (ownsTeam(team, teamOwner) && !team.isActive()) {
-            team.reactivateTeam();
-            sendNotificationClose(team, "opened");
+    public boolean openTeam(Team team, User teamOwner) {
+        if (ownsTeam(team, teamOwner)) {
+            if (!team.isActive()) {
+                team.reactivateTeam();
+                sendNotificationClose(team, "opened");
+                return true;
+            }
+
+            else {
+                System.out.println("The team is already open.");
+                return false;
+            }
         }
 
         else {
             System.out.println("The user is unauthorized to open the team");
+            return false;
         }
     }
 
@@ -492,5 +511,14 @@ public class TeamManagement {
      */
     public User getTeamOwnerUserByName(String fullName, Team team) {
         return team.getTeamOwnerByFullName(fullName);
+    }
+
+    /**
+     * Thr function returns true if the user can open and close the team, otherwise returns false
+     * @param user
+     * @return
+     */
+    public boolean canCloseOpenTeam(User user) {
+        return user.getMyPrivileges().contains("closeTNP");
     }
 }

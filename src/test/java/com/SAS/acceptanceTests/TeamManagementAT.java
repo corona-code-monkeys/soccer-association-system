@@ -251,13 +251,106 @@ public class TeamManagementAT {
     public void addTransactionToTeam() {
     }
 
-    //Todo - Yaar
-    @org.junit.Test
-    public void closeTeam() {
+    @Test
+    public void closeTeamSuccess() {
+        //show page
+        Team myTeam = ((TeamOwner) teamOwner).getTeam();
+        ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
+
+        //enter editing mode
+        if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())){
+
+            //checks if the user can close the team
+            if (teamManagement.canCloseOpenTeam(teamOwner)) {
+                System.out.println("If you want to close the team please enter confirm");
+                System.out.println("confirm");
+                assertTrue(teamManagement.closeTeam(myTeam, teamOwner));
+
+                assertFalse(myTeam.isActive());
+                System.out.println("The team has been closed.");
+            }
+
+            else {
+                System.out.println("The user is unauthorized to close the team " + myTeam.getName());
+            }
+        }
+
     }
 
-    //Todo - Yaar
-    @org.junit.Test
-    public void openTeam() {
+    @Test
+    public void closeTeamFail() {
+        //show page
+        Team myTeam = ((TeamOwner) teamOwner).getTeam();
+        ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
+
+        //enter editing mode
+        if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())){
+
+            //checks if the user can close the team
+            if (teamManagement.canCloseOpenTeam(teamOwner)) {
+                System.out.println("If you want to close the team please enter confirm");
+                System.out.println("confirm");
+                assertTrue(teamManagement.closeTeam(myTeam, teamOwner));
+
+                assertFalse(myTeam.isActive());
+            }
+
+            else {
+                System.out.println("The user is unauthorized to close the team " + myTeam.getName());
+            }
+        }
+
+    }
+
+
+    @Test
+    public void openTeamSuccess() {
+        //show page
+        Team myTeam = ((TeamOwner) teamOwner).getTeam();
+        ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
+
+        //close the team
+        teamManagement.closeTeam(myTeam, teamOwner);
+
+        //enter editing mode
+        if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())){
+
+            //checks if the user can close the team
+            if (teamManagement.canCloseOpenTeam(teamOwner)) {
+                System.out.println("If you want to open the team please enter confirm");
+                System.out.println("confirm");
+                assertTrue(teamManagement.openTeam(myTeam, teamOwner));
+
+                assertTrue(myTeam.isActive());
+                System.out.println("The team has been opened.");
+            }
+
+            else {
+                System.out.println("The user is unauthorized to open the team " + myTeam.getName());
+            }
+        }
+    }
+
+    @Test
+    public void openTeamFail() {
+        //show page
+        Team myTeam = ((TeamOwner) teamOwner).getTeam();
+        ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
+
+        //enter editing mode
+        if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())){
+
+            //checks if the user can close the team
+            if (teamManagement.canCloseOpenTeam(teamOwner)) {
+                System.out.println("If you want to open the team please enter confirm");
+                System.out.println("confirm");
+                assertFalse(teamManagement.openTeam(myTeam, teamOwner));
+                assertTrue(myTeam.isActive());
+            }
+
+            else {
+                System.out.println("The user is unauthorized to open the team " + myTeam.getName());
+            }
+        }
     }
 }
