@@ -4,6 +4,7 @@ import com.SAS.League.League;
 import com.SAS.League.Season;
 import com.SAS.User.Referee;
 import com.SAS.facility.Facility;
+import com.SAS.facility.facilityType;
 import com.SAS.game_event_logger.GameEvent;
 import com.SAS.game_event_logger.GameEventLogger;
 import com.SAS.report.GameReport;
@@ -100,8 +101,13 @@ public class Game {
      *
      * @param season
      */
-    public void setSeason(Season season) {
+    public boolean setSeason(Season season) {
+        if (season == null) {
+            return false;
+        }
+
         this.season = season;
+        return true;
     }
 
     /**
@@ -118,8 +124,13 @@ public class Game {
      *
      * @return
      */
-    public void setDate(LocalDate date) {
+    public boolean setDate(LocalDate date) {
+        if (date == null) {
+            return false;
+        }
+
         this.date = date;
+        return true;
     }
 
     /**
@@ -136,8 +147,13 @@ public class Game {
      *
      * @return
      */
-    public void setHost(Team host) {
+    public boolean setHost(Team host) {
+        if (host == null) {
+            return false;
+        }
+
         this.host = host;
+        return true;
     }
 
     /**
@@ -154,8 +170,13 @@ public class Game {
      *
      * @return
      */
-    public void setGuest(Team guest) {
+    public boolean setGuest(Team guest) {
+        if (guest == null) {
+            return false;
+        }
+
         this.guest = guest;
+        return true;
     }
 
     /**
@@ -208,8 +229,13 @@ public class Game {
      *
      * @return
      */
-    public void setStadium(Facility stadium) {
+    public boolean setStadium(Facility stadium) {
+        if (stadium == null || stadium.getFacilityType() != facilityType.STADIUM) {
+            return false;
+        }
+
         this.stadium = stadium;
+        return true;
     }
 
     /**
@@ -221,8 +247,13 @@ public class Game {
         return events;
     }
 
-    public void setEvents(GameEventLogger events) {
+    public boolean setEvents(GameEventLogger events) {
+        if (events == null) {
+            return false;
+        }
+
         this.events = events;
+        return true;
     }
 
     /**
@@ -239,8 +270,13 @@ public class Game {
      *
      * @return
      */
-    public void setGameReport(GameReport gameReport) {
+    public boolean setGameReport(GameReport gameReport) {
+        if (gameReport == null) {
+            return false;
+        }
+
         this.gameReport = gameReport;
+        return true;
     }
 
     /**
@@ -257,8 +293,19 @@ public class Game {
      *
      * @return
      */
-    public void setReferees(List<Referee> referees) {
+    public boolean setReferees(List<Referee> referees) {
+        if (referees == null || referees.size() < 2) {
+            return false;
+        }
+
+        for (Referee referee : referees) {
+            if (referee == null) {
+                return false;
+            }
+        }
+
         this.referees = referees;
+        return true;
     }
 }
 
