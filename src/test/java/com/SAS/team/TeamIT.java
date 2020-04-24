@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -96,23 +98,62 @@ class TeamIT {
         assertEquals(1, team.getTeamFacilities().size());
     }
 
-    //TODO
     @Test
-    void setTeamManager() {
+    void setValidTeamManagerTest() {
+        teamManager = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_MANAGER, true);
+        boolean res = team.setTeamManager((TeamManager) teamManager);
+        assertTrue(res);
     }
 
-    //TODO
     @Test
-    void addTeamOwner() {
+    void setInvalidTeamManagerTest() {
+        TeamManager nullManager = null;
+        boolean res = team.setTeamManager((TeamManager) nullManager);
+        assertFalse(res);
     }
 
-    //TODO
+
     @Test
-    void removeTeamOwner() {
+    void addValidTeamOwnerTest() {
+        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true);
+        team.addTeamOwner((TeamOwner) teamOwner);
+        TeamOwner res;
+        List<TeamOwner> owners = team.getOwners();
+        res = owners.get(0);
+        assertEquals(teamOwner.getUserID(), res.getUserID());
     }
 
-    //TODO
     @Test
-    void setCoach() {
+    void addInvalidTeamOwnerTest() {
+        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true);
+        TeamOwner nullOwner = null;
+        team.addTeamOwner((TeamOwner) teamOwner);
+        team.addTeamOwner((TeamOwner) nullOwner);
+        List<TeamOwner> owners = team.getOwners();
+        assertEquals(1, owners.size());
     }
+
+    @Test
+    void removeTeamOwnerTest() {
+        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true);
+        team.addTeamOwner((TeamOwner) teamOwner);
+        team.removeTeamOwner((TeamOwner) teamOwner);
+        List<TeamOwner> owners = team.getOwners();
+        assertEquals(0, owners.size());
+    }
+
+    @Test
+    void setValidCoachTest() {
+        coach = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.COACH, true);
+        team.setCoach((Coach) coach);
+        assertEquals(coach.getUserID(), team.getCoach().getUserID());
+    }
+
+    @Test
+    void setInvalidCoachTest() {
+        coach = null;
+        team.setCoach((Coach) coach);
+        assertNull(team.getCoach());
+    }
+
 }
