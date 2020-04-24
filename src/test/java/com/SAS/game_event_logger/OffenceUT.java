@@ -14,7 +14,7 @@ class OffenceUT {
     @Test
     void getCommitted() {
         UserController u = new UserController();
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
         Offence o = new Offence("1", LocalDate.now(), 0, p, null, "bla bla");
         assertEquals(p.getFullName(), o.getCommitted().getFullName());
 
@@ -23,7 +23,7 @@ class OffenceUT {
     @Test
     void setCommitted() {
         UserController u = new UserController();
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
         Offence o = new Offence("1", LocalDate.now(), 0, null, null, "bla bla");
         o.setCommitted(p);
         assertEquals(p.getFullName(), o.getCommitted().getFullName());
@@ -32,7 +32,7 @@ class OffenceUT {
     @Test
     void getAgainst() {
         UserController u = new UserController();
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
         Offence o = new Offence("1", LocalDate.now(), 0, null, null, "bla bla");
         o.setCommitted(p);
         assertNull(o.getAgainst());
@@ -41,8 +41,8 @@ class OffenceUT {
     @Test
     void setAgainst() {
         UserController u = new UserController();
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true);
-        Player p2 = (Player) u.createUser("Yael", "123456", "yael amit", UserType.PLAYER, true);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
+        Player p2 = (Player) u.createUser("Yael", "123456", "yael amit", UserType.PLAYER, true,null);
         Offence o = new Offence("1", LocalDate.now(), 0, null, null, "bla bla");
         o.setCommitted(p);
         assertNull(o.getAgainst());

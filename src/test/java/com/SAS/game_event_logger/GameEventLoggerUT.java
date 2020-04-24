@@ -21,7 +21,7 @@ class GameEventLoggerUT {
         UserController u = new UserController();
         GameEventLogger g = new GameEventLogger("1", LocalDate.now());
         assertEquals(0, g.getEventList().size());
-        GameEvent goal = new Goal(g.getGameID(), g.getGameDate(), 0, new Team(), (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true));
+        GameEvent goal = new Goal(g.getGameID(), g.getGameDate(), 0, new Team(), (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null));
         g.addNewEvent(goal);
         assertEquals(1, g.getEventList().size());
         assertEquals(goal.getGameID(), g.getEventList().get(0).getGameID());
@@ -35,7 +35,7 @@ class GameEventLoggerUT {
         Random random = new Random();
         for (int i = 0; i < 800; i++) {
             int gameMinute = random.nextInt(91);
-            GameEvent goal = new Goal(g.getGameID(), g.getGameDate(), gameMinute, new Team(), (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true));
+            GameEvent goal = new Goal(g.getGameID(), g.getGameDate(), gameMinute, new Team(), (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null));
             g.addNewEvent(goal);
         }
         g.sort();
@@ -51,7 +51,7 @@ class GameEventLoggerUT {
         UserController u = new UserController();
         GameEventLogger g = new GameEventLogger("1", LocalDate.now());
         assertEquals(0, g.getEventList().size());
-        GameEvent goal = new Goal(g.getGameID(), g.getGameDate(), 0, new Team(), (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true));
+        GameEvent goal = new Goal(g.getGameID(), g.getGameDate(), 0, new Team(), (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null));
         g.addNewEvent(goal);
         assertEquals(1, g.getEventList().size());
         assertEquals(goal.getGameID(), g.getEventList().get(0).getGameID());
