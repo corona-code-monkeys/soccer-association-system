@@ -3,11 +3,6 @@ package com.SAS.facility;
 import com.SAS.game.Game;
 import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamAsset;
-
-import com.SAS.game.Game;
-import com.SAS.team.Team;
-
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,13 +58,14 @@ public class Facility implements TeamAsset {
     }
 
     /**
-     * This function sets the name of the stadium
+     * This function sets the name of the facility
+     * @param name
+     * @return true or false
      */
     public boolean setName(String name) {
         if (name == null || name.length() == 0) {
             return false;
         }
-
         this.name = name;
         return true;
     }
@@ -89,9 +85,8 @@ public class Facility implements TeamAsset {
      * @param location
      */
     public boolean setLocation(String location) {
-        if (location == null || location.length() == 0) {
+        if (location ==null || location.trim().isEmpty())
             return false;
-        }
         this.location = location;
         return true;
     }
@@ -110,8 +105,11 @@ public class Facility implements TeamAsset {
      *
      * @param gamesList
      */
-    public void setGamesList(List<Game> gamesList) {
+    public boolean setGamesList(List<Game> gamesList) {
+        if (gamesList == null || gamesList.size() == 0)
+            return false;
         this.gamesList = gamesList;
+        return true;
     }
 
     /**
@@ -128,10 +126,11 @@ public class Facility implements TeamAsset {
      *
      * @param homeTeam
      */
-    public void setTeam(Team homeTeam) {
-        if (homeTeam != null) {
-            this.homeTeam = homeTeam;
-        }
+    public boolean setTeam(Team homeTeam) {
+        if (homeTeam == null)
+            return false;
+        this.homeTeam = homeTeam;
+        return true;
     }
 
     public facilityType getFacilityType() {
@@ -152,8 +151,11 @@ public class Facility implements TeamAsset {
      *
      * @param facilityT
      */
-    public void setFacilityType(facilityType facilityT) {
+    public boolean setFacilityType(facilityType facilityT) {
+        if (facilityT == null)
+            return false;
         this.facilityT = facilityT;
+        return true;
     }
 
     /**
@@ -167,13 +169,11 @@ public class Facility implements TeamAsset {
         if (details == null) {
             return false;
         }
-
         for (String value : details) {
             if (value == null || value.length() == 0) {
                 return false;
             }
         }
-
         //first is name, second is location, third is type
         facilityType ft = convertStringToFacilityType(details.get(2));
         if (ft == null)
@@ -184,6 +184,19 @@ public class Facility implements TeamAsset {
             setFacilityType(ft);
             return true;
         }
+    }
+
+    /**
+     * This function returns true if all items in the list are valid, otherwise false
+     * @param details
+     * @return true or false
+     */
+    private boolean checkItems(List<String> details) {
+        for (String item: details){
+            if (item == null || item.trim().isEmpty())
+                return false;
+        }
+        return true;
     }
 
     /**
@@ -204,4 +217,11 @@ public class Facility implements TeamAsset {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Facility{" +
+                "name= '" + name + '\'' +
+                ", facility type= " + facilityT +
+                '}';
+    }
 }

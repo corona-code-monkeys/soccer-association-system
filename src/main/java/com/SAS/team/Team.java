@@ -5,6 +5,7 @@ import com.SAS.League.Season;
 import com.SAS.User.*;
 import com.SAS.facility.Facility;
 import com.SAS.facility.facilityType;
+import com.SAS.teamManagenemt.TeamAsset;
 import com.SAS.transaction.Transaction;
 import com.SAS.transaction.TransactionType;
 
@@ -214,7 +215,6 @@ public class Team {
         if (newFacility == null) {
             return false;
         }
-
         teamFacilities.add(newFacility);
         return true;
     }
@@ -231,8 +231,7 @@ public class Team {
 
 
     /**
-     * The function return the manager of the team
-     *
+     * The function return the manager of the teaצ
      * @return
      */
     public TeamManager getManager() {
@@ -250,11 +249,9 @@ public class Team {
         if (newManager == null) {
             return false;
         }
-
         this.manager = newManager;
         return true;
     }
-
 
     /**
      * The function returns the team owners
@@ -284,7 +281,6 @@ public class Team {
         if (teamOwner == null) {
             return false;
         }
-
         this.owners.add(teamOwner);
         return true;
     }
@@ -410,6 +406,48 @@ public class Team {
     }
 
     /**
+     * This function returns all the team assets
+     * @return List<TeamAsset>
+     */
+    public List<TeamAsset> getAllAssets(){
+        List<TeamAsset> assets = new LinkedList<>();
+        assets.addAll(players);
+        assets.addAll(teamFacilities);
+        if (coach!=null)
+            assets.add(coach);
+        return assets;
+    }
+
+    /**
+     * This function returns the asset by type and name
+     * @param type
+     * @param name
+     * @return TeamAsset
+     */
+    public TeamAsset getAssetByNameAndType(String type, String name) {
+        if (type == null || name == null || name.trim().isEmpty())
+            return null;
+        switch (type) {
+            case "Coach":
+                return this.coach;
+            case "Player":
+                for (Player player : this.players) {
+                    if (player.getFullName().equals(name))
+                        return player;
+                }
+                return null;
+            case "Facility":
+                for (Facility facility: this.teamFacilities) {
+                    if (facility.getName().equals(name))
+                        return facility;
+                }
+                return null;
+            default:
+                return null;
+        }
+    }
+
+     /**
      * The function returns the optional nominees for team owner - coach, team manager and players
      * @return
      */

@@ -50,10 +50,11 @@ public class Player extends Role implements TeamAsset {
      * The function sets the birth of date of the player
      * @param dateOfBirth
      */
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        if (dateOfBirth != null) {
-            this.dateOfBirth = dateOfBirth;
-        }
+    public boolean setDateOfBirth(LocalDate dateOfBirth) {
+        if (dateOfBirth == null)
+            return false;
+         this.dateOfBirth = dateOfBirth;
+         return true;
     }
 
     /**
@@ -68,20 +69,24 @@ public class Player extends Role implements TeamAsset {
      * The function sets the field role of player
      * @param fieldRole
      */
-    public void setFieldRole(FieldRole fieldRole) {
-        if (fieldRole != null) {
-            this.fieldRole = fieldRole;
-        }
+    public boolean setFieldRole(FieldRole fieldRole) {
+        if (fieldRole == null)
+            return false;
+        this.fieldRole = fieldRole;
+        return true;
     }
 
     /**
-     * The function adds a personal page to the player
+     * The function adds personal page to the coach
      * @param description
+     * @return pageID - int
      */
-    public void addPage(String description) {
+    public int addPage(String description) {
         if (description != null && !description.trim().isEmpty()) {
             this.personalPage = new PersonalPage(description);
+            return this.personalPage.getPageID();
         }
+        return -1;
     }
 
     /**
@@ -117,10 +122,11 @@ public class Player extends Role implements TeamAsset {
      * The fucntion sets the team of the player
      * @param team
      */
-    public void setTeam(Team team) {
-        if (team != null) {
-            this.team = team;
-        }
+    public boolean setTeam(Team team) {
+        if (team == null)
+            return false;
+        this.team = team;
+        return true;
     }
 
     /**
@@ -159,7 +165,10 @@ public class Player extends Role implements TeamAsset {
         }
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "Player{" +
+                "fullName='" + fullName + '\'' +
+                '}';
+    }
 }
