@@ -165,11 +165,12 @@ public class TeamManagementAT {
         myTeam.setCoach ((Coach) coach);
 
         team.getPersonalPage().setDescription(team.getPersonalPage().getDescription() + '\n' + "Coach: " + ((Coach) coach).getFullName());
-        System.out.println("Please select an asset to edit: ");
-        //show assets
+        //show personal page
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
         //enter editing mode
+        System.out.println("Please select an asset to edit: ");
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())) {
+            //show assets
             System.out.println(teamManagement.getAllTeamAssets(team).toString());
             //first is level, second is fieldRole
             System.out.println("You have selected to edit Coach: Eitan Sela");
@@ -200,9 +201,86 @@ public class TeamManagementAT {
 
     }
 
-    //Todo - Chen
     @Test
-    public void removeAsset() {
+    public void removeAssetFailNotAuthorized() {
+        //preparations
+        //Add asset to team
+        Team myTeam = ((TeamOwner) teamOwner).getTeam();
+        Facility fac = new Facility();
+        fac.setName("Ironi A field");
+        fac.setLocation("Tel Aviv");
+        fac.setFacilityType(facilityType.TRAINING);
+        myTeam.addFacility(fac);
+        myTeam.getPersonalPage().setDescription(myTeam.getPersonalPage().getDescription() + '\n' + "Facilities: " + fac.getName());
+
+        //show personal page
+        ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
+
+        //add new Team and make him its owner
+        Team otherTeam = new Team("Maccabi Beer Sheva", (TeamOwner)teamOwner);
+        ((TeamOwner)teamOwner).setTeam(otherTeam);
+
+        //enter editing mode
+        boolean canEdit = teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam());
+        if (canEdit) {
+            //show assets
+            System.out.println("Please select an asset to delete: ");
+            System.out.println(teamManagement.getAllTeamAssets(team).toString());
+            System.out.println("Are you sure you want to remove Ironi A field");
+            System.out.println("confirm");
+            TeamAsset asset = myTeam.getAssetByNameAndType("Facility", "Ironi A field");
+            if (teamManagement.removeAsset(asset, myTeam, teamOwner)){
+                System.out.println("The asset was removed successfully");
+            }
+            else{
+                System.out.println("You are not authorized to delete an asset for the team: " + team.getName());
+                assertNotNull(asset);
+            }
+        }
+        else{
+            System.out.println("You are not authorized to delete an asset for the team: " + team.getName());
+        }
+    }
+
+
+    @Test
+    public void removeAssetSuccess() {
+        //preparations
+        //Add asset to team
+        Team myTeam = ((TeamOwner) teamOwner).getTeam();
+        Facility fac = new Facility();
+        fac.setName("Ironi A field");
+        fac.setLocation("Tel Aviv");
+        fac.setFacilityType(facilityType.TRAINING);
+        fac.setTeam(myTeam);
+        myTeam.addFacility(fac);
+        myTeam.getPersonalPage().setDescription(myTeam.getPersonalPage().getDescription() + '\n' + "Facilities: " + fac.getName());
+
+        //show personal page
+        ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
+
+        //enter editing mode
+        boolean canEdit = teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam());
+        if (canEdit) {
+            //show assets
+            System.out.println("Please select an asset to delete: ");
+            System.out.println(teamManagement.getAllTeamAssets(team).toString());
+            System.out.println("Are you sure you want to remove Ironi A field");
+            System.out.println("confirm");
+            TeamAsset asset = myTeam.getAssetByNameAndType("Facility", "Ironi A field");
+            boolean removed = teamManagement.removeAsset(asset, myTeam, teamOwner);
+            if (removed == true){
+                assertFalse(myTeam.getFacilities().contains(asset));
+                System.out.println("The asset was removed successfully");
+                asset = null;
+            }
+            else{
+                System.out.println("You are not authorized to delete an asset for the team: " + team.getName());
+            }
+        }
+        else{
+            System.out.println("You are not authorized to delete an asset for the team: " + team.getName());
+        }
     }
 
 
