@@ -661,6 +661,5 @@ public class TeamManagementAT {
                 System.out.println("The user is unauthorized to open the team " + myTeam.getName());
             }
         }
-
-   
+    }
 }
