@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.validation.constraints.AssertTrue;
 
-class OnePointForWinAndNoneForDrawTest {
+class OnePointForWinAndNoneForDrawUT {
     OnePointForWinAndNoneForDraw onePointForWinAndNoneForDraw= new OnePointForWinAndNoneForDraw();
     @Test
     void toStringTest() {

@@ -3,7 +3,7 @@ package com.SAS.League;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class OneRoundLeagueTest {
+class OneRoundLeagueUT {
     OneRoundLeague one= new OneRoundLeague();
     @Test
     void toStringTest() {

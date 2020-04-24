@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class addLeagueBottomUp {
+public class addLeagueIT {
     public static League driverInitLeague(String name) {
         League league = new League(name);
             if (CRUD.addLeague(league)) {

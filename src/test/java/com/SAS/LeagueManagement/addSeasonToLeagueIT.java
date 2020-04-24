@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 
-public class addSeasonToLeagueBottomUp {
+public class addSeasonToLeagueIT {
     public static boolean driverAddSeasonToALeague(Season season, League league) {
         if (CRUD.isLeagueExist(league) && CRUD.isSeasonExist(season)) {
             CRUD.addLeagueToSeason(season, league, null, null, null);

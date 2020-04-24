@@ -12,7 +12,7 @@ import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LeagueTest {
+class LeagueUT {
     League league = new League("test");
     Season season = new Season(2020, new HashSet<>(), new HashSet<>());
 

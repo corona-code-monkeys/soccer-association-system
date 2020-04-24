@@ -5,7 +5,7 @@ import com.SAS.crudoperations.CRUD;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class initLeagueBottomUp {
+public class initLeagueIT {
     public static boolean addLeagueStub(League league) {
         return CRUD.addLeague(league);
     }

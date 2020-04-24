@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GamesArrangementTest {
+class GamesArrangementUT {
 
     @Test
     public void addGame() {

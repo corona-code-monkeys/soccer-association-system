@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class assignRefereesToLeagueInSpecificSeasonBottomUp {
+public class assignRefereesToLeagueInSpecificSeasonIT {
     public static boolean isLeagueExistStub(League league) {
         return CRUD.isLeagueExist(league);
     }

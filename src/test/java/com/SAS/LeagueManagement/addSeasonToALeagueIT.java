@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 
-public class addSeasonToALeagueBottomUp {
+public class addSeasonToALeagueIT {
     public static boolean isLeagueExistStub(League league) {
         return CRUD.isLeagueExist(league);
     }

@@ -3,7 +3,7 @@ package com.SAS.League;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class NumberOfWinsTest {
+class NumberOfWinsUT {
     NumberOfWins wins = new NumberOfWins();
 
     @Test

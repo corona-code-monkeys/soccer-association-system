@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class assignAndRemoveRefereesFromLeagueBottomUp {
+public class assignAndRemoveRefereesFromIT {
 
     public static boolean isLeagueExistStub(League league) {
         return CRUD.isLeagueExist(league);
