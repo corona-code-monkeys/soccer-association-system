@@ -23,7 +23,7 @@ public class TeamManagementAT {
     public void setUp()  {
         userController = new UserController();
         teamManagement = new TeamManagement(userController);
-        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true);
+        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true, null);
         team = new Team("Maccabi Tel Aviv", (TeamOwner)teamOwner);
         ((TeamOwner) teamOwner).setTeam(team);
     }
