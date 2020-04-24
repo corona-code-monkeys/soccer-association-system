@@ -14,7 +14,6 @@ public class LeagueManagementController {
     private LinkedList<LeagueRankPolicy> rankPolicies;
     private LinkedList<PointsPolicy> pointsPolicies;
     private LinkedList<GamesPolicy> gamesPolicies;
-    private CRUD crud = new CRUD();
 
     /**
      * Constructor
@@ -62,8 +61,8 @@ public class LeagueManagementController {
 
     public League initLeague(String name) {
         League league= new League(name);
-        if (!crud.isLeagueExist(league)) {
-            if (crud.addLeague(league)) {
+        if (!CRUD.isLeagueExist(league)) {
+            if (CRUD.addLeague(league)) {
                 return league;
             }
         }
@@ -71,21 +70,21 @@ public class LeagueManagementController {
     }
 
     public void addSeasonToALeague(Season season, League league) {
-        if (crud.isLeagueExist(league) && crud.isSeasonExist(season)) {
-            crud.addLeagueToSeason(season, league, null, null, null);
-            crud.addSeasonToLeague(league, season, null, null, null);
+        if (CRUD.isLeagueExist(league) && CRUD.isSeasonExist(season)) {
+            CRUD.addLeagueToSeason(season, league, null, null, null);
+            CRUD.addSeasonToLeague(league, season, null, null, null);
         }
     }
 
     public void assignAndRemoveRefereesFromLeague(League league, List<Referee> referees) {
-        if (crud.isLeagueExist(league)) {
-            crud.addAndRemoveRefereesFromLeague(league, referees);
+        if (CRUD.isLeagueExist(league)) {
+            CRUD.addAndRemoveRefereesFromLeague(league, referees);
         }
     }
 
     public boolean assignRefereesToLeagueInSpecificSeason(League league, Season season, List<Referee> referees) {
-        if (crud.isLeagueExist(league) && crud.isSeasonExist(season)) {
-            if (crud.addRefereesToLeagueInSeason(league, season, referees)) {
+        if (CRUD.isLeagueExist(league) && CRUD.isSeasonExist(season)) {
+            if (CRUD.addRefereesToLeagueInSeason(league, season, referees)) {
                 return true;
             }
         }
