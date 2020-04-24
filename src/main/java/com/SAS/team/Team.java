@@ -408,4 +408,61 @@ public class Team {
     public List<Facility> getFacilities() {
         return this.teamFacilities;
     }
+
+    /**
+     * The function returns the optional nominees for team owner - coach, team manager and players
+     * @return
+     */
+    public List<User> getOptionalNomineesForTeamOwner() {
+        List<User> optionalNominees = new LinkedList<User>();
+        if (this.manager != null) {
+            optionalNominees.add(getManager());
+        }
+
+        if (this.coach != null) {
+            optionalNominees.add(getCoach());
+        }
+
+        if (this.players.size() > 0) {
+            optionalNominees.addAll(getPlayers());
+        }
+
+        return optionalNominees;
+    }
+
+    /**
+     * The function receives a full name of a user and returns the user if it's an optional for team owner nominee,
+     * otherwise return null
+     * @param fullName
+     * @return
+     */
+    public User getUserForTeamOwner(String fullName) {
+        if (this.manager != null && this.manager.getFullName().equals(fullName)) {
+            return manager;
+        }
+
+        else if (this.coach != null && this.coach.getFullName().equals(fullName)) {
+            return coach;
+        }
+
+        else {
+            for (Player player : this.players) {
+                if (player.getFullName().equals(fullName)) {
+                    return player;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public User getTeamOwnerByFullName(String fullName) {
+        for (TeamOwner owner : this.owners) {
+            if (owner.getFullName().equals(fullName)) {
+                return owner;
+            }
+        }
+
+        return null;
+    }
 }
