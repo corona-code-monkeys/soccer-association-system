@@ -22,7 +22,6 @@ class FacilityIT {
 
     @Test
     void addValidGameToFacilityBooleanCheck() {
-        facility.addGame(game);
         boolean result = facility.addGame(game);
         assertTrue(result);
     }
