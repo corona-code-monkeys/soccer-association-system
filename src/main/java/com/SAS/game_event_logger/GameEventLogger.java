@@ -8,7 +8,31 @@ import java.util.List;
 public class GameEventLogger {
     private String gameID;
     private LocalDate gameDate;
-    public List<GameEvent> eventList;
+    private List<GameEvent> eventList;
+
+    public String getGameID() {
+        return gameID;
+    }
+
+    public void setGameID(String gameID) {
+        this.gameID = gameID;
+    }
+
+    public LocalDate getGameDate() {
+        return gameDate;
+    }
+
+    public void setGameDate(LocalDate gameDate) {
+        this.gameDate = gameDate;
+    }
+
+    public List<GameEvent> getEventList() {
+        return eventList;
+    }
+
+    public void setEventList(List<GameEvent> eventList) {
+        this.eventList = eventList;
+    }
 
     public GameEventLogger(String gameID, LocalDate gameDate) {
         this.gameID = gameID;

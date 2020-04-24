@@ -460,7 +460,7 @@ public class CRUD {
             return null;
         } else {
             GameEventLogger logger = game.getEvents();
-            return logger.eventList;
+            return logger.getEventList();
         }
     }
 
