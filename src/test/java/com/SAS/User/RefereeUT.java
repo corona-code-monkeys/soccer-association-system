@@ -25,23 +25,6 @@ public class RefereeUT {
     }
 
     @Test
-    public void addGame() {
-        Game game = new Game();
-        ((Referee)user).addGame(game);
-
-        assertTrue(((Referee)user).getGames().contains(game));
-    }
-
-    @Test
-    public void removeGame() {
-        Game game = new Game();
-        ((Referee)user).addGame(game);
-        ((Referee)user).removeGame(game);
-
-        assertTrue(!((Referee)user).getGames().contains(game));
-    }
-
-    @Test
     public void getRole() {
         assertEquals("Referee", ((Referee)user).getRole());
     }

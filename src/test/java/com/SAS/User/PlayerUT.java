@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class PlayerUT {
 
-    User user;
+    private User user;
 
     @Before
     public void setUp() throws Exception {
@@ -40,13 +40,6 @@ public class PlayerUT {
     public void addPage() {
         ((Player)user).addPage("I'm a player of the best team.");
         assertTrue(((Player)user).getPageID() > -1);
-    }
-
-    @Test
-    public void setTeam() {
-        Team team = new Team();
-        ((Player)user).setTeam(team);
-        assertEquals(team, ((Player)user).getTeam());
     }
 
     @Test
