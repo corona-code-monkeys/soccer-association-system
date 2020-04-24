@@ -6,10 +6,13 @@ import com.SAS.facility.facilityType;
 import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamAsset;
 import com.SAS.teamManagenemt.TeamManagement;
+import com.SAS.transaction.Transaction;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -462,9 +465,99 @@ public class TeamManagementAT {
         }
     }
 
-    //Todo
     @Test
-    public void addTransactionToTeam() {
+    public void addTransactionToTeamSuccess() {
+        Team myTeam = ((TeamOwner) teamOwner).getTeam();
+        ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
+        //enter editing mode
+        if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())) {
+
+            //checks is thr user can add transaction
+            if (teamManagement.canAddTransaction(teamOwner)) {
+
+                ///first amount, second type, third date and last description
+                System.out.println("Please select transaction type: 1 for Income, 2 for Expense");
+                String type = "Income";
+                System.out.println("You have selected Income");
+                System.out.println("Please enter the amount");
+                String amount = "1200";
+                System.out.println(amount);
+                System.out.println("Please enter the date");
+                String date = "2020-04-12";
+                System.out.println(date);
+                System.out.println("Please enter the description");
+                String desc = "Stadium maintenance";
+                System.out.println(desc);
+
+                List<String> details = new LinkedList<String>() {
+                    {
+                        add(amount);
+                        add(type);
+                        add(date);
+                        add(desc);
+                    }
+                };
+
+                Transaction trans = teamManagement.addTransactionToTeam(myTeam, details, teamOwner);
+                assertTrue(myTeam.getTransactionList().contains(trans));
+                System.out.println("The transaction added successfully.");
+            }
+
+        }
+    }
+
+    @Test
+    public void addTransactionToTeamFail() {
+        Team myTeam = ((TeamOwner) teamOwner).getTeam();
+
+        //add team manager
+        User teamManager = userController.createUser("Rami Levi", "RamiL123", "Rami Levi", UserType.TEAM_MANAGER, true, null);
+        ((TeamManager)teamManager).setTeam(myTeam);
+        myTeam.setTeamManager((TeamManager) teamManager);
+        myTeam.getPersonalPage().setDescription(myTeam.getPersonalPage().getDescription() + "\n Team Manager: " + ((TeamManager) teamManager).getFullName());
+
+        //show page
+        ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
+
+        //enter editing mode
+        if (teamManagement.enterEditingMode(teamManager, ((TeamManager) teamManager).getTeam())) {
+
+            //checks is thr user can add transaction
+            boolean isAuthorize = teamManagement.canAddTransaction(teamManager);
+            if (isAuthorize) {
+
+                ///first amount, second type, third date and last description
+                System.out.println("Please select transaction type: 1 for Income, 2 for Expense");
+                String type = "Income";
+                System.out.println("You have selected Income");
+                System.out.println("Please enter the amount");
+                String amount = "1200";
+                System.out.println(amount);
+                System.out.println("Please enter the date");
+                String date = "2020-04-12";
+                System.out.println(date);
+                System.out.println("Please enter the description");
+                String desc = "Stadium maintenance";
+                System.out.println(desc);
+
+                List<String> details = new LinkedList<String>() {
+                    {
+                        add(amount);
+                        add(type);
+                        add(date);
+                        add(desc);
+                    }
+                };
+
+                Transaction trans = teamManagement.addTransactionToTeam(myTeam, details, teamOwner);
+            }
+
+            else {
+                assertFalse(isAuthorize);
+                System.out.println("You are not authorize to add transactions.");
+            }
+
+        }
     }
 
     //Todo - Yaar
