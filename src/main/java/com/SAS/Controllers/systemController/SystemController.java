@@ -7,17 +7,17 @@ import com.SAS.User.UserType;
 import java.util.LinkedList;
 
 
-public class systemController {
+public class SystemController {
 
     private LinkedList<String> externalSystemsAvailable;
-    private LinkedList<externalSystem> connectedExternalSystems;
+    private LinkedList<ExternalSystem> connectedExternalSystems;
     private UserController userController;
     private User admin;
 
     /**
      * Constructor
      */
-    public systemController() {
+    public SystemController() {
         this.connectedExternalSystems = new LinkedList<>();
         this.externalSystemsAvailable = new LinkedList<>();
         this.userController = new UserController();
@@ -54,8 +54,9 @@ public class systemController {
     /**
      * The function starts the first setup of the system
      */
-    public void openAssociationSystem() {
-        System.out.println("Welcome to the setup of the soccer association system");
+    public String openAssociationSystem() {
+        String welcome = "Welcome to the setup of the soccer association system";
+        return welcome;
     }
 
     /**
@@ -75,28 +76,21 @@ public class systemController {
         switch (name) {
             case "Accounting":
                 if (!searchSystem(name)) {
-                    accountingSystem accountingSystem = new accountingSystem();
+                    AccountingSystem accountingSystem = new AccountingSystem();
                     accountingSystem.connectSystem();
                     connectedExternalSystems.add(accountingSystem);
                     return true;
                 }
 
-                System.out.println("Accounting system is already connected to the system...");
-                return false;
-
             case "Tax":
                 if (!searchSystem(name)) {
-                    taxSystem taxSystem = new taxSystem();
+                    TaxSystem taxSystem = new TaxSystem();
                     taxSystem.connectSystem();
                     connectedExternalSystems.add(taxSystem);
                     return true;
                 }
 
-                System.out.println("Tax system is already connected to the system...");
-                return false;
-
             default:
-                System.out.println("No External System with this name was found");
                 return false;
         }
     }
@@ -107,7 +101,7 @@ public class systemController {
      * @return
      */
     private boolean searchSystem(String name) {
-        for (externalSystem system : connectedExternalSystems) {
+        for (ExternalSystem system : connectedExternalSystems) {
             if (system.getSystemName().equals(name)){
                 return true;
             }
