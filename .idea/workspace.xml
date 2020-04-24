@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f21b45d6-941e-4df2-b51f-fffc5bd4b13c" name="Default Changelist" comment="">
+    <list default="true" id="7335264c-f5fd-4de3-8f38-6144e418ddda" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/addSeasonToALeagueBottomUp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/assignAndRemoveRefereesFromLeagueBottomUp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/assignRefereesToLeagueInSpecificSeasonBottomUp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/initLeagueBottomUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -17,10 +21,22 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="true" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/SAS/LeagueManagement/LeagueManagementController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="93">
+              <caret line="88" column="57" selection-start-line="88" selection-start-column="19" selection-end-line="88" selection-end-column="57" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="true" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/SAS/crudoperations/CRUD.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7">
-              <caret line="105" column="14" selection-start-line="105" selection-start-column="14" selection-end-line="105" selection-end-column="14" />
+            <state relative-caret-position="110">
+              <caret line="326" column="45" lean-forward="true" selection-start-line="326" selection-end-line="327" />
               <folding>
                 <element signature="e#4462#4463#0" expanded="true" />
                 <element signature="e#4494#4495#0" expanded="true" />
@@ -30,10 +46,59 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
+        <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/assignRefereesToLeagueInSpecificSeasonBottomUp.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-561">
-              <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
+            <state relative-caret-position="226">
+              <caret line="34" column="76" selection-start-line="34" selection-start-column="76" selection-end-line="34" selection-end-column="76" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#160#161#0" expanded="true" />
+                <element signature="e#209#210#0" expanded="true" />
+                <element signature="e#553#554#0" expanded="true" />
+                <element signature="e#595#596#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/assignAndRemoveRefereesFromLeagueBottomUp.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-46">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="32" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#319#320#0" expanded="true" />
+                <element signature="e#360#361#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/addSeasonToALeagueBottomUp.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="325">
+              <caret line="27" selection-start-line="27" selection-end-line="29" selection-end-column="57" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#140#141#0" expanded="true" />
+                <element signature="e#189#190#0" expanded="true" />
+                <element signature="e#308#309#0" expanded="true" />
+                <element signature="e#357#358#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/isLeagueExistBottomUp.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="569">
+              <caret line="43" column="4" lean-forward="true" selection-start-line="43" selection-start-column="4" selection-end-line="50" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -54,10 +119,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>addLea</find>
-      <find>settea</find>
-      <find>league</find>
-      <find>getlea</find>
       <find>crea</find>
       <find>addre</find>
       <find>remove</find>
@@ -66,23 +127,27 @@
       <find>isre</find>
       <find>isref</find>
       <find>assign</find>
-      <find>addlea</find>
       <find>ini</find>
       <find>initLea</find>
       <find>addSea</find>
       <find>as</find>
       <find>assignandre</find>
-      <find>addsea</find>
       <find>islea</find>
       <find>isseasone</find>
       <find>addrefereesto</find>
       <find>addreferees</find>
       <find>init</find>
       <find>addseas</find>
-      <find>addleagueto</find>
       <find>add</find>
       <find>addAnd</find>
       <find>assignrefe</find>
+      <find>addlea</find>
+      <find>initlea</find>
+      <find>addleagueto</find>
+      <find>addsea</find>
+      <find>assignand</find>
+      <find>addand</find>
+      <find>addandre</find>
       <find>addrefe</find>
     </findStrings>
   </component>
@@ -97,11 +162,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/SAS/League/GamesArrangment.java" />
-        <option value="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/LeagueInitUseCaseTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/SAS/LeagueManagement/AddAndRemoveRefferesUseCase.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/applicationContext.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/SAS/LeagueManagement/DefineSeasonForLeagueUseCase.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/DefineSeasonForLeagueUseCaseTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/SAS/soccer_association_system/SoccerAssociationSystemApplicationTests.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/SAS/crudoperations/LeagueManagementCRUD.java" />
@@ -148,6 +208,11 @@
         <option value="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/addSeasonToLeagueBottomUp.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/addAndRemoveRefereesFromLeagueBottomUp.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/addRefereesToLeagueInSeasonBottomUp.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/initLeagueBottomI.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/initLeagueBottomUp.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/addSeasonToALeagueBottomUp.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/assignAndRemoveRefereesFromLeagueBottomUp.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/assignRefereesToLeagueInSpecificSeasonBottomUp.java" />
       </list>
     </option>
   </component>
@@ -174,12 +239,6 @@
           <item name="soccer_association_system" type="9519ce18:MavenProjectsStructure$ProjectNode" />
           <item name="Plugins" type="7aea1407:MavenProjectsStructure$PluginsNode" />
           <item name="install" type="36feed69:MavenProjectsStructure$PluginNode" />
-        </path>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="soccer_association_system" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-          <item name="Plugins" type="7aea1407:MavenProjectsStructure$PluginsNode" />
-          <item name="surefire" type="36feed69:MavenProjectsStructure$PluginNode" />
         </path>
       </expand>
       <select />
@@ -214,7 +273,81 @@
               <item name="איטרציה 2" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="soccer_association_system" type="2674bda8:ScopeViewTreeModel$GroupNode" />
               <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="איטרציה 2" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="soccer_association_system" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="איטרציה 2" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="soccer_association_system" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="com" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="איטרציה 2" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="soccer_association_system" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="com" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="SAS" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="איטרציה 2" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="soccer_association_system" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="com" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="SAS" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="LeagueManagement" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="איטרציה 2" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="soccer_association_system" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="איטרציה 2" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="soccer_association_system" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="איטרציה 2" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="soccer_association_system" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="com" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="איטרציה 2" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="soccer_association_system" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="com" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="SAS" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="איטרציה 2" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="soccer_association_system" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="com" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="SAS" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="LeagueManagement" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
@@ -226,7 +359,7 @@
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587718202456" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587721250279" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Arquillian JUnit4" value="com.SAS.LeagueManagement.DefineSeasonForLeagueUseCase" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="com.SAS.League.GamesArrangement" />
@@ -274,39 +407,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.addRefereesToLeagueInSeasonBottomUp.isLeagueExistTester">
-    <configuration name="addAndRemoveRefereesFromLeagueBottomUp.addAndRemoveRefereesFromLeagueTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="איטרציה 2" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.SAS.LeagueManagement.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.SAS.LeagueManagement" />
-      <option name="MAIN_CLASS_NAME" value="com.SAS.LeagueManagement.addAndRemoveRefereesFromLeagueBottomUp" />
-      <option name="METHOD_NAME" value="addAndRemoveRefereesFromLeagueTester" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="addLeagueToSeasonBottomUp.isSeasonExistTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="איטרציה 2" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.SAS.LeagueManagement.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.SAS.LeagueManagement" />
-      <option name="MAIN_CLASS_NAME" value="com.SAS.LeagueManagement.addLeagueToSeasonBottomUp" />
-      <option name="METHOD_NAME" value="isSeasonExistTester" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.assignRefereesToLeagueInSpecificSeasonBottomUp.initLeagueTester">
     <configuration name="addRefereesToLeagueInSeasonBottomUp.isLeagueExistTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="איטרציה 2" />
       <extension name="coverage">
@@ -323,8 +424,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="addSeasonToLeagueBottomUp.isSeasonExistTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="איטרציה 2" />
+    <configuration name="addSeasonToALeagueBottomUp.initLeagueTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="soccer_association_system" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.SAS.LeagueManagement.*" />
@@ -332,8 +433,40 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.SAS.LeagueManagement" />
-      <option name="MAIN_CLASS_NAME" value="com.SAS.LeagueManagement.addSeasonToLeagueBottomUp" />
-      <option name="METHOD_NAME" value="isSeasonExistTester" />
+      <option name="MAIN_CLASS_NAME" value="com.SAS.LeagueManagement.addSeasonToALeagueBottomUp" />
+      <option name="METHOD_NAME" value="initLeagueTester" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="assignAndRemoveRefereesFromLeagueBottomUp.initLeagueTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="soccer_association_system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.SAS.LeagueManagement.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.SAS.LeagueManagement" />
+      <option name="MAIN_CLASS_NAME" value="com.SAS.LeagueManagement.assignAndRemoveRefereesFromLeagueBottomUp" />
+      <option name="METHOD_NAME" value="initLeagueTester" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="assignRefereesToLeagueInSpecificSeasonBottomUp.initLeagueTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="soccer_association_system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.SAS.LeagueManagement.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.SAS.LeagueManagement" />
+      <option name="MAIN_CLASS_NAME" value="com.SAS.LeagueManagement.assignRefereesToLeagueInSpecificSeasonBottomUp" />
+      <option name="METHOD_NAME" value="initLeagueTester" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -358,7 +491,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="isSeasonExistBottomUp.isSeasonExistTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="initLeagueBottomUp.initLeagueTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="soccer_association_system" />
       <extension name="coverage">
         <pattern>
@@ -367,9 +500,56 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.SAS.LeagueManagement" />
-      <option name="MAIN_CLASS_NAME" value="com.SAS.LeagueManagement.isSeasonExistBottomUp" />
-      <option name="METHOD_NAME" value="isSeasonExistTester" />
+      <option name="MAIN_CLASS_NAME" value="com.SAS.LeagueManagement.initLeagueBottomUp" />
+      <option name="METHOD_NAME" value="initLeagueTester" />
       <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <module name="soccer_association_system" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+      <module name="soccer_association_system" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -389,21 +569,21 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.com.SAS.League in soccer_association_system" />
-      <item itemvalue="JUnit.isSeasonExistBottomUp.isSeasonExistTester" />
-      <item itemvalue="JUnit.addLeagueToSeasonBottomUp.isSeasonExistTester" />
-      <item itemvalue="JUnit.addSeasonToLeagueBottomUp.isSeasonExistTester" />
-      <item itemvalue="JUnit.addAndRemoveRefereesFromLeagueBottomUp.addAndRemoveRefereesFromLeagueTester" />
       <item itemvalue="JUnit.addRefereesToLeagueInSeasonBottomUp.isLeagueExistTester" />
       <item itemvalue="PIT Runner.LeagueInitUseCase" />
       <item itemvalue="Spring Boot.SoccerAssociationSystemApplication" />
+      <item itemvalue="JUnit.initLeagueBottomUp.initLeagueTester" />
+      <item itemvalue="JUnit.addSeasonToALeagueBottomUp.initLeagueTester" />
+      <item itemvalue="JUnit.assignAndRemoveRefereesFromLeagueBottomUp.initLeagueTester" />
+      <item itemvalue="JUnit.assignRefereesToLeagueInSpecificSeasonBottomUp.initLeagueTester" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.assignRefereesToLeagueInSpecificSeasonBottomUp.initLeagueTester" />
+        <item itemvalue="JUnit.assignAndRemoveRefereesFromLeagueBottomUp.initLeagueTester" />
+        <item itemvalue="JUnit.addSeasonToALeagueBottomUp.initLeagueTester" />
+        <item itemvalue="JUnit.initLeagueBottomUp.initLeagueTester" />
         <item itemvalue="JUnit.addRefereesToLeagueInSeasonBottomUp.isLeagueExistTester" />
-        <item itemvalue="JUnit.addAndRemoveRefereesFromLeagueBottomUp.addAndRemoveRefereesFromLeagueTester" />
-        <item itemvalue="JUnit.addSeasonToLeagueBottomUp.isSeasonExistTester" />
-        <item itemvalue="JUnit.addLeagueToSeasonBottomUp.isSeasonExistTester" />
-        <item itemvalue="JUnit.isSeasonExistBottomUp.isSeasonExistTester" />
       </list>
     </recent_temporary>
   </component>
@@ -451,18 +631,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="isLeagueExistBottomUp_isLeagueExistTester - 2020.04.23 at 22h 44m 34s.xml">
-      <configuration name="isLeagueExistBottomUp.isLeagueExistTester" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="isLeagueExistBottomUp_isLeagueExistTester - 2020.04.24 at 10h 07m 13s.xml">
-      <configuration name="isLeagueExistBottomUp.isLeagueExistTester" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="addLeagueBottomUp_isLeagueExistTester - 2020.04.24 at 10h 24m 52s.xml">
-      <configuration name="addLeagueBottomUp.isLeagueExistTester" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="isSeasonExistBottomUp_isSeasonExistTester - 2020.04.24 at 10h 48m 52s.xml">
-      <configuration name="isSeasonExistBottomUp.isSeasonExistTester" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="isSeasonExistBottomUp_isSeasonExistTester - 2020.04.24 at 10h 55m 10s.xml">
       <configuration name="isSeasonExistBottomUp.isSeasonExistTester" configurationId="JUnit" />
     </history-entry>
@@ -481,9 +649,21 @@
     <history-entry file="addRefereesToLeagueInSeasonBottomUp_isLeagueExistTester - 2020.04.24 at 11h 45m 43s.xml">
       <configuration name="addRefereesToLeagueInSeasonBottomUp.isLeagueExistTester" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="initLeagueBottomUp_initLeagueTester - 2020.04.24 at 12h 21m 36s.xml">
+      <configuration name="initLeagueBottomUp.initLeagueTester" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="initLeagueBottomUp_initLeagueTester - 2020.04.24 at 12h 21m 44s.xml">
+      <configuration name="initLeagueBottomUp.initLeagueTester" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="addSeasonToALeagueBottomUp_initLeagueTester - 2020.04.24 at 12h 33m 16s.xml">
+      <configuration name="addSeasonToALeagueBottomUp.initLeagueTester" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="assignAndRemoveRefereesFromLeagueBottomUp_initLeagueTester - 2020.04.24 at 12h 37m 27s.xml">
+      <configuration name="assignAndRemoveRefereesFromLeagueBottomUp.initLeagueTester" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="150006000" />
+    <option name="totallyTimeSpent" value="151541000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -504,7 +684,7 @@
       <window_info id="Favorites" order="3" sideWeight="0.50487804" side_tool="true" weight="0.18078668" />
       <window_info id="Web" order="4" side_tool="true" />
       <window_info id="Designer" order="5" />
-      <window_info active="true" content_ui="combo" id="Project" order="6" sideWeight="0.49512196" visible="true" weight="0.18078668" />
+      <window_info content_ui="combo" id="Project" order="6" sideWeight="0.49512196" visible="true" weight="0.18078668" />
       <window_info id="Structure" order="7" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Messages" order="0" weight="0.3289689" />
       <window_info anchor="bottom" id="Terminal" order="1" sideWeight="0.49924356" weight="0.35679215" />
@@ -581,6 +761,10 @@
       </configuration>
     </watches-manager>
   </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
       <expression>
@@ -596,22 +780,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/SAS/crudoperations/TransactionCRUD.java" />
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/League/BudgetTest.java" />
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/soccer_association_system/SoccerAssociationSystemApplicationTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/SAS/League/GamesPolicy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/SAS/League/GoalDifference.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
@@ -805,27 +973,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/SAS/LeagueManagement/LeagueManagementController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="21" column="41" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/SAS/League/Season.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
           <caret line="41" selection-start-line="41" selection-end-line="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-561">
-          <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -889,16 +1040,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/isLeagueExistBottomUp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="43" column="4" lean-forward="true" selection-start-line="43" selection-start-column="4" selection-end-line="50" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/addRefereesToLeagueInSeasonBottomUp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
@@ -916,13 +1057,94 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/isLeagueExistBottomUp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="569">
+          <caret line="43" column="4" lean-forward="true" selection-start-line="43" selection-start-column="4" selection-end-line="50" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="77" column="14" selection-start-line="77" selection-start-column="14" selection-end-line="77" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/initLeagueBottomUp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="20" column="5" lean-forward="true" selection-start-line="15" selection-start-column="4" selection-end-line="20" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#267#268#0" expanded="true" />
+            <element signature="e#312#313#0" expanded="true" />
+            <element signature="e#297#298#0" expanded="true" />
+            <element signature="e#342#343#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/SAS/LeagueManagement/LeagueManagementController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="93">
+          <caret line="88" column="57" selection-start-line="88" selection-start-column="19" selection-end-line="88" selection-end-column="57" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/SAS/crudoperations/CRUD.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7">
-          <caret line="105" column="14" selection-start-line="105" selection-start-column="14" selection-end-line="105" selection-end-column="14" />
+        <state relative-caret-position="110">
+          <caret line="326" column="45" lean-forward="true" selection-start-line="326" selection-end-line="327" />
           <folding>
             <element signature="e#4462#4463#0" expanded="true" />
             <element signature="e#4494#4495#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/assignAndRemoveRefereesFromLeagueBottomUp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-46">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="32" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#319#320#0" expanded="true" />
+            <element signature="e#360#361#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/addSeasonToALeagueBottomUp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="27" selection-start-line="27" selection-end-line="29" selection-end-column="57" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#140#141#0" expanded="true" />
+            <element signature="e#189#190#0" expanded="true" />
+            <element signature="e#308#309#0" expanded="true" />
+            <element signature="e#357#358#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/SAS/LeagueManagement/assignRefereesToLeagueInSpecificSeasonBottomUp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="34" column="76" selection-start-line="34" selection-start-column="76" selection-end-line="34" selection-end-column="76" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#160#161#0" expanded="true" />
+            <element signature="e#209#210#0" expanded="true" />
+            <element signature="e#553#554#0" expanded="true" />
+            <element signature="e#595#596#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -943,5 +1165,8 @@
         </settings>
       </state>
     </states>
+  </component>
+  <component name="mavenExecuteGoalHistory">
+    <option value="" />
   </component>
 </project>
