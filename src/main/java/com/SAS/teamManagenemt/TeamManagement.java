@@ -75,10 +75,17 @@ public class TeamManagement {
      * This function removes a team asset
      * @param asset
      * @param team
+     * @param user
      */
-    public void removeAsset(TeamAsset asset, Team team){
-        asset.removeAssetFromTeam();
-        asset = null;
+    public boolean removeAsset(TeamAsset asset, Team team, User user){
+        if (canAddRemoveAsset(user) && (ownsTeam(team, user) || managesTeam(team, user))) {
+            asset.removeAssetFromTeam();
+            asset = null;
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
@@ -514,11 +521,42 @@ public class TeamManagement {
     }
 
     /**
-     * Thr function returns true if the user can open and close the team, otherwise returns false
+     * The function returns true if the user can open and close the team, otherwise returns false
      * @param user
      * @return
      */
     public boolean canCloseOpenTeam(User user) {
         return user.getMyPrivileges().contains("closeTNP");
+
+     /** 
+     * This function returns all the team assets
+     * @param team
+     * @return
+     */
+    public StringBuilder getAllTeamAssets(Team team){
+        StringBuilder assets = new StringBuilder();
+        for (TeamAsset asset: team.getAllAssets())
+            assets.append(asset);
+        return assets;
+    }
+
+    /**
+     * This function returns the team asset by type and name
+     * @param team
+     * @param type
+     * @param name
+     * @return
+     */
+    public TeamAsset getAssetByNameAndType(Team team, String type, String name) {
+        return team.getAssetByNameAndType(type, name);
+    }
+
+    /**
+     * The function returns true if the user can add new transaction, otherwise returns false
+     * @param user
+     * @return
+     */
+    public boolean canAddTransaction(User user) {
+        return user.getMyPrivileges().contains("addTrans");
     }
 }

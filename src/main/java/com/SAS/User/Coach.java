@@ -74,10 +74,11 @@ public class Coach extends Role implements TeamAsset {
      *
      * @param fieldRole
      */
-    public void setFieldRole(FieldRole fieldRole) {
-        if (fieldRole != null) {
-            this.fieldRole = fieldRole;
-        }
+    public boolean setFieldRole(FieldRole fieldRole) {
+        if (fieldRole == null)
+            return false;
+        this.fieldRole = fieldRole;
+        return true;
     }
 
     /**
@@ -94,10 +95,11 @@ public class Coach extends Role implements TeamAsset {
      *
      * @param team
      */
-    public void setTeam(Team team) {
-        if (team != null) {
-            this.team = team;
-        }
+    public boolean setTeam(Team team) {
+        if (team == null)
+            return false;
+        this.team = team;
+        return true;
     }
 
     /**
@@ -176,6 +178,10 @@ public class Coach extends Role implements TeamAsset {
         }
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Coach{" +
+                "fullName='" + fullName + '\'' +
+                '}';
+    }
 }
