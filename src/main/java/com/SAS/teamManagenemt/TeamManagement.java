@@ -435,29 +435,6 @@ public class TeamManagement {
     }
 
     /**
-     * This function returns all the team assets
-     * @param team
-     * @return
-     */
-    public StringBuilder getAllTeamAssets(Team team){
-        StringBuilder assets = new StringBuilder();
-        for (TeamAsset asset: team.getAllAssets())
-            assets.append(asset);
-        return assets;
-    }
-
-    /**
-     * This function returns the team asset by type and name
-     * @param team
-     * @param type
-     * @param name
-     * @return
-     */
-    public TeamAsset getAssetByNameAndType(Team team, String type, String name) {
-        return team.getAssetByNameAndType(type, name);
-    }
-
-    /**
      * The function returns a string of the optional nominees for team owner
      * @param user
      * @param team
@@ -515,5 +492,28 @@ public class TeamManagement {
      */
     public User getTeamOwnerUserByName(String fullName, Team team) {
         return team.getTeamOwnerByFullName(fullName);
+    }
+
+    /**
+     * This function returns all the team assets
+     * @param team
+     * @return
+     */
+    public StringBuilder getAllTeamAssets(Team team){
+        StringBuilder assets = new StringBuilder();
+        for (TeamAsset asset: team.getAllAssets())
+            assets.append(asset);
+        return assets;
+    }
+
+    /**
+     * This function returns the team asset by type and name
+     * @param team
+     * @param type
+     * @param name
+     * @return
+     */
+    public TeamAsset getAssetByNameAndType(Team team, String type, String name) {
+        return team.getAssetByNameAndType(type, name);
     }
 }

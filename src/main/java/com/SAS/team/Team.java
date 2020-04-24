@@ -231,8 +231,7 @@ public class Team {
 
 
     /**
-     * The function return the manager of the team
-     *
+     * The function return the manager of the teaצ
      * @return
      */
     public TeamManager getManager() {
@@ -407,7 +406,6 @@ public class Team {
     }
 
     /**
-<<<<<<< HEAD
      * This function returns all the team assets
      * @return List<TeamAsset>
      */
@@ -439,7 +437,7 @@ public class Team {
                 }
                 return null;
             case "Facility":
-                for (Facility facility : this.teamFacilities) {
+                for (Facility facility: this.teamFacilities) {
                     if (facility.getName().equals(name))
                         return facility;
                 }
