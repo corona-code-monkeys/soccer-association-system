@@ -33,7 +33,12 @@ public class TeamManagement {
      * @param team
      * @return the created asset
      */
-    public TeamAsset AddAssetToTeam (String assetType, Team team) {
+    public TeamAsset AddAssetToTeam (String assetType, Team team, User user) {
+        if (! canAddRemoveAsset(user)){
+            System.out.println("You are not authorized to add an asset to this team");
+            return null;
+        }
+
         TeamAsset asset = null;
         //create the asset
         switch (assetType) {
@@ -293,6 +298,16 @@ public class TeamManagement {
     }
 
     /**
+     * The function returns true if the user is the manages of the team, otherwise returns false
+     * @param team
+     * @param user
+     * @return true - if the user is the team manager, otherwise - false
+     */
+    private boolean managesTeam(Team team, User user) {
+        return user instanceof TeamManager && ((TeamManager) user).getTeam() == team;
+    }
+
+    /**
      * The fcuntion receives the parameters of new transaction and the team and add it if it's legal -
      * not exceed the budget of the team
      * @param team
@@ -397,5 +412,23 @@ public class TeamManagement {
 
     }
 
+    /**
+     * This function chacks if the received user is authorized to add /remove asset
+     * @param user
+     * @return true or false
+     */
+    public boolean canAddRemoveAsset(User user){
+        return user.getMyPrivileges().contains("add/removeA");
+    }
 
+    /**
+     * This function returns true if the user can edit the team page, otherwise false
+     * @param user
+     * @param team
+     * @return true or false
+     */
+    public boolean enterEditingMode(User user, Team team){
+        return (user instanceof TeamOwner && ownsTeam(team, user) || user instanceof TeamManager && managesTeam(team, user));
+
+    }
 }
