@@ -34,8 +34,8 @@ class TeamIT {
 
     @Test
     void addValidPlayerToTeamTest() {
-        player = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.PLAYER, true);
-        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true);
+        player = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.PLAYER, true, null);
+        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true, null);
         boolean res = team.addPlayerToTeam((Player) player);
         assertEquals(1, team.getPlayers().size());
     }
@@ -69,7 +69,7 @@ class TeamIT {
     @Test
     void addValidTransactionToTeamTest() {
         LocalDate localDate = LocalDate.now();
-        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true);
+        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true, null);
         Transaction transaction = new Transaction(1000.0, TransactionType.INCOME, localDate, team, "tickets", (TeamOwner) teamOwner);
         boolean res = team.addTransactionToTeam(transaction);
         assertTrue(res);
@@ -115,7 +115,7 @@ class TeamIT {
 
     @Test
     void addValidTeamOwnerTest() {
-        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true);
+        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true, null);
         team.addTeamOwner((TeamOwner) teamOwner);
         TeamOwner res;
         List<TeamOwner> owners = team.getOwners();
@@ -125,7 +125,7 @@ class TeamIT {
 
     @Test
     void addInvalidTeamOwnerTest() {
-        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true);
+        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true, null);
         TeamOwner nullOwner = null;
         team.addTeamOwner((TeamOwner) teamOwner);
         team.addTeamOwner((TeamOwner) nullOwner);
@@ -135,7 +135,7 @@ class TeamIT {
 
     @Test
     void removeTeamOwnerTest() {
-        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true);
+        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true, null);
         team.addTeamOwner((TeamOwner) teamOwner);
         team.removeTeamOwner((TeamOwner) teamOwner);
         List<TeamOwner> owners = team.getOwners();
@@ -144,7 +144,7 @@ class TeamIT {
 
     @Test
     void setValidCoachTest() {
-        coach = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.COACH, true);
+        coach = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.COACH, true, null);
         team.setCoach((Coach) coach);
         assertEquals(coach.getUserID(), team.getCoach().getUserID());
     }
