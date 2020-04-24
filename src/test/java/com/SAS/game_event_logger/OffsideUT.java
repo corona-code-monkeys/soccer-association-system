@@ -18,7 +18,7 @@ class OffsideUT {
         String gameID = "1";
         Team t = new Team();
         t.setName("BGU");
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
         Offside offside = new Offside(gameID, LocalDate.now(), 0, t, p);
         assertEquals(t.getName(), offside.getTeamInFavor().getName());
     }
@@ -29,7 +29,7 @@ class OffsideUT {
         String gameID = "1";
         Team t = new Team();
         t.setName("BGU");
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
         Offside offside = new Offside(gameID, LocalDate.now(), 0, null, p);
         assertNull(offside.getTeamInFavor());
         offside.setTeamInFavor(t);
@@ -42,7 +42,7 @@ class OffsideUT {
         String gameID = "1";
         Team t = new Team();
         t.setName("BGU");
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
         Offside offside = new Offside(gameID, LocalDate.now(), 0, t, p);
         assertEquals(p.getFullName(), offside.getPlayerInOffside().getFullName());
     }
@@ -53,7 +53,7 @@ class OffsideUT {
         String gameID = "1";
         Team t = new Team();
         t.setName("BGU");
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
         Offside offside = new Offside(gameID, LocalDate.now(), 0, t, null);
         assertNull(offside.getPlayerInOffside());
         offside.setPlayerInOffside(p);
