@@ -35,7 +35,6 @@ class TeamIT {
     @Test
     void addValidPlayerToTeamTest() {
         player = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.PLAYER, true, null);
-        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true, null);
         boolean res = team.addPlayerToTeam((Player) player);
         assertEquals(1, team.getPlayers().size());
     }
