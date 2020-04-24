@@ -1,6 +1,6 @@
 package com.SAS.transaction;
 
-public enum transactionType {
+public enum TransactionType {
     EXPENSE,
     INCOME
 }
