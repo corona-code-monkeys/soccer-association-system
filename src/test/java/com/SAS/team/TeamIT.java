@@ -100,7 +100,7 @@ class TeamIT {
 
     @Test
     void setValidTeamManagerTest() {
-        teamManager = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_MANAGER, true);
+        teamManager = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_MANAGER, true, null);
         boolean res = team.setTeamManager((TeamManager) teamManager);
         assertTrue(res);
     }
