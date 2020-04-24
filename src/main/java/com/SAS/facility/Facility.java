@@ -54,8 +54,7 @@ public class Facility implements TeamAsset{
     }
 
     /**
-<<<<<<< HEAD
-     * This function returns the name of the stadium
+     * This function returns the name of the facility
      * @return String
      */
     public String getName() {
@@ -70,8 +69,6 @@ public class Facility implements TeamAsset{
     }
 
     /**
-=======
->>>>>>> SAS-65 #initiate jdbc in the system
      * The function returns the location of the stadium
      * @return
      */

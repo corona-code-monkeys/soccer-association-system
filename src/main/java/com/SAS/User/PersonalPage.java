@@ -43,4 +43,14 @@ public class PersonalPage {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    /**
+     * This function presents the personal page
+     */
+    public void showPersonalPage(){
+        System.out.println("Illustration of the personal page view: " + '\n' +
+                "⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽ " + this.description + " ⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽" + '\n' + '\n');
+    }
+
+
 }
