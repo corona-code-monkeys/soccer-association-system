@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class TeamIT {
 
     private Team team;
-    private TeamManagement teamManagement;
     private UserController userController;
     private User teamOwner;
     private User coach;
@@ -30,6 +29,7 @@ class TeamIT {
     @BeforeEach
     void setUp() {
         team = new Team();
+        userController = new UserController();
     }
 
     @Test

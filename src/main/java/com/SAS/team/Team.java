@@ -170,10 +170,13 @@ public class Team {
      *
      * @param name
      */
-    public void setName(String name) {
-        if (name != null && name.length() > 0) {
-            this.name = name;
+    public boolean setName(String name) {
+        if (name == null || name.length() == 0) {
+            return false;
         }
+
+        this.name = name;
+        return true;
     }
 
     /**
@@ -207,10 +210,13 @@ public class Team {
      */
 
 
-    public void addFacility(Facility newFacility) {
-        if (newFacility != null) {
-            teamFacilities.add(newFacility);
+    public boolean addFacility(Facility newFacility) {
+        if (newFacility == null) {
+            return false;
         }
+
+        teamFacilities.add(newFacility);
+        return true;
     }
 
 
@@ -274,10 +280,13 @@ public class Team {
      *
      * @param teamOwner
      */
-    public void addTeamOwner(TeamOwner teamOwner) {
-        if (teamOwner != null) {
-            this.owners.add(teamOwner);
+    public boolean addTeamOwner(TeamOwner teamOwner) {
+        if (teamOwner == null) {
+            return false;
         }
+
+        this.owners.add(teamOwner);
+        return true;
     }
 
     /**
@@ -304,10 +313,13 @@ public class Team {
      *
      * @param coach
      */
-    public void setCoach(Coach coach) {
-        if (coach != null) {
-            this.coach = coach;
+    public boolean setCoach(Coach coach) {
+        if (coach == null) {
+            return false;
         }
+
+        this.coach = coach;
+        return true;
     }
 
     /**
