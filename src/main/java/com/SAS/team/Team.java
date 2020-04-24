@@ -5,6 +5,7 @@ import com.SAS.League.Season;
 import com.SAS.User.*;
 import com.SAS.facility.Facility;
 import com.SAS.facility.facilityType;
+import com.SAS.teamManagenemt.TeamAsset;
 import com.SAS.transaction.Transaction;
 import com.SAS.transaction.TransactionType;
 
@@ -194,10 +195,11 @@ public class Team {
      */
 
 
-    public void addFacility(Facility newFacility) {
+    public boolean addFacility(Facility newFacility) {
         if (newFacility != null) {
             teamFacilities.add(newFacility);
         }
+        return false;
     }
 
 
@@ -228,6 +230,8 @@ public class Team {
      * @return
      */
     public boolean setTeamManager(TeamManager newManager) {
+        if (newManager == null)
+            return false;
         this.manager = newManager;
         return true;
     }
@@ -257,8 +261,11 @@ public class Team {
      *
      * @param teamOwner
      */
-    public void addTeamOwner(TeamOwner teamOwner) {
+    public boolean addTeamOwner(TeamOwner teamOwner) {
+        if (teamOwner == null)
+            return false;
         this.owners.add(teamOwner);
+        return true;
     }
 
     /**
@@ -374,5 +381,47 @@ public class Team {
      */
     public List<Facility> getFacilities() {
         return this.teamFacilities;
+    }
+
+    /**
+     * This function returns all the team assets
+     * @return List<TeamAsset>
+     */
+    public List<TeamAsset> getAllAssets(){
+        List<TeamAsset> assets = new LinkedList<>();
+        assets.addAll(players);
+        assets.addAll(teamFacilities);
+        if (coach!=null)
+            assets.add(coach);
+        return assets;
+    }
+
+    /**
+     * This function returns the asset by type and name
+     * @param type
+     * @param name
+     * @return TeamAsset
+     */
+    public TeamAsset getAssetByNameAndType(String type, String name) {
+        if (type == null  || name == null || name.trim().isEmpty())
+            return null;
+        switch(type){
+            case "Coach":
+                return this.coach;
+            case "Player":
+                for (Player player: this.players) {
+                    if (player.getFullName().equals(name))
+                        return player;
+                }
+                return null;
+            case "Facility":
+                for (Facility facility: this.teamFacilities) {
+                    if (facility.getName().equals(name))
+                        return facility;
+                }
+                return null;
+            default:
+                return null;
+        }
     }
 }

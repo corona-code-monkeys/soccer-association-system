@@ -50,8 +50,11 @@ public class Player extends Role implements TeamAsset {
      * The function sets the birth of date of the player
      * @param dateOfBirth
      */
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public boolean setDateOfBirth(LocalDate dateOfBirth) {
+        if (dateOfBirth == null)
+            return false;
+         this.dateOfBirth = dateOfBirth;
+         return true;
     }
 
     /**
@@ -66,16 +69,22 @@ public class Player extends Role implements TeamAsset {
      * The function sets the field role of player
      * @param fieldRole
      */
-    public void setFieldRole(FieldRole fieldRole) {
+    public boolean setFieldRole(FieldRole fieldRole) {
+        if (fieldRole == null)
+            return false;
         this.fieldRole = fieldRole;
+        return true;
     }
 
     /**
      * The function adds a personal page to the player
      * @param description
      */
-    public void addPage(String description) {
+    public boolean addPage(String description) {
+        if (description == null || description.trim().isEmpty())
+            return false;
         this.personalPage = new PersonalPage(description);
+        return true;
     }
 
     /**
@@ -111,8 +120,11 @@ public class Player extends Role implements TeamAsset {
      * The fucntion sets the team of the player
      * @param team
      */
-    public void setTeam(Team team) {
+    public boolean setTeam(Team team) {
+        if (team == null)
+            return false;
         this.team = team;
+        return true;
     }
 
     /**
@@ -143,7 +155,10 @@ public class Player extends Role implements TeamAsset {
         }
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "Player{" +
+                "fullName='" + fullName + '\'' +
+                '}';
+    }
 }

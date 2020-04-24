@@ -9,6 +9,7 @@ import com.SAS.team.Team;
 
 import com.SAS.transaction.Transaction;
 import com.SAS.transaction.TransactionType;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -430,5 +431,28 @@ public class TeamManagement {
     public boolean enterEditingMode(User user, Team team){
         return (user instanceof TeamOwner && ownsTeam(team, user) || user instanceof TeamManager && managesTeam(team, user));
 
+    }
+
+    /**
+     * This function returns all the team assets
+     * @param team
+     * @return
+     */
+    public StringBuilder getAllTeamAssets(Team team){
+        StringBuilder assets = new StringBuilder();
+        for (TeamAsset asset: team.getAllAssets())
+            assets.append(asset);
+        return assets;
+    }
+
+    /**
+     * This function returns the team asset by type and name
+     * @param team
+     * @param type
+     * @param name
+     * @return
+     */
+    public TeamAsset getAssetByNameAndType(Team team, String type, String name) {
+        return team.getAssetByNameAndType(type, name);
     }
 }

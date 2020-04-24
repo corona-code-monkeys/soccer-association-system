@@ -42,7 +42,7 @@ public class Coach extends Role implements TeamAsset {
      *
      * @return level - int
      */
-    public Integer getLevel() {
+    public int getLevel() {
         return level;
     }
 
@@ -69,8 +69,11 @@ public class Coach extends Role implements TeamAsset {
      *
      * @param fieldRole
      */
-    public void setFieldRole(FieldRole fieldRole) {
+    public boolean setFieldRole(FieldRole fieldRole) {
+        if (fieldRole == null)
+            return false;
         this.fieldRole = fieldRole;
+        return true;
     }
 
     /**
@@ -87,8 +90,11 @@ public class Coach extends Role implements TeamAsset {
      *
      * @param team
      */
-    public void setTeam(Team team) {
+    public boolean setTeam(Team team) {
+        if (team == null)
+            return false;
         this.team = team;
+        return true;
     }
 
     /**
@@ -105,8 +111,11 @@ public class Coach extends Role implements TeamAsset {
      *
      * @param description
      */
-    public void addPage(String description) {
+    public boolean addPage(String description) {
+        if (description == null || description.trim().isEmpty())
+            return false;
         this.personalPage = new PersonalPage(description);
+        return true;
     }
 
     /**
@@ -150,12 +159,16 @@ public class Coach extends Role implements TeamAsset {
         if (fieldRole == null || level == -1) {
             return false;
         }else {
-            setLevel(Integer.parseInt(details.get(0)));
-            setFieldRole(convertStringToFieldRole(details.get(1)));
+            setLevel(level);
+            setFieldRole(fieldRole);
             return true;
         }
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Coach{" +
+                "fullName='" + fullName + '\'' +
+                '}';
+    }
 }
