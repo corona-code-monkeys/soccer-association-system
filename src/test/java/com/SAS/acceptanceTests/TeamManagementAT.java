@@ -20,7 +20,7 @@ public class TeamManagementAT {
     private User teamOwner;
 
     @org.junit.Before
-    public void setUp() throws Exception {
+    public void setUp()  {
         userController = new UserController();
         teamManagement = new TeamManagement(userController);
         teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true);
@@ -29,7 +29,7 @@ public class TeamManagementAT {
     }
 
     @org.junit.Test
-    public void addAssetToTeamFacility() {
+    public void addAssetToTeamFacilityByTeamOwnerSuccess() {
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
         //enter editing mode
@@ -60,38 +60,47 @@ public class TeamManagementAT {
 
     }
 
+    //Todo - Chen
     @org.junit.Test
     public void editAssetDetails() {
     }
 
+    //Todo - Chen
     @org.junit.Test
     public void removeAsset() {
     }
 
+    //Todo - Yaar
     @org.junit.Test
     public void addAdditionalTeamOwner() {
     }
 
+    //Todo - Chen
     @org.junit.Test
     public void addTeamManager() {
     }
 
+    //Todo - Chen
     @org.junit.Test
     public void removeTeamManager() {
     }
 
+    //Todo - Yaar
     @org.junit.Test
     public void removeTeamOwner() {
     }
 
+    //Todo
     @org.junit.Test
     public void addTransactionToTeam() {
     }
 
+    //Todo - Yaar
     @org.junit.Test
     public void closeTeam() {
     }
 
+    //Todo - Yaar
     @org.junit.Test
     public void openTeam() {
     }
