@@ -70,7 +70,7 @@ public abstract class Role extends User {
      */
     public void getNotification(String message) {
         notifications.add(message);
-        System.out.println(getRole() + " got the message: " + message);
+        System.out.println(getRole() + " - " + getFullName() + " got the message: " + message);
     }
 
 }
