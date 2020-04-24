@@ -75,10 +75,17 @@ public class TeamManagement {
      * This function removes a team asset
      * @param asset
      * @param team
+     * @param user
      */
-    public void removeAsset(TeamAsset asset, Team team){
-        asset.removeAssetFromTeam();
-        asset = null;
+    public boolean removeAsset(TeamAsset asset, Team team, User user){
+        if (canAddRemoveAsset(user) && (ownsTeam(team, user) || managesTeam(team, user))) {
+            asset.removeAssetFromTeam();
+            asset = null;
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
