@@ -429,7 +429,8 @@ public class Team {
             return null;
         switch (type) {
             case "Coach":
-                return this.coach;
+                if (coach!=null && coach.getFullName().equals(name))
+                    return this.coach;
             case "Player":
                 for (Player player : this.players) {
                     if (player.getFullName().equals(name))
@@ -478,11 +479,9 @@ public class Team {
         if (this.manager != null && this.manager.getFullName().equals(fullName)) {
             return manager;
         }
-
         else if (this.coach != null && this.coach.getFullName().equals(fullName)) {
             return coach;
         }
-
         else {
             for (Player player : this.players) {
                 if (player.getFullName().equals(fullName)) {
@@ -490,17 +489,55 @@ public class Team {
                 }
             }
         }
-
         return null;
     }
 
+    /**
+     * This function returns the TeamOwner by its name
+     * @param fullName
+     * @return
+     */
     public User getTeamOwnerByFullName(String fullName) {
         for (TeamOwner owner : this.owners) {
             if (owner.getFullName().equals(fullName)) {
                 return owner;
             }
         }
+        return null;
+    }
 
+    /**
+     * This function returns the optional team managers
+     * @return List<User>
+     */
+    public List<User> getOptionalNomineesForTeamManager() {
+        List<User> nominees = new LinkedList<>();
+        if (this.players.isEmpty() == false) {
+            nominees.addAll(getPlayers());
+        }
+       if (this.coach != null) {
+           nominees.add(getCoach());
+        }
+        return nominees;
+    }
+
+
+    /**
+     * This function return the coach/player whose full name if name
+     * @param name
+     * @return User
+     */
+    public User getUserForTeamManager(String name) {
+        if (name!=null) {
+            //coach
+            if (this.coach != null && this.coach.getFullName().equals(name))
+                return this.coach;
+            //player
+            for (Player player : this.players) {
+                if (player.getFullName().equals(name))
+                    return player;
+            }
+        }
         return null;
     }
 }

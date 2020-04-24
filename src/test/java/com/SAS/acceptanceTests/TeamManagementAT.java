@@ -10,6 +10,7 @@ import com.SAS.transaction.Transaction;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -372,9 +373,76 @@ public class TeamManagementAT {
 
     }
 
-    //Todo - Chen
     @Test
-    public void addTeamManager() {
+    public void addTeamManagerSuccess() {
+        //preparations- create a player
+        User player = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", UserType.PLAYER, true, null);
+        ((Player)player).setFieldRole(FieldRole.MIDFIELDER);
+        ((Player)player).setTeam(team);
+        ((Player)player).setDateOfBirth(LocalDate.parse("1990-12-01"));
+        team.addPlayerToTeam((Player)player);
+
+        Team myTeam = ((TeamOwner) teamOwner).getTeam();
+        myTeam.getPersonalPage().showPersonalPage();
+
+        //enter editing mode
+        if (teamManagement.enterEditingMode(teamOwner, myTeam)) {
+            System.out.println("--Select to add a team manager--");
+            System.out.println("Please select a nominee from the followings:");
+            System.out.println(teamManagement.showOptionalNomineesForTeamManager(myTeam));
+            System.out.println('\n' + "Selected: Itay Cohen");
+            System.out.println("Would you like to give the new team manager editing assets privileges? 1 to give privileges, otherwise 0");
+            String approval = "1";
+            System.out.println(approval);
+            boolean givePrivileges = approval.equals("1") ? true : false;
+            User toMakeTeamOwner = teamManagement.getUserForTeamManagerNominees(myTeam, "Itay Cohen");
+            if (toMakeTeamOwner !=null){
+                toMakeTeamOwner = teamManagement.addTeamManager(toMakeTeamOwner, myTeam, teamOwner, givePrivileges);
+                assertTrue(toMakeTeamOwner instanceof TeamManager);
+                System.out.println(((TeamManager)toMakeTeamOwner).getFullName() + " was nominated as team manager");
+            }else{
+                System.out.println("The team manager could not be nominated");
+            }
+        }
+        else {
+            System.out.println("You do not have the privileges to add the team manager");
+        }
+    }
+
+    @Test
+    public void addTeamManagerFailWrongName() {
+        //preparations- create a player
+        User player = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", UserType.PLAYER, true, null);
+        ((Player)player).setFieldRole(FieldRole.MIDFIELDER);
+        ((Player)player).setTeam(team);
+        ((Player)player).setDateOfBirth(LocalDate.parse("1990-12-01"));
+        team.addPlayerToTeam((Player)player);
+
+        Team myTeam = ((TeamOwner) teamOwner).getTeam();
+        myTeam.getPersonalPage().showPersonalPage();
+
+        //enter editing mode
+        if (teamManagement.enterEditingMode(teamOwner, myTeam)) {
+            System.out.println("--Select to add a team manager--");
+            System.out.println("Please select a nominee from the followings:");
+            System.out.println(teamManagement.showOptionalNomineesForTeamManager(myTeam));
+            System.out.println('\n' + "Selected: ");
+            System.out.println("Would you like to give the new team manager editing assets privileges? 1 to give privileges, otherwise 0");
+            String approval = "1";
+            System.out.println(approval);
+            boolean givePrivileges = approval.equals("1") ? true : false;
+            User toMakeTeamOwner = teamManagement.getUserForTeamManagerNominees(myTeam, "");
+            if (toMakeTeamOwner !=null){
+                toMakeTeamOwner = teamManagement.addTeamManager(toMakeTeamOwner, myTeam, teamOwner, givePrivileges);
+                assertTrue(toMakeTeamOwner instanceof TeamManager);
+                System.out.println(((TeamManager)toMakeTeamOwner).getFullName() + " was nominated as team manager");
+            }else{
+                System.out.println("The team manager could not be nominated");
+            }
+        }
+        else {
+            System.out.println("You do not have the privileges to add the team manager");
+        }
     }
 
     //Todo - Chen
