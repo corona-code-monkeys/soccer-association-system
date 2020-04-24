@@ -190,7 +190,7 @@ public class CRUD {
      * @return
      */
     public static boolean addSeasonToLeague(League league, Season season, LeagueRankPolicy leagueRankPolicy,
-                                             PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
+                                            PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
         return true;
     }
 
@@ -204,8 +204,8 @@ public class CRUD {
      * @param gamesPolicy
      * @return
      */
-    public static boolean addLeagueToSeason(Season season,League league, LeagueRankPolicy leagueRankPolicy,
-                                             PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
+    public static boolean addLeagueToSeason(Season season, League league, LeagueRankPolicy leagueRankPolicy,
+                                            PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
         return true;
     }
 
@@ -346,7 +346,6 @@ public class CRUD {
         }
         return false;
     }
-
 
 
     /**
@@ -605,36 +604,18 @@ public class CRUD {
         return path != null && path.equals("good path");
     }
 
-    /**
-     * return false if the league is unknown and true if its known
-     * @param league
-     * @return
-     */
-    public boolean isLeagueExist(League league) {
-        if (league == null){
-            return true;
-    }
-        return false;
+
+    public static boolean isLeagueExist(League league) {
+        return true;
     }
 
-    /**
-     *opposite to isLeagueExist
-     * @param league
-     * @return
-     */
-    public boolean addLeague(League league) {
-        return(!isLeagueExist(league));
+
+    public static boolean addLeague(League league) {
+        return true;
     }
 
-    /**
-     * return false if the league is unknown and true if its known
-     * @param season
-     * @return
-     */
-    public boolean isSeasonExist(Season season) {
-        if (season == null){
-            return true;
-        }
-        return false;
+
+    public static boolean isSeasonExist(Season season) {
+        return true;
     }
 }
