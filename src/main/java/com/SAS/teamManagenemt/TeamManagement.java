@@ -200,7 +200,7 @@ public class TeamManagement {
     public User removeTeamOwner(User teamOwner, Team team, User nominatedBy) {
         //check if the user is owns the team and that the nominate is the owner of the team and nominated this user
         if (validateTeamOwner(teamOwner, team, nominatedBy) && ownsTeam(team, nominatedBy)) {
-            removeTeamOwnerAndNominees(teamOwner, team);
+            teamOwner = removeTeamOwnerAndNominees(teamOwner, team);
         }
 
         else {
@@ -215,7 +215,7 @@ public class TeamManagement {
      * @param teamOwner
      * @param team
      */
-    private void removeTeamOwnerAndNominees(User teamOwner, Team team) {
+    private User removeTeamOwnerAndNominees(User teamOwner, Team team) {
         List<TeamOwner> nominees = getUserNominees(teamOwner, team);
         team.removeTeamOwner((TeamOwner)teamOwner);
         ((TeamOwner) teamOwner).removeTeam();
@@ -224,6 +224,8 @@ public class TeamManagement {
         for (User nominee: nominees) {
             removeTeamOwnerAndNominees(nominee, team);
         }
+
+        return teamOwner;
 
     }
 
@@ -430,5 +432,65 @@ public class TeamManagement {
     public boolean enterEditingMode(User user, Team team){
         return (user instanceof TeamOwner && ownsTeam(team, user) || user instanceof TeamManager && managesTeam(team, user));
 
+    }
+
+    /**
+     * The function returns a string of the optional nominees for team owner
+     * @param user
+     * @param team
+     */
+    public String showOptionalNomineesForTeamOwner(User user, Team team) {
+        StringBuilder builder = new StringBuilder();
+        List<User> optionalNominees = team.getOptionalNomineesForTeamOwner();
+        for (User optionalUser : optionalNominees) {
+            builder.append("User name: " + ((Role)optionalUser).getFullName() + "\n");
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * The function returns true of the user can add and remove team owner
+     * @param user
+     * @return true or false
+     */
+    public boolean canAddRemoveTeamOwner(User user) {
+        return user.getMyPrivileges().contains("add/removeTO");
+    }
+
+    /**
+     * The function receives a name of user and returns the user if it's an optional team owner
+     * @param fullName
+     * @param team
+     * @return user
+     */
+    public User getUserForTeamOwnerNominate(String fullName, Team team) {
+        return team.getUserForTeamOwner(fullName);
+    }
+
+
+    /**
+     * The function retuns a string of the owners of the team
+     * @param team
+     */
+    public String showTeamOwners(Team team) {
+        StringBuilder builder = new StringBuilder();
+        List<TeamOwner> owners = team.getOwners();
+        for (TeamOwner owner : owners) {
+            builder.append(owner.getFullName()+"\n");
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * The function receives a name of user and returns the team onwer user if it exists,
+     * otherwise return null
+     * @param fullName
+     * @param team
+     * @return
+     */
+    public User getTeamOwnerUserByName(String fullName, Team team) {
+        return team.getTeamOwnerByFullName(fullName);
     }
 }
