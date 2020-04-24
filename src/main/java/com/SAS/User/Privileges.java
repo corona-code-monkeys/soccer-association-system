@@ -44,6 +44,8 @@ public class Privileges {
         this.privileges.put("TeamOwner", new HashSet<>(Arrays.asList
                 ("add/removeA", "add/removeTO", "add/removeTM", "editTMPriv", "closeTNP", "addTrans", "editPDetails")));
         this.privileges.put("TeamManager", new HashSet<>(Arrays.asList
+                ("editPDetails")));
+        this.privileges.put("TeamManagerApproved", new HashSet<>(Arrays.asList
                 ("add/removeA", "editPDetails")));
         this.privileges.put("SystemAdmin", new HashSet<>(Arrays.asList
                 ("editPDetails", "closeTP", "removeRegistered", "view/replyReport", "viewSysSettings", "enableRS")));
@@ -62,11 +64,12 @@ public class Privileges {
      */
     public HashSet<String> getPrivileges(String role, boolean approved) {
         switch (role){
-            case "TeamOwner":
-                //a team owner need to get approval to receive privileges from the team owner, once we have
-                //UI will need to popup a window to get approval
+            case "TeamManager":
+                //a team manager need to get approval to receive privileges from the team owner
                 if (approved)
-                    return privileges.get("TeamOwner");
+                    return privileges.get("TeamManagerApproved");
+                else
+                    return privileges.get("TeamManager");
             default:
                 return privileges.get(role);
         }

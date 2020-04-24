@@ -5,165 +5,559 @@ import com.SAS.User.*;
 import com.SAS.facility.Facility;
 import com.SAS.game.Game;
 import com.SAS.game_event_logger.GameEvent;
-import com.SAS.facility.Facility;
+import com.SAS.game_event_logger.GameEventLogger;
 import com.SAS.team.Team;
 import com.SAS.transaction.Transaction;
+import com.SAS.transaction.TransactionType;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CRUD {
 
     //user
-    public int createUser(String userName, String password, String fullName, UserType type) {
-        return 0;
+
+    /**
+     * will return false for null in any parameter, or username equals to "wrong", will return the user you wanted otherwise
+     *
+     * @param userName
+     * @param password
+     * @param fullName
+     * @param type
+     * @return
+     */
+    public static User createUser(String userName, String password, String fullName, UserType type) {
+        if (userName == null || password == null || fullName == null) {
+            return null;
+        } else if (userName.equals("wrong")) {
+            return null;
+        } else {
+            UserController c = new UserController();
+            return c.createUser(userName, password, fullName, type, true);
+        }
     }
 
-    public boolean setPlayer(int userID, FieldRole fieldRole, LocalDate dateOfBirth, Team team) {
-        return true;
+    /**
+     * will return false for userID smaller then 0
+     *
+     * @param userID
+     * @param fieldRole
+     * @param dateOfBirth
+     * @param team
+     * @return
+     */
+    public static boolean setPlayer(int userID, FieldRole fieldRole, LocalDate dateOfBirth, Team team) {
+        return userID >= 0;
     }
 
-    public boolean setCoach(int userID, int level, FieldRole fieldRole, Team team) {
-        return true;
+    /**
+     * will return false for userID smaller then 0
+     *
+     * @param userID
+     * @param level
+     * @param fieldRole
+     * @param team
+     * @return
+     */
+    public static boolean setCoach(int userID, int level, FieldRole fieldRole, Team team) {
+        return userID >= 0;
     }
 
-    public boolean setReferee(int userID, int level) {
-        return true;
+    /**
+     * will return false for userID smaller then 0
+     *
+     * @param userID
+     * @param level
+     * @return
+     */
+    public static boolean setReferee(int userID, int level) {
+        return userID >= 0;
     }
 
-    public boolean setTeamOwner(int userID, Team team, int userIDNominatedBy) {
-        return true;
+    /**
+     * will return false for userID smaller then 0
+     *
+     * @param userID
+     * @param team
+     * @param userIDNominatedBy
+     * @return
+     */
+    public static boolean setTeamOwner(int userID, Team team, int userIDNominatedBy) {
+        return userID >= 0;
     }
 
-    public boolean setTeamManager(int userID, Team team) {
-        return true;
+    /**
+     * will return false for userID smaller then 0
+     *
+     * @param userID
+     * @param team
+     * @return
+     */
+    public static boolean setTeamManager(int userID, Team team) {
+        return userID >= 0;
     }
 
-    public boolean verifyInDB(String fullName, UserType type) {
-        return true;
+    /**
+     * will return false for null full name or "wrong", will return true in any other case.
+     *
+     * @param fullName
+     * @param type
+     * @return
+     */
+    public static boolean verifyInDB(String fullName, UserType type) {
+        if (fullName == null || fullName.equals("wrong")) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    public boolean addRole(int userID, UserType type) {
-        return true;
+    /**
+     * will return false for userID smaller then 0
+     *
+     * @param userID
+     * @param type
+     * @return
+     */
+    public static boolean addRole(int userID, UserType type) {
+        return userID >= 0;
     }
 
-    public boolean removeRole(int userID, UserType type) {
-        return true;
+    /**
+     * will return false for userID smaller then 0
+     *
+     * @param userID
+     * @param type
+     * @return
+     */
+    public static boolean removeRole(int userID, UserType type) {
+        return userID >= 0;
     }
 
-    public int getUserID(String userName, String password) {
-        return 0;
+    /**
+     * will return false for null inputs, or inputs with password == wrong, else, will return a Fan named chen gelad
+     *
+     * @param userName
+     * @param password
+     * @return
+     */
+    public static User getUser(String userName, String password) {
+        if (userName == null || password == null) {
+            return null;
+        } else if (password.equals("wrong")) {
+            return null;
+        } else {
+            UserController controller = new UserController();
+            return controller.createUser(userName, password, "chen gelad", UserType.FAN, true);
+        }
     }
 
     //league
 
-    public boolean createLeague(String name) {
+    /**
+     * will return false for null leagues or leagues called "matan"
+     *
+     * @param name
+     * @return
+     */
+    public static boolean createLeague(String name) {
+        if (name == null || name.equals("matan")) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * will return true for years that are bigger or grater then zero
+     *
+     * @param year
+     * @return
+     */
+    public static boolean createSeason(int year) {
+        return year >= 0;
+    }
+
+    /**
+     * to hard to moc, if will be needed, will find a way
+     *
+     * @param league
+     * @param season
+     * @param leagueRankPolicy
+     * @param pointsPolicy
+     * @param gamesPolicy
+     * @return
+     */
+    public static boolean addSSeasonToLeauge(League league, Season season, LeagueRankPolicy leagueRankPolicy,
+                                             PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
         return true;
     }
 
-    public boolean createSeason(int year) {
-        return true;
+    /**
+     * send null for wrong input, not null for real input (will return list of three policies, as mentioned bellow)
+     *
+     * @param league
+     * @param season
+     * @return
+     */
+    public static String[] getPolicies(League league, Season season) {
+        if (league == null || season == null) {
+            return null;
+        } else {
+            String[] arr = new String[3];
+            arr[0] = "The bigger goal difference";
+            arr[1] = "Number of wins";
+            arr[2] = "Two rounds league";
+            return arr;
+        }
     }
 
-    public boolean addSSeasonToLeauge(League league, Season season, LeagueRankPolicy leagueRankPolicy,
-                                      PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
-        return true;
+    /**
+     * send null for wrong input, not null for real input (will return NumberOfWins)
+     *
+     * @param league
+     * @param season
+     * @return
+     */
+    public static LeagueRankPolicy getLeagueRankPolicy(League league, Season season) {
+        if (league == null || season == null) {
+            return null;
+        } else {
+            return new NumberOfWins();
+        }
     }
 
-    public String[] getPolicies(League league, Season season) {
+    /**
+     * send null for wrong input, not null for real input (will return ThreeForWinOneForDrawPolicy)
+     *
+     * @param league
+     * @param season
+     * @return
+     */
+    public static PointsPolicy getPointsPolicy(League league, Season season) {
+        if (league == null || season == null) {
+            return null;
+        } else {
+            return new ThreeForWinOneForDrawPolicy();
+        }
+    }
+
+    /**
+     * send null for wrong input, not null for real input (will return oneRoundLeague)
+     *
+     * @param league
+     * @param season
+     * @return
+     */
+    public static GamesPolicy getGamesPolicy(League league, Season season) {
+        if (league == null || season == null) {
+            return null;
+        } else {
+            return new TwoRoundsLeague();
+        }
+    }
+
+    /**
+     * to hard to moc, if will be needed, will find a way
+     *
+     * @param league
+     * @param season
+     * @return
+     */
+    public static Object getTable(League league, Season season) {
         return null;
     }
 
-    public LeagueRankPolicy getLeagueRankPolicy(League league, Season season) {
-        return null;
+    /**
+     * send null for wrong input, not null for real input (will send a list of 4 empty games)
+     *
+     * @param league
+     * @param season
+     * @return
+     */
+    public static List<Game> getGamesList(League league, Season season) {
+        if (league == null || season == null) {
+            return null;
+        } else {
+            List<Game> list = new ArrayList<>();
+            list.add(new Game());
+            list.add(new Game());
+            list.add(new Game());
+            list.add(new Game());
+            return list;
+        }
     }
 
-    public PointsPolicy getPointsPolicy(League league, Season season) {
-        return null;
+    /**
+     * send null for wrong input, not null for real input
+     *
+     * @param league
+     * @param season
+     * @param referees
+     * @return
+     */
+    public static boolean addRefereesToLeague(League league, Season season, List<Referee> referees) {
+        if (league == null || season == null || referees == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    public GamesPolicy getGamesPolicy(League league, Season season) {
-        return null;
+    /**
+     * send null for wrong input, not null for real input (u'll get a list of three referees)
+     *
+     * @param league
+     * @param season
+     * @return
+     */
+    public static List<Referee> getRefereesList(League league, Season season) {
+        if (league == null || season == null) {
+            return null;
+        } else {
+            List<Referee> list = new ArrayList<>();
+            UserController c = new UserController();
+            list.add(new Referee(c.createUser("name1", "password1", "fullname1", UserType.REFEREE, true), "fullname1"));
+            list.add(new Referee(c.createUser("name2", "password2", "fullname2", UserType.REFEREE, true), "fullname2"));
+            list.add(new Referee(c.createUser("name3", "password3", "fullname3", UserType.REFEREE, true), "fullname3"));
+            return list;
+        }
     }
 
-    public Object getTable(League league, Season season) {
-        return null;
+    /**
+     * send null for wrong input, not null for real input
+     *
+     * @param team
+     * @param season
+     * @param amount
+     * @return
+     */
+    public static boolean addBudget(Team team, Season season, double amount) {
+        if (team == null || season == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    public List<Game> getGamesList(League league, Season season) {
-        return null;
-    }
+    /**
+     * send null for wrong input, not null for real input
+     *
+     * @param team
+     * @param season
+     * @return
+     */
+    public static double getBudget(Team team, Season season) {
+        if (team == null || season == null) {
+            return -1;
+        } else {
+            return 10000;
+        }
 
-    public boolean addRefereesToLeague(League league, Season season, List<Referee> referees) {
-        return true;
-    }
-
-    public List<Referee> getRefereesList(League league, Season season) {
-        return null;
-    }
-
-    public boolean addBudget(Team team, Season season, double amount) {
-        return true;
-    }
-
-    public double getBudget(Team team, Season season) {
-        return 0;
     }
 
     //game
-    public boolean createGame(Season season, League league, LocalDate date, Team host, Team guest, Facility stadium) {
+
+    /**
+     * to hard to moc, if will be needed, will find a way
+     *
+     * @param season
+     * @param league
+     * @param date
+     * @param host
+     * @param guest
+     * @param stadium
+     * @return
+     */
+    public static boolean createGame(Season season, League league, LocalDate date, Team host, Team guest, Facility stadium) {
         return true;
     }
 
-    public boolean insertGameEvents(Game game, List<GameEvent> events) {
+    /**
+     * the actual implementation of this function
+     *
+     * @param game
+     * @param events
+     * @return
+     */
+    public static boolean insertGameEvents(Game game, List<GameEvent> events) {
+        if (game == null || events == null) {
+            return false;
+        } else {
+            boolean answer = true;
+            for (GameEvent event : events) {
+                answer &= addGameEvent(game, event);
+            }
+            return answer;
+        }
+    }
+
+    /**
+     * on the moc just send null for false and real game for true.
+     *
+     * @param game
+     * @param event
+     * @return
+     */
+    public static boolean addGameEvent(Game game, GameEvent event) {
+        if (game == null || event == null) {
+            return false;
+        } else {
+            game.getEvents().addNewEvent(event);
+            return true;
+        }
+    }
+
+    /**
+     * the actual implementation of this function
+     *
+     * @param game
+     * @param oldEvent
+     * @param newEvent
+     * @return
+     */
+    public static boolean editGameEvent(Game game, GameEvent oldEvent, GameEvent newEvent) {
+        if (removeGameEvent(game, oldEvent)) {
+            return addGameEvent(game, newEvent);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * on the moc just send null for false and real game for true, if the event not exist in the game event logger will return false as well
+     *
+     * @param game
+     * @param event
+     * @return
+     */
+    public static boolean removeGameEvent(Game game, GameEvent event) {
+        if (game == null || event == null) {
+            return false;
+        } else {
+            return game.getEvents().removeEvent(event);
+        }
+    }
+
+    /**
+     * on the moc just send null for false and real game for true
+     *
+     * @param game
+     * @return
+     */
+    public static List<GameEvent> getGameEvents(Game game) {
+        if (game == null) {
+            return null;
+        } else {
+            GameEventLogger logger = game.getEvents();
+            return logger.eventList;
+        }
+    }
+
+    /**
+     * on the moc just send null or matan as the team name to get a false
+     *
+     * @param name
+     * @param players
+     * @param owner
+     * @param manager
+     * @param teamFacilities
+     * @return
+     */
+    public static boolean createTeam(String name, List<Player> players, TeamOwner owner, TeamManager manager, List<Facility> teamFacilities) {
+        if (name == null || name.equals("matan")) {
+            return false;
+        }
         return true;
     }
 
-    public boolean addGameEvent(Game game, GameEvent event) {
+    public static boolean addTeamOwner(Team team, TeamOwner teamOwner) {
         return true;
     }
 
-    public boolean editGameEvent(Game game, GameEvent oldEvent, GameEvent newEvent) {
-        return true;
+    /**
+     * @param team        on the mock send null for wrong team, and real team for good team
+     * @param teamManager on the mock send null for wrong teamManager, and real teamManager for good teamManager
+     * @return true if the insert successes, false otherwise
+     */
+    public static boolean addTeamManager(Team team, TeamManager teamManager) {
+        if (team == null || teamManager == null) {
+            return false;
+        } else {
+            team.setTeamManager(teamManager);
+            return true;
+        }
     }
 
-    public boolean removeGameEvent(Game game, GameEvent event) {
-        return true;
+
+    /**
+     * @param team        on the mock send null for wrong team, and real team for good team
+     * @param transaction on the mock send null for wrong transaction, and real transaction for good transaction
+     * @return true if the insert successes, false otherwise
+     */
+    public static boolean addTransaction(Team team, Transaction transaction) {
+        if (team == null || transaction == null) {
+            return false;
+        } else {
+            team.addTransactionToTeam(transaction);
+            return true;
+        }
     }
 
-    public boolean getGameEvents(Game game) {
-        return true;
+    /**
+     * @param team     on the mock send null for wrong team, and real team for good team
+     * @param facility on the mock send null for wrong facility, and real facility for good team
+     * @return true if the insert successes, false otherwise
+     */
+    public static boolean addFacility(Team team, Facility facility) {
+        if (team == null || facility == null) {
+            return false;
+        } else {
+            team.addFacility(facility);
+            return true;
+        }
     }
 
-    public boolean ctreateTeam(String name,List<Player> players, TeamOwner owner, TeamManager manager, List<Facility> teamFacilities) {
-        return true;
+
+    /**
+     * @param team on the mock send null for wrong team, and real team for good team
+     * @return list of Facilities that this team has
+     */
+    public static List<Facility> getFacilities(Team team) {
+        if (team == null) {
+            return null;
+        } else {
+            List<Facility> list = new ArrayList<>();
+            list.add(new Facility());
+            list.add(new Facility());
+            list.add(new Facility());
+            return list;
+        }
     }
 
-    public boolean addTeamOwner(Team team, TeamOwner teamOwner) {
-        return true;
+    /**
+     * @param team on the mock send null for wrong team, and real team for good team
+     * @return list of transactions that this team has
+     */
+    public static List<Transaction> getTransactions(Team team) {
+        if (team == null) {
+            return null;
+        } else {
+            List<Transaction> list = new ArrayList<>();
+            list.add(new Transaction(100, TransactionType.EXPENSE, LocalDate.now(), team, "description1", null));
+            list.add(new Transaction(5000, TransactionType.INCOME, LocalDate.now(), team, "description2", null));
+            list.add(new Transaction(1400, TransactionType.EXPENSE, LocalDate.now(), team, "description3", null));
+            list.add(new Transaction(30, TransactionType.INCOME, LocalDate.now(), team, "description4", null));
+            return list;
+        }
     }
 
-    public boolean addTeamManager(Team team, TeamManager teamManager) {
-        return true;
-    }
-
-    public boolean addTransaction(Team team, Transaction transaction) {
-        return true;
-    }
-
-    public boolean addFacility(Team team, Facility facility) {
-        return true;
-    }
-
-    public Facility getFacilities(Team team) {
-        return null;
-    }
-
-    public List<Transaction> getTransactions(Team team) {
-        return null;
-    }
-
-    public boolean init(String path) {
-        return true;
+    /**
+     * @param path on the mock should equals "good path"
+     * @return if the database connection good or not
+     */
+    public static boolean init(String path) {
+        return path != null && path.equals("good path");
     }
 }

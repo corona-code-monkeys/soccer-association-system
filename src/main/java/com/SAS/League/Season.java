@@ -1,7 +1,4 @@
 package com.SAS.League;
-import com.SAS.team.Team;
-import com.SAS.game.Game;
-import com.SAS.User.Referee;
 
 import com.SAS.game.Game;
 import com.SAS.team.Team;
@@ -9,8 +6,6 @@ import com.SAS.team.Team;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-
-
 
 /**
  * class season that define the object season and attributes
@@ -22,7 +17,6 @@ public class Season {
     private HashMap<League, Table> tables;
     private HashSet<Team> teamsList;
     private HashSet<League> leaguesList;
-    private HashMap<League, HashSet<Referee>> referees;
     private HashMap<League, PointsPolicy> pointsPolicy;
     private HashMap<League, GamesPolicy> gamesPolicy;
     private HashMap<League, LeagueRankPolicy> rankPolicy;
@@ -41,7 +35,6 @@ public class Season {
         this.teamsList = teamsList;
         this.leaguesList = leaguesList;
         this.budgets = new HashMap<>();
-        this.referees= new HashMap<>();
         this.tables = new HashMap<>();
         this.pointsPolicy = new HashMap<>();
         this.gamesPolicy = new HashMap<>();
@@ -206,7 +199,7 @@ public class Season {
     }
 
     /**
-     * @param league     the league that the rank policy is relevant to
+     * @param league     the league that the points policy is relevant to
      * @param rankPolicy the rank policy you want to add
      */
     public void addRankPolicy(League league, LeagueRankPolicy rankPolicy) {
@@ -215,7 +208,6 @@ public class Season {
             league.addRankPolicy(this, rankPolicy);
         }
     }
-
     /**
      *
      * @return the hashmap of the referees for this season for each league

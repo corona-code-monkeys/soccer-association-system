@@ -4,10 +4,16 @@
 package com.SAS.teamManagenemt;
 
 import com.SAS.User.*;
+import com.SAS.facility.*;
 import com.SAS.team.Team;
 
-import java.util.LinkedList;
+import com.SAS.transaction.Transaction;
+import com.SAS.transaction.TransactionType;
+
+import java.time.LocalDate;
 import java.util.List;
+
+import java.util.LinkedList;
 
 public class TeamManagement {
 
@@ -19,6 +25,55 @@ public class TeamManagement {
      */
     public TeamManagement(UserController userController) {
         this.userController = userController;
+    }
+
+    /**
+     * This function allows the team owner to add an asset to the team. Assets are facility, player, coach.
+     * @param assetType
+     * @param team
+     * @return the created asset
+     */
+    public TeamAsset AddAssetToTeam (String assetType, Team team) {
+        TeamAsset asset = null;
+        //create the asset
+        switch (assetType) {
+            case "Player":
+                asset = (Player) userController.createUser(null, null, null, UserType.PLAYER, true);
+                team.addPlayerToTeam((Player)asset);
+                break;
+            case "Facility":
+                asset = new Facility();
+                team.addFacility((Facility)asset);
+                break;
+            case "Coach":
+                asset = (Coach) userController.createUser(null, null, null, UserType.COACH, true);
+                team.setCoach((Coach)asset);
+                break;
+        }
+        asset.setTeam(team);
+        return asset;
+    }
+
+    /**
+     * This function receives a list of details and a teamAsset and updates the asset's details
+     * @param asset
+     * @param details
+     * @return true if details have been edited successfully, false otherwise.
+     * If return false should ask the user to enter the details again
+     */
+    public boolean editAssetDetails(TeamAsset asset, List<String> details)
+    {
+        return asset.editDetails(details);
+    }
+
+    /**
+     * This function removes a team asset
+     * @param asset
+     * @param team
+     */
+    public void removeAsset(TeamAsset asset, Team team){
+        asset.removeAssetFromTeam();
+        asset = null;
     }
 
     /**
@@ -35,18 +90,102 @@ public class TeamManagement {
             team.addTeamOwner((TeamOwner)newTeamOwner);
             ((TeamOwner) newTeamOwner).setTeam(team);
             ((TeamOwner) newTeamOwner).setNominatedBy((TeamOwner)nominatedBy);
-
-            return newTeamOwner;
         }
 
         else {
             System.out.println("The user is unauthorized to own the team");
-            return null;
         }
+
+        return newTeamOwner;
     }
 
     /**
-     * The function receives a team owner, the team and the nominated user and removes the owner from the team owners
+     * The function receives a user and a team and adds the user as the team manager
+     * TODO: UI will need to popup a window to get approval
+     * @param newTeamManager
+     * @param team
+     * @param nominatedBy
+     * @param approval - a boolean which determines if the manager got privileges from the team owner
+     * @return newTeamManager - the team manager
+     */
+    public User addTeamManager(User newTeamManager, Team team, User nominatedBy, boolean approval){
+        //check if the team already has a manager
+        if(teamHasManager(team)){
+            System.out.println("The team already has a manager, please remove it first to nominate a new manager");
+            return newTeamManager;
+        }
+        //check if the user can manage this team and that the user that nominates him is the team owner
+        if (validateTeamManager(newTeamManager, team) && ownsTeam(team, nominatedBy)){
+            newTeamManager = userController.addRoleToUser(newTeamManager, UserType.TEAM_MANAGER,approval);
+            team.setTeamManager((TeamManager)newTeamManager);
+            ((TeamManager)newTeamManager).setTeam(team);
+            ((TeamManager)newTeamManager).setNominatedBy((TeamOwner)nominatedBy);
+        }
+        else{
+            System.out.println("The user is unauthorized to manage the team");
+        }
+        return newTeamManager;
+    }
+
+    /**
+     * This function checks if the team already has a manager, if so returns true, otherwise returns false
+     * @param team
+     * @return true or false
+     */
+    private boolean teamHasManager(Team team) {
+        return team.getManager() != null;
+    }
+
+    /**
+     * This function checks if the user is not already a team manager or owner
+     * @param newTeamManager
+     * @param team
+     * @return true or false
+     */
+    private boolean validateTeamManager(User newTeamManager, Team team) {
+        if ((newTeamManager instanceof TeamManager || newTeamManager instanceof TeamOwner)){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * This function removes a user from being a team manager by the team owner
+     * @param teamManager
+     * @param team
+     * @param removedBy
+     * @return
+     */
+    public User removeTeamManager(User teamManager, Team team, User removedBy) {
+        //checks if the user manages the team and that the removing user is the owner of the team and nominated him
+        if (validateTeamManager(teamManager, team, removedBy) && ownsTeam(team, removedBy)) {
+            team.removeTeamManager((TeamManager)teamManager);
+            ((TeamManager)teamManager).removeTeam();
+            //get the inner user (previous role)
+            teamManager = ((TeamManager) teamManager).getUser();
+        }
+
+        else {
+            System.out.println("The user is unauthorized to remove the team manager");
+        }
+
+        return teamManager;
+    }
+
+    /**
+     * This function verify whether the user is the team manager of the team,
+     * and that the team owner that nominated him is the same user trying to remove him
+     * @param teamManager
+     * @param team
+     * @param removedBy
+     * @return true or false
+     */
+    private boolean validateTeamManager(User teamManager, Team team, User removedBy) {
+        return teamManager instanceof TeamManager && ((TeamManager)teamManager).getTeam() == team &&
+                removedBy instanceof TeamOwner && ((TeamManager)teamManager).getNominatedBy() == removedBy;
+    }
+
+     /* The function receives a team owner, the team and the nominated user and removes the owner from the team owners
      * if the user authorized to do so
      * @param teamOwner
      * @param team
@@ -150,9 +289,57 @@ public class TeamManagement {
      * @return true - if the user is the team owner, otherwise - false
      */
     private boolean ownsTeam(Team team, User nominatedBy) {
-         return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam() == team;
+        return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam() == team;
     }
 
+    /**
+     * The fcuntion receives the parameters of new transaction and the team and add it if it's legal -
+     * not exceed the budget of the team
+     * @param team
+     * @param transDetails
+     * @return
+     */
+    public Transaction addTransactionToTeam(Team team, List<String> transDetails, User teamOwner) {
+        if (ownsTeam(team, teamOwner)) {
+            //first amount, second type, third date and last description
+            double amount = Double.parseDouble(transDetails.get(0));
+            TransactionType type = convertStringToTrasactionType(transDetails.get(1));
+            LocalDate date = LocalDate.parse(transDetails.get(2));
+            String description = transDetails.get(3);
+
+            //create the transaction
+            Transaction transaction = new Transaction(amount, type, date, team, description, (TeamOwner) teamOwner);
+
+            boolean isTransAdded = team.addTransactionToTeam(transaction);
+            if (!isTransAdded) {
+                System.out.println("The transaction could not be added to the team, it exceeded the team's budget.");
+            }
+
+            return transaction;
+        }
+
+        else {
+            System.out.println("The user is unauthorized to report transactions.");
+            return null;
+        }
+    }
+
+    /**
+     * The function converts string to transaction type
+     * @param type
+     * @return
+     */
+    private TransactionType convertStringToTrasactionType(String type){
+        switch (type) {
+            case "Expense":
+                return TransactionType.EXPENSE;
+            case "Income":
+                return TransactionType.INCOME;
+            default:
+                return null;
+        }
+    }
+  
     /**
      * The function receives a team and a team owner and closes this team
      * @param team

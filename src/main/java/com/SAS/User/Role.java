@@ -41,6 +41,28 @@ public abstract class Role extends User {
     }
 
     /**
+     * This function converts a string to FieldRole
+     *
+     * @param fieldRole
+     * @return FieldRole
+     */
+    protected FieldRole convertStringToFieldRole(String fieldRole) {
+        switch (fieldRole) {
+            case "Goal Keeper":
+                return FieldRole.GOAL_KEEPER;
+            case "Defender":
+                return FieldRole.DEFENDER;
+            case "Striker":
+                return FieldRole.STRIKER;
+            case "Midfielder":
+                return FieldRole.MIDFIELDER;
+            default:
+                System.out.println("Error, no such type");
+                return null;
+        }
+    }
+
+    /**
      * The function receives a notification and adds it to the notification list
      * @param message
      */
