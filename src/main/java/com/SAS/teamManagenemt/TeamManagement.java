@@ -516,4 +516,13 @@ public class TeamManagement {
     public TeamAsset getAssetByNameAndType(Team team, String type, String name) {
         return team.getAssetByNameAndType(type, name);
     }
+
+    /**
+     * The function returns true if the user can add new transaction, otherwise returns false
+     * @param user
+     * @return
+     */
+    public boolean canAddTransaction(User user) {
+        return user.getMyPrivileges().contains("addTrans");
+    }
 }
