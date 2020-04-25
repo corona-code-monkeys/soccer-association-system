@@ -32,7 +32,7 @@ class LeagueManagementControllerAT {
     }
 
     @Test
-    void addRankPolicy() {
+    void addRankPolicySuccess() {
         boolean res;
         String userChoose;
         System.out.println("Please choose Rank Policy ID:");
@@ -50,7 +50,7 @@ class LeagueManagementControllerAT {
     }
 
     @Test
-    void addPointsPolicy() {
+    void addPointsPolicySuccess() {
         boolean res;
         String userChoose;
         System.out.println("Please choose Point Policy ID:");
@@ -68,7 +68,7 @@ class LeagueManagementControllerAT {
     }
 
     @Test
-    void addGamePolicy() {
+    void addGamePolicySuccess() {
         boolean res;
         String userChoose;
         System.out.println("Please choose Game Policy ID:");
@@ -82,6 +82,62 @@ class LeagueManagementControllerAT {
         }
         else {
             System.out.println("Couldn't add game policy");
+        }
+    }
+
+    @Test
+    void addRankPolicyFailure() {
+        boolean res;
+        String userChoose;
+        System.out.println("Please choose Rank Policy ID:");
+        System.out.println(leagueManagementController.showRankPolicies());
+        userChoose = "5";
+        System.out.println(userChoose);
+        res = leagueManagementController.addRankPolicy(league, season, userChoose, associationRepres);
+        if (res) {
+            System.out.println("The policy was added successfully");
+        }
+        else {
+            System.out.println("Couldn't add rank policy");
+            assertFalse(res);
+        }
+    }
+
+    @Test
+    void addPointsPolicyFailure() {
+        boolean res;
+        String userChoose;
+        System.out.println("Please choose Point Policy ID:");
+        System.out.println(leagueManagementController.showPointsPolicies());
+        userChoose = "5";
+        System.out.println(userChoose);
+        res = leagueManagementController.addPointsPolicy(league, season, userChoose, associationRepres);
+        if (res) {
+            System.out.println("The policy was added successfully");
+            assertTrue(res);
+        }
+        else {
+            System.out.println("Couldn't add points policy");
+            assertFalse(res);
+        }
+    }
+
+    @Test
+    void addGamePolicyFailure() {
+        boolean res;
+        String userChoose;
+        System.out.println("Please choose Game Policy ID:");
+        System.out.println(leagueManagementController.showGamePolicies());
+        userChoose = "5";
+        System.out.println(userChoose);
+        res = leagueManagementController.addGamePolicy(league, season, userChoose, associationRepres);
+        if (res) {
+            System.out.println("The policy was added successfully");
+            assertTrue(res);
+        }
+        else {
+            System.out.println("Couldn't add game policy");
+            assertFalse(res);
         }
     }
 }
