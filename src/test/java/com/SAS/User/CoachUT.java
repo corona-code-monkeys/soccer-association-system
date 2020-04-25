@@ -1,72 +1,73 @@
 package com.SAS.User;
 
 import com.SAS.team.Team;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
 
 public class CoachUT {
 
     private User user;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         user = new Registered("avil", "123456", "Avi Levi");
         user = new Coach(user, "Avi Levi");
-        ((Coach)user).setFieldRole(FieldRole.STRIKER);
+        ((Coach) user).setFieldRole(FieldRole.STRIKER);
         Team team = new Team();
-        ((Coach)user).setTeam(team);
-        team.setCoach((Coach)user);
+        ((Coach) user).setTeam(team);
+        team.setCoach((Coach) user);
     }
 
     @Test
     public void setLevelSuccess() {
-        ((Coach)user).setLevel(2);
-        assertEquals(2, ((Coach)user).getLevel());
+        ((Coach) user).setLevel(2);
+        Assertions.assertEquals(2, ((Coach) user).getLevel());
     }
 
     @Test
     public void setLevelFail() {
-        ((Coach)user).setLevel(-1);
-        assertNotEquals(-1, ((Coach)user).getLevel());
+        ((Coach) user).setLevel(-1);
+        Assertions.assertNotEquals(-1, ((Coach) user).getLevel());
     }
 
     @Test
     public void setFieldRoleSuccess() {
-        ((Coach)user).setFieldRole(FieldRole.DEFENDER);
-        assertEquals(FieldRole.DEFENDER, ((Coach)user).getFieldRole());
+        ((Coach) user).setFieldRole(FieldRole.DEFENDER);
+        Assertions.assertEquals(FieldRole.DEFENDER, ((Coach) user).getFieldRole());
     }
 
     @Test
     public void setFieldRoleFailNull() {
-        ((Coach)user).setFieldRole(null);
-        assertNotNull(((Coach)user).getFieldRole());
+        ((Coach) user).setFieldRole(null);
+        Assertions.assertNotNull(((Coach) user).getFieldRole());
     }
 
     @Test
     public void addPageSuccess() {
-        ((Coach)user).addPage("I'm a coach of the best team.");
-        assertTrue(((Coach)user).getPageID() > -1);
+        ((Coach) user).addPage("I'm a coach of the best team.");
+        Assertions.assertTrue(((Coach) user).getPageID() > -1);
     }
 
     @Test
     public void addPageFail() {
-        ((Coach)user).addPage("     ");
-        assertTrue(((Coach)user).getPageID() == -1);
+        ((Coach) user).addPage("     ");
+        Assertions.assertTrue(((Coach) user).getPageID() == -1);
     }
 
     @Test
     public void addPageFailNull() {
-        ((Coach)user).addPage(null);
-        assertTrue(((Coach)user).getPageID() == -1);
+        ((Coach) user).addPage(null);
+        Assertions.assertTrue(((Coach) user).getPageID() == -1);
     }
 
     @Test
     public void getRole() {
-        assertEquals("Coach", ((Coach)user).getRole());
+        Assertions.assertEquals("Coach", ((Coach) user).getRole());
     }
 
     @Test
@@ -78,7 +79,7 @@ public class CoachUT {
             }
         };
 
-        assertTrue(((Coach)user).editDetails(details));
+        Assertions.assertTrue(((Coach) user).editDetails(details));
     }
 
     @Test
@@ -89,7 +90,7 @@ public class CoachUT {
             }
         };
 
-        assertFalse(((Coach)user).editDetails(details));
+        Assertions.assertFalse(((Coach) user).editDetails(details));
     }
 
     @Test
@@ -101,6 +102,6 @@ public class CoachUT {
             }
         };
 
-        assertFalse(((Coach)user).editDetails(details));
+        Assertions.assertFalse(((Coach) user).editDetails(details));
     }
 }

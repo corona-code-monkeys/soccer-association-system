@@ -1,15 +1,16 @@
 package com.SAS.User;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.Assert.*;
+
 
 public class PersonalPageUT {
 
     private PersonalPage personalPage;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         personalPage = new PersonalPage("This is my page.");
     }
@@ -19,6 +20,6 @@ public class PersonalPageUT {
         String desc = "This is the best page.";
         personalPage.setDescription(desc);
 
-        assertEquals(desc, personalPage.getDescription());
+        Assertions.assertEquals(desc, personalPage.getDescription());
     }
 }

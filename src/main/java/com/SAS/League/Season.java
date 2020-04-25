@@ -1,4 +1,7 @@
 package com.SAS.League;
+import com.SAS.team.Team;
+import com.SAS.game.Game;
+import com.SAS.User.Referee;
 
 import com.SAS.game.Game;
 import com.SAS.team.Team;
@@ -6,6 +9,8 @@ import com.SAS.team.Team;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+
+
 
 /**
  * class season that define the object season and attributes
@@ -17,6 +22,7 @@ public class Season {
     private HashMap<League, Table> tables;
     private HashSet<Team> teamsList;
     private HashSet<League> leaguesList;
+    private HashMap<League, HashSet<Referee>> referees;
     private HashMap<League, PointsPolicy> pointsPolicy;
     private HashMap<League, GamesPolicy> gamesPolicy;
     private HashMap<League, LeagueRankPolicy> rankPolicy;
@@ -35,6 +41,7 @@ public class Season {
         this.teamsList = teamsList;
         this.leaguesList = leaguesList;
         this.budgets = new HashMap<>();
+        this.referees= new HashMap<>();
         this.tables = new HashMap<>();
         this.pointsPolicy = new HashMap<>();
         this.gamesPolicy = new HashMap<>();
@@ -89,6 +96,7 @@ public class Season {
      */
     public void addLeague(League league) {
         this.leaguesList.add(league);
+        this.referees.put(league,new HashSet<>());
     }
 
     /**
@@ -155,7 +163,8 @@ public class Season {
      * @param budget the budget of the input team for this season
      */
     public void addBudget(Team team, double budget) {
-        if (this.leaguesList.contains(team)&&!this.budgets.containsKey(team)) {
+        if (this.teamsList.contains(team)&&!this.budgets.containsKey(team)) {
+            teamsList.add(team);
             Budget budgetToAdd = new Budget(team, this, budget);
             this.budgets.put(team, budgetToAdd);
         }
@@ -197,13 +206,33 @@ public class Season {
     }
 
     /**
-     * @param league     the league that the points policy is relevant to
+     * @param league     the league that the rank policy is relevant to
      * @param rankPolicy the rank policy you want to add
      */
     public void addRankPolicy(League league, LeagueRankPolicy rankPolicy) {
         if (this.leaguesList.contains(league)&&!this.rankPolicy.containsKey(league)) {
             this.rankPolicy.put(league, rankPolicy);
             league.addRankPolicy(this, rankPolicy);
+        }
+    }
+
+    /**
+     *
+     * @return the hashmap of the referees for this season for each league
+     */
+    public HashMap<League,HashSet<Referee>> getReferees() {
+        return referees;
+    }
+
+
+    /**
+     * @param league     the league that the  referee is relevant to
+     * @param ref the referee you want to add to the list of referees
+     */
+    public void addReferee(League league, Referee ref) {
+        if (this.leaguesList.contains(league)) {
+            this.referees.get(league).add(ref);
+            league.addReferee(this, ref);
         }
     }
 }

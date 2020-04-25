@@ -6,16 +6,16 @@ package com.SAS.League;
 public class TwoRoundsLeague extends GamesPolicy {
 
     public TwoRoundsLeague() {
-        this.name="Two rounds league";
+        this.name = "Two rounds league";
     }
 
     /**
      * constructor that init the object and gives him name
      */
     public TwoRoundsLeague(League league, Season season) {
-        this.name="Two rounds league";
-        this.league=league;
-        this.season=season;
+        this();
+        this.league = league;
+        this.season = season;
     }
 
     @Override

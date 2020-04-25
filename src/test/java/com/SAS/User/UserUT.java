@@ -1,17 +1,20 @@
 package com.SAS.User;
 
 import java.util.HashSet;
-import org.junit.*;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 
-import static org.junit.Assert.*;
+
 
 public class UserUT {
 
     private User user;
     private HashSet<String> priv;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         user = new Registered("avil", "123456", "Avi Levi");
         priv = new HashSet<>();
@@ -24,7 +27,7 @@ public class UserUT {
         user.setPrivileges(newPrivileges);
         priv.add("editPage");
 
-        assertArrayEquals(priv.toArray(), user.getMyPrivileges().toArray());
+        Assertions.assertArrayEquals(priv.toArray(), user.getMyPrivileges().toArray());
     }
 
 

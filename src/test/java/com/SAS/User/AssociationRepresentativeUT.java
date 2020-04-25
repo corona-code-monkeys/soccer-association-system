@@ -1,15 +1,15 @@
 package com.SAS.User;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.Assert.*;
 
 public class AssociationRepresentativeUT {
 
     private User user;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         user = new Registered("avil", "123456", "Avi Levi");
         user = new AssociationRepresentative(user, "Avi Levi");
@@ -17,6 +17,6 @@ public class AssociationRepresentativeUT {
 
     @Test
     public void getRole() {
-        assertEquals("AssociationRepresentative", ((AssociationRepresentative)user).getRole());
+        Assertions.assertEquals("AssociationRepresentative", ((AssociationRepresentative)user).getRole());
     }
 }

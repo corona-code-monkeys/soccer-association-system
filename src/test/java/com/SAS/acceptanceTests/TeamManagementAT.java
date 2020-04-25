@@ -7,15 +7,17 @@ import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamAsset;
 import com.SAS.teamManagenemt.TeamManagement;
 import com.SAS.transaction.Transaction;
-import org.junit.Before;
-import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class TeamManagementAT {
 
@@ -24,7 +26,7 @@ public class TeamManagementAT {
     private Team team;
     private User teamOwner;
 
-    @Before
+    @BeforeEach
     public void setUp()  {
         userController = new UserController();
         teamManagement = new TeamManagement(userController);

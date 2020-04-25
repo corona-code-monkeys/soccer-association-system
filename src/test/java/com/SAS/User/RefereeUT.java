@@ -1,18 +1,17 @@
 package com.SAS.User;
 
 import com.SAS.game.Game;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
-import java.sql.Ref;
 
-import static org.junit.Assert.*;
 
 public class RefereeUT {
 
     private User user;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         user = new Registered("avil", "123456", "Avi Levi");
         user = new Referee(user, "Avi Levi");
@@ -21,11 +20,29 @@ public class RefereeUT {
     @Test
     public void setLevel() {
         ((Referee)user).setLevel(1);
-        assertEquals(1, ((Referee)user).getLevel());
+        Assertions.assertEquals(1, ((Referee)user).getLevel());
     }
 
     @Test
+    public void addGame() {
+        Game game = new Game();
+        ((Referee)user).addGame(game);
+
+        Assertions.assertTrue(((Referee)user).getGames().contains(game));
+    }
+
+    @Test
+    public void removeGame() {
+        Game game = new Game();
+        ((Referee)user).addGame(game);
+        ((Referee)user).removeGame(game);
+
+        Assertions.assertTrue(!((Referee)user).getGames().contains(game));
+    }
+
+    @Test
+
     public void getRole() {
-        assertEquals("Referee", ((Referee)user).getRole());
+        Assertions.assertEquals("Referee", ((Referee)user).getRole());
     }
 }

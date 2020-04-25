@@ -1,15 +1,16 @@
 package com.SAS.User;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.Assert.*;
+
 
 public class FanUT {
 
     private User user;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         user = new Registered("avil", "123456", "Avi Levi");
         user = new Fan(user, "Avi Levi");
@@ -18,6 +19,6 @@ public class FanUT {
 
     @Test
     public void getRole() {
-        assertEquals("Fan", ((Fan)user).getRole());
+        Assertions.assertEquals("Fan", ((Fan)user).getRole());
     }
 }

@@ -39,15 +39,6 @@ public class CRUD {
     }
 
     /**
-     * The function return true if there's a this userName exists in the DB, otherwise returns false
-     * @param userName
-     * @return true or false
-     */
-    public static boolean isUserNameExist(String userName) {
-        return userName.equals("shaharf");
-    }
-
-    /**
      * will return false for userID smaller then 0
      *
      * @param userID
@@ -145,7 +136,7 @@ public class CRUD {
     }
 
     /**
-     * will return false for null inputs, or inputs with password == wrong, else, will return a Fan named chen gelad
+     * will return false for null inputs, or inputs with password == wrong, else, will return a Fan named
      *
      * @param userName
      * @param password
@@ -158,7 +149,7 @@ public class CRUD {
             return null;
         } else {
             UserController controller = new UserController();
-            return controller.createUser(userName, password, "Yossi Cohen", UserType.FAN, true, null);
+            return controller.createUser(userName, password, "matan anavi", UserType.FAN, true, null);
         }
     }
 
@@ -198,8 +189,35 @@ public class CRUD {
      * @param gamesPolicy
      * @return
      */
-    public static boolean addSSeasonToLeauge(League league, Season season, LeagueRankPolicy leagueRankPolicy,
-                                             PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
+    public static boolean addSeasonToLeague(League league, Season season, LeagueRankPolicy leagueRankPolicy,
+                                            PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
+        return true;
+    }
+
+    /**
+     * to hard to moc, if will be needed, will find a way
+     *
+     * @param league
+     * @param season
+     * @param leagueRankPolicy
+     * @param pointsPolicy
+     * @param gamesPolicy
+     * @return
+     */
+    public static boolean addLeagueToSeason(Season season, League league, LeagueRankPolicy leagueRankPolicy,
+                                            PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
+        return true;
+    }
+
+
+    /**
+     * too hard to moc, if will be needed, will find a way
+     *
+     * @param league
+     * @param season
+     * @return
+     */
+    public static boolean isSeasonPartOfLeague(League league, Season season) {
         return true;
     }
 
@@ -306,13 +324,30 @@ public class CRUD {
      * @param referees
      * @return
      */
-    public static boolean addRefereesToLeague(League league, Season season, List<Referee> referees) {
+    public static boolean addRefereesToLeagueInSeason(League league, Season season, List<Referee> referees) {
         if (league == null || season == null || referees == null) {
             return false;
         } else {
             return true;
         }
     }
+
+
+    /**
+     * add or remove referees from a league
+     *
+     * @param league
+     * @param referees
+     * @return
+     */
+    public static boolean addAndRemoveRefereesFromLeague(League league, List<Referee> referees) {
+        if (league == null || referees == null || referees.size() == 0) {
+            return false;
+        } else {
+            return league.getName().equals("Ligat Ha'al");
+        }
+    }
+
 
     /**
      * send null for wrong input, not null for real input (u'll get a list of three referees)
@@ -568,5 +603,51 @@ public class CRUD {
      */
     public static boolean init(String path) {
         return path != null && path.equals("good path");
+    }
+
+    /**
+     * return false if the league is unknown and true if its known
+     *
+     * @param league
+     * @return
+     */
+    public static boolean isLeagueExist(League league) {
+        if (league.getName().equals("Ligat Ha'al")) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * opposite to isLeagueExist
+     *
+     * @param league
+     * @return
+     */
+    public static boolean addLeague(League league) {
+        return (!isLeagueExist(league));
+    }
+
+    /**
+     * return false if the league is unknown and true if its known
+     *
+     * @param season
+     * @return
+     */
+    public static boolean isSeasonExist(Season season) {
+        if (season == null) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * The function return true if there's a this userName exists in the DB, otherwise returns false
+     *
+     * @param userName
+     * @return true or false
+     */
+    public static boolean isUserNameExist(String userName) {
+        return userName.equals("shaharf");
     }
 }
