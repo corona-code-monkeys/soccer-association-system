@@ -1,10 +1,11 @@
 package com.SAS.acceptanceTests;
 
 import com.SAS.Controllers.systemController.SystemController;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class systemControllerAT {
+public class SystemControllerAT {
 
     private SystemController systemController;
 
@@ -25,6 +26,7 @@ public class systemControllerAT {
         String fullName;
         boolean system1 = false;
         boolean system2 = false;
+        boolean createUser = false;
 
         //OpenAssociationSystem
         System.out.println(systemController.openAssociationSystem());
@@ -42,6 +44,8 @@ public class systemControllerAT {
             return;
         }
 
+        assertTrue(system1);
+
         System.out.println("Please select which external systems you want to connect to:");
         System.out.println(systemController.showAvailableExternalSystem());
         userChoose = "Tax";
@@ -53,6 +57,8 @@ public class systemControllerAT {
             System.out.println("No External System with this name was found");
             return;
         }
+
+        assertTrue(system2);
 
         if (system1 && system2) {
             //Create first admin user
@@ -66,8 +72,10 @@ public class systemControllerAT {
             System.out.println("Full Name:");
             fullName = "Admin Admin";
             System.out.println("fullName");
-            systemController.createSystemAdmin(userName, password, fullName);
+            createUser = systemController.createSystemAdmin(userName, password, fullName);
             System.out.println("The setup ended successfully");
+
+            assertTrue(system1 && system2 && createUser);
         }
     }
 
@@ -97,6 +105,7 @@ public class systemControllerAT {
         }
         else{
             System.out.println("No External System with this name was found");
+            assertFalse(system1);
             return;
         }
 
