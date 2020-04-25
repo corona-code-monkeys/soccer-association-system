@@ -93,7 +93,7 @@ public class TeamManagementAT {
                 ArrayList<String> details = new ArrayList<String>() {
                     {
                         add("Bloomfield");
-                        add("  ");
+                        add(null);
                         add("Stadium");
                     }
                 };
@@ -201,6 +201,8 @@ public class TeamManagementAT {
             } else {
                 System.out.println("Invalid asset, please try again to edit the asset");
             }
+        } else{
+            System.out.println("You are not authorized to edit the team");
         }
 
     }
@@ -238,11 +240,11 @@ public class TeamManagementAT {
             }
             else{
                 System.out.println("You are not authorized to delete an asset for the team: " + team.getName());
-                assertNotNull(asset);
+                assertTrue(myTeam.getAllAssets().contains(asset));
             }
         }
         else{
-            System.out.println("You are not authorized to delete an asset for the team: " + team.getName());
+            System.out.println("You are not authorized to edit the team: " + team.getName());
         }
     }
 
@@ -274,7 +276,7 @@ public class TeamManagementAT {
             TeamAsset asset = myTeam.getAssetByNameAndType("Facility", "Ironi A field");
             boolean removed = teamManagement.removeAsset(asset, myTeam, teamOwner);
             if (removed == true){
-                assertFalse(myTeam.getFacilities().contains(asset));
+                assertFalse(myTeam.getAllAssets().contains(asset));
                 System.out.println("The asset was removed successfully");
                 asset = null;
             }
@@ -405,7 +407,7 @@ public class TeamManagementAT {
             }
         }
         else {
-            System.out.println("You do not have the privileges to add the team manager");
+            System.out.println("You do not have the privileges to edit the team");
         }
     }
 
@@ -434,14 +436,14 @@ public class TeamManagementAT {
             User toMakeTeamOwner = teamManagement.getUserForTeamManagerNominees(myTeam, "");
             if (toMakeTeamOwner !=null){
                 toMakeTeamOwner = teamManagement.addTeamManager(toMakeTeamOwner, myTeam, teamOwner, givePrivileges);
-                assertTrue(toMakeTeamOwner instanceof TeamManager);
                 System.out.println(((TeamManager)toMakeTeamOwner).getFullName() + " was nominated as team manager");
             }else{
+                assertFalse(toMakeTeamOwner instanceof TeamManager);
                 System.out.println("The team manager could not be nominated");
             }
         }
         else {
-            System.out.println("You do not have the privileges to add the team manager");
+            System.out.println("You do not have the privileges to edit the team");
         }
     }
 

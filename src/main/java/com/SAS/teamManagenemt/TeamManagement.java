@@ -568,6 +568,12 @@ public class TeamManagement {
         return builder.toString();
     }
 
+    /**
+     * This function return a user with the full name 'name' from the team 'team'
+     * @param team
+     * @param name
+     * @return
+     */
     public User getUserForTeamManagerNominees(Team team, String name) {
         if (team != null)
             return team.getUserForTeamManager(name);
