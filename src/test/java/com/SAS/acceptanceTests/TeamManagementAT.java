@@ -39,6 +39,7 @@ public class TeamManagementAT {
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
         //enter editing mode
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())){
+            System.out.println("--Select to add a team asset--");
             //first is name, second is location, third is type
             System.out.println("Please select asset type: 1 for Facility, 2 for Player, 3 for Coach");
             System.out.println("You have selected Facility");
@@ -78,6 +79,7 @@ public class TeamManagementAT {
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
         //enter editing mode
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())){
+            System.out.println("--Select to add a team asset--");
             //first is name, second is location, third is type
             System.out.println("Please select asset type: 1 for Facility, 2 for Player, 3 for Coach");
             System.out.println("You have selected Facility");
@@ -122,9 +124,11 @@ public class TeamManagementAT {
         team.addFacility(fac);
 
         team.getPersonalPage().setDescription(team.getPersonalPage().getDescription() + '\n' + "Facilities: " + fac.getName());
-        System.out.println("Please select an asset to edit: ");
         //show assets
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
+        System.out.println("--Select to edit a team asset--");
+        System.out.println("Please select an asset to edit: ");
+
         //enter editing mode
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())) {
             System.out.println(teamManagement.getAllTeamAssets(team).toString());
@@ -172,6 +176,7 @@ public class TeamManagementAT {
         //show personal page
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
         //enter editing mode
+        System.out.println("--Select to edit a team asset--");
         System.out.println("Please select an asset to edit: ");
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())) {
             //show assets
@@ -230,6 +235,7 @@ public class TeamManagementAT {
         boolean canEdit = teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam());
         if (canEdit) {
             //show assets
+            System.out.println("--Select to delete a team asset--");
             System.out.println("Please select an asset to delete: ");
             System.out.println(teamManagement.getAllTeamAssets(team).toString());
             System.out.println("Are you sure you want to remove Ironi A field");
@@ -269,6 +275,7 @@ public class TeamManagementAT {
         boolean canEdit = teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam());
         if (canEdit) {
             //show assets
+            System.out.println("--Select to delete a team asset--");
             System.out.println("Please select an asset to delete: ");
             System.out.println(teamManagement.getAllTeamAssets(team).toString());
             System.out.println("Are you sure you want to remove Ironi A field");
@@ -302,7 +309,7 @@ public class TeamManagementAT {
 
         //enter editing mode
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())){
-
+            System.out.println("--Select to add another team owner--");
             //checks if the user can nominate team owner
             if (teamManagement.canAddRemoveTeamOwner(teamOwner)){
                 System.out.println("These are the optional nominees for team owner:");
@@ -343,7 +350,7 @@ public class TeamManagementAT {
 
         //enter editing mode
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())){
-
+            System.out.println("--Select to add another team owner--");
             //checks if the user can nominate team owner
             if (teamManagement.canAddRemoveTeamOwner(teamOwner)){
                 System.out.println("These are the optional nominees for team owner:");
@@ -388,11 +395,11 @@ public class TeamManagementAT {
         myTeam.getPersonalPage().showPersonalPage();
 
         //enter editing mode
-        if (teamManagement.enterEditingMode(teamOwner, myTeam)) {
+        if (teamManagement.enterEditingMode(teamOwner, myTeam) && teamManagement.canAddRemoveTeamManager(teamOwner)) {
             System.out.println("--Select to add a team manager--");
             System.out.println("Please select a nominee from the followings:");
             System.out.println(teamManagement.showOptionalNomineesForTeamManager(myTeam));
-            System.out.println('\n' + "Selected: Itay Cohen");
+            System.out.println("Selected: Itay Cohen");
             System.out.println("Would you like to give the new team manager editing assets privileges? 1 to give privileges, otherwise 0");
             String approval = "1";
             System.out.println(approval);
@@ -424,11 +431,11 @@ public class TeamManagementAT {
         myTeam.getPersonalPage().showPersonalPage();
 
         //enter editing mode
-        if (teamManagement.enterEditingMode(teamOwner, myTeam)) {
+        if (teamManagement.enterEditingMode(teamOwner, myTeam) && teamManagement.canAddRemoveTeamManager(teamOwner)) {
             System.out.println("--Select to add a team manager--");
             System.out.println("Please select a nominee from the followings:");
             System.out.println(teamManagement.showOptionalNomineesForTeamManager(myTeam));
-            System.out.println('\n' + "Selected: ");
+            System.out.println("Selected: ");
             System.out.println("Would you like to give the new team manager editing assets privileges? 1 to give privileges, otherwise 0");
             String approval = "1";
             System.out.println(approval);
@@ -447,9 +454,73 @@ public class TeamManagementAT {
         }
     }
 
-    //Todo - Chen
     @Test
-    public void removeTeamManager() {
+    public void removeTeamManagerSuccess() {
+        //preparations- create a player and nominate it to team manager
+        User playerToBeManager = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", UserType.PLAYER, true, null);
+        ((Player)playerToBeManager).setFieldRole(FieldRole.MIDFIELDER);
+        ((Player)playerToBeManager).setTeam(team);
+        ((Player)playerToBeManager).setDateOfBirth(LocalDate.parse("1990-12-01"));
+        team.addPlayerToTeam((Player)playerToBeManager);
+        playerToBeManager = teamManagement.addTeamManager(playerToBeManager, team,  teamOwner, true);
+        team.getPersonalPage().setDescription(team.getPersonalPage().getDescription() + ", " + "Team manager: " + ((TeamManager)playerToBeManager).getFullName());
+
+        Team myTeam = ((TeamOwner) teamOwner).getTeam();
+        myTeam.getPersonalPage().showPersonalPage();
+
+        //enter editing mode
+        if (teamManagement.enterEditingMode(teamOwner, myTeam) && teamManagement.canAddRemoveTeamManager(teamOwner)) {
+            System.out.println("--Select to remove the team manager--");
+            System.out.println("Are you sure you want to remove the team manager: " + team.getManager().getFullName());
+            System.out.println("confirm");
+            playerToBeManager = teamManagement.removeTeamManager(playerToBeManager, team, teamOwner);
+            assertNotEquals(team.getManager(), playerToBeManager);
+            System.out.println("The team manager was removed successfully");
+        }
+        else {
+            System.out.println("The user do not have sufficient privileges");
+        }
+    }
+
+
+    @Test
+    public void removeTeamManagerFailNominatedByAnotherTeamOwner() {
+        //preparations- create a player and nominate it to team manager
+        User playerToBeManager = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", UserType.PLAYER, true, null);
+        ((Player)playerToBeManager).setFieldRole(FieldRole.MIDFIELDER);
+        ((Player)playerToBeManager).setTeam(team);
+        ((Player)playerToBeManager).setDateOfBirth(LocalDate.parse("1990-12-01"));
+        team.addPlayerToTeam((Player)playerToBeManager);
+
+        //another team owner
+        User playerToBeTeamOwner = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
+        team.addPlayerToTeam((Player) playerToBeTeamOwner);
+        ((Player)playerToBeTeamOwner).setTeam(team);
+        playerToBeTeamOwner= teamManagement.addAdditionalTeamOwner(playerToBeTeamOwner, team, teamOwner);
+
+        playerToBeManager = teamManagement.addTeamManager(playerToBeManager, team,  playerToBeTeamOwner, true);
+        team.getPersonalPage().setDescription(team.getPersonalPage().getDescription() + ", " + "Team manager: " + ((TeamManager)playerToBeManager).getFullName());
+
+        Team myTeam = ((TeamOwner) teamOwner).getTeam();
+        myTeam.getPersonalPage().showPersonalPage();
+
+        //enter editing mode
+        if (teamManagement.enterEditingMode(teamOwner, myTeam) && teamManagement.canAddRemoveTeamManager(teamOwner)) {
+            System.out.println("--Select to remove the team manager--");
+            System.out.println("Are you sure you want to remove the team manager: " + team.getManager().getFullName());
+            System.out.println("confirm");
+            playerToBeManager = teamManagement.removeTeamManager(playerToBeManager, team, teamOwner);
+            if (! (playerToBeManager instanceof TeamManager)) {
+                System.out.println("The team manager was removed successfully");
+            }
+            else{
+                assertEquals(team.getManager(), playerToBeManager);
+                System.out.println("The user is unauthorized to remove the team manager");
+            }
+        }
+        else {
+            System.out.println("The user do not have sufficient privileges");
+        }
     }
 
 
@@ -466,7 +537,7 @@ public class TeamManagementAT {
 
         //enter editing mode
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())){ ;
-
+            System.out.println("--Select to remove a team owner--");
             //checks if the user can remove team owner
             if (teamManagement.canAddRemoveTeamOwner(teamOwner)) {
                 System.out.println("These are the team owners of " + team.getName() + ":");
@@ -511,7 +582,7 @@ public class TeamManagementAT {
 
         //enter editing mode
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())){ ;
-
+            System.out.println("--Select to remove a team owner--");
             //checks if the user can remove team owner
             if (teamManagement.canAddRemoveTeamOwner(teamOwner)) {
                 System.out.println("These are the team owners of " + team.getName() + ":");
@@ -541,6 +612,7 @@ public class TeamManagementAT {
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
         //enter editing mode
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())) {
+            System.out.println("--Select to add a new transaction--");
 
             //checks is thr user can add transaction
             if (teamManagement.canAddTransaction(teamOwner)) {
@@ -591,6 +663,7 @@ public class TeamManagementAT {
 
         //enter editing mode
         if (teamManagement.enterEditingMode(teamManager, ((TeamManager) teamManager).getTeam())) {
+            System.out.println("--Select to add a new transaction--");
 
             //checks is thr user can add transaction
             boolean isAuthorize = teamManagement.canAddTransaction(teamManager);
