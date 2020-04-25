@@ -5,7 +5,7 @@ import com.SAS.League.Season;
 import com.SAS.User.Referee;
 import com.SAS.User.Registered;
 import com.SAS.crudoperations.CRUD;
-import org.junit.jupiter.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -17,11 +17,7 @@ public class isLeagueExistIT {
 
     public static League driverInitLeague(String name) {
         League league = new League(name);
-            if (CRUD.addLeague(league)) {
-                return league;
-            }
-
-        return null;
+        return league;
     }
 
     public static boolean driverAddSeasonToALeague(Season season, League league) {
@@ -56,9 +52,9 @@ public class isLeagueExistIT {
         LinkedList<Referee> referees= new LinkedList<>();
         Referee ref= new Referee(new Registered("asd", "asd", "asd"),"dekel lev");
         referees.add(ref);
-        Assertions.assertTrue(league!=null);
-        Assertions.assertTrue(driverAddSeasonToALeague(new Season(2020, new HashSet<>(),new HashSet<>()), league));
-        Assertions.assertTrue(driverAssignAndRemoveRefereesFromLeague(league,referees));
-        Assertions.assertTrue(driverAssignRefereesToLeagueInSpecificSeason(league,new Season(2020, new HashSet<>(),new HashSet<>()), referees));
+        Assert.assertNotNull(league);
+        Assert.assertTrue(driverAddSeasonToALeague(new Season(2020, new HashSet<>(),new HashSet<>()), league));
+        Assert.assertTrue(driverAssignAndRemoveRefereesFromLeague(league,referees));
+        Assert.assertTrue(driverAssignRefereesToLeagueInSpecificSeason(league,new Season(2020, new HashSet<>(),new HashSet<>()), referees));
     }
 }

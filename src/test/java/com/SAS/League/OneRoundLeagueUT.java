@@ -1,6 +1,6 @@
 package com.SAS.League;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 class OneRoundLeagueUT {
@@ -8,11 +8,11 @@ class OneRoundLeagueUT {
     @Test
     void toStringTest() {
 
-        Assertions.assertTrue(one.toString().equals("One round league"));
+        Assert.assertTrue(one.toString().equals("One round league"));
     }
 
     @Test
     void howManyRounds() {
-        Assertions.assertTrue(one.howManyRounds()==1);
+        Assert.assertTrue(one.howManyRounds()==1);
     }
 }

@@ -5,7 +5,7 @@ import com.SAS.League.Season;
 import com.SAS.User.Referee;
 import com.SAS.User.Registered;
 import com.SAS.crudoperations.CRUD;
-import org.junit.jupiter.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -38,7 +38,7 @@ public class isSeasonExistIT {
         LinkedList<Referee> referees = new LinkedList<>();
         Referee ref = new Referee(new Registered("asd", "asd", "asd"), "dekel lev");
         referees.add(ref);
-        Assertions.assertTrue(driverAddSeasonToALeague(season,league));
-        Assertions.assertTrue(driverAssignRefereesToLeagueInSpecificSeason(league, season, referees));
+        Assert.assertTrue(driverAddSeasonToALeague(season, league));
+        Assert.assertTrue(driverAssignRefereesToLeagueInSpecificSeason(league, season, referees));
     }
 }

@@ -1,6 +1,6 @@
 package com.SAS.League;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 class GoalDifferenceUT {
@@ -8,13 +8,13 @@ class GoalDifferenceUT {
     @Test
     void toStringTest() {
         GoalDifference difference= new GoalDifference();
-        Assertions.assertTrue(difference.toString().equals("The bigger goal difference")); //need to solve it
+        Assert.assertTrue(difference.toString().equals("The bigger goal difference")); //need to solve it
     }
 
 
     @Test
     void tieBreaker() {
         GoalDifference difference= new GoalDifference();
-        Assertions.assertTrue(difference.tieBreaker().equals("Goal Difference"));
+        Assert.assertTrue(difference.tieBreaker().equals("Goal Difference"));
     }
 }

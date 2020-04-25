@@ -34,7 +34,7 @@ public class CRUD {
             return null;
         } else {
             UserController c = new UserController();
-            return c.createUser(userName, password, fullName, type, true,null);
+            return c.createUser(userName, password, fullName, type, true, null);
         }
     }
 
@@ -136,7 +136,7 @@ public class CRUD {
     }
 
     /**
-     * will return false for null inputs, or inputs with password == wrong, else, will return a Fan named chen gelad
+     * will return false for null inputs, or inputs with password == wrong, else, will return a Fan named
      *
      * @param userName
      * @param password
@@ -149,7 +149,7 @@ public class CRUD {
             return null;
         } else {
             UserController controller = new UserController();
-            return controller.createUser(userName, password, "chen gelad", UserType.FAN, true,null);
+            return controller.createUser(userName, password, "matan anavi", UserType.FAN, true, null);
         }
     }
 
@@ -204,7 +204,7 @@ public class CRUD {
      * @param gamesPolicy
      * @return
      */
-    public static boolean addLeagueToSeason(Season season,League league, LeagueRankPolicy leagueRankPolicy,
+    public static boolean addLeagueToSeason(Season season, League league, LeagueRankPolicy leagueRankPolicy,
                                             PointsPolicy pointsPolicy, GamesPolicy gamesPolicy) {
         return true;
     }
@@ -341,12 +341,12 @@ public class CRUD {
      * @return
      */
     public static boolean addAndRemoveRefereesFromLeague(League league, List<Referee> referees) {
-        if (league != null && referees != null) {
-            return true;
+        if (league == null || referees == null || referees.size() == 0) {
+            return false;
+        } else {
+            return league.getName().equals("Ligat Ha'al");
         }
-        return false;
     }
-
 
 
     /**
@@ -362,9 +362,9 @@ public class CRUD {
         } else {
             List<Referee> list = new ArrayList<>();
             UserController c = new UserController();
-            list.add(new Referee(c.createUser("name1", "password1", "fullname1", UserType.REFEREE, true,null), "fullname1"));
-            list.add(new Referee(c.createUser("name2", "password2", "fullname2", UserType.REFEREE, true,null), "fullname2"));
-            list.add(new Referee(c.createUser("name3", "password3", "fullname3", UserType.REFEREE, true,null), "fullname3"));
+            list.add(new Referee(c.createUser("name1", "password1", "fullname1", UserType.REFEREE, true, null), "fullname1"));
+            list.add(new Referee(c.createUser("name2", "password2", "fullname2", UserType.REFEREE, true, null), "fullname2"));
+            list.add(new Referee(c.createUser("name3", "password3", "fullname3", UserType.REFEREE, true, null), "fullname3"));
             return list;
         }
     }
@@ -607,39 +607,43 @@ public class CRUD {
 
     /**
      * return false if the league is unknown and true if its known
+     *
      * @param league
      * @return
      */
     public static boolean isLeagueExist(League league) {
-        if (league == null){
+        if (league.getName().equals("Ligat Ha'al")) {
             return true;
         }
         return false;
     }
 
     /**
-     *opposite to isLeagueExist
+     * opposite to isLeagueExist
+     *
      * @param league
      * @return
      */
     public static boolean addLeague(League league) {
-        return(!isLeagueExist(league));
+        return (!isLeagueExist(league));
     }
 
     /**
      * return false if the league is unknown and true if its known
+     *
      * @param season
      * @return
      */
     public static boolean isSeasonExist(Season season) {
-        if (season == null){
-            return true;
+        if (season == null) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
      * The function return true if there's a this userName exists in the DB, otherwise returns false
+     *
      * @param userName
      * @return true or false
      */

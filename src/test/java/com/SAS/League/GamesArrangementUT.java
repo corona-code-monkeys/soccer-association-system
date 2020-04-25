@@ -1,7 +1,7 @@
 package com.SAS.League;
 
 import com.SAS.game.Game;
-import org.junit.jupiter.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -16,8 +16,8 @@ class GamesArrangementUT {
         GamesArrangement arrangement = new GamesArrangement(new League("test"),
                 new Season(2020, new HashSet<>(), new HashSet<>()), new LinkedList<>());
         Game game = new Game();
-        Assertions.assertFalse(arrangement.getGameslist().contains(game));
+        Assert.assertFalse(arrangement.getGameslist().contains(game));
         arrangement.addGame(game);
-        Assertions.assertTrue(arrangement.getGameslist().contains(game));
+        Assert.assertTrue(arrangement.getGameslist().contains(game));
     }
 }
