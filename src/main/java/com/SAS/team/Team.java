@@ -5,6 +5,7 @@ import com.SAS.League.Season;
 import com.SAS.User.*;
 import com.SAS.facility.Facility;
 import com.SAS.facility.facilityType;
+import com.SAS.teamManagenemt.TeamAsset;
 import com.SAS.transaction.Transaction;
 import com.SAS.transaction.TransactionType;
 
@@ -214,7 +215,6 @@ public class Team {
         if (newFacility == null) {
             return false;
         }
-
         teamFacilities.add(newFacility);
         return true;
     }
@@ -231,8 +231,7 @@ public class Team {
 
 
     /**
-     * The function return the manager of the team
-     *
+     * The function return the manager of the teaצ
      * @return
      */
     public TeamManager getManager() {
@@ -250,11 +249,9 @@ public class Team {
         if (newManager == null) {
             return false;
         }
-
         this.manager = newManager;
         return true;
     }
-
 
     /**
      * The function returns the team owners
@@ -284,7 +281,6 @@ public class Team {
         if (teamOwner == null) {
             return false;
         }
-
         this.owners.add(teamOwner);
         return true;
     }
@@ -407,5 +403,141 @@ public class Team {
      */
     public List<Facility> getFacilities() {
         return this.teamFacilities;
+    }
+
+    /**
+     * This function returns all the team assets
+     * @return List<TeamAsset>
+     */
+    public List<TeamAsset> getAllAssets(){
+        List<TeamAsset> assets = new LinkedList<>();
+        assets.addAll(players);
+        assets.addAll(teamFacilities);
+        if (coach!=null)
+            assets.add(coach);
+        return assets;
+    }
+
+    /**
+     * This function returns the asset by type and name
+     * @param type
+     * @param name
+     * @return TeamAsset
+     */
+    public TeamAsset getAssetByNameAndType(String type, String name) {
+        if (type == null || name == null || name.trim().isEmpty())
+            return null;
+        switch (type) {
+            case "Coach":
+                if (coach!=null && coach.getFullName().equals(name))
+                    return this.coach;
+            case "Player":
+                for (Player player : this.players) {
+                    if (player.getFullName().equals(name))
+                        return player;
+                }
+                return null;
+            case "Facility":
+                for (Facility facility: this.teamFacilities) {
+                    if (facility.getName().equals(name))
+                        return facility;
+                }
+                return null;
+            default:
+                return null;
+        }
+    }
+
+     /**
+     * The function returns the optional nominees for team owner - coach, team manager and players
+     * @return
+     */
+    public List<User> getOptionalNomineesForTeamOwner() {
+        List<User> optionalNominees = new LinkedList<User>();
+        if (this.manager != null) {
+            optionalNominees.add(getManager());
+        }
+
+        if (this.coach != null) {
+            optionalNominees.add(getCoach());
+        }
+
+        if (this.players.size() > 0) {
+            optionalNominees.addAll(getPlayers());
+        }
+
+        return optionalNominees;
+    }
+
+    /**
+     * The function receives a full name of a user and returns the user if it's an optional for team owner nominee,
+     * otherwise return null
+     * @param fullName
+     * @return
+     */
+    public User getUserForTeamOwner(String fullName) {
+        if (this.manager != null && this.manager.getFullName().equals(fullName)) {
+            return manager;
+        }
+        else if (this.coach != null && this.coach.getFullName().equals(fullName)) {
+            return coach;
+        }
+        else {
+            for (Player player : this.players) {
+                if (player.getFullName().equals(fullName)) {
+                    return player;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * This function returns the TeamOwner by its name
+     * @param fullName
+     * @return
+     */
+    public User getTeamOwnerByFullName(String fullName) {
+        for (TeamOwner owner : this.owners) {
+            if (owner.getFullName().equals(fullName)) {
+                return owner;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * This function returns the optional team managers
+     * @return List<User>
+     */
+    public List<User> getOptionalNomineesForTeamManager() {
+        List<User> nominees = new LinkedList<>();
+        if (this.players.isEmpty() == false) {
+            nominees.addAll(getPlayers());
+        }
+       if (this.coach != null) {
+           nominees.add(getCoach());
+        }
+        return nominees;
+    }
+
+
+    /**
+     * This function return the coach/player whose full name if name
+     * @param name
+     * @return User
+     */
+    public User getUserForTeamManager(String name) {
+        if (name!=null) {
+            //coach
+            if (this.coach != null && this.coach.getFullName().equals(name))
+                return this.coach;
+            //player
+            for (Player player : this.players) {
+                if (player.getFullName().equals(name))
+                    return player;
+            }
+        }
+        return null;
     }
 }

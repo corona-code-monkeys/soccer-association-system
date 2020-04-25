@@ -75,10 +75,17 @@ public class TeamManagement {
      * This function removes a team asset
      * @param asset
      * @param team
+     * @param user
      */
-    public void removeAsset(TeamAsset asset, Team team){
-        asset.removeAssetFromTeam();
-        asset = null;
+    public boolean removeAsset(TeamAsset asset, Team team, User user){
+        if (canAddRemoveAsset(user) && (ownsTeam(team, user) || managesTeam(team, user))) {
+            asset.removeAssetFromTeam();
+            asset = null;
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
@@ -170,10 +177,6 @@ public class TeamManagement {
             teamManager = ((TeamManager) teamManager).getUser();
         }
 
-        else {
-            System.out.println("The user is unauthorized to remove the team manager");
-        }
-
         return teamManager;
     }
 
@@ -200,7 +203,7 @@ public class TeamManagement {
     public User removeTeamOwner(User teamOwner, Team team, User nominatedBy) {
         //check if the user is owns the team and that the nominate is the owner of the team and nominated this user
         if (validateTeamOwner(teamOwner, team, nominatedBy) && ownsTeam(team, nominatedBy)) {
-            removeTeamOwnerAndNominees(teamOwner, team);
+            teamOwner = removeTeamOwnerAndNominees(teamOwner, team);
         }
 
         else {
@@ -215,7 +218,10 @@ public class TeamManagement {
      * @param teamOwner
      * @param team
      */
-    private void removeTeamOwnerAndNominees(User teamOwner, Team team) {
+    private User removeTeamOwnerAndNominees(User teamOwner, Team team) {
+        if (team == null || teamOwner == null)
+            return null;
+
         List<TeamOwner> nominees = getUserNominees(teamOwner, team);
         team.removeTeamOwner((TeamOwner)teamOwner);
         ((TeamOwner) teamOwner).removeTeam();
@@ -224,6 +230,8 @@ public class TeamManagement {
         for (User nominee: nominees) {
             removeTeamOwnerAndNominees(nominee, team);
         }
+
+        return teamOwner;
 
     }
 
@@ -234,15 +242,16 @@ public class TeamManagement {
      * @return
      */
     private List<TeamOwner> getUserNominees(User teamOwner, Team team) {
-        List<TeamOwner> teamOwners = team.getOwners();
         List<TeamOwner> nominees = new LinkedList<>();
+        if (team == null)
+            return nominees;
 
+        List<TeamOwner> teamOwners = team.getOwners();
         for (TeamOwner owner: teamOwners) {
             if (owner.getNominatedBy() != null && owner.getNominatedBy().getUserID() == teamOwner.getUserID()) {
                 nominees.add(owner);
             }
         }
-
         return nominees;
     }
 
@@ -255,6 +264,9 @@ public class TeamManagement {
      * @return true or false
      */
     private boolean validateTeamOwner(User teamOwner, Team team, User nominatedBy) {
+        if (teamOwner == null || team == null || nominatedBy == null)
+            return false;
+
         return teamOwner instanceof TeamOwner && ((TeamOwner)teamOwner).getTeam() == team &&
                 ((TeamOwner)teamOwner).getNominatedBy() == nominatedBy;
     }
@@ -294,7 +306,9 @@ public class TeamManagement {
      * @return true - if the user is the team owner, otherwise - false
      */
     private boolean ownsTeam(Team team, User nominatedBy) {
-        return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam() == team;
+        if (team != null && nominatedBy != null)
+            return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam() == team;
+        return false;
     }
 
     /**
@@ -356,34 +370,53 @@ public class TeamManagement {
     }
   
     /**
-     * The function receives a team and a team owner and closes this team
+     * The function receives a team and a team owner and closes this team and returns true if it succeeded,
+     * otherwise returns false
      * @param team
      * @param teamOwner
+     * @return true or false
      */
-    public void closeTeam(Team team, User teamOwner) {
-        if (ownsTeam(team, teamOwner) && team.isActive()) {
-            team.inactivateTeam();
-            sendNotificationClose(team, "closed");
+    public boolean closeTeam(Team team, User teamOwner) {
+        if (ownsTeam(team, teamOwner)) {
+            if (team.isActive()) {
+                team.inactivateTeam();
+                sendNotificationClose(team, "closed");
+                return true;
+            }
+
+            System.out.println("The team is already closed.");
+            return false;
         }
 
         else {
             System.out.println("The user is unauthorized to close the team");
+            return false;
         }
     }
 
     /**
-     * The function receives a team and a team owner and opens this team
+     * The function receives a team and a team owner and opens this team and returns true if it succeeded,
+     * otherwise returns false
      * @param team
      * @param teamOwner
      */
-    public void openTeam(Team team, User teamOwner) {
-        if (ownsTeam(team, teamOwner) && !team.isActive()) {
-            team.reactivateTeam();
-            sendNotificationClose(team, "opened");
+    public boolean openTeam(Team team, User teamOwner) {
+        if (ownsTeam(team, teamOwner)) {
+            if (!team.isActive()) {
+                team.reactivateTeam();
+                sendNotificationClose(team, "opened");
+                return true;
+            }
+
+            else {
+                System.out.println("The team is already open.");
+                return false;
+            }
         }
 
         else {
             System.out.println("The user is unauthorized to open the team");
+            return false;
         }
     }
 
@@ -430,5 +463,153 @@ public class TeamManagement {
     public boolean enterEditingMode(User user, Team team){
         return (user instanceof TeamOwner && ownsTeam(team, user) || user instanceof TeamManager && managesTeam(team, user));
 
+    }
+
+    /**
+     * The function returns a string of the optional nominees for team owner
+     * @param user
+     * @param team
+     */
+    public String showOptionalNomineesForTeamOwner(User user, Team team) {
+        StringBuilder builder = new StringBuilder();
+        if (user !=null && team != null) {
+            List<User> optionalNominees = team.getOptionalNomineesForTeamOwner();
+            for (User optionalUser : optionalNominees) {
+                builder.append("User name: " + ((Role) optionalUser).getFullName() + "\n");
+            }
+        }
+        return builder.toString();
+    }
+
+    /**
+     * The function returns true of the user can add and remove team owner
+     * @param user
+     * @return true or false
+     */
+    public boolean canAddRemoveTeamOwner(User user) {
+        return user.getMyPrivileges().contains("add/removeTO");
+    }
+
+    /**
+     * The function returns true of the user can add and remove team manager
+     * @param user
+     * @return true or false
+     */
+    public boolean canAddRemoveTeamManager(User user) {
+        return user.getMyPrivileges().contains("add/removeTM");
+    }
+
+    /**
+     * The function receives a name of user and returns the user if it's an optional team owner
+     * @param fullName
+     * @param team
+     * @return user
+     */
+    public User getUserForTeamOwnerNominate(String fullName, Team team) {
+        if (team != null)
+            return team.getUserForTeamOwner(fullName);
+        return null;
+    }
+
+
+    /**
+     * The function retuns a string of the owners of the team
+     * @param team
+     */
+    public String showTeamOwners(Team team) {
+        StringBuilder builder = new StringBuilder();
+        if (team != null) {
+            List<TeamOwner> owners = team.getOwners();
+            for (TeamOwner owner : owners) {
+                builder.append(owner.getFullName() + "\n");
+            }
+        }
+        return builder.toString();
+    }
+
+    /**
+     * The function receives a name of user and returns the team onwer user if it exists,
+     * otherwise return null
+     * @param fullName
+     * @param team
+     * @return
+     */
+    public User getTeamOwnerUserByName(String fullName, Team team) {
+        if (team != null && fullName != null)
+            return team.getTeamOwnerByFullName(fullName);
+        return null;
+    }
+
+    /**
+     * The function returns true if the user can open and close the team, otherwise returns false
+     * @param user
+     * @return
+     */
+    public boolean canCloseOpenTeam(User user) {
+        return user.getMyPrivileges().contains("closeTNP");
+    }
+
+     /** 
+     * This function returns all the team assets
+     * @param team
+     * @return
+     */
+    public StringBuilder getAllTeamAssets(Team team){
+        StringBuilder assets = new StringBuilder();
+        if (team != null) {
+            for (TeamAsset asset : team.getAllAssets())
+                assets.append(asset);
+        }
+        return assets;
+    }
+
+    /**
+     * This function returns the team asset by type and name
+     * @param team
+     * @param type
+     * @param name
+     * @return
+     */
+    public TeamAsset getAssetByNameAndType(Team team, String type, String name) {
+        if (team!=null)
+            return team.getAssetByNameAndType(type, name);
+        return null;
+    }
+
+    /**
+     * The function returns true if the user can add new transaction, otherwise returns false
+     * @param user
+     * @return
+     */
+    public boolean canAddTransaction(User user) {
+        return user.getMyPrivileges().contains("addTrans");
+    }
+
+
+    /**
+     * The function returns a string of the optional nominees for team manager
+     * @param team
+     */
+    public String showOptionalNomineesForTeamManager(Team team) {
+        StringBuilder builder = new StringBuilder();
+        if (team !=null) {
+            List<User> optionalNominees = team.getOptionalNomineesForTeamManager();
+            for (User optionalUser : optionalNominees) {
+                builder.append("User name: " + ((Role) optionalUser).getFullName() + "\n");
+            }
+        }
+        return builder.toString();
+    }
+
+    /**
+     * This function return a user with the full name 'name' from the team 'team'
+     * @param team
+     * @param name
+     * @return
+     */
+    public User getUserForTeamManagerNominees(Team team, String name) {
+        if (team != null)
+            return team.getUserForTeamManager(name);
+        return null;
     }
 }

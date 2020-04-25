@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PlayerUT {
 
-    User user;
+    private User user;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -51,6 +51,7 @@ public class PlayerUT {
     }
 
     @Test
+
     public void removeAssetFromTeam() {
         ((Player)user).removeAssetFromTeam();
         Assertions.assertNull(((Player)user).getTeam());

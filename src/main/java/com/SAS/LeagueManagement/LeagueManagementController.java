@@ -2,7 +2,11 @@ package com.SAS.LeagueManagement;
 
 import com.SAS.League.*;
 import com.SAS.User.Referee;
+
 import com.SAS.crudoperations.CRUD;
+
+import com.SAS.User.User;
+
 import com.SAS.crudoperations.LeagueManagementCRUD;
 import com.SAS.team.Team;
 
@@ -56,6 +60,7 @@ public class LeagueManagementController {
 
         for (LeagueRankPolicy policy : rankPolicies) {
             policies.append(counter + ". " + policy.getName() + "\n");
+            counter++;
         }
         return policies.toString();
     }
@@ -103,6 +108,7 @@ public class LeagueManagementController {
 
         for (PointsPolicy policy : pointsPolicies) {
             policies.append(counter + ". " + policy.getName() + "\n");
+            counter++;
         }
 
         policies.setLength(policies.length() - 1);
@@ -120,6 +126,7 @@ public class LeagueManagementController {
 
         for (GamesPolicy policy : gamesPolicies) {
             policies.append(counter + ". " + policy.getName() + "\n");
+            counter++;
         }
 
         policies.setLength(policies.length() - 1);
@@ -134,7 +141,11 @@ public class LeagueManagementController {
      * @param rankPolicyId
      * @return
      */
-    public boolean addRankPolicy(League league, Season season, String rankPolicyId) {
+    public boolean addRankPolicy(League league, Season season, String rankPolicyId, User user) {
+        if (! canSetPolicy(user)){
+            return false;
+        }
+
         if (league == null || season == null) {
             return false;
         }
@@ -145,7 +156,6 @@ public class LeagueManagementController {
 
         LeagueRankPolicy rankPolicy;
 
-        //TODO: check permissions
         switch (rankPolicyId) {
             case "1":
                 rankPolicy = new NumberOfWins(league, season);
@@ -160,11 +170,9 @@ public class LeagueManagementController {
                 break;
 
             default:
-                System.out.println("No policy was found with this id");
                 return false;
         }
 
-        System.out.println("The policy was added successfully");
         return true;
     }
 
@@ -176,7 +184,11 @@ public class LeagueManagementController {
      * @param pointsPolicyId
      * @return
      */
-    public boolean addPointsPolicy(League league, Season season, String pointsPolicyId) {
+    public boolean addPointsPolicy(League league, Season season, String pointsPolicyId, User user) {
+        if (! canSetPolicy(user)){
+            return false;
+        }
+
         if (league == null || season == null) {
             return false;
         }
@@ -187,7 +199,6 @@ public class LeagueManagementController {
 
         PointsPolicy pointsPolicy;
 
-        //TODO: check permissions
         switch (pointsPolicyId) {
             case "1":
                 pointsPolicy = new OnePointForWinAndNoneForDraw(league, season);
@@ -208,11 +219,9 @@ public class LeagueManagementController {
                 break;
 
             default:
-                System.out.println("No policy was found with this id");
                 return false;
         }
 
-        System.out.println("The policy was added successfully");
         return true;
     }
 
@@ -224,7 +233,11 @@ public class LeagueManagementController {
      * @param gamePolicyId
      * @return
      */
-    public boolean addGamePolicy(League league, Season season, String gamePolicyId) {
+    public boolean addGamePolicy(League league, Season season, String gamePolicyId, User user) {
+        if (! canSetPolicy(user)){
+            return false;
+        }
+
         if (league == null || season == null) {
             return false;
         }
@@ -235,7 +248,6 @@ public class LeagueManagementController {
 
         GamesPolicy gamePolicy;
 
-        //TODO: check permissions
         switch (gamePolicyId) {
             case "1":
                 gamePolicy = new OneRoundLeague(league, season);
@@ -256,12 +268,19 @@ public class LeagueManagementController {
                 break;
 
             default:
-                System.out.println("No policy was found with this id");
                 return false;
         }
 
-        System.out.println("The policy was added successfully");
         return true;
+    }
+
+    /**
+     * This function checks if the received user is authorized to set league policies
+     * @param user
+     * @return true or false
+     */
+    public boolean canSetPolicy(User user){
+        return user.getMyPrivileges().contains("define/changePolicy");
     }
 
 }

@@ -41,6 +41,7 @@ public class RefereeUT {
     }
 
     @Test
+
     public void getRole() {
         Assertions.assertEquals("Referee", ((Referee)user).getRole());
     }
