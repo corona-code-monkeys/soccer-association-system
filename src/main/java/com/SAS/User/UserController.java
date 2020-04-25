@@ -1,6 +1,7 @@
 package com.SAS.User;
 
 import com.SAS.crudoperations.CRUD;
+import com.SAS.crudoperations.UsersCRUD;
 
 public class UserController {
 
@@ -82,6 +83,8 @@ public class UserController {
              }
 
              setPrivilegesforUser(newUser, ((Role) newUser).getRole(), approval);
+             //keep in database
+             UsersCRUD.postUser(userName, password);
              return newUser;
          }
 
@@ -90,7 +93,6 @@ public class UserController {
              return null;
          }
 
-        //keep in database
     }
 
     /**
