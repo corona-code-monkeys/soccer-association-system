@@ -3,7 +3,7 @@ package com.SAS.Controllers.systemController;
 /**
  * The class represents an abstraction of external system connection interface
  */
-public abstract class externalSystem {
+public abstract class ExternalSystem {
 
     /**
      * The function connects the accounting system

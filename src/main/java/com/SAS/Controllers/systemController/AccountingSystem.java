@@ -3,17 +3,17 @@ package com.SAS.Controllers.systemController;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The class represents the tax system that our system need to connect to
+ * The class represents the soccer association accounting system that our system need to connect to
  */
-public class taxSystem extends externalSystem {
+public class AccountingSystem extends ExternalSystem {
 
     private String systemName;
 
     /**
      * Constructor
      */
-    public taxSystem() {
-        this.systemName = "Tax";
+    public AccountingSystem() {
+        this.systemName = "Accounting";
     }
 
     /**
@@ -21,11 +21,11 @@ public class taxSystem extends externalSystem {
      */
     public void connectSystem() {
         try {
-            System.out.println("Trying to connect tax system...");
+            System.out.println("Trying to connect accounting system...");
             TimeUnit.SECONDS.sleep(1);
             System.out.println("Establishing connection...");
             TimeUnit.SECONDS.sleep(1);
-            System.out.println("tax system is connected...");
+            System.out.println("Accounting system is connected...");
         }
 
         catch (InterruptedException e) {
