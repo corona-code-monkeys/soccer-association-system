@@ -177,10 +177,6 @@ public class TeamManagement {
             teamManager = ((TeamManager) teamManager).getUser();
         }
 
-        else {
-            System.out.println("The user is unauthorized to remove the team manager");
-        }
-
         return teamManager;
     }
 
@@ -492,6 +488,15 @@ public class TeamManagement {
      */
     public boolean canAddRemoveTeamOwner(User user) {
         return user.getMyPrivileges().contains("add/removeTO");
+    }
+
+    /**
+     * The function returns true of the user can add and remove team manager
+     * @param user
+     * @return true or false
+     */
+    public boolean canAddRemoveTeamManager(User user) {
+        return user.getMyPrivileges().contains("add/removeTM");
     }
 
     /**
