@@ -8,9 +8,12 @@ import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamAsset;
 import com.SAS.teamManagenemt.TeamManagement;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
 
 public class TeamManagementAT {
 
@@ -19,7 +22,7 @@ public class TeamManagementAT {
     private Team team;
     private User teamOwner;
 
-    @org.junit.Before
+    @BeforeEach
     public void setUp()  {
         userController = new UserController();
         teamManagement = new TeamManagement(userController);
@@ -28,7 +31,7 @@ public class TeamManagementAT {
         ((TeamOwner) teamOwner).setTeam(team);
     }
 
-    @org.junit.Test
+    @Test
     public void addAssetToTeamFacilityByTeamOwnerSuccess() {
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
@@ -54,54 +57,54 @@ public class TeamManagementAT {
             };
             asset.editDetails(details);
 
-            assertTrue(myTeam.getFacilities().contains(asset));
+            Assertions.assertTrue(myTeam.getFacilities().contains(asset));
             System.out.println("The asset was added to the team.");
         }
 
     }
 
     //Todo - Chen
-    @org.junit.Test
+    @Test
     public void editAssetDetails() {
     }
 
     //Todo - Chen
-    @org.junit.Test
+    @Test
     public void removeAsset() {
     }
 
     //Todo - Yaar
-    @org.junit.Test
+    @Test
     public void addAdditionalTeamOwner() {
     }
 
     //Todo - Chen
-    @org.junit.Test
+    @Test
     public void addTeamManager() {
     }
 
     //Todo - Chen
-    @org.junit.Test
+    @Test
     public void removeTeamManager() {
     }
 
     //Todo - Yaar
-    @org.junit.Test
+    @Test
     public void removeTeamOwner() {
     }
 
     //Todo
-    @org.junit.Test
+    @Test
     public void addTransactionToTeam() {
     }
 
     //Todo - Yaar
-    @org.junit.Test
+    @Test
     public void closeTeam() {
     }
 
     //Todo - Yaar
-    @org.junit.Test
+    @Test
     public void openTeam() {
     }
 }

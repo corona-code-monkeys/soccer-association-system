@@ -3,7 +3,7 @@ package com.SAS.LeagueManagement;
 import com.SAS.League.League;
 import com.SAS.League.Season;
 import com.SAS.crudoperations.CRUD;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -23,6 +23,6 @@ public class addLeagueToSeasonIT {
     public void addLeagueToSeasonTester() {
         League league = new League("Ligat Ha'al");
         Season season = new Season(2020, new HashSet<>(), new HashSet<>());
-        Assert.assertTrue(driverAddSeasonToALeague(season, league));
+        Assertions.assertTrue(driverAddSeasonToALeague(season, league));
     }
 }

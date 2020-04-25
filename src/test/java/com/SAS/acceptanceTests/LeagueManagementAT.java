@@ -1,12 +1,11 @@
 package com.SAS.acceptanceTests;
 
 import com.SAS.League.League;
-import com.SAS.League.Season;
 import com.SAS.LeagueManagement.LeagueManagementController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class LeagueManagementAT extends LeagueManagementController {
 

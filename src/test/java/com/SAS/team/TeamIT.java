@@ -4,7 +4,6 @@ import com.SAS.League.League;
 import com.SAS.League.Season;
 import com.SAS.User.*;
 import com.SAS.facility.Facility;
-import com.SAS.teamManagenemt.TeamManagement;
 import com.SAS.transaction.Transaction;
 import com.SAS.transaction.TransactionType;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

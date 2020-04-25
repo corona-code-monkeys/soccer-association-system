@@ -2,7 +2,7 @@ package com.SAS.LeagueManagement;
 
 import com.SAS.League.*;
 import com.SAS.crudoperations.CRUD;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -26,10 +26,10 @@ public class addSeasonToALeagueIT {
     public void initLeagueTester() {
         League league= new League("Ligat Ha'al");
         Season season= new Season(2020, new HashSet<>(), new HashSet<>());
-        Assert.assertTrue(isLeagueExistStub(league));
-        Assert.assertTrue(isSeasonExistStub(season));
-        Assert.assertTrue(addLeagueToSeasonStub(season, league, new GoalDifference(),new OnePointForWinAndNoneForDraw(),new TwoRoundsLeague()));
-        Assert.assertTrue(addSeasonToLeagueStub(league, season, new GoalDifference(),new OnePointForWinAndNoneForDraw(),new TwoRoundsLeague()));
+        Assertions.assertTrue(isLeagueExistStub(league));
+        Assertions.assertTrue(isSeasonExistStub(season));
+        Assertions.assertTrue(addLeagueToSeasonStub(season, league, new GoalDifference(),new OnePointForWinAndNoneForDraw(),new TwoRoundsLeague()));
+        Assertions.assertTrue(addSeasonToLeagueStub(league, season, new GoalDifference(),new OnePointForWinAndNoneForDraw(),new TwoRoundsLeague()));
 
     }
 }

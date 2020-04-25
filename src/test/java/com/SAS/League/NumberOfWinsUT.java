@@ -1,6 +1,7 @@
 package com.SAS.League;
 
-import org.junit.Assert;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class NumberOfWinsUT {
@@ -8,11 +9,11 @@ class NumberOfWinsUT {
 
     @Test
     void  toStringTest() {
-        Assert.assertTrue(wins.toString().equals("Number of wins"));
+        Assertions.assertTrue(wins.toString().equals("Number of wins"));
     }
 
     @Test
     void tieBreaker() {
-        Assert.assertTrue(wins.tieBreaker().equals("Wins"));
+        Assertions.assertTrue(wins.tieBreaker().equals("Wins"));
     }
 }

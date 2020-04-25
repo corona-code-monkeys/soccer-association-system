@@ -5,7 +5,7 @@ import com.SAS.League.Season;
 import com.SAS.User.Referee;
 import com.SAS.User.Registered;
 import com.SAS.crudoperations.CRUD;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -27,6 +27,6 @@ public class addRefereesToLeagueInSeasonIT {
         LinkedList<Referee> referees= new LinkedList<>();
         Referee ref= new Referee(new Registered("asd", "asd", "asd"),"dekel lev");
         referees.add(ref);
-        Assert.assertTrue(driverAssignRefereesToLeagueInSpecificSeason(league,new Season(2020, new HashSet<>(),new HashSet<>()), referees));
+        Assertions.assertTrue(driverAssignRefereesToLeagueInSpecificSeason(league,new Season(2020, new HashSet<>(),new HashSet<>()), referees));
     }
 }

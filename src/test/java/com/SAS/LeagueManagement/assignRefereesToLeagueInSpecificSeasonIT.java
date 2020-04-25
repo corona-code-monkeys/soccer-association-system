@@ -5,7 +5,7 @@ import com.SAS.League.Season;
 import com.SAS.User.Referee;
 import com.SAS.User.Registered;
 import com.SAS.crudoperations.CRUD;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -26,13 +26,13 @@ public class assignRefereesToLeagueInSpecificSeasonIT {
     @Test
     public void initLeagueTester() {
         League league = new League("Ligat Ha'al");
-        Assert.assertTrue(isLeagueExistStub(league));
+        Assertions.assertTrue(isLeagueExistStub(league));
         Season season= new Season(2020, new HashSet<>(), new HashSet<>());
-        Assert.assertTrue(isSeasonExistStub(season));
+        Assertions.assertTrue(isSeasonExistStub(season));
         List<Referee> referees= new LinkedList<>();
         Referee ref= new Referee(new Registered("dekelle","dekele","dekele levy"),"dekele levy");
         referees.add(ref);
-        Assert.assertTrue(addRefereesToLeagueInSeasonStub(league,season, referees));
+        Assertions.assertTrue(addRefereesToLeagueInSeasonStub(league,season, referees));
 
     }
 }

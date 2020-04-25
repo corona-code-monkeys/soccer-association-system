@@ -2,7 +2,7 @@ package com.SAS.LeagueManagement;
 
 import com.SAS.League.League;
 import com.SAS.crudoperations.CRUD;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
@@ -19,6 +19,6 @@ public class addLeagueIT {
     @Test
     public void addLeagueTester() {
         League league = driverInitLeague("Ligat leumit");
-        Assert.assertNotNull(league);
+        Assertions.assertNotNull(league);
     }
 }
