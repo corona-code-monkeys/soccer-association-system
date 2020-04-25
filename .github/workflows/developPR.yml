@@ -24,8 +24,6 @@ jobs:
       run: mvn clean
     - name: Maven install
       run: mvn install
-    - name: Maven test 
-      run: mvn test
       
 
       
