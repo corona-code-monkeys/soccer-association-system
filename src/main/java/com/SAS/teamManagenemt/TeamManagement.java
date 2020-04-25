@@ -223,6 +223,9 @@ public class TeamManagement {
      * @param team
      */
     private User removeTeamOwnerAndNominees(User teamOwner, Team team) {
+        if (team == null || teamOwner == null)
+            return null;
+
         List<TeamOwner> nominees = getUserNominees(teamOwner, team);
         team.removeTeamOwner((TeamOwner)teamOwner);
         ((TeamOwner) teamOwner).removeTeam();
@@ -243,15 +246,16 @@ public class TeamManagement {
      * @return
      */
     private List<TeamOwner> getUserNominees(User teamOwner, Team team) {
-        List<TeamOwner> teamOwners = team.getOwners();
         List<TeamOwner> nominees = new LinkedList<>();
+        if (team == null)
+            return nominees;
 
+        List<TeamOwner> teamOwners = team.getOwners();
         for (TeamOwner owner: teamOwners) {
             if (owner.getNominatedBy() != null && owner.getNominatedBy().getUserID() == teamOwner.getUserID()) {
                 nominees.add(owner);
             }
         }
-
         return nominees;
     }
 
@@ -264,6 +268,9 @@ public class TeamManagement {
      * @return true or false
      */
     private boolean validateTeamOwner(User teamOwner, Team team, User nominatedBy) {
+        if (teamOwner == null || team == null || nominatedBy == null)
+            return false;
+
         return teamOwner instanceof TeamOwner && ((TeamOwner)teamOwner).getTeam() == team &&
                 ((TeamOwner)teamOwner).getNominatedBy() == nominatedBy;
     }
@@ -303,7 +310,9 @@ public class TeamManagement {
      * @return true - if the user is the team owner, otherwise - false
      */
     private boolean ownsTeam(Team team, User nominatedBy) {
-        return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam() == team;
+        if (team != null && nominatedBy != null)
+            return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam() == team;
+        return false;
     }
 
     /**
@@ -467,11 +476,12 @@ public class TeamManagement {
      */
     public String showOptionalNomineesForTeamOwner(User user, Team team) {
         StringBuilder builder = new StringBuilder();
-        List<User> optionalNominees = team.getOptionalNomineesForTeamOwner();
-        for (User optionalUser : optionalNominees) {
-            builder.append("User name: " + ((Role)optionalUser).getFullName() + "\n");
+        if (user !=null && team != null) {
+            List<User> optionalNominees = team.getOptionalNomineesForTeamOwner();
+            for (User optionalUser : optionalNominees) {
+                builder.append("User name: " + ((Role) optionalUser).getFullName() + "\n");
+            }
         }
-
         return builder.toString();
     }
 
@@ -491,7 +501,9 @@ public class TeamManagement {
      * @return user
      */
     public User getUserForTeamOwnerNominate(String fullName, Team team) {
-        return team.getUserForTeamOwner(fullName);
+        if (team != null)
+            return team.getUserForTeamOwner(fullName);
+        return null;
     }
 
 
@@ -501,11 +513,12 @@ public class TeamManagement {
      */
     public String showTeamOwners(Team team) {
         StringBuilder builder = new StringBuilder();
-        List<TeamOwner> owners = team.getOwners();
-        for (TeamOwner owner : owners) {
-            builder.append(owner.getFullName()+"\n");
+        if (team != null) {
+            List<TeamOwner> owners = team.getOwners();
+            for (TeamOwner owner : owners) {
+                builder.append(owner.getFullName() + "\n");
+            }
         }
-
         return builder.toString();
     }
 
@@ -517,7 +530,9 @@ public class TeamManagement {
      * @return
      */
     public User getTeamOwnerUserByName(String fullName, Team team) {
-        return team.getTeamOwnerByFullName(fullName);
+        if (team != null && fullName != null)
+            return team.getTeamOwnerByFullName(fullName);
+        return null;
     }
 
     /**
@@ -536,8 +551,10 @@ public class TeamManagement {
      */
     public StringBuilder getAllTeamAssets(Team team){
         StringBuilder assets = new StringBuilder();
-        for (TeamAsset asset: team.getAllAssets())
-            assets.append(asset);
+        if (team != null) {
+            for (TeamAsset asset : team.getAllAssets())
+                assets.append(asset);
+        }
         return assets;
     }
 
@@ -549,7 +566,9 @@ public class TeamManagement {
      * @return
      */
     public TeamAsset getAssetByNameAndType(Team team, String type, String name) {
-        return team.getAssetByNameAndType(type, name);
+        if (team!=null)
+            return team.getAssetByNameAndType(type, name);
+        return null;
     }
 
     /**
@@ -559,5 +578,33 @@ public class TeamManagement {
      */
     public boolean canAddTransaction(User user) {
         return user.getMyPrivileges().contains("addTrans");
+    }
+
+
+    /**
+     * The function returns a string of the optional nominees for team manager
+     * @param team
+     */
+    public String showOptionalNomineesForTeamManager(Team team) {
+        StringBuilder builder = new StringBuilder();
+        if (team !=null) {
+            List<User> optionalNominees = team.getOptionalNomineesForTeamManager();
+            for (User optionalUser : optionalNominees) {
+                builder.append("User name: " + ((Role) optionalUser).getFullName() + "\n");
+            }
+        }
+        return builder.toString();
+    }
+
+    /**
+     * This function return a user with the full name 'name' from the team 'team'
+     * @param team
+     * @param name
+     * @return
+     */
+    public User getUserForTeamManagerNominees(Team team, String name) {
+        if (team != null)
+            return team.getUserForTeamManager(name);
+        return null;
     }
 }
