@@ -91,6 +91,7 @@
                         <version>2.22.2</version>
                         <configuration>
                             <includes>
+                                <include>**/*IT*</include>
                                 <include>**/*AT*</include>
                             </includes>
                         </configuration>
