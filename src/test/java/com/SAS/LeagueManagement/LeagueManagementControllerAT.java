@@ -6,6 +6,7 @@ import com.SAS.User.User;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
 import com.SAS.team.Team;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.HashSet;
@@ -41,6 +42,7 @@ class LeagueManagementControllerAT {
         res = leagueManagementController.addRankPolicy(league, season, userChoose, associationRepres);
         if (res) {
             System.out.println("The policy was added successfully");
+            assertTrue(res);
         }
         else {
             System.out.println("Couldn't add rank policy");
@@ -58,6 +60,7 @@ class LeagueManagementControllerAT {
         res = leagueManagementController.addPointsPolicy(league, season, userChoose, associationRepres);
         if (res) {
             System.out.println("The policy was added successfully");
+            assertTrue(res);
         }
         else {
             System.out.println("Couldn't add points policy");
@@ -75,6 +78,7 @@ class LeagueManagementControllerAT {
         res = leagueManagementController.addGamePolicy(league, season, userChoose, associationRepres);
         if (res) {
             System.out.println("The policy was added successfully");
+            assertTrue(res);
         }
         else {
             System.out.println("Couldn't add game policy");
