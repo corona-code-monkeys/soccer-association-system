@@ -38,8 +38,12 @@ public class PersonalReport {
     /**
      * The function sets the pageId of the page that user complain about
      */
-    public void setPageId(int pageId) {
-        this.pageId = pageId;
+    public boolean setPageId(int pageId) {
+        if (pageId > 0) {
+            this.pageId = pageId;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -53,8 +57,12 @@ public class PersonalReport {
     /**
      * The function sets the description of the complain
      */
-    public void setDescr(String descr) {
-        this.descr = descr;
+    public boolean setDescr(String descr) {
+        if(descr != null && !descr.trim().isEmpty()){
+            this.descr = descr;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -68,7 +76,11 @@ public class PersonalReport {
     /**
      * The function sets the userId of the user that complain
      */
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public boolean setUserId(int userId) {
+        if (userId > 0) {
+            this.userId = userId;
+            return true;
+        }
+        return false;
     }
 }
