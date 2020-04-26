@@ -37,6 +37,7 @@ public class TeamManagementAT {
 
     @Test
     public void addAssetToTeamFacilityByTeamOwnerSuccess() {
+        long startTime = System.nanoTime();
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
         //enter editing mode
@@ -73,10 +74,13 @@ public class TeamManagementAT {
                 System.out.println("The asset could not be added. Please try again to add the asset");
             }
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void addAssetToTeamFacilityByTeamOwnerFailWrongLocation() {
+        long startTime = System.nanoTime();
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
         //enter editing mode
@@ -113,10 +117,13 @@ public class TeamManagementAT {
                 System.out.println("The asset could not be added. Please try again to add the asset");
             }
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void editAssetDetailsSuccess() {
+        long startTime = System.nanoTime();
         //preparations for the test
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         Facility fac = new Facility();
@@ -161,11 +168,13 @@ public class TeamManagementAT {
                 System.out.println("Invalid asset, please try again to edit the asset");
             }
         }
-
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void editAssetDetailsFailWrongDetails() {
+        long startTime = System.nanoTime();
         //preparations for the test
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         User coach = userController.createUser("EitanS", "Ei123", "Eitan Sela", UserType.COACH, true, null);
@@ -211,11 +220,13 @@ public class TeamManagementAT {
         } else{
             System.out.println("You are not authorized to edit the team");
         }
-
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void removeAssetFailNotAuthorized() {
+        long startTime = System.nanoTime();
         //preparations
         //Add asset to team
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
@@ -254,11 +265,14 @@ public class TeamManagementAT {
         else{
             System.out.println("You are not authorized to edit the team: " + team.getName());
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
 
     @Test
     public void removeAssetSuccess() {
+        long startTime = System.nanoTime();
         //preparations
         //Add asset to team
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
@@ -296,11 +310,14 @@ public class TeamManagementAT {
         else{
             System.out.println("You are not authorized to delete an asset for the team: " + team.getName());
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
 
     @Test
     public void addAdditionalTeamOwnerSuccess() {
+        long startTime = System.nanoTime();
         //add player to the team
         User player = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
         team.addPlayerToTeam((Player) player);
@@ -337,11 +354,13 @@ public class TeamManagementAT {
             }
 
         }
-
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void addAdditionalTeamOwnerFail() {
+        long startTime = System.nanoTime();
         //add player to the team
         User player = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
         team.addPlayerToTeam((Player) player);
@@ -381,11 +400,13 @@ public class TeamManagementAT {
             }
 
         }
-
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void addTeamManagerSuccess() {
+        long startTime = System.nanoTime();
         //preparations- create a player
         User player = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", UserType.PLAYER, true, null);
         ((Player)player).setFieldRole(FieldRole.MIDFIELDER);
@@ -418,10 +439,13 @@ public class TeamManagementAT {
         else {
             System.out.println("You do not have the privileges to edit the team");
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void addTeamManagerFailWrongName() {
+        long startTime = System.nanoTime();
         //preparations- create a player
         User player = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", UserType.PLAYER, true, null);
         ((Player)player).setFieldRole(FieldRole.MIDFIELDER);
@@ -454,10 +478,13 @@ public class TeamManagementAT {
         else {
             System.out.println("You do not have the privileges to edit the team");
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void removeTeamManagerSuccess() {
+        long startTime = System.nanoTime();
         //preparations- create a player and nominate it to team manager
         User playerToBeManager = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", UserType.PLAYER, true, null);
         ((Player)playerToBeManager).setFieldRole(FieldRole.MIDFIELDER);
@@ -482,11 +509,14 @@ public class TeamManagementAT {
         else {
             System.out.println("The user do not have sufficient privileges");
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
 
     @Test
     public void removeTeamManagerFailNominatedByAnotherTeamOwner() {
+        long startTime = System.nanoTime();
         //preparations- create a player and nominate it to team manager
         User playerToBeManager = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", UserType.PLAYER, true, null);
         ((Player)playerToBeManager).setFieldRole(FieldRole.MIDFIELDER);
@@ -523,12 +553,15 @@ public class TeamManagementAT {
         else {
             System.out.println("The user do not have sufficient privileges");
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
 
     @Test
     public void removeTeamOwnerSuccess() {
         //add owner to the team
+        long startTime = System.nanoTime();
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         User player = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
         team.addPlayerToTeam((Player) player);
@@ -565,10 +598,13 @@ public class TeamManagementAT {
             }
 
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void removeTeamOwnerFail() {
+        long startTime = System.nanoTime();
         //add owner to the team
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         User playerRami = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
@@ -606,10 +642,13 @@ public class TeamManagementAT {
             }
 
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void addTransactionToTeamSuccess() {
+        long startTime = System.nanoTime();
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
         //enter editing mode
@@ -648,10 +687,13 @@ public class TeamManagementAT {
             }
 
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void addTransactionToTeamFail() {
+        long startTime = System.nanoTime();
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
 
         //add team manager
@@ -703,10 +745,13 @@ public class TeamManagementAT {
             }
 
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void closeTeamSuccess() {
+        long startTime = System.nanoTime();
         //show page
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
@@ -728,11 +773,13 @@ public class TeamManagementAT {
                 System.out.println("The user is unauthorized to close the team " + myTeam.getName());
             }
         }
-
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void closeTeamFail() {
+        long startTime = System.nanoTime();
         //show page
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
@@ -753,12 +800,14 @@ public class TeamManagementAT {
                 System.out.println("The user is unauthorized to close the team " + myTeam.getName());
             }
         }
-
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
 
     @Test
     public void openTeamSuccess() {
+        long startTime = System.nanoTime();
         //show page
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
@@ -783,10 +832,13 @@ public class TeamManagementAT {
                 System.out.println("The user is unauthorized to open the team " + myTeam.getName());
             }
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     @Test
     public void openTeamFail() {
+        long startTime = System.nanoTime();
         //show page
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
@@ -806,5 +858,7 @@ public class TeamManagementAT {
                 System.out.println("The user is unauthorized to open the team " + myTeam.getName());
             }
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 }
