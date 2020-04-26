@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class addRefereesToLeagueInSeasonIT {
-    public static boolean driverAssignRefereesToLeagueInSpecificSeason(League league, Season season, List<Referee> referees) {
+    public static boolean driverAssignRefereesToLeagueInSpecificSeason(League league, Season season, HashSet<Referee> referees) {
         if (CRUD.isLeagueExist(league) && CRUD.isSeasonExist(season)) {
             if (CRUD.addRefereesToLeagueInSeason(league, season, referees)) {
                 return true;
@@ -24,7 +24,7 @@ public class addRefereesToLeagueInSeasonIT {
     @Test
     public void isLeagueExistTester() {
         League league= new League("Ligat Ha'al");
-        LinkedList<Referee> referees= new LinkedList<>();
+        HashSet<Referee> referees= new HashSet<>();
         Referee ref= new Referee(new Registered("asd", "asd", "asd"),"dekel lev");
         referees.add(ref);
         Assertions.assertTrue(driverAssignRefereesToLeagueInSpecificSeason(league,new Season(2020, new HashSet<>(),new HashSet<>()), referees));

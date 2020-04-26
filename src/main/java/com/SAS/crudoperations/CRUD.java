@@ -12,6 +12,7 @@ import com.SAS.transaction.TransactionType;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class CRUD {
@@ -324,7 +325,7 @@ public class CRUD {
      * @param referees
      * @return
      */
-    public static boolean addRefereesToLeagueInSeason(League league, Season season, List<Referee> referees) {
+    public static boolean addRefereesToLeagueInSeason(League league, Season season, HashSet<Referee> referees) {
         if (league == null || season == null || referees == null) {
             return false;
         } else {
@@ -340,7 +341,7 @@ public class CRUD {
      * @param referees
      * @return
      */
-    public static boolean addAndRemoveRefereesFromLeague(League league, List<Referee> referees) {
+    public static boolean addAndRemoveRefereesFromLeague(League league, HashSet<Referee> referees) {
         if (league == null || referees == null || referees.size() == 0) {
             return false;
         } else {
