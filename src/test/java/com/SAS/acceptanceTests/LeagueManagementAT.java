@@ -55,11 +55,9 @@ class LeagueManagementAT {
             System.out.println("Pressed \"Add new League\"");
             System.out.println("Please enter league name");
             System.out.println("Name: \"Ligat Leumit\"");
-            if (controller.initLeague(leagueLeumit)) {
-                Assertions.assertTrue(controller.initLeague(leagueLeumit));
-                System.out.println("League:" + leagueLeumit.getName() + " was created");
-                System.out.println("System saved the data");
-            }
+            Assertions.assertTrue(controller.initLeague("Ligat Leumit"));
+            System.out.println("League:" + leagueLeumit.getName() + " was created");
+            System.out.println("System saved the data");
         }
         long endTime = System.nanoTime();
         System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
@@ -237,4 +235,5 @@ class LeagueManagementAT {
         long endTime = System.nanoTime();
         System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
+
 }
