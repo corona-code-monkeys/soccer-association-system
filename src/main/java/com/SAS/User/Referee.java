@@ -97,4 +97,12 @@ public class Referee extends Role {
         return "Referee";
     }
 
+    /**
+     * The function returns the message of the referee
+     * @return
+     */
+    public String sendInvitation() {
+       return "got invitation to the association soccer system";
+    }
+
 }

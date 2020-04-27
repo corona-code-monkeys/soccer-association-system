@@ -4,9 +4,11 @@ import com.SAS.User.Referee;
 import com.SAS.game.Game;
 
 
+import java.sql.Ref;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Set;
 
 
 /**
@@ -176,5 +178,24 @@ public class League {
             this.referees.get(season).add(ref);
             season.addReferee(this, ref);
         }
+    }
+
+    /**
+     * The function returns true if the referee is in the season, otherwise returns false
+     * @param season
+     * @param referee
+     * @return
+     */
+    public boolean isRefereeInSeason(Season season, Referee referee) {
+        if (season == null || referee == null) {
+            return false;
+        }
+
+        Set<Referee> referees = this.referees.get(season);
+        if (referees != null && referees.size() > 0) {
+            return referees.contains(referee);
+        }
+
+        return false;
     }
 }
