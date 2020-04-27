@@ -19,7 +19,7 @@ public class assignRefereesToLeagueInSpecificSeasonIT {
     public static boolean isSeasonExistStub(Season season) {
         return CRUD.isSeasonExist(season);
     }
-    public static boolean addRefereesToLeagueInSeasonStub(League league, Season season, List<Referee> referees) {
+    public static boolean addRefereesToLeagueInSeasonStub(League league, Season season, HashSet<Referee> referees) {
     return CRUD.addRefereesToLeagueInSeason(league,season,referees);
     }
 
@@ -29,7 +29,7 @@ public class assignRefereesToLeagueInSpecificSeasonIT {
         Assertions.assertTrue(isLeagueExistStub(league));
         Season season= new Season(2020, new HashSet<>(), new HashSet<>());
         Assertions.assertTrue(isSeasonExistStub(season));
-        List<Referee> referees= new LinkedList<>();
+        HashSet<Referee> referees= new HashSet<>();
         Referee ref= new Referee(new Registered("dekelle","dekele","dekele levy"),"dekele levy");
         referees.add(ref);
         Assertions.assertTrue(addRefereesToLeagueInSeasonStub(league,season, referees));

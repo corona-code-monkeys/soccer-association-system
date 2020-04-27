@@ -10,6 +10,7 @@ import com.SAS.User.User;
 import com.SAS.crudoperations.LeagueManagementCRUD;
 import com.SAS.team.Team;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -65,30 +66,33 @@ public class LeagueManagementController {
         return policies.toString();
     }
 
-    public League initLeague(String name) {
-        League league= new League(name);
+    public boolean initLeague(League league) {
         if (!crud.isLeagueExist(league)) {
             if (crud.addLeague(league)) {
-                return league;
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
-    public void addSeasonToALeague(Season season, League league) {
+    public boolean addSeasonToALeague(Season season, League league) {
         if (crud.isLeagueExist(league) && crud.isSeasonExist(season)) {
             crud.addLeagueToSeason(season, league, null, null, null);
             crud.addSeasonToLeague(league, season, null, null, null);
+            return true;
         }
+        return false;
     }
 
-    public void assignAndRemoveRefereesFromLeague(League league, List<Referee> referees) {
+    public boolean assignAndRemoveRefereesFromLeague(League league, HashSet<Referee> referees) {
         if (crud.isLeagueExist(league)) {
             crud.addAndRemoveRefereesFromLeague(league, referees);
+            return true;
         }
+        return false;
     }
 
-    public boolean assignRefereesToLeagueInSpecificSeason(League league, Season season, List<Referee> referees) {
+    public boolean assignRefereesToLeagueInSpecificSeason(League league, Season season, HashSet<Referee> referees) {
         if (crud.isLeagueExist(league) && crud.isSeasonExist(season)) {
             if (crud.addRefereesToLeagueInSeason(league, season, referees)) {
                 return true;
