@@ -26,6 +26,7 @@ class LeagueManagementAT {
     private HashSet<Referee> referees;
     private AssociationRepresentative representative;
     private HashSet<String> privliges;
+/*
 
     @BeforeEach
     void setUp() {
@@ -235,5 +236,6 @@ class LeagueManagementAT {
         long endTime = System.nanoTime();
         System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
+    */
 
 }

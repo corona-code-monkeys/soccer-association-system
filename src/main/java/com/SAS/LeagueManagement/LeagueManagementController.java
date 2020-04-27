@@ -108,7 +108,7 @@ public class LeagueManagementController {
                     }
                 }
 
-                return false;
+                return isNew;
             }
         }
         return false;
