@@ -230,6 +230,7 @@ class LeagueManagementAT {
         System.out.println("Please choose the league and seas you on the referee to be added");
         leagueLeumit.addSeason(season);
         if (!controller.assignAndRemoveRefereesFromLeague(leagueLeumit,referees)) {
+            Assertions.assertFalse(controller.assignAndRemoveRefereesFromLeague(leagueLeumit,referees));
             System.out.println("The referee is already assigned for the league in this season");
             System.out.println("System saved the data");
         }
