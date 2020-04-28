@@ -22,7 +22,7 @@ public class isSeasonExistIT {
         return false;
     }
 
-    public static boolean driverAssignRefereesToLeagueInSpecificSeason(League league, Season season, List<Referee> referees) {
+    public static boolean driverAssignRefereesToLeagueInSpecificSeason(League league, Season season, HashSet<Referee> referees) {
         if (CRUD.isLeagueExist(league) && CRUD.isSeasonExist(season)) {
             if (CRUD.addRefereesToLeagueInSeason(league, season, referees)) {
                 return true;
@@ -35,7 +35,7 @@ public class isSeasonExistIT {
     public void isSeasonExistTester() {
         League league = new League("Ligat Ha'al");
         Season season = new Season(2020, new HashSet<>(), new HashSet<>());
-        LinkedList<Referee> referees = new LinkedList<>();
+        HashSet<Referee> referees = new HashSet<>();
         Referee ref = new Referee(new Registered("asd", "asd", "asd"), "dekel lev");
         referees.add(ref);
         Assertions.assertTrue(driverAddSeasonToALeague(season, league));

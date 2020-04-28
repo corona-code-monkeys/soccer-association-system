@@ -36,7 +36,12 @@ public class GameReport {
     }
 
     //TODO: implement edit report method
-    public void editReport(){
+    public boolean editReport(String description){
+        if (description!=null){
+            this.description = description;
+            return true;
+        }
+        return false;
     }
 
 

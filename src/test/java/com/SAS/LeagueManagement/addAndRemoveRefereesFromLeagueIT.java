@@ -7,11 +7,12 @@ import com.SAS.crudoperations.CRUD;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
 public class addAndRemoveRefereesFromLeagueIT {
-    public static boolean driverAssignAndRemoveRefereesFromLeague(League league, List<Referee> referees) {
+    public static boolean driverAssignAndRemoveRefereesFromLeague(League league, HashSet<Referee> referees) {
         if (CRUD.isLeagueExist(league)) {
             return CRUD.addAndRemoveRefereesFromLeague(league, referees);
         }
@@ -20,7 +21,7 @@ public class addAndRemoveRefereesFromLeagueIT {
     @Test
     public void addAndRemoveRefereesFromLeagueTester() {
         League league= new League("Ligat Ha'al");
-        LinkedList<Referee> referees= new LinkedList<>();
+        HashSet<Referee> referees= new HashSet<>();
         Referee ref= new Referee(new Registered("asd", "asd", "asd"),"dekel lev");
         referees.add(ref);
         Assertions.assertTrue(driverAssignAndRemoveRefereesFromLeague(league,referees));

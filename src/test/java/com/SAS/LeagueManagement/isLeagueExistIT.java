@@ -29,7 +29,7 @@ public class isLeagueExistIT {
         return false;
     }
 
-    public static boolean driverAssignAndRemoveRefereesFromLeague(League league, List<Referee> referees) {
+    public static boolean driverAssignAndRemoveRefereesFromLeague(League league, HashSet<Referee> referees) {
         if (CRUD.isLeagueExist(league)) {
             CRUD.addAndRemoveRefereesFromLeague(league, referees);
             return true;
@@ -37,7 +37,7 @@ public class isLeagueExistIT {
         return false;
     }
 
-    public static boolean driverAssignRefereesToLeagueInSpecificSeason(League league, Season season, List<Referee> referees) {
+    public static boolean driverAssignRefereesToLeagueInSpecificSeason(League league, Season season, HashSet<Referee> referees) {
         if (CRUD.isLeagueExist(league) && CRUD.isSeasonExist(season)) {
             if (CRUD.addRefereesToLeagueInSeason(league, season, referees)) {
                 return true;
@@ -49,7 +49,7 @@ public class isLeagueExistIT {
     @Test
     public void isLeagueExistTester() {
         League league= driverInitLeague("Ligat Ha'al");
-        LinkedList<Referee> referees= new LinkedList<>();
+        HashSet<Referee> referees= new HashSet<>();
         Referee ref= new Referee(new Registered("asd", "asd", "asd"),"dekel lev");
         referees.add(ref);
         Assertions.assertNotNull(league);

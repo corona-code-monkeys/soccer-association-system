@@ -20,6 +20,7 @@ public class SystemControllerAT {
      */
     @Test
     void initializeSystemSuccess() {
+        long startTime = System.nanoTime();
         String userChoose;
         String userName;
         String password;
@@ -77,6 +78,8 @@ public class SystemControllerAT {
 
             assertTrue(system1 && system2 && createUser);
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 
     /**
@@ -84,6 +87,7 @@ public class SystemControllerAT {
      */
     @Test
     void initializeSystemFailure() {
+        long startTime = System.nanoTime();
         String userChoose;
         String userName;
         String password;
@@ -136,5 +140,7 @@ public class SystemControllerAT {
             systemController.createSystemAdmin(userName, password, fullName);
             System.out.println("The setup ended successfully");
         }
+        long endTime = System.nanoTime();
+        System.out.println("The time the test took is:" + ((double) (endTime - startTime) / 1000000) + " ms");
     }
 }
