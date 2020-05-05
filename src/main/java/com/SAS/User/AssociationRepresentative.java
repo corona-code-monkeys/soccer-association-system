@@ -22,4 +22,6 @@ public class AssociationRepresentative extends Role {
     public String getRole() {
         return "AssociationRepresentative";
     }
+
+
 }

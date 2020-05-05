@@ -32,6 +32,7 @@ public class Team {
     private Coach coach;
     private boolean active;
     private PersonalPage personalPage;
+    private  boolean isRegistered;
 
 
     /**

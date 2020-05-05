@@ -368,7 +368,7 @@ public class TeamManagement {
                 return null;
         }
     }
-  
+
     /**
      * The function receives a team and a team owner and closes this team and returns true if it succeeded,
      * otherwise returns false
@@ -549,7 +549,7 @@ public class TeamManagement {
         return user.getMyPrivileges().contains("closeTNP");
     }
 
-     /** 
+     /**
      * This function returns all the team assets
      * @param team
      * @return
@@ -612,4 +612,19 @@ public class TeamManagement {
             return team.getUserForTeamManager(name);
         return null;
     }
+
+    /**
+     * This function enables the team owner to create a new team
+     * @Return the new team
+     */
+    public Team createANewTeam(User teamOwner, String teamName){
+        if (teamOwner != null && teamOwner instanceof TeamOwner){
+            Team team = new Team(teamName, (TeamOwner)teamOwner);
+            return team;
+        }
+        return null;
+    }
+
+
 }
+
