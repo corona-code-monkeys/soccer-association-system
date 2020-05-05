@@ -2,17 +2,21 @@ package com.SAS.acceptanceTests;
 
 import com.SAS.Controllers.systemController.SystemController;
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.SAS.systemLoggers.LoggerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class SystemControllerAT {
 
     private SystemController systemController;
+    private LoggerFactory factory;
 
 
     @BeforeEach
     void setUp() {
         systemController = new SystemController();
+        factory = LoggerFactory.getInstance();
     }
 
     /**
@@ -39,6 +43,7 @@ public class SystemControllerAT {
         System.out.println(userChoose);
         if (systemController.addExternalSystem(userChoose)) {
             system1 = true;
+            factory.logEvent("Extrnal system added");
         }
         else{
             System.out.println("No External System with this name was found");
