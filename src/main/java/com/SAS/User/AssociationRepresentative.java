@@ -4,6 +4,8 @@
 
 package com.SAS.User;
 
+import com.SAS.team.Team;
+
 public class AssociationRepresentative extends Role {
 
     private User user;

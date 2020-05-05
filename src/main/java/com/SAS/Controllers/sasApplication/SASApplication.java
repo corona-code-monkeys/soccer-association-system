@@ -9,6 +9,7 @@ import com.SAS.User.User;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
 import com.SAS.crudoperations.UsersCRUD;
+import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamManagement;
 
 public class SASApplication {
@@ -30,6 +31,7 @@ public class SASApplication {
         usersCRUD = new UsersCRUD();
     }
 
+    //TODO: in UI : if return true switch to home page with correct privileges, else show alert that user doesn't exist
     /**
      * This function logs in the user
      * @param username
@@ -37,16 +39,10 @@ public class SASApplication {
      * @return true if the user exists in the system, thus was logged in, otherwise false
      */
     public boolean login(String username, String password){
-        if (usersCRUD.isUserValid(username, password)){
-            //TODO: switch to home page with correct privileges
-            return true;
-        }
-        else{
-            //TODO: show message that the user does not exist
-            return false;
-        }
+        return usersCRUD.isUserValid(username, password);
     }
 
+    //TODO: In UI: if true- show alert that the user was created and switch to home page so he would log in, wlse show error message
     /**
      * This function calls the creation of a user using the userController
      * @param userName
@@ -55,9 +51,39 @@ public class SASApplication {
      * @param type
      * @param approval
      * @param newUser
-     * @return the created user
+     * @return true if was created, otherwise false
      */
-    public User createUser(String userName, String password, String fullName, UserType type, boolean approval, User newUser){
-        return userController.createUser(userName,password,fullName,type, approval, newUser);
+    public boolean createUser(String userName, String password, String fullName, UserType type, boolean approval, User newUser){
+        if(userController.createUser(userName,password,fullName,type, approval, newUser)!=null)
+            return true;
+        return false;
     }
+
+    //TODO: UI- if true, show alert that the request was sent to the association
+    /**
+     * This function registers the team
+     * @param teamOwner
+     * @param teamName
+     */
+    public boolean registerTeam(User teamOwner, String teamName){
+        return userController.sendNotificationToRepresentative(teamManagement.createANewTeam(teamOwner, teamName));
+    }
+
+
+    //TODO: UI- if true, show alert that a notification about the team registration was sent to its owner
+    /**
+     * This function applies the confirmation/denial of the team
+     * @param teamName
+     * @param representative
+     * @param confirm
+     */
+    public boolean confirmTeam(String teamName, User representative, boolean confirm){
+        return teamManagement.commitConfirmationOfTeam(teamName, representative, confirm);
+    }
+
+
+
+
+
+
 }

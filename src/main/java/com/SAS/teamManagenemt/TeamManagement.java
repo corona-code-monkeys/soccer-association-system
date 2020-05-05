@@ -4,6 +4,7 @@
 package com.SAS.teamManagenemt;
 
 import com.SAS.User.*;
+import com.SAS.crudoperations.CRUD;
 import com.SAS.facility.*;
 import com.SAS.team.Team;
 
@@ -625,6 +626,30 @@ public class TeamManagement {
         return null;
     }
 
+    /**
+     * This function applies the confirmation or rejection of new team
+     * @param teamName
+     * @param representative
+     * @param confirmed
+     */
+    public boolean commitConfirmationOfTeam(String teamName, User representative, boolean confirmed) {
+        if (teamName != null && !teamName.trim().isEmpty()) {
+            Team team = CRUD.getTeamByName(teamName);
+            if (representative != null && representative instanceof AssociationRepresentative) {
+                if (!confirmed) {
+                    for (TeamOwner owner : team.getOwners())
+                        owner.getNotification("Your team registration request for " + teamName + " was rejected");
+                    CRUD.removeTeam(team);
+                } else {
+                    team.registerTeam();
+                    for (TeamOwner owner : team.getOwners())
+                        owner.getNotification("Your team registration request for " + teamName + " was approved");
 
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 }
 

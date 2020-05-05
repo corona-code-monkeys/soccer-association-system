@@ -13,6 +13,7 @@ public class TeamOwner extends Role {
     private Team team;
     private TeamOwner nominatedBy;
 
+
     /**
      * Constructor
      * @param user

@@ -10,11 +10,11 @@ import java.util.List;
 public abstract class Role extends User {
 
     protected String fullName;
-    private List<String> notifications;
+    protected List<String> notifications;
 
     public Role(String fullName) {
         this.fullName = fullName;
-        notifications = new LinkedList<>();
+        this.notifications = new LinkedList<>();
     }
 
     /**
@@ -69,8 +69,9 @@ public abstract class Role extends User {
      * @param message
      */
     public void getNotification(String message) {
-        notifications.add(message);
-        System.out.println(getRole() + " - " + getFullName() + " got the message: " + message);
+        if (message != null && !(message.trim().isEmpty())) {
+            notifications.add(message);
+            System.out.println(getRole() + " - " + getFullName() + " got the message: " + message);
+        }
     }
-
 }
