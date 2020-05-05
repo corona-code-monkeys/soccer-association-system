@@ -1,4 +1,4 @@
-package com.SAS.Controllers.SASController;
+package com.SAS.Controllers.sasApplication;
 
 import com.SAS.User.User;
 import com.SAS.User.UserType;
@@ -7,14 +7,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SASControllerUT {
+class SASApplicationUT {
 
-    private SASController sasController;
+    private SASApplication sasController;
     private User user;
 
     @BeforeEach
     public void setUp() {
-        sasController= new SASController();
+        sasController= new SASApplication();
         user = sasController.createUser("AviCo", "Avi2468","Avi Cohen", UserType.FAN, true, null );
 
     }
@@ -30,8 +30,5 @@ class SASControllerUT {
         Boolean loggedIn = sasController.login("AviCo", "Avi246");
         assertFalse(loggedIn);
     }
-
-
-
 
 }

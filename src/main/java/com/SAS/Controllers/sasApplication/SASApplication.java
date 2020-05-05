@@ -1,8 +1,9 @@
 /**
  * This class represents the external controller of the system
  */
-package com.SAS.Controllers.SASController;
+package com.SAS.Controllers.sasApplication;
 
+import com.SAS.Controllers.systemController.SystemController;
 import com.SAS.LeagueManagement.LeagueManagementController;
 import com.SAS.User.User;
 import com.SAS.User.UserController;
@@ -10,17 +11,19 @@ import com.SAS.User.UserType;
 import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.teamManagenemt.TeamManagement;
 
-public class SASController {
+public class SASApplication {
 
     private UserController userController;
     private LeagueManagementController leaugeManagement;
     private TeamManagement teamManagement;
     private UsersCRUD usersCRUD;
+    private SystemController systemController; //check
+
 
     /**
      * Empty Constructor, initializes the other controllers
      */
-    public SASController() {
+    public SASApplication() {
         userController= new UserController();
         leaugeManagement= new LeagueManagementController();
         teamManagement= new TeamManagement(userController);
