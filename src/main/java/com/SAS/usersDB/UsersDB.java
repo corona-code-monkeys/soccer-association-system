@@ -1,5 +1,8 @@
 package com.SAS.usersDB;
 
+import com.SAS.crudoperations.CRUD;
+import com.SAS.crudoperations.UsersCRUD;
+
 import java.util.HashMap;
 
 /**
@@ -56,7 +59,7 @@ public class UsersDB {
             return false;
         }
 
-        return password == usersDB.get(userName);
+        return password.equals(usersDB.get(userName));
 
     }
 
