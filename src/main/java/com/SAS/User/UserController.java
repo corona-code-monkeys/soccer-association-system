@@ -2,6 +2,9 @@ package com.SAS.User;
 
 import com.SAS.crudoperations.CRUD;
 import com.SAS.crudoperations.UsersCRUD;
+import com.SAS.team.Team;
+
+import java.util.List;
 
 public class UserController {
 
@@ -229,4 +232,21 @@ public class UserController {
         }
     }
 
+    /**
+     * This function send the notification to all representatives
+     * @param aNewTeam
+     * @Return true if a notification was sent, otherwise false
+     */
+    public boolean sendNotificationToRepresentative(Team aNewTeam) {
+        if (aNewTeam != null) {
+            List<AssociationRepresentative> representatives = CRUD.getAssociationRepresentatives();
+            if (representatives.size()==0)
+                return false;
+            for (AssociationRepresentative rep : representatives) {
+                rep.getNotification("The new team: " + aNewTeam.getName() + " is waiting to be registered");
+            }
+            return true;
+        }
+        return false;
+    }
 }

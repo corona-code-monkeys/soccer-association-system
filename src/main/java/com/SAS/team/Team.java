@@ -32,6 +32,7 @@ public class Team {
     private Coach coach;
     private boolean active;
     private PersonalPage personalPage;
+    private  boolean isRegistered;
 
 
     /**
@@ -44,6 +45,7 @@ public class Team {
         this.teamFacilities = new LinkedList<>();
         this.owners = new LinkedList<>();
         this.active = true;
+        this.isRegistered = false;
         initializeFinanceYear();
     }
 
@@ -539,5 +541,20 @@ public class Team {
             }
         }
         return null;
+    }
+
+    /**
+     * This function changes the team status from not registered to registered
+     */
+    public void registerTeam() {
+        isRegistered = true;
+    }
+
+    /**
+     * This function return whether the team is registered
+     * @return true or false
+     */
+    public boolean isRegistered() {
+        return isRegistered;
     }
 }

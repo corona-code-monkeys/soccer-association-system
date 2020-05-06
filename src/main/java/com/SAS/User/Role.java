@@ -11,13 +11,13 @@ import java.util.List;
 
 public abstract class Role extends User {
 
-    protected String userName;
-    private List<String> notifications;
+protected String userName;
+private List<String> notifications;
 
-    public Role(String userName) {
+public Role(String userName) {
         this.userName = userName;
         notifications = new LinkedList<>();
-    }
+}
 
     /**
      * The function returns the role of the user
@@ -69,8 +69,9 @@ public abstract class Role extends User {
      * @param message
      */
     public void getNotification(String message) {
-        notifications.add(message);
-        System.out.println(getRole() + " - " + getUserName() + " got the message: " + message);
-    }
-
+        if (message != null && !(message.trim().isEmpty())) {
+            notifications.add(message);
+            System.out.println(getRole() + " - " + getUserName() + " got the message: " + message);
+        }
+    }      
 }

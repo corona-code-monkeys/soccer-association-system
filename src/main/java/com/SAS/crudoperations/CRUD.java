@@ -13,6 +13,7 @@ import com.SAS.transaction.TransactionType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CRUD {
@@ -152,6 +153,20 @@ public class CRUD {
             UserController controller = new UserController();
             return controller.createUser(userName, password, "matan anavi", UserType.FAN, true, null);
         }
+    }
+
+
+    /**
+     * This function return the team from the DB
+     * @param teamName
+     * @return
+     */
+    public static Team getTeamByName(String teamName){
+        if (teamName == null)
+            return null;
+        //TODO: return team from DB
+        Team team = null;
+        return team;
     }
 
     //league
@@ -652,6 +667,24 @@ public class CRUD {
         return userName.equals("shaharf");
     }
 
+    /**
+     * This function retrieves all the AssociationRepresentative from the DB
+     * @return
+     */
+    public static List<AssociationRepresentative> getAssociationRepresentatives(){
+        List<AssociationRepresentative> allRepresentatives = new LinkedList<>();
+        //ToDO: get all the AssociationRepresentative from DB
+        return allRepresentatives;
+    }
+
+    /**
+     * This function removes a team from the DB
+     * @param team
+     */
+    public static void removeTeam(Team team) {
+        //TODO: remove team from DB
+    }
+  
     /**
      * The function receives a userName and returns the full name of the user
      * @param userName
