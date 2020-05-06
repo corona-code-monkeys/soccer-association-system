@@ -684,4 +684,14 @@ public class CRUD {
     public static void removeTeam(Team team) {
         //TODO: remove team from DB
     }
+  
+    /**
+     * The function receives a userName and returns the full name of the user
+     * @param userName
+     * @return
+     */
+    //TODO: add implementation
+    public static String getFullNameByUserName(String userName) {
+        return "";
+    }
 }

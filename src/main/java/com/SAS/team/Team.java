@@ -66,7 +66,7 @@ public class Team {
         this.teamFacilities = new LinkedList<>();
         this.active = true;
         initializeFinanceYear();
-        personalPage = new PersonalPage("Team name: " + name + ", Team owner: " + owner.getFullName());
+        personalPage = new PersonalPage("Team name: " + name + ", Team owner: " + owner.getUserName());
     }
 
     /**

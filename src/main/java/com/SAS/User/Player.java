@@ -24,8 +24,8 @@ public class Player extends Role implements TeamAsset {
      * Constructor
      * @param user
      */
-    public Player(User user, String fullName) {
-        super(fullName);
+    public Player(User user, String userName) {
+        super(userName);
         this.user = user;
         myPrivileges.addAll(user.myPrivileges);
     }
@@ -168,7 +168,7 @@ public class Player extends Role implements TeamAsset {
     @Override
     public String toString() {
         return "Player{" +
-                "fullName='" + fullName + '\'' +
+                "fullName='" + getFullName() + '\'' +
                 '}';
     }
 }

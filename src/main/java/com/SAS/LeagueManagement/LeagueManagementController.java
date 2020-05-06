@@ -494,4 +494,23 @@ public class LeagueManagementController {
         return null;
 
     }
+
+    /**
+     * The function returns the referee by the user name
+     * @param userName
+     * @return
+     */
+    public User getRefereeByUserName(String userName) {
+        if (userName == null || userName.trim().isEmpty()) {
+            return null;
+        }
+
+        for (Referee referee: referees) {
+            if (referee.getUserName().equals(userName)) {
+                return referee;
+            }
+        }
+
+        return null;
+    }
 }

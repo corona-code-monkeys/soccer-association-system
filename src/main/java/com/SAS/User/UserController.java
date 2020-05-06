@@ -52,35 +52,35 @@ public class UserController {
 
              switch (type) {
                  case FAN:
-                     newUser = new Fan(newUser, fullName);
+                     newUser = new Fan(newUser, userName);
                      break;
 
                  case PLAYER:
-                         newUser = new Player(newUser, fullName);
+                         newUser = new Player(newUser, userName);
                          break;
 
                  case COACH:
-                         newUser = new Coach(newUser, fullName);
+                         newUser = new Coach(newUser, userName);
                          break;
 
                  case REFEREE:
-                         newUser = new Referee(newUser, fullName);
+                         newUser = new Referee(newUser, userName);
                          break;
 
                  case TEAM_OWNER:
-                         newUser = new TeamOwner(newUser, fullName);
+                         newUser = new TeamOwner(newUser, userName);
                          break;
 
                  case TEAM_MANAGER:
-                         newUser = new TeamManager(newUser, fullName);
+                         newUser = new TeamManager(newUser, userName);
                          break;
 
                  case SYSTEM_ADMIN:
-                         newUser = new SystemAdmin(newUser, fullName);
+                         newUser = new SystemAdmin(newUser, userName);
                          break;
 
                  case ASSOCIATION_REPRESENTATIVE:
-                         newUser = new AssociationRepresentative(newUser, fullName);
+                         newUser = new AssociationRepresentative(newUser, userName);
                          break;
 
              }
@@ -158,25 +158,26 @@ public class UserController {
         }
 
         String fullName = ((Role)user).getFullName();
+        String userName = ((Role)user).getUserName();
 
         if (validateUser(fullName, type)) {
 
             switch (type) {
 
                 case PLAYER:
-                        user = new Player(user, fullName);
+                        user = new Player(user, userName);
                         break;
 
                 case COACH:
-                        user = new Coach(user, fullName);
+                        user = new Coach(user, userName);
                         break;
 
                 case TEAM_OWNER:
-                        user = new TeamOwner(user, fullName);
+                        user = new TeamOwner(user, userName);
                         break;
 
                 case TEAM_MANAGER:
-                        user = new TeamManager(user, fullName);
+                        user = new TeamManager(user, userName);
                         break;
 
             }
@@ -215,7 +216,7 @@ public class UserController {
     }
 
     //TO-DO
-    private boolean verifyInDB(String fullName) {
+    private boolean verifyInDB(String userName) {
         return true;
     }
 

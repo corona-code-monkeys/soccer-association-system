@@ -4,18 +4,20 @@
 
 package com.SAS.User;
 
+import com.SAS.crudoperations.CRUD;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Role extends User {
 
-    protected String fullName;
-    protected List<String> notifications;
+protected String userName;
+private List<String> notifications;
 
-    public Role(String fullName) {
-        this.fullName = fullName;
-        this.notifications = new LinkedList<>();
-    }
+public Role(String userName) {
+        this.userName = userName;
+        notifications = new LinkedList<>();
+}
 
     /**
      * The function returns the role of the user
@@ -29,17 +31,15 @@ public abstract class Role extends User {
      * @return fullName - String
      */
     public String getFullName() {
-        return fullName;
+        return CRUD.getFullNameByUserName(userName);
     }
 
     /**
-     * The function sets the full name of the user
-     * @param fullName - String
+     * The function returns the user name
+     * @return
      */
-    public void setFullName (String fullName){
-        if (fullName != null && !fullName.trim().isEmpty()) {
-            this.fullName = fullName;
-        }
+    public String getUserName() {
+        return userName;
     }
 
     /**
@@ -71,7 +71,7 @@ public abstract class Role extends User {
     public void getNotification(String message) {
         if (message != null && !(message.trim().isEmpty())) {
             notifications.add(message);
-            System.out.println(getRole() + " - " + getFullName() + " got the message: " + message);
+            System.out.println(getRole() + " - " + getUserName() + " got the message: " + message);
         }
-    }
+    }      
 }
