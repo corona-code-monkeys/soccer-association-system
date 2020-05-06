@@ -49,35 +49,35 @@ public class UserController {
 
              switch (type) {
                  case FAN:
-                     newUser = new Fan(newUser, fullName);
+                     newUser = new Fan(newUser, userName);
                      break;
 
                  case PLAYER:
-                         newUser = new Player(newUser, fullName);
+                         newUser = new Player(newUser, userName);
                          break;
 
                  case COACH:
-                         newUser = new Coach(newUser, fullName);
+                         newUser = new Coach(newUser, userName);
                          break;
 
                  case REFEREE:
-                         newUser = new Referee(newUser, fullName);
+                         newUser = new Referee(newUser, userName);
                          break;
 
                  case TEAM_OWNER:
-                         newUser = new TeamOwner(newUser, fullName);
+                         newUser = new TeamOwner(newUser, userName);
                          break;
 
                  case TEAM_MANAGER:
-                         newUser = new TeamManager(newUser, fullName);
+                         newUser = new TeamManager(newUser, userName);
                          break;
 
                  case SYSTEM_ADMIN:
-                         newUser = new SystemAdmin(newUser, fullName);
+                         newUser = new SystemAdmin(newUser, userName);
                          break;
 
                  case ASSOCIATION_REPRESENTATIVE:
-                         newUser = new AssociationRepresentative(newUser, fullName);
+                         newUser = new AssociationRepresentative(newUser, userName);
                          break;
 
              }

@@ -247,8 +247,8 @@ class LeagueManagementControllerAT {
             System.out.println("Please confirm");
             System.out.println("Confirm");
 
-            User referee = leagueManagementController.getRefereeByName(fullName);
-
+            //User referee = leagueManagementController.getRefereeByName(fullName);
+            User referee = leagueManagementController.getRefereeByUserName("yossiL");
             assertTrue(leagueManagementController.removeReferee(referee));
             System.out.println("The referee removed successfully");
 
@@ -399,7 +399,8 @@ class LeagueManagementControllerAT {
                 System.out.println("Please choose the referee you want to add to the season:");
                 String fullName = "Yossi Levi";
                 System.out.println(fullName);
-                User referee = leagueManagementController.getRefereeByName(fullName);
+                //User referee = leagueManagementController.getRefereeByName(fullName);
+                User referee = leagueManagementController.getRefereeByUserName("yossiL");
                 HashSet<Referee> referees = new HashSet<Referee>() {
                     {
                         add((Referee) referee);
@@ -424,7 +425,7 @@ class LeagueManagementControllerAT {
             }
         };
         leagueManagementController.addNewReferee(details);
-        User referee = leagueManagementController.getRefereeByName("Yossi Levi");
+        User referee = leagueManagementController.getRefereeByUserName("yossiL");
         HashSet<Referee> referees = new HashSet<>();
         referees.add((Referee) referee);
         String leagueName = "Ligat Ha'al";
@@ -454,7 +455,9 @@ class LeagueManagementControllerAT {
                 System.out.println("Please choose the referee you want to add to the season:");
                 String fullName = "Yossi Levi";
                 System.out.println(fullName);
-                referee = leagueManagementController.getRefereeByName(fullName);
+                //referee = leagueManagementController.getRefereeByName(fullName);
+                referee = leagueManagementController.getRefereeByUserName("yossiL");
+
                 referees = new HashSet<>();
                 referees.add((Referee) referee);
                 assertFalse(leagueManagementController.assignRefereesToLeagueInSpecificSeason(league, season, referees));
