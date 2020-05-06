@@ -181,7 +181,7 @@ public class Coach extends Role implements TeamAsset {
     @Override
     public String toString() {
         return "Coach{" +
-                "fullName='" + fullName + '\'' +
+                "fullName='" + getFullName() + '\'' +
                 '}';
     }
 }
