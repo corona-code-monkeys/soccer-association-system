@@ -155,25 +155,26 @@ public class UserController {
         }
 
         String fullName = ((Role)user).getFullName();
+        String userName = ((Role)user).getUserName();
 
         if (validateUser(fullName, type)) {
 
             switch (type) {
 
                 case PLAYER:
-                        user = new Player(user, fullName);
+                        user = new Player(user, userName);
                         break;
 
                 case COACH:
-                        user = new Coach(user, fullName);
+                        user = new Coach(user, userName);
                         break;
 
                 case TEAM_OWNER:
-                        user = new TeamOwner(user, fullName);
+                        user = new TeamOwner(user, userName);
                         break;
 
                 case TEAM_MANAGER:
-                        user = new TeamManager(user, fullName);
+                        user = new TeamManager(user, userName);
                         break;
 
             }
@@ -212,7 +213,7 @@ public class UserController {
     }
 
     //TO-DO
-    private boolean verifyInDB(String fullName) {
+    private boolean verifyInDB(String userName) {
         return true;
     }
 
