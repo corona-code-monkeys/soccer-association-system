@@ -43,7 +43,6 @@ public class SystemControllerAT {
         System.out.println(userChoose);
         if (systemController.addExternalSystem(userChoose)) {
             system1 = true;
-            factory.logEvent("Extrnal system added");
         }
         else{
             System.out.println("No External System with this name was found");

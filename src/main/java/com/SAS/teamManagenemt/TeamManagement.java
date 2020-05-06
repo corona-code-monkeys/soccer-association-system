@@ -6,6 +6,7 @@ package com.SAS.teamManagenemt;
 import com.SAS.User.*;
 import com.SAS.crudoperations.CRUD;
 import com.SAS.facility.*;
+import com.SAS.systemLoggers.LoggerFactory;
 import com.SAS.team.Team;
 
 import com.SAS.transaction.Transaction;
@@ -18,6 +19,7 @@ import java.util.LinkedList;
 
 public class TeamManagement {
 
+    private LoggerFactory logger;
     private UserController userController;
 
     /**
@@ -26,6 +28,7 @@ public class TeamManagement {
      */
     public TeamManagement(UserController userController) {
         this.userController = userController;
+        logger = LoggerFactory.getInstance();
     }
 
     /**
@@ -46,14 +49,17 @@ public class TeamManagement {
             case "Player":
                 asset = (Player) userController.createUser(null, null, null, UserType.PLAYER, true, null);
                 team.addPlayerToTeam((Player)asset);
+                logger.logEvent("User: " + ((Role)user).getUserName() + ". Added player to " + team.getName() + " team.");
                 break;
             case "Facility":
                 asset = new Facility();
                 team.addFacility((Facility)asset);
+                logger.logEvent("User: " + ((Role)user).getUserName() + ". Added facility to " + team.getName() + " team.");
                 break;
             case "Coach":
                 asset = (Coach) userController.createUser(null, null, null, UserType.COACH, true, null);
                 team.setCoach((Coach)asset);
+                logger.logEvent("User: " + ((Role)user).getUserName() + ". Added coach to " + team.getName() + " team.");
                 break;
         }
         asset.setTeam(team);
@@ -82,6 +88,7 @@ public class TeamManagement {
         if (canAddRemoveAsset(user) && (ownsTeam(team, user) || managesTeam(team, user))) {
             asset.removeAssetFromTeam();
             asset = null;
+            logger.logEvent("User: " + ((Role)user).getUserName() + ". Removed asset from " + team.getName() + " team.");
             return true;
         }
         else{
@@ -103,6 +110,7 @@ public class TeamManagement {
             team.addTeamOwner((TeamOwner)newTeamOwner);
             ((TeamOwner) newTeamOwner).setTeam(team);
             ((TeamOwner) newTeamOwner).setNominatedBy((TeamOwner)nominatedBy);
+            logger.logEvent("User: " + ((Role)nominatedBy).getUserName() + ". Added team owner to " + team.getName() + " team.");
         }
 
         else {
@@ -133,6 +141,7 @@ public class TeamManagement {
             team.setTeamManager((TeamManager)newTeamManager);
             ((TeamManager)newTeamManager).setTeam(team);
             ((TeamManager)newTeamManager).setNominatedBy((TeamOwner)nominatedBy);
+            logger.logEvent("User: " + ((Role)nominatedBy).getUserName() + ". Added team manager to " + team.getName() + " team.");
         }
         else{
             System.out.println("The user is unauthorized to manage the team");
@@ -176,6 +185,7 @@ public class TeamManagement {
             ((TeamManager)teamManager).removeTeam();
             //get the inner user (previous role)
             teamManager = ((TeamManager) teamManager).getUser();
+            logger.logEvent("User: " + ((Role)removedBy).getUserName() + ". Removed team manager from " + team.getName() + " team.");
         }
 
         return teamManager;
@@ -345,6 +355,7 @@ public class TeamManagement {
                 System.out.println("The transaction could not be added to the team, it exceeded the team's budget.");
             }
 
+            logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ". Added transaction tp " + team.getName() + " team.");
             return transaction;
         }
 
@@ -382,6 +393,7 @@ public class TeamManagement {
             if (team.isActive()) {
                 team.inactivateTeam();
                 sendNotificationClose(team, "closed");
+                logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ". Closed " + team.getName() + " team.");
                 return true;
             }
 
@@ -406,6 +418,7 @@ public class TeamManagement {
             if (!team.isActive()) {
                 team.reactivateTeam();
                 sendNotificationClose(team, "opened");
+                logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ".Opened " + team.getName() + " team.");
                 return true;
             }
 

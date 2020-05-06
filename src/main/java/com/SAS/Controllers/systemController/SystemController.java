@@ -3,12 +3,14 @@ package com.SAS.Controllers.systemController;
 import com.SAS.User.User;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
+import com.SAS.systemLoggers.LoggerFactory;
 
 import java.util.LinkedList;
 
 
 public class SystemController {
 
+    private LoggerFactory logger;
     private LinkedList<String> externalSystemsAvailable;
     private LinkedList<ExternalSystem> connectedExternalSystems;
     private UserController userController;
@@ -22,6 +24,7 @@ public class SystemController {
         this.externalSystemsAvailable = new LinkedList<>();
         this.userController = new UserController();
         initExternalSystemsAvailable();
+        this.logger = LoggerFactory.getInstance();
     }
 
     /**
@@ -79,6 +82,7 @@ public class SystemController {
                     AccountingSystem accountingSystem = new AccountingSystem();
                     accountingSystem.connectSystem();
                     connectedExternalSystems.add(accountingSystem);
+                    logger.logEvent("User: System. The system connected to the accounting system");
                     return true;
                 }
 
@@ -87,6 +91,7 @@ public class SystemController {
                     TaxSystem taxSystem = new TaxSystem();
                     taxSystem.connectSystem();
                     connectedExternalSystems.add(taxSystem);
+                    logger.logEvent("User: System. The system connected to the tax system");
                     return true;
                 }
 
@@ -140,6 +145,7 @@ public class SystemController {
             return false;
         }
 
+        logger.logEvent("User: System. Admin user created.");
         admin = userController.createUser(userName, password, fullName, UserType.SYSTEM_ADMIN, true, null);
         return true;
     }

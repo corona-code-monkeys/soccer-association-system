@@ -176,7 +176,7 @@ class LeagueManagementControllerAT {
                 }
             };
 
-            User referee = leagueManagementController.addNewReferee(details);
+            User referee = leagueManagementController.addNewReferee(details, associationRepres);
             assertNotNull(referee);
             System.out.println(leagueManagementController.sendInvitationToReferee(referee));
             System.out.println("The referee added successfully");
@@ -212,7 +212,7 @@ class LeagueManagementControllerAT {
                 }
             };
 
-            User referee = leagueManagementController.addNewReferee(details);
+            User referee = leagueManagementController.addNewReferee(details, associationRepres);
             assertNull(referee);
             System.out.println("The referee wasn't added.");
 
@@ -231,7 +231,7 @@ class LeagueManagementControllerAT {
                 add("1");
             }
         };
-        leagueManagementController.addNewReferee(details);
+        leagueManagementController.addNewReferee(details, associationRepres);
 
         System.out.println("-- Enter setting mode --");
         if (leagueManagementController.canAccessSettingsPage(associationRepres)) {
@@ -249,7 +249,7 @@ class LeagueManagementControllerAT {
 
             //User referee = leagueManagementController.getRefereeByName(fullName);
             User referee = leagueManagementController.getRefereeByUserName("yossiL");
-            assertTrue(leagueManagementController.removeReferee(referee));
+            assertTrue(leagueManagementController.removeReferee(referee, associationRepres));
             System.out.println("The referee removed successfully");
 
         }
@@ -267,7 +267,7 @@ class LeagueManagementControllerAT {
                 add("1");
             }
         };
-        leagueManagementController.addNewReferee(details);
+        leagueManagementController.addNewReferee(details, associationRepres);
 
         System.out.println("-- Enter setting mode --");
         if (leagueManagementController.canAccessSettingsPage(associationRepres)) {
@@ -286,7 +286,7 @@ class LeagueManagementControllerAT {
             User referee = leagueManagementController.getRefereeByName(fullName);
 
             assertNull(referee);
-            leagueManagementController.removeReferee(referee);
+            leagueManagementController.removeReferee(referee, associationRepres);
             System.out.println("The referee wasn't removed.");
 
         }
@@ -303,7 +303,7 @@ class LeagueManagementControllerAT {
             String name = "Ligat Ha'al";
             System.out.println(name);
 
-            assertTrue(leagueManagementController.addNewLeague(name));
+            assertTrue(leagueManagementController.addNewLeague(name, associationRepres));
             System.out.println("The league " + name + " added successfully!");
         }
     }
@@ -320,7 +320,7 @@ class LeagueManagementControllerAT {
     @Test
     public void addSeasonToLeagueSuccess() {
         //add league
-        leagueManagementController.addNewLeague("Ligat Ha'al");
+        leagueManagementController.addNewLeague("Ligat Ha'al", associationRepres);
 
         System.out.println("-- Enter setting mode --");
         if (leagueManagementController.canAccessSettingsPage(associationRepres)) {
@@ -338,7 +338,7 @@ class LeagueManagementControllerAT {
                 String year = "2020";
                 System.out.println(year);
 
-                assertTrue(leagueManagementController.addNewSeasonToLeague(year, league));
+                assertTrue(leagueManagementController.addNewSeasonToLeague(year, league, associationRepres));
                 System.out.println("The season added successfully!");
             }
         }
@@ -373,11 +373,11 @@ class LeagueManagementControllerAT {
             }
         };
 
-        leagueManagementController.addNewReferee(details);
+        leagueManagementController.addNewReferee(details, associationRepres);
         String leagueName = "Ligat Ha'al";
-        leagueManagementController.addNewLeague(leagueName);
+        leagueManagementController.addNewLeague(leagueName, associationRepres);
         League league = leagueManagementController.getLeagueByName("Ligat Ha'al");
-        leagueManagementController.addNewSeasonToLeague("2020", league);
+        leagueManagementController.addNewSeasonToLeague("2020", league, associationRepres);
 
         System.out.println("-- Enter setting mode --");
         if (leagueManagementController.canAccessSettingsPage(associationRepres)) {
@@ -406,7 +406,7 @@ class LeagueManagementControllerAT {
                         add((Referee) referee);
                     }
                 };
-                assertTrue(leagueManagementController.assignRefereesToLeagueInSpecificSeason(league, season, referees));
+                assertTrue(leagueManagementController.assignRefereesToLeagueInSpecificSeason(league, season, referees, associationRepres));
                 System.out.println("The referees added successfully!");
             }
         }
@@ -424,16 +424,17 @@ class LeagueManagementControllerAT {
                 add("1");
             }
         };
-        leagueManagementController.addNewReferee(details);
+
+        leagueManagementController.addNewReferee(details, associationRepres);
         User referee = leagueManagementController.getRefereeByUserName("yossiL");
         HashSet<Referee> referees = new HashSet<>();
         referees.add((Referee) referee);
         String leagueName = "Ligat Ha'al";
-        leagueManagementController.addNewLeague(leagueName);
+        leagueManagementController.addNewLeague(leagueName, associationRepres);
         League league = leagueManagementController.getLeagueByName("Ligat Ha'al");
-        leagueManagementController.addNewSeasonToLeague("2020", league);
+        leagueManagementController.addNewSeasonToLeague("2020", league, associationRepres);
         Season season = leagueManagementController.getSeasonByYearInLeague(league, "2020");
-        leagueManagementController.assignRefereesToLeagueInSpecificSeason(league, season, referees);
+        leagueManagementController.assignRefereesToLeagueInSpecificSeason(league, season, referees, associationRepres);
 
         System.out.println("-- Enter setting mode --");
         if (leagueManagementController.canAccessSettingsPage(associationRepres)) {
@@ -460,7 +461,7 @@ class LeagueManagementControllerAT {
 
                 referees = new HashSet<>();
                 referees.add((Referee) referee);
-                assertFalse(leagueManagementController.assignRefereesToLeagueInSpecificSeason(league, season, referees));
+                assertFalse(leagueManagementController.assignRefereesToLeagueInSpecificSeason(league, season, referees, associationRepres));
                 System.out.println("The referees wasn't added.");
             }
         }
