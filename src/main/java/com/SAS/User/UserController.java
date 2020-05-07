@@ -3,14 +3,15 @@ package com.SAS.User;
 import com.SAS.crudoperations.CRUD;
 import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.team.Team;
-
 import java.util.List;
+import com.SAS.systemLoggers.LoggerFactory;
 
 public class UserController {
 
     /**
      * singleton Privileges instance
      */
+    private LoggerFactory logger;
     private Privileges globalPrivileges;
 
     /**
@@ -18,6 +19,8 @@ public class UserController {
      */
     public UserController() {
         this.globalPrivileges = Privileges.getInstance();
+        this.logger = LoggerFactory.getInstance();
+
     }
 
     /**
@@ -88,6 +91,12 @@ public class UserController {
              setPrivilegesforUser(newUser, ((Role) newUser).getRole(), approval);
              //keep in database
              UsersCRUD.postUser(userName, password);
+             try {
+                 logger.logEvent("User: " + ((Role)newUser).getUserName() + ". New " + type + " Created.");
+             }
+             catch (Exception e){
+                 System.out.println(e.getCause());
+             }
              return newUser;
          }
 
@@ -183,6 +192,7 @@ public class UserController {
             }
 
             setPrivilegesforUser(user, ((Role)user).getRole(), approval);
+            logger.logEvent("User: " + ((Role)user).getUserName() + ". New " + type + " role has been added.");
             return user;
             //keep in database
 
