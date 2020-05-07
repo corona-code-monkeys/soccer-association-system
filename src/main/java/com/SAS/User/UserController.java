@@ -90,13 +90,15 @@ public class UserController {
 
              setPrivilegesforUser(newUser, ((Role) newUser).getRole(), approval);
              //keep in database
-             UsersCRUD.postUser(userName, password);
+
              try {
+                 UsersCRUD.postUser(userName, password, fullName, type.toString());
                  logger.logEvent("User: " + ((Role)newUser).getUserName() + ". New " + type + " Created.");
              }
              catch (Exception e){
-                 System.out.println(e.getCause());
              }
+
+
              return newUser;
          }
 
