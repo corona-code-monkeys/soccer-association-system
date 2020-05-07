@@ -4,6 +4,10 @@ import com.SAS.User.User;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
 import com.SAS.systemLoggers.LoggerFactory;
+import com.SAS.crudoperations.TransactionCRUD;
+import com.SAS.crudoperations.UsersCRUD;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.LinkedList;
 
@@ -15,6 +19,10 @@ public class SystemController {
     private LinkedList<ExternalSystem> connectedExternalSystems;
     private UserController userController;
     private User admin;
+    private static ApplicationContext ctx;
+    public static TransactionCRUD transDao;
+    public static UsersCRUD usersDao;
+
 
     /**
      * Constructor
@@ -49,8 +57,10 @@ public class SystemController {
      * @return
      */
     //TODO: initialize DB schemas
-    public boolean initializeDB() {
-        return false;
+    public void initializeDB() {
+        ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        transDao = (TransactionCRUD) ctx.getBean("transDao");
+        usersDao = (UsersCRUD) ctx.getBean("usersDao");
     }
 
 

@@ -13,14 +13,15 @@ public class TransactionCRUD {
     public int saveTransaction(Transaction newTransaction){
 
         //TEST
-        int transaction_id = 6;
-        int team_id = 5;
+        String team_name = "macabi";
         String type = "INCOME";
         String date = "2020-03-30";
         String description = "bought arnon";
+        int teamOwnerId = 5;
         double amount = 1000.0;
+        int id = 9;
 
-        String query = String.format("insert into transactions values (%d, %d, %f, \"%s\", \"%s\", \"%s\");",transaction_id,team_id,amount,type,date,description);
+        String query = String.format("insert into transactions (team_name, amount, type, team_owner_reported_id, date, description) values ( \"%s\", \"%f\", \"%s\", \"%d\", \"%s\", \"%s\");", team_name, amount, type, teamOwnerId , date, description);
         return jdbcTemplate.update(query);
     }
     /*
