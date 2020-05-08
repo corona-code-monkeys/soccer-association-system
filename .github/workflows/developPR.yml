@@ -11,6 +11,15 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+            MYSQL_ALLOW_EMPTY_PASSWORD: yes
+            MYSQL_DATABASE: sas
+        ports:
+            - 13306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
     - uses: actions/checkout@v2
@@ -18,13 +27,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Setup MySQL
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        mysql database: sas
-        mysql root password: root
-    - name: Setup db
-      run: mysql -h 127.0.0.1 -P 3306 -u root -p root < ./src/main/resources/initDb.sql
+    - name: Execute sql command
+      run: mysql -u root -h 127.0.0.1 -P13306 -e "blah"
+    #- name: Setup db
+    # run: mysql -h 127.0.0.1 -P 3306 -u root -p root < ./src/main/resources/initDb.sql
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Maven clean
