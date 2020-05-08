@@ -40,6 +40,12 @@ public class GameEventLogger {
         this.eventList = new ArrayList<>();
     }
 
+    public GameEventLogger() {
+        this.gameDate = LocalDate.now();
+        this.eventList = new ArrayList<>();
+    }
+
+
     public void addNewEvent(GameEvent event) {
         eventList.add(event);
     }

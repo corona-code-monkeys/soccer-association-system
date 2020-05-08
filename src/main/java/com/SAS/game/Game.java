@@ -34,6 +34,7 @@ public class Game {
      */
     public Game() {
         referees = new LinkedList<Referee>();
+        events = new GameEventLogger();
     }
 
     public Game(Season season, League league, LocalDate date, Team host, Team guest, int hostScore, int guestScore, Facility stadium, GameEventLogger events, GameReport gameReport, List<Referee> referees) {
@@ -83,8 +84,15 @@ public class Game {
     }
 
     //TODO: complete the method after merge with game event logger
-    public boolean addGameEvent() {
-        return false;
+    public boolean addGameEvent(GameEvent event) {
+        if (event == null) {
+            return false;
+        } else if (events.getEventList().contains(event)) {
+            return false;
+        } else {
+            this.events.addNewEvent(event);
+            return true;
+        }
     }
 
     /**

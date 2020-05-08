@@ -3,7 +3,6 @@ package com.SAS.game_event_logger;
 import com.SAS.User.Player;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
-import com.SAS.game.Game;
 import com.SAS.team.Team;
 import org.junit.jupiter.api.Test;
 
