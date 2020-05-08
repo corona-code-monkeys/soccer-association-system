@@ -6,7 +6,7 @@ CREATE TABLE `sas`.`user` (
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE,
   UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC) VISIBLE);
-
+  
 CREATE TABLE `sas`.`user_role` (
     `user_id` INT NOT NULL,
     `user_name` VARCHAR(45) NOT NULL,
@@ -37,14 +37,14 @@ CREATE TABLE `sas`.`team_owner` (
         REFERENCES user (user_id)
         ON DELETE CASCADE
 );
-
+  
 CREATE TABLE `sas`.`team_manager` (
     `user_id` INT NOT NULL,
     `team_name` VARCHAR(45) NULL,
     `nominated_by` INT NULL,
     PRIMARY KEY (`user_id`),
     FOREIGN KEY (user_id)
-        REFERENCES user (user_id),
+        REFERENCES user (user_id), 
         FOREIGN KEY (nominated_by)
         REFERENCES user (user_id)
         ON DELETE CASCADE
@@ -81,7 +81,7 @@ CREATE TABLE `sas`.`fan` (
         REFERENCES user (user_id)
         ON DELETE CASCADE
 );
-
+  
 CREATE TABLE `sas`.`association_representative` (
     `user_id` INT NOT NULL,
     PRIMARY KEY (`user_id`),
@@ -220,27 +220,27 @@ CREATE TABLE `sas`.`team` (
     `personal_page_id` INT NULL,
     PRIMARY KEY (`team_name`)
 );
-
+ 
 CREATE TABLE `sas`.`team_budget` (
     `team_name` VARCHAR(45) NOT NULL,
     `season_year` INT NOT NULL,
     `budget` DOUBLE NULL,
     PRIMARY KEY (`team_name` , `season_year`)
 );
-
+  
 
 CREATE TABLE `sas`.`team_owners` (
     `team_name` VARCHAR(45) NOT NULL,
     `owner_user_id` INT NOT NULL,
     PRIMARY KEY (`team_name` , `owner_user_id`)
 );
-
+  
 CREATE TABLE `sas`.`game_referees` (
     `game_id` INT NOT NULL,
     `referee_user_id` INT NOT NULL,
     PRIMARY KEY (`game_id` , `referee_user_id`)
 );
-
+  
 
 CREATE TABLE `sas`.`team_players` (
     `team_name` VARCHAR(45) NOT NULL,
@@ -274,19 +274,19 @@ CREATE TABLE `sas`.`transactions` (
     `description` VARCHAR(45) NULL,
     PRIMARY KEY (`transaction_id`)
 );
-
+  
 CREATE TABLE `sas`.`personal_page` (
     `personal_page_id` INT AUTO_INCREMENT,
     `description` VARCHAR(200) NULL,
     PRIMARY KEY (`personal_page_id`)
 );
-
+  
 CREATE TABLE `sas`.`followers` (
     `personal_page_id` INT NOT NULL,
     `follower_user_id` INT NOT NULL,
     PRIMARY KEY (`personal_page_id` , `follower_user_id`)
 );
-
+  
 CREATE TABLE `sas`.`privileges` (
     `role` VARCHAR(45) NOT NULL,
     `privilege` VARCHAR(45) NOT NULL,
@@ -295,7 +295,7 @@ CREATE TABLE `sas`.`privileges` (
 
 SET @@global.time_zone = '+03:00';
 SET @@session.time_zone = '+03:00';
-
+  
 insert into privileges (role, privilege) values ('Guest', 'viewPages+LS');
 insert into privileges (role, privilege) values ('Guest', 'searchByNCK');
 insert into privileges (role, privilege) values ('Fan', 'followPage');
@@ -332,3 +332,4 @@ insert into privileges (role, privilege) values ('AssociationRepresentative', 'e
 insert into privileges (role, privilege) values ('Referee', 'editPDetails');
 insert into privileges (role, privilege) values ('Referee', 'viewMyGames');
 insert into privileges (role, privilege) values ('Referee', 'editGameEvent');
+  
