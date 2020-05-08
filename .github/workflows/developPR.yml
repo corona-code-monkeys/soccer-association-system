@@ -23,7 +23,7 @@ jobs:
       with:
         mysql database: sas
     - name: Setup db
-        uses: mysql -u root -p root sas < ./src/main/resources/initDb.sql
+      run: mysql --host=localhost --user=root --password=root -e "./src/main/resources/initDb.sql"
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Maven clean
