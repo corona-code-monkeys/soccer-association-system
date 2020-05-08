@@ -1,5 +1,6 @@
 package com.SAS.crudoperations;
 
+import com.SAS.Controllers.systemController.SystemController;
 import com.SAS.User.TeamOwner;
 import com.SAS.User.User;
 import com.SAS.User.UserController;
@@ -18,35 +19,33 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionCRUDTest {
-/*
-    private TeamManagement teamManagement;
+
     private UserController userController;
     private Team team;
     private User teamOwner;
+    private SystemController sys;
+
 
     @BeforeEach
-    public void setUp()  {
+    public void setUp() {
+        sys = new SystemController();
+        sys.initializeDB();
         userController = new UserController();
         teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true, null);
-        team = new Team("Maccabi Tel Aviv", (TeamOwner)teamOwner);
+        team = new Team("hap", (TeamOwner) teamOwner);
         ((TeamOwner) teamOwner).setTeam(team);
     }
 
 
     @Test
-    public void testDB() {
-        try {
-            ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-            TransactionCRUD tadao = (TransactionCRUD) ctx.getBean("tadao");
-            LocalDate date = LocalDate.now();
-            team = new Team();
-            teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true, null);
-            int status = tadao.saveTransaction(new Transaction(1000, TransactionType.INCOME, date, team, "bought arnon", (TeamOwner) teamOwner));
-            System.out.println(status);
-        }
-        catch (Exception e){
-            System.out.println(e);
-        }
+    public void addTransactoin() {
+        LocalDate date = LocalDate.now();
+        Transaction t = new Transaction(1000, TransactionType.INCOME, date, team, "bought arnon", (TeamOwner) teamOwner);
+        assertTrue(TransactionCRUD.addTransactionToDB(t));
     }
-*/
+
+    @Test
+    public void getAllTransactions(){
+        assertEquals(2, TransactionCRUD.getAllTransaction("macabi").size());
+    }
 }
