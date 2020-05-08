@@ -28,7 +28,7 @@ jobs:
       with:
         java-version: 1.8
     - name: Execute sql command
-      run: mysql -u root -h 127.0.0.1 -P13306 -e "blah"
+      run: mysql -u root -h 127.0.0.1 -P13306 -e "./src/main/resources/initDb.sql"
     #- name: Setup db
     # run: mysql -h 127.0.0.1 -P 3306 -u root -p root < ./src/main/resources/initDb.sql
     - name: Build with Maven
