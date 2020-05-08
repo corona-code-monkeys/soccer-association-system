@@ -22,6 +22,7 @@ jobs:
       uses: mirromutth/mysql-action@v1.1
       with:
         mysql database: sas
+        mysql root password: root
     - name: Setup db
       run: mysql --host=localhost --user=root --password=root -e "./src/main/resources/initDb.sql"
     - name: Build with Maven
