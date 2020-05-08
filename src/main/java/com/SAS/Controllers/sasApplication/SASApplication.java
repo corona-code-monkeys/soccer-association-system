@@ -9,15 +9,15 @@ import com.SAS.User.User;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
 import com.SAS.crudoperations.UsersCRUD;
-import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamManagement;
+
+import java.util.List;
 
 public class SASApplication {
 
     private UserController userController;
     private LeagueManagementController leaugeManagement;
     private TeamManagement teamManagement;
-    private UsersCRUD usersCRUD;
     private SystemController systemController; //check
 
 
@@ -28,7 +28,6 @@ public class SASApplication {
         userController= new UserController();
         leaugeManagement= new LeagueManagementController();
         teamManagement= new TeamManagement(userController);
-        usersCRUD = new UsersCRUD();
     }
 
     //TODO: in UI : if return true switch to home page with correct privileges, else show alert that user doesn't exist
@@ -40,7 +39,7 @@ public class SASApplication {
      */
 
     public boolean login(String username, String password){
-       return usersCRUD.isUserValid(username, password);
+       return userController.isUserExist(username, password);
     }
 
     //TODO: In UI: if true- show alert that the user was created and switch to home page so he would log in, wlse show error message
@@ -80,6 +79,29 @@ public class SASApplication {
      */
     public boolean confirmTeam(String teamName, User representative, boolean confirm){
         return teamManagement.commitConfirmationOfTeam(teamName, representative, confirm);
+    }
+
+    /**
+     * This function deletes the user associated with the given user name
+     * @param username
+     * @return true or false
+     */
+    public boolean deleteUser(String username){
+        return userController.deleteUSer(username);
+    }
+
+
+    /**
+     * This function calls the edit of user details
+     * @param details
+     * @param type
+     * @return true if the details were edited
+     */
+    public boolean editUserDetails(String username, List<String> details, String type){
+        if (details != null && type != null){
+            return userController.editUserDetails(username, details, type);
+        }
+        return false;
     }
 
 
