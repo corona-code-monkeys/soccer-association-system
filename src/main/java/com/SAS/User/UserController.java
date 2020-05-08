@@ -103,7 +103,7 @@ public class UserController {
          }
 
          else {
-             sendMessageUnauthorized();
+             logger.logEvent("Fault: unable to get: unable to validate user");
              return null;
          }
 
@@ -201,7 +201,7 @@ public class UserController {
         }
 
         else {
-            sendMessageUnauthorized();
+            logger.logEvent("Fault: unable to get: unable to validate user");
             return null;
         }
 
@@ -222,10 +222,7 @@ public class UserController {
         return true;
     }
 
-    //TO-DO
-    private void sendMessageUnauthorized() {
 
-    }
 
     //TO-DO
     private boolean verifyInDB(String userName) {
@@ -252,13 +249,16 @@ public class UserController {
     public boolean sendNotificationToRepresentative(Team aNewTeam) {
         if (aNewTeam != null) {
             List<AssociationRepresentative> representatives = CRUD.getAssociationRepresentatives();
-            if (representatives.size()==0)
+            if (representatives.size()==0) {
+                logger.logEvent("Fault: unable to send: there are no representatives to send notifications");
                 return false;
+            }
             for (AssociationRepresentative rep : representatives) {
                 rep.getNotification("The new team: " + aNewTeam.getName() + " is waiting to be registered");
             }
             return true;
         }
+        logger.logEvent("Fault: unable to send: team does not exist");
         return false;
     }
 }
