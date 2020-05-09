@@ -35,15 +35,15 @@ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
         <property name="template" ref="jdbcTemplate"></property>
     </bean>
 
-    <bean id="GameDao" class="com.SAS.crudoperations.GameCRUD">
+    <bean id="gameDao" class="com.SAS.crudoperations.GameCRUD">
         <property name="template" ref="jdbcTemplate"></property>
     </bean>
 
-    <bean id="TeamDao" class="com.SAS.crudoperations.TeamCRUD">
+    <bean id="teamDao" class="com.SAS.crudoperations.TeamCRUD">
         <property name="template" ref="jdbcTemplate"></property>
     </bean>
 
-    <bean id="LeagueDao" class="com.SAS.crudoperations.LeagueCRUD">
+    <bean id="leagueDao" class="com.SAS.crudoperations.LeagueCRUD">
         <property name="template" ref="jdbcTemplate"></property>
     </bean>
 
