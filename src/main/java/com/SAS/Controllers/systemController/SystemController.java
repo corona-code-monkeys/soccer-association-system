@@ -79,12 +79,12 @@ public class SystemController {
      */
     public boolean addExternalSystem(String name) {
         if (name == null) {
-            logger.logEvent("Fault: a null external system tried to be added");
+            logger.logError("Fault: a null external system tried to be added");
             return false;
         }
 
         if (name.length() == 0) {
-            logger.logEvent("Fault: an external system with no name tried to be added");
+            logger.logError("Fault: an external system with no name tried to be added");
             return false;
         }
 
@@ -108,7 +108,7 @@ public class SystemController {
                 }
 
             default:
-                logger.logEvent("Fault: a none Tax or Accounting external system tried to be added");
+                logger.logError("Fault: a none Tax or Accounting external system tried to be added");
                 return false;
         }
     }
@@ -124,7 +124,7 @@ public class SystemController {
                 return true;
             }
         }
-        logger.logEvent("Fault: system search failed");
+        logger.logError("Fault: system search failed");
         return false;
     }
 
@@ -155,7 +155,7 @@ public class SystemController {
      */
     public boolean createSystemAdmin(String userName, String password, String fullName) {
         if (!validateParams(userName, password, fullName)) {
-            logger.logEvent("Fault: unable to create admin user");
+            logger.logError("Fault: unable to create admin user");
             return false;
         }
 
@@ -173,12 +173,12 @@ public class SystemController {
      */
     private boolean validateParams(String userName, String password, String fullName) {
         if (userName == null || password == null || fullName == null) {
-            logger.logEvent("Fault: wrong parameters values");
+            logger.logError("Fault: wrong parameters values");
             return false;
         }
 
         if (userName.length() == 0 || password.length() == 0 || fullName.length() == 0) {
-            logger.logEvent("Fault: wrong parameters values");
+            logger.logError("Fault: wrong parameters values");
             return false;
         }
 

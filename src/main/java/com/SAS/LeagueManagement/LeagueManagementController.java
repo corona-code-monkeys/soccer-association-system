@@ -77,10 +77,10 @@ public class LeagueManagementController {
             if (CRUD.addLeague(league)) {
                 return true;
             }
-            logger.logEvent("Fault: unable to init league");
+            logger.logError("Fault: unable to init league");
             return false;
         }
-        logger.logEvent("Fault: unable to init league");
+        logger.logError("Fault: unable to init league");
         return false;
     }
 
@@ -90,7 +90,7 @@ public class LeagueManagementController {
             CRUD.addLeagueToSeason(season, league, null, null, null);
             CRUD.addSeasonToLeague(league, season, null, null, null);
         }
-        logger.logEvent("Fault: unable to add season to league");
+        logger.logError("Fault: unable to add season to league");
         return false;
     }
 
@@ -98,7 +98,7 @@ public class LeagueManagementController {
         if (CRUD.isLeagueExist(league)) {
             CRUD.addAndRemoveRefereesFromLeague(league, referees);
 
-            logger.logEvent("Fault: the league is not exist. unable to assign referee");
+            logger.logError("Fault: the league is not exist. unable to assign referee");
         }
         return false;
     }
@@ -122,7 +122,7 @@ public class LeagueManagementController {
                 }
             }
        }
-        logger.logEvent("Fault: unable to add referees to a specific season");
+        logger.logError("Fault: unable to add referees to a specific season");
         return false;
     }
 
@@ -172,17 +172,17 @@ public class LeagueManagementController {
      */
     public boolean addRankPolicy(League league, Season season, String rankPolicyId, User user) {
         if (! canSetPolicy(user)){
-            logger.logEvent("Fault: cannot set rank policy");
+            logger.logError("Fault: cannot set rank policy");
             return false;
         }
 
         if (league == null || season == null) {
-            logger.logEvent("Fault: cannot set rank policy. league or season does not exist.");
+            logger.logError("Fault: cannot set rank policy. league or season does not exist.");
             return false;
         }
 
         if (rankPolicyId.length() == 0) {
-            logger.logEvent("Fault: false rank policy");
+            logger.logError("Fault: false rank policy");
             return false;
         }
 
@@ -205,7 +205,7 @@ public class LeagueManagementController {
                 break;
 
             default:
-                logger.logEvent("Fault: false points policy");
+                logger.logError("Fault: false points policy");
                 return false;
         }
 
@@ -222,19 +222,19 @@ public class LeagueManagementController {
      */
     public boolean addPointsPolicy(League league, Season season, String pointsPolicyId, User user) {
         if (! canSetPolicy(user)){
-            logger.logEvent("Fault: cannot set points  policy");
+            logger.logError("Fault: cannot set points  policy");
 
             return false;
         }
 
         if (league == null || season == null) {
-            logger.logEvent("Fault: cannot set points policy. league or season does not exist.");
+            logger.logError("Fault: cannot set points policy. league or season does not exist.");
 
             return false;
         }
 
         if (pointsPolicyId.length() == 0) {
-            logger.logEvent("Fault: false points policy");
+            logger.logError("Fault: false points policy");
             return false;
         }
 
@@ -263,7 +263,7 @@ public class LeagueManagementController {
                 break;
 
             default:
-                logger.logEvent("Fault: false points policy");
+                logger.logError("Fault: false points policy");
                 return false;
         }
 
@@ -316,7 +316,7 @@ public class LeagueManagementController {
                 break;
 
             default:
-                logger.logEvent("Fault: false points policy");
+                logger.logError("Fault: false points policy");
                 return false;
         }
 
@@ -350,7 +350,7 @@ public class LeagueManagementController {
     public User addNewReferee(List<String> details, User user) {
         if(canAccessSettingsPage(user)) {
             if (details == null || details.size() != 4) {
-                logger.logEvent("Fault: the details inserted does not match the criteria");
+                logger.logError("Fault: the details inserted does not match the criteria");
                 return null;
             }
 
@@ -371,7 +371,7 @@ public class LeagueManagementController {
 
             }
         }
-        logger.logEvent("Fault: unable to add referee");
+        logger.logError("Fault: unable to add referee");
         return null;
     }
 
@@ -404,7 +404,7 @@ public class LeagueManagementController {
      */
     public User getRefereeByName(String fullName) {
         if (fullName == null || fullName.trim().isEmpty()) {
-            logger.logEvent("Fault: unable to add referee");
+            logger.logError("Fault: unable to add referee");
             return null;
         }
 
@@ -413,7 +413,7 @@ public class LeagueManagementController {
                 return referee;
             }
         }
-        logger.logEvent("Fault: unable to get: referee not found");
+        logger.logError("Fault: unable to get: referee not found");
         return null;
     }
 
@@ -431,7 +431,7 @@ public class LeagueManagementController {
                 return true;
             }
         }
-        logger.logEvent("Fault: unable to remove: referee not found");
+        logger.logError("Fault: unable to remove: referee not found");
         return false;
     }
 
@@ -451,7 +451,7 @@ public class LeagueManagementController {
             logger.logEvent("User: " + ((Role)user).getUserName() + ". Added new league");
             return true;
         }
-        logger.logEvent("Fault: unable to add: league not found");
+        logger.logError("Fault: unable to add: league not found");
         return false;
     }
 
@@ -478,7 +478,7 @@ public class LeagueManagementController {
      */
     public League getLeagueByName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            logger.logEvent("Fault: unable to get: league name not exist");
+            logger.logError("Fault: unable to get: league name not exist");
             return null;
         }
 
@@ -487,7 +487,7 @@ public class LeagueManagementController {
                 return league;
             }
         }
-        logger.logEvent("Fault: unable to get: league not found");
+        logger.logError("Fault: unable to get: league not found");
 
         return null;
     }
@@ -502,7 +502,7 @@ public class LeagueManagementController {
     public boolean addNewSeasonToLeague(String yearStr, League league, User user) {
         if(canAccessSettingsPage(user)) {
             if (league == null || yearStr == null && yearStr.trim().isEmpty()) {
-                logger.logEvent("Fault: unable to add: league or year not found");
+                logger.logError("Fault: unable to add: league or year not found");
                 return false;
             }
             try {
@@ -525,7 +525,7 @@ public class LeagueManagementController {
      */
     public Season getSeasonByYearInLeague(League league, String yearStr) {
         if (league == null || yearStr == null || yearStr.trim().isEmpty()) {
-            logger.logEvent("Fault: unable to get: league or year not found");
+            logger.logError("Fault: unable to get: league or year not found");
             return null;
         }
         Set<Season> seasons = league.getSeasonList();
@@ -552,7 +552,7 @@ public class LeagueManagementController {
      */
     public User getRefereeByUserName(String userName) {
         if (userName == null || userName.trim().isEmpty()) {
-            logger.logEvent("Fault: unable to get: empty name error");
+            logger.logError("Fault: unable to get: empty name error");
             return null;
         }
 
@@ -562,7 +562,7 @@ public class LeagueManagementController {
                 return referee;
             }
         }
-        logger.logEvent("Fault: unable to get: referee not found");
+        logger.logError("Fault: unable to get: referee not found");
         return null;
     }
 }
