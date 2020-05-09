@@ -26,30 +26,18 @@ public class LeagueCRUD {
     }
 
     public int addLeague(League league) {
-        int id = 123456; //how we get id?!
-        String query = String.format("insert into league values (%d, \"%s\");", league.getName(), id);//do i need to insert id or it will give it id automatically?
+        String query = String.format("insert into league values (\"%s\");", league.getName());
         return jdbcTemplate.update(query);
     }
 
-
-
-    public void addLeagueScore(int league, Season season) {
-
+    public void addLeagueToSeason(League league, Season season) {
+        String query = String.format("insert into league values (\"%s\",%d);", league.getName(), season.getYear());//not sure if correct
+        jdbcTemplate.update(query);
     }
 
-    public int getSeason(int year) {
+    public boolean isRefExist(Referee ref) {
         try {
-            String query = String.format("SELECT season_id FROM season WHERE year=" + year);
-            int id = jdbcTemplate.queryForObject(query, int.class);
-            return id;
-        } catch (EmptyResultDataAccessException e) {
-            return -1;
-        }
-    }
-
-    public boolean isRefExist(int refID) {
-        try {
-            String query = String.format("SELECT * FROM referee WHERE referee_id=" + refID);
+            String query = String.format("SELECT * FROM referee WHERE referee_id=" + ref.getUserID());
             jdbcTemplate.queryForObject(query, int.class);
             return true;
         } catch (EmptyResultDataAccessException e) {
@@ -58,24 +46,24 @@ public class LeagueCRUD {
     }
 
     public void removeRefFromLeague(Referee ref) {
-        if(isRefExist(ref.getUser().getUserID())){
-            String query = String.format("DELETE FROM league_referees WHERE referee_id=" + ref.getUser().getUserID());
+        if(isRefExist(ref)){
+            String query = String.format("DELETE FROM referees_in_duty WHERE referee_id=" + ref.getUser().getUserID());
             jdbcTemplate.update(query, int.class);
         }
     }
 
-    public void addRefToLeague(Referee ref) {
-        if(!isRefExistInLeague(ref.getUser().getUserID())){
-            String query = String.format("insert into league_referees values (%d, %d);", ref.getUser().getUserID(),ref.getLevel() );
+    public void addRefToLeagueInSeason(League league, Season season, Referee ref) {
+        if(!isRefExistInLeagueInSeason(ref)){
+            String query = String.format("insert into referees_in_duty values (\"%s\",%d, %d, %d);",league.getName(),season.getYear(), ref.getUser().getUserID(),ref.getLevel() );
             jdbcTemplate.update(query, int.class);
         }
 
     }
 
-    public boolean isRefExistInLeague(int userID) {
-        if(isRefExist(userID)){
+    public boolean isRefExistInLeagueInSeason(Referee ref) {
+        if(isRefExist(ref)){
             try {
-                String query = String.format("SELECT * FROM league_referees WHERE referee_id=" + userID);
+                String query = String.format("SELECT * FROM referees_in_duty WHERE referee_id=" + ref.getUserID());
                 jdbcTemplate.queryForObject(query, int.class);
                 return true;
             } catch (EmptyResultDataAccessException e) {
@@ -86,13 +74,4 @@ public class LeagueCRUD {
     }
 
 
-    public boolean addRefereeToLeagueInSeason(int league, int season, int userID, int level) {
-        try {
-            String query = String.format("insert into season_league_referee values (%d, %d,%d,%d);",league,season, userID, level);
-            jdbcTemplate.queryForObject(query, int.class);
-            return true;
-        } catch (EmptyResultDataAccessException e) {
-            return false;
-        }
-    }
 }
