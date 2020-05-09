@@ -38,4 +38,9 @@ public abstract class GameEvent {
     public void setGameMinute(Integer gameMinute) {
         this.gameMinute = gameMinute;
     }
+
+    //TODO add toString for all Game events
+    public String toString(){
+        return super.toString();
+    }
 }
