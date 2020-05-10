@@ -48,7 +48,7 @@ public Role(String userName) {
      * @param fieldRole
      * @return FieldRole
      */
-    protected FieldRole convertStringToFieldRole(String fieldRole) {
+    public static FieldRole convertStringToFieldRole(String fieldRole) {
         switch (fieldRole) {
             case "Goal Keeper":
                 return FieldRole.GOAL_KEEPER;
