@@ -75,19 +75,19 @@ class SASApplicationUT {
 
     @Test
     public void insertFullRefereeSuccess(){
-        sasApp.createUser("BeniCo", "Beni2468","Beni Cohen", UserType.REFEREE, true, null );
+       sasApp.createUser("BeniCoo", "Beni2468","Beni Cohen", UserType.REFEREE, true, null );
         List<String> details = new LinkedList<String>(){
             {
                 add("1");
             }
         };
-        assertTrue(sasApp.editUserDetails("BeniCo", details, "REFEREE"));
-        sasApp.deleteUser("BeniCo");
+        assertTrue(sasApp.editUserDetails("BeniCoo", details, "REFEREE"));
+        sasApp.deleteUser("BeniCoo");
     }
 
     @Test
     public void insertFullCoachSuccess(){
-        sasApp.createUser("BenCo", "Ben2468","Ben Cohen", UserType.COACH, true, null );
+        sasApp.createUser("BenCohen0", "Ben2468","Ben Cohen", UserType.COACH, true, null );
         List<String> details = new LinkedList<String>(){
             {
                 add("1");
@@ -95,39 +95,35 @@ class SASApplicationUT {
                 add("Macabi Tel Aviv");
             }
         };
-        assertTrue(sasApp.editUserDetails("BenCo", details, "COACH"));
-        sasApp.deleteUser("BenCo");
+        assertTrue(sasApp.editUserDetails("BenCohen0", details, "COACH"));
+        sasApp.deleteUser("BenCohen0");
     }
 
     @Test
     public void insertFullTeamOwnerSuccess(){
-        sasApp.createUser("BenCo", "Ben2468","Ben Cohen", UserType.TEAM_OWNER, true, null );
+        sasApp.createUser("BenCohen12456", "Ben2468","Ben Cohen", UserType.TEAM_OWNER, true, null );
         List<String> details = new LinkedList<String>(){
             {
                 add("Macabi Tel Aviv");
             }
         };
-        assertTrue(sasApp.editUserDetails("BenCo", details, "TEAM_OWNER"));
-        sasApp.deleteUser("BenCo");
+        assertTrue(sasApp.editUserDetails("BenCohen12456", details, "TEAM_OWNER"));
+        sasApp.deleteUser("BenCohen12456");
     }
 
     @Test
     public void insertFullTeamManagerSuccess(){
-        sasApp.createUser("Avi", "Avi2468","Avi Co", UserType.TEAM_OWNER, true, null );
-        sasApp.createUser("RamCo", "Ram2468","Ram Cohen", UserType.TEAM_MANAGER, true, null );
+        sasApp.createUser("AviL1", "Avi2468","Avi Co", UserType.TEAM_OWNER, true, null );
+        sasApp.createUser("RamCo3456", "Ram2468","Ram Cohen", UserType.TEAM_MANAGER, true, null );
         List<String> details = new LinkedList<String>(){
             {
                 add("Macabi Tel Aviv");
-                add("Avi");
+                add("AviL1");
             }
         };
-        assertTrue(sasApp.editUserDetails("RamCo", details, "TEAM_MANAGER"));
-        sasApp.deleteUser("RamCo");
-        sasApp.deleteUser("Avi");
+        assertTrue(sasApp.editUserDetails("RamCo3456", details, "TEAM_MANAGER"));
+        sasApp.deleteUser("AviL1");
+        sasApp.deleteUser("RamCo3456");
     }
-
-
-
-
 
 }

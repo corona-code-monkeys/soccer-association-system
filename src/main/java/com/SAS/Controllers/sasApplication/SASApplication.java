@@ -90,6 +90,16 @@ public class SASApplication {
         return userController.deleteUSer(username);
     }
 
+    /**
+     * This function deletes the role associated with the given user name from role table
+     * @param username
+     * @param role
+     * @return true or false
+     */
+    public boolean deleteUserRole(String username, String role){
+        return userController.deleteUserRole(username, role);
+    }
+
 
     /**
      * This function calls the edit of user details

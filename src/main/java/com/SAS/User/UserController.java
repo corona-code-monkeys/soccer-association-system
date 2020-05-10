@@ -275,6 +275,19 @@ public class UserController {
         return UsersCRUD.deleteUser(username);
     }
 
+    /**
+     * This function deletes a user role
+     * @param username
+     * @return true if the user was deleted, otherwise false
+     */
+    public boolean deleteUserRole(String username, String role){
+        if (username==null || username.trim().isEmpty())
+            return false;
+        return UsersCRUD.deleteRole(username, role);
+    }
+
+
+
 
     /**
      * This function checks if the user exist in the DB

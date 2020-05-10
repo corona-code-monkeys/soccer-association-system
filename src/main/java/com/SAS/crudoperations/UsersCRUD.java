@@ -128,8 +128,27 @@ public class UsersCRUD {
         catch (Exception e){
             return false;
         }
+    }
 
-
+    /**
+     * This function deletes the user from the role table
+     * @param userName
+     * @param role
+     * @return
+     */
+    public static boolean deleteRole(String userName, String role) {
+        if(userName == null || userName.trim().isEmpty()) {
+            return false;
+        }
+        try {
+            int userId = getUserIdByUserName(userName);
+            String delete = String.format("delete from user_role where user_role = \"%s\" user_id = \"%d\";", role.toUpperCase(), userId);
+            jdbcTemplate.update(delete);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
     /**
@@ -247,7 +266,7 @@ public class UsersCRUD {
     public static boolean setCoachDetails(int userID, String level, String fieldRole, String teamName) {
         if(inRoleTable(userID, "coach")) {
             //edit level and field role only
-            String queryUpdate = String.format("UPDATE coach SET level=\"%d\", field_role=\"%s\", WHERE user_id = \"%d\";", Integer.parseInt(level), fieldRole.toUpperCase(), userID);
+            String queryUpdate = String.format("UPDATE coach SET level= \"%d\", field_role=\"%s\", WHERE user_id = \"%d\";", Integer.parseInt(level), fieldRole.toUpperCase(), userID);
             try{
                 jdbcTemplate.update(queryUpdate);
                 return true;
@@ -274,7 +293,7 @@ public class UsersCRUD {
     public static boolean setRefereeDetails(int userID, String level) {
         if(inRoleTable(userID, "referee")) {
             //edit level and field role only
-            String queryUpdate = String.format("UPDATE referee SET level=\"%d\" WHERE user_id = \"%d\";", Integer.parseInt(level),userID);
+            String queryUpdate = String.format("UPDATE referee SET level=%d WHERE user_id = %d;", Integer.parseInt(level),userID);
             try{
                 jdbcTemplate.update(queryUpdate);
                 return true;
