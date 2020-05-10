@@ -39,7 +39,7 @@ public class TeamManagement {
      */
     public TeamAsset AddAssetToTeam (String assetType, Team team, User user) {
         if (! canAddRemoveAsset(user)){
-            System.out.println("You are not authorized to add an asset to this team");
+            logger.logError("Fault: unable to add: user not authorized to add an asset to this team");
             return null;
         }
 
@@ -92,6 +92,7 @@ public class TeamManagement {
             return true;
         }
         else{
+            logger.logError("Fault: unable to remove: the asset is not on te possession of the team");
             return false;
         }
     }
@@ -144,7 +145,7 @@ public class TeamManagement {
             logger.logEvent("User: " + ((Role)nominatedBy).getUserName() + ". Added team manager to " + team.getName() + " team.");
         }
         else{
-            System.out.println("The user is unauthorized to manage the team");
+            logger.logError("Fault: unable to add: user not authorized to add an asset to this team");
         }
         return newTeamManager;
     }
@@ -166,6 +167,7 @@ public class TeamManagement {
      */
     private boolean validateTeamManager(User newTeamManager, Team team) {
         if ((newTeamManager instanceof TeamManager || newTeamManager instanceof TeamOwner)){
+            logger.logError("Fault: unable to validate team manager");
             return false;
         }
         return true;
@@ -360,7 +362,7 @@ public class TeamManagement {
         }
 
         else {
-            System.out.println("The user is unauthorized to report transactions.");
+            logger.logError("Fault: unable to add: user not authorized to add a transaction to this team");
             return null;
         }
     }
@@ -377,6 +379,7 @@ public class TeamManagement {
             case "Income":
                 return TransactionType.INCOME;
             default:
+                logger.logError("Fault: unable to convert: transaction type does not exist");
                 return null;
         }
     }
@@ -397,12 +400,12 @@ public class TeamManagement {
                 return true;
             }
 
-            System.out.println("The team is already closed.");
+            logger.logError("Fault: unable to close: the team is already closed");
             return false;
         }
 
         else {
-            System.out.println("The user is unauthorized to close the team");
+            logger.logError("Fault: unable to close: user not authorized to close this team");
             return false;
         }
     }
@@ -423,13 +426,13 @@ public class TeamManagement {
             }
 
             else {
-                System.out.println("The team is already open.");
+                logger.logError("Fault: unable to open: the team is already open");
                 return false;
             }
         }
 
         else {
-            System.out.println("The user is unauthorized to open the team");
+            logger.logError("Fault: unable to open: user not authorized to open this team");
             return false;
         }
     }
@@ -522,6 +525,7 @@ public class TeamManagement {
     public User getUserForTeamOwnerNominate(String fullName, Team team) {
         if (team != null)
             return team.getUserForTeamOwner(fullName);
+        logger.logError("Fault: unable to get: the team does not exist");
         return null;
     }
 
@@ -551,6 +555,7 @@ public class TeamManagement {
     public User getTeamOwnerUserByName(String fullName, Team team) {
         if (team != null && fullName != null)
             return team.getTeamOwnerByFullName(fullName);
+        logger.logError("Fault: unable to get: the team or owner does not exist");
         return null;
     }
 
@@ -587,6 +592,7 @@ public class TeamManagement {
     public TeamAsset getAssetByNameAndType(Team team, String type, String name) {
         if (team!=null)
             return team.getAssetByNameAndType(type, name);
+        logger.logError("Fault: unable to get: the team does not exist");
         return null;
     }
 
@@ -624,6 +630,7 @@ public class TeamManagement {
     public User getUserForTeamManagerNominees(Team team, String name) {
         if (team != null)
             return team.getUserForTeamManager(name);
+        logger.logError("Fault: unable to get: the team does not exist");
         return null;
     }
 
@@ -636,6 +643,7 @@ public class TeamManagement {
             Team team = new Team(teamName, (TeamOwner)teamOwner);
             return team;
         }
+        logger.logError("Fault: unable to create: the team owner does not exist or not a team owner");
         return null;
     }
 
@@ -662,6 +670,7 @@ public class TeamManagement {
             }
             return true;
         }
+        logger.logError("Fault: unable to commit: the team name is empty");
         return false;
     }
 }
