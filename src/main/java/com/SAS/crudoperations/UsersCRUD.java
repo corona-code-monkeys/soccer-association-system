@@ -1,15 +1,9 @@
 package com.SAS.crudoperations;
 
-import com.SAS.User.FieldRole;
-import com.SAS.usersDB.UsersDB;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.servlet.http.PushBuilder;
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.time.LocalDate;
 
 public class UsersCRUD {
 
