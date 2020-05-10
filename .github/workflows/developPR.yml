@@ -24,6 +24,8 @@ jobs:
       run: mvn clean
     - name: Maven install
       run: mvn install
+    - name: Maven CRUD tests
+      run: mvn test -Pcrud_tests
       
 
       

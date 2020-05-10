@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionCRUDTest {
-
+/*
     private TeamManagement teamManagement;
     private UserController userController;
     private Team team;
@@ -48,5 +48,5 @@ class TransactionCRUDTest {
             System.out.println(e);
         }
     }
-
+*/
 }
