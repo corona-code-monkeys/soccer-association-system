@@ -1,21 +1,19 @@
 package com.SAS.crudoperations;
 
-import com.SAS.User.TeamOwner;
-import com.SAS.User.User;
-import com.SAS.User.UserController;
-import com.SAS.User.UserType;
-import com.SAS.team.Team;
-import com.SAS.teamManagenemt.TeamManagement;
-import com.SAS.transaction.Transaction;
-import com.SAS.transaction.TransactionType;
+import com.SAS.domain.User.TeamOwner;
+import com.SAS.domain.User.User;
+import com.SAS.domain.User.UserController;
+import com.SAS.domain.User.UserType;
+import com.SAS.domain.team.Team;
+import com.SAS.domain.teamManagenemt.TeamManagement;
+import com.SAS.domain.transaction.Transaction;
+import com.SAS.domain.transaction.TransactionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionCRUDTest {
 /*

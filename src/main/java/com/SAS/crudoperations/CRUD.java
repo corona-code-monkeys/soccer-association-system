@@ -1,14 +1,14 @@
 package com.SAS.crudoperations;
 
-import com.SAS.League.*;
-import com.SAS.User.*;
-import com.SAS.facility.Facility;
-import com.SAS.game.Game;
-import com.SAS.game_event_logger.GameEvent;
-import com.SAS.game_event_logger.GameEventLogger;
-import com.SAS.team.Team;
-import com.SAS.transaction.Transaction;
-import com.SAS.transaction.TransactionType;
+import com.SAS.domain.League.*;
+import com.SAS.domain.User.*;
+import com.SAS.domain.facility.Facility;
+import com.SAS.domain.game.Game;
+import com.SAS.domain.game_event_logger.GameEvent;
+import com.SAS.domain.game_event_logger.GameEventLogger;
+import com.SAS.domain.team.Team;
+import com.SAS.domain.transaction.Transaction;
+import com.SAS.domain.transaction.TransactionType;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

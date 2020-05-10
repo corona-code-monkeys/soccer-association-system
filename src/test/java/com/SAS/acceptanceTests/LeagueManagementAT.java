@@ -1,14 +1,9 @@
 package com.SAS.acceptanceTests;
 
-import com.SAS.League.*;
-import com.SAS.LeagueManagement.LeagueManagementController;
-import com.SAS.User.AssociationRepresentative;
-import com.SAS.User.Referee;
-import com.SAS.User.Registered;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.SAS.domain.League.*;
+import com.SAS.domain.LeagueManagement.LeagueManagementController;
+import com.SAS.domain.User.AssociationRepresentative;
+import com.SAS.domain.User.Referee;
 
 import java.util.HashSet;
 

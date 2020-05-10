@@ -1,19 +1,18 @@
 package com.SAS.acceptanceTests;
 
-import com.SAS.User.*;
-import com.SAS.facility.Facility;
-import com.SAS.facility.facilityType;
-import com.SAS.team.Team;
-import com.SAS.teamManagenemt.TeamAsset;
-import com.SAS.teamManagenemt.TeamManagement;
-import com.SAS.transaction.Transaction;
+import com.SAS.domain.User.*;
+import com.SAS.domain.facility.Facility;
+import com.SAS.domain.facility.facilityType;
+import com.SAS.domain.team.Team;
+import com.SAS.domain.teamManagenemt.TeamAsset;
+import com.SAS.domain.teamManagenemt.TeamManagement;
+import com.SAS.domain.transaction.Transaction;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;

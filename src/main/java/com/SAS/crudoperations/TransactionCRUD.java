@@ -1,6 +1,6 @@
 package com.SAS.crudoperations;
 
-import com.SAS.transaction.Transaction;
+import com.SAS.domain.transaction.Transaction;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class TransactionCRUD {

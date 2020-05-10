@@ -1,9 +1,9 @@
 package com.SAS.acceptanceTests;
 
-import com.SAS.Controllers.systemController.SystemController;
+import com.SAS.domain.systemController.SystemController;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.SAS.systemLoggers.LoggerFactory;
+import com.SAS.domain.systemLoggers.LoggerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

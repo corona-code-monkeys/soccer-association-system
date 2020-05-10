@@ -1,8 +1,8 @@
 package com.SAS.crudoperations;
 
-import com.SAS.League.League;
-import com.SAS.League.Season;
-import com.SAS.User.Referee;
+import com.SAS.domain.League.League;
+import com.SAS.domain.League.Season;
+import com.SAS.domain.User.Referee;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
