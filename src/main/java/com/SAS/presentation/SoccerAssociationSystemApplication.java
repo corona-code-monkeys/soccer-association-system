@@ -15,7 +15,7 @@ public class SoccerAssociationSystemApplication extends Application {
 
     public static void main(String[] args) {
         SpringApplication.run(SoccerAssociationSystemApplication.class, args);
-        //launch(args);
+        launch(args);
     }
 
     @Override
