@@ -32,7 +32,7 @@ class GameEventLoggerUT {
         UserController u = new UserController();
         GameEventLogger g = new GameEventLogger("1", LocalDate.now());
         Random random = new Random();
-        for (int i = 0; i < 800; i++) {
+        for (int i = 0; i < 8; i++) {
             int gameMinute = random.nextInt(91);
             GameEvent goal = new Goal(g.getGameID(), g.getGameDate(), gameMinute, new Team(), (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null));
             g.addNewEvent(goal);

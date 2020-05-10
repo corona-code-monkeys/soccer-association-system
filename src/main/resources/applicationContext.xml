@@ -6,14 +6,25 @@
         xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <!--Test DB-->
+    <bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+    <property name="url" value="jdbc:mysql://uvk92ifup2c1zsnv:l78UywPzvAEqQyb7O8XC@b671lvi3ihw2r6zl9wc6-mysql.services.clever-cloud.com:3306/b671lvi3ihw2r6zl9wc6?useSSL=false" />
+    <property name="username" value="uvk92ifup2c1zsnv" />
+    <property name="password" value="l78UywPzvAEqQyb7O8XC" />
+    </bean>
 
+
+    <!--Local DB
     <bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://localhost:3306/sas?useJDBCCompliantTimezoneShift=true&amp;useSSL=false" />
         <property name="username" value="root" />
         <property name="password" value="sas123456" />
     </bean>
-    <!--Your comment
+    -->
+
+    <!--App DB
     <bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://u08ddmg7kierfqlm:waFpYzfLZXLKfkzp2m2l@bthmslyllli9cwr1b0fp-mysql.services.clever-cloud.com:3306/bthmslyllli9cwr1b0fp?useSSL=false" />
@@ -35,15 +46,15 @@ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
         <property name="template" ref="jdbcTemplate"></property>
     </bean>
 
-    <bean id="GameDao" class="com.SAS.crudoperations.GameCRUD">
+    <bean id="gameDao" class="com.SAS.crudoperations.GameCRUD">
         <property name="template" ref="jdbcTemplate"></property>
     </bean>
 
-    <bean id="TeamDao" class="com.SAS.crudoperations.TeamCRUD">
+    <bean id="teamDao" class="com.SAS.crudoperations.TeamCRUD">
         <property name="template" ref="jdbcTemplate"></property>
     </bean>
 
-    <bean id="LeagueDao" class="com.SAS.crudoperations.LeagueCRUD">
+    <bean id="leagueDao" class="com.SAS.crudoperations.LeagueCRUD">
         <property name="template" ref="jdbcTemplate"></property>
     </bean>
 
