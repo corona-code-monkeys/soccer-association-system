@@ -1,7 +1,6 @@
 package com.SAS.crudoperations;
 
-import com.SAS.Controllers.systemController.SystemController;
-import com.SAS.team.Team;
+import com.SAS.domain.systemController.SystemController;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
