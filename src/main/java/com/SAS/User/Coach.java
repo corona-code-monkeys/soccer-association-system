@@ -22,8 +22,8 @@ public class Coach extends Role implements TeamAsset {
      *
      * @param user
      */
-    public Coach(User user, String fullName) {
-        super(fullName);
+    public Coach(User user, String userName) {
+        super(userName);
         this.user = user;
         myPrivileges.addAll(user.myPrivileges);
     }

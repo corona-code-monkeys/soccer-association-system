@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class TeamCRUD {
     public static boolean postTeam(String teamName) {
 
         try {
-            String query = String.format("insert into team (team_name, isActive, isRegistered) values ( \"%s\", 0, 0);", teamName);
+            String query = String.format("INSERT into team (team_name, isActive, isRegistered) values ( \"%s\", 0, 0);", teamName);
             jdbcTemplate.update(query);
             return true;
 
@@ -397,58 +398,49 @@ public class TeamCRUD {
         if (!isTeamExist(teamName)) {
             return null;
         }
+
+        Team team;
+        Map<String, Object> result;
+
         try {
 
-            Team team = new Team (teamName);
-            //owner
-            String sql = String.format("SELECT owner_user_id FROM team_owners WHERE team_name = \"%s\";", teamName);
-            List<Integer> team_owners = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Integer.class));
+            String sqlTeam = "SELECT team_name, manager_user_id, coach_user_id FROM team WHERE team_name = ?";
+            result = jdbcTemplate.queryForMap(sqlTeam, new Object[]{teamName});
+            team = new Team (teamName);
+
+            //owners
+            String sqlOwners = String.format("SELECT owner_user_id FROM team_owners WHERE team_name = \"%s\";", teamName);
+            List<Integer> team_owners = jdbcTemplate.query(sqlOwners, new BeanPropertyRowMapper(Integer.class));
             for (Integer id: team_owners){
-                User user = UsersCRUD.getRegisteredUserByID(id); //return registered
-
-
-                String username= ((Registered)user).getUserName();
-                //check roles
-                String sqlroles = String.format("SELECT user_role FROM user_role WHERE user_id = \"%d\";", id);
-                List<String> roles = jdbcTemplate.query(sqlroles, new BeanPropertyRowMapper(String.class));
-                boolean manager = false;
-                /*build user*/
-                for (String role: roles){
-                    if (role.equals("PLAYER")) {
-                        user = new Player(user, username);
-                        ((Player) user).setTeam(team);
-                    }
-                    else if (role.equals("COACH")) {
-                        user = new Coach(user, username);
-                        ((Coach) user).setTeam(team);
-                    }
-                    if (role.equals("TEAM_MANAGER"))
-                        manager = true;
-                }
-                if (manager) {
-                    user = new TeamManager(user, username);
-                    ((TeamManager) user).setTeam(team);
-                }
-                user= new TeamOwner(user, username);
-                ((TeamOwner) user).setTeam(team);
-                team.addTeamOwner((TeamOwner)user);
+                User user = UsersCRUD.restoreRoleForUser(id);
+                team.addTeamOwner((TeamOwner) user);
             }
 
             //players
-            String sqlplayers = String.format("SELECT user_id FROM player WHERE team_name = \"%s\";", teamName);
-            List<Integer> players = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Integer.class));
-            for (Integer idp: players) {
-                User player = UsersCRUD.getRegisteredUserByID(idp); //return registered
-                String fullName = ((Registered) player).getFullName();
-                player = new Player(player, fullName);
-                ((Player) player).setTeam(team);
-                team.addPlayerToTeam((Player) player);
+            String sqlPlayers = String.format("SELECT user_id FROM player WHERE team_name = \"%s\";", teamName);
+            List<Integer> players = jdbcTemplate.query(sqlPlayers, new BeanPropertyRowMapper(Integer.class));
+            for (Integer id: players) {
+                User user = UsersCRUD.restoreRoleForUser(id);
+                team.addPlayerToTeam((Player) user);
+                ((Player) user).setTeam(team);
+            }
+
+            //manager
+            String managerId = (String)result.get("manager_user_id");
+            if (managerId != null) {
+                team.setTeamManager((TeamManager) UsersCRUD.restoreRoleForUser(Integer.parseInt(managerId)));
+            }
+
+            //coach
+            String coachId = (String)result.get("coach_user_id");
+            if (managerId != null) {
+                team.setCoach((Coach) UsersCRUD.restoreRoleForUser(Integer.parseInt(coachId)));
             }
 
         }catch (Exception e) {
             return null;
         }
-        return null;
+        return team;
     }
 
 }

@@ -410,9 +410,9 @@ public class UserController {
      * @return true or false
      */
     private boolean editPlayerDetails(int userID, List<String> details) {
-        if (details.size() == 2 && validParam(details.get(0)) && validParam(details.get(1))) {
+        if (details.size() == 3 && validParam(details.get(0)) && validParam(details.get(1)) && validParam(details.get(2))) {
             //first is dateOfBirth, second is fieldRole
-            return UsersCRUD.setPlayerDetails(userID, details.get(0), details.get(1));
+            return UsersCRUD.setPlayerDetails(userID, details.get(0), details.get(1), details.get(2));
         }
         return false;
     }

@@ -1,6 +1,9 @@
 package com.SAS.acceptanceTests;
 
+import com.SAS.Controllers.sasApplication.SASApplication;
+import com.SAS.Controllers.systemController.SystemController;
 import com.SAS.User.*;
+import com.SAS.crudoperations.TeamCRUD;
 import com.SAS.facility.Facility;
 import com.SAS.facility.facilityType;
 import com.SAS.team.Team;
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,14 +29,27 @@ public class TeamManagementAT {
     private UserController userController;
     private Team team;
     private User teamOwner;
+    private SASApplication sasApp;
+    private SystemController sys;
 
     @BeforeEach
     public void setUp()  {
+        sys = new SystemController();
+        sys.initializeDB();
+        sasApp= new SASApplication();
+
         userController = new UserController();
         teamManagement = new TeamManagement(userController);
         teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true, null);
         team = new Team("Maccabi Tel Aviv", (TeamOwner)teamOwner);
         ((TeamOwner) teamOwner).setTeam(team);
+        TeamCRUD.postTeam("Maccabi Tel Aviv");
+        teamManagement.enterTeamPage("Maccabi Tel Aviv");
+    }
+
+    @AfterEach
+    public void tearDown() {
+        TeamCRUD.removeTeam("Maccabi Tel Aviv");
     }
 
     @Test
@@ -53,7 +70,7 @@ public class TeamManagementAT {
             System.out.println("Please enter facility type: 1 for Stadium, 2 for Training");
             System.out.println("Type: Stadium");
             System.out.println("Confirm");
-            TeamAsset asset = teamManagement.AddAssetToTeam("Facility", myTeam, teamOwner);
+            TeamAsset asset = teamManagement.AddAssetToTeam("Facility", teamOwner);
             if (asset != null) {
                 ArrayList<String> details = new ArrayList<String>() {
                     {
@@ -96,7 +113,7 @@ public class TeamManagementAT {
             System.out.println("Please enter facility type: 1 for Stadium, 2 for Training");
             System.out.println("Type: Stadium");
             System.out.println("Confirm");
-            TeamAsset asset = teamManagement.AddAssetToTeam("Facility", myTeam, teamOwner);
+            TeamAsset asset = teamManagement.AddAssetToTeam("Facility", teamOwner);
             if (asset != null) {
                 ArrayList<String> details = new ArrayList<String>() {
                     {
@@ -140,7 +157,7 @@ public class TeamManagementAT {
 
         //enter editing mode
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())) {
-            System.out.println(teamManagement.getAllTeamAssets(team).toString());
+            System.out.println(teamManagement.getAllTeamAssets().toString());
             //first is name, second is location, third is type
             System.out.println("You have selected to edit Facility: Ironi A field");
             System.out.println("Please enter a new facility name");
@@ -151,7 +168,7 @@ public class TeamManagementAT {
             System.out.println("Type: Training");
             System.out.println("Confirm");
 
-            TeamAsset asset = teamManagement.getAssetByNameAndType(myTeam, "Facility", "Ironi A field");
+            TeamAsset asset = teamManagement.getAssetByNameAndType("Facility", "Ironi A field");
             if (asset != null) {
                 ArrayList<String> details = new ArrayList<String>() {
                     {
@@ -191,7 +208,7 @@ public class TeamManagementAT {
         System.out.println("Please select an asset to edit: ");
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())) {
             //show assets
-            System.out.println(teamManagement.getAllTeamAssets(team).toString());
+            System.out.println(teamManagement.getAllTeamAssets().toString());
             //first is level, second is fieldRole
             System.out.println("You have selected to edit Coach: Eitan Sela");
             System.out.println("Please enter a new Coach name");
@@ -202,7 +219,7 @@ public class TeamManagementAT {
             System.out.println("Midfielder");
             System.out.println("Confirm");
 
-            TeamAsset asset = teamManagement.getAssetByNameAndType(myTeam, "Coach", "Eitan Sela");
+            TeamAsset asset = teamManagement.getAssetByNameAndType( "Coach", "Eitan Sela");
             if (asset != null) {
                 ArrayList<String> details = new ArrayList<String>() {
                     {
@@ -250,11 +267,11 @@ public class TeamManagementAT {
             //show assets
             System.out.println("--Select to delete a team asset--");
             System.out.println("Please select an asset to delete: ");
-            System.out.println(teamManagement.getAllTeamAssets(team).toString());
+            System.out.println(teamManagement.getAllTeamAssets().toString());
             System.out.println("Are you sure you want to remove Ironi A field");
             System.out.println("confirm");
             TeamAsset asset = myTeam.getAssetByNameAndType("Facility", "Ironi A field");
-            if (teamManagement.removeAsset(asset, myTeam, teamOwner)){
+            if (teamManagement.removeAsset(asset, teamOwner)){
                 System.out.println("The asset was removed successfully");
             }
             else{
@@ -293,11 +310,11 @@ public class TeamManagementAT {
             //show assets
             System.out.println("--Select to delete a team asset--");
             System.out.println("Please select an asset to delete: ");
-            System.out.println(teamManagement.getAllTeamAssets(team).toString());
+            System.out.println(teamManagement.getAllTeamAssets().toString());
             System.out.println("Are you sure you want to remove Ironi A field");
             System.out.println("confirm");
             TeamAsset asset = myTeam.getAssetByNameAndType("Facility", "Ironi A field");
-            boolean removed = teamManagement.removeAsset(asset, myTeam, teamOwner);
+            boolean removed = teamManagement.removeAsset(asset, teamOwner);
             if (removed == true){
                 assertFalse(myTeam.getAllAssets().contains(asset));
                 System.out.println("The asset was removed successfully");
@@ -340,7 +357,7 @@ public class TeamManagementAT {
 
                 //checks if the user that chosen is legal
                 if (newTeamOwner  != null) {
-                    newTeamOwner = teamManagement.addAdditionalTeamOwner(newTeamOwner, team, teamOwner);
+                    newTeamOwner = teamManagement.addAdditionalTeamOwner(newTeamOwner, teamOwner);
 
                     if (newTeamOwner != null) {
                         System.out.println("The user " + fullName + " was nominated to be a team owner of the team " + myTeam.getName() + ".");
@@ -383,7 +400,7 @@ public class TeamManagementAT {
 
                 //checks if the user that chosen is legal
                 if (newTeamOwner  != null) {
-                    newTeamOwner = teamManagement.addAdditionalTeamOwner(newTeamOwner, team, teamOwner);
+                    newTeamOwner = teamManagement.addAdditionalTeamOwner(newTeamOwner,  teamOwner);
 
                     if (newTeamOwner != null) {
                         System.out.println("The user " + fullName + " was nominated to be a team owner of the team " + myTeam.getName() + ".");
@@ -421,15 +438,15 @@ public class TeamManagementAT {
         if (teamManagement.enterEditingMode(teamOwner, myTeam) && teamManagement.canAddRemoveTeamManager(teamOwner)) {
             System.out.println("--Select to add a team manager--");
             System.out.println("Please select a nominee from the followings:");
-            System.out.println(teamManagement.showOptionalNomineesForTeamManager(myTeam));
+            System.out.println(teamManagement.showOptionalNomineesForTeamManager());
             System.out.println("Selected: Itay Cohen");
             System.out.println("Would you like to give the new team manager editing assets privileges? 1 to give privileges, otherwise 0");
             String approval = "1";
             System.out.println(approval);
             boolean givePrivileges = approval.equals("1") ? true : false;
-            User toMakeTeamOwner = teamManagement.getUserForTeamManagerNominees(myTeam, "Itay Cohen");
+            User toMakeTeamOwner = teamManagement.getUserForTeamManagerNominees("Itay Cohen");
             if (toMakeTeamOwner !=null){
-                toMakeTeamOwner = teamManagement.addTeamManager(toMakeTeamOwner, myTeam, teamOwner, givePrivileges);
+                toMakeTeamOwner = teamManagement.addTeamManager(toMakeTeamOwner, teamOwner, givePrivileges);
                 assertTrue(toMakeTeamOwner instanceof TeamManager);
                 System.out.println(((TeamManager)toMakeTeamOwner).getFullName() + " was nominated as team manager");
             }else{
@@ -460,15 +477,15 @@ public class TeamManagementAT {
         if (teamManagement.enterEditingMode(teamOwner, myTeam) && teamManagement.canAddRemoveTeamManager(teamOwner)) {
             System.out.println("--Select to add a team manager--");
             System.out.println("Please select a nominee from the followings:");
-            System.out.println(teamManagement.showOptionalNomineesForTeamManager(myTeam));
+            System.out.println(teamManagement.showOptionalNomineesForTeamManager());
             System.out.println("Selected: ");
             System.out.println("Would you like to give the new team manager editing assets privileges? 1 to give privileges, otherwise 0");
             String approval = "1";
             System.out.println(approval);
             boolean givePrivileges = approval.equals("1") ? true : false;
-            User toMakeTeamOwner = teamManagement.getUserForTeamManagerNominees(myTeam, "");
+            User toMakeTeamOwner = teamManagement.getUserForTeamManagerNominees("");
             if (toMakeTeamOwner !=null){
-                toMakeTeamOwner = teamManagement.addTeamManager(toMakeTeamOwner, myTeam, teamOwner, givePrivileges);
+                toMakeTeamOwner = teamManagement.addTeamManager(toMakeTeamOwner, teamOwner, givePrivileges);
                 System.out.println(((TeamManager)toMakeTeamOwner).getFullName() + " was nominated as team manager");
             }else{
                 assertFalse(toMakeTeamOwner instanceof TeamManager);
@@ -491,7 +508,7 @@ public class TeamManagementAT {
         ((Player)playerToBeManager).setTeam(team);
         ((Player)playerToBeManager).setDateOfBirth(LocalDate.parse("1990-12-01"));
         team.addPlayerToTeam((Player)playerToBeManager);
-        playerToBeManager = teamManagement.addTeamManager(playerToBeManager, team,  teamOwner, true);
+        playerToBeManager = teamManagement.addTeamManager(playerToBeManager, teamOwner, true);
         team.getPersonalPage().setDescription(team.getPersonalPage().getDescription() + ", " + "Team manager: " + ((TeamManager)playerToBeManager).getFullName());
 
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
@@ -502,7 +519,7 @@ public class TeamManagementAT {
             System.out.println("--Select to remove the team manager--");
             System.out.println("Are you sure you want to remove the team manager: " + team.getManager().getFullName());
             System.out.println("confirm");
-            playerToBeManager = teamManagement.removeTeamManager(playerToBeManager, team, teamOwner);
+            playerToBeManager = teamManagement.removeTeamManager(playerToBeManager, teamOwner);
             assertNotEquals(team.getManager(), playerToBeManager);
             System.out.println("The team manager was removed successfully");
         }
@@ -528,9 +545,9 @@ public class TeamManagementAT {
         User playerToBeTeamOwner = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
         team.addPlayerToTeam((Player) playerToBeTeamOwner);
         ((Player)playerToBeTeamOwner).setTeam(team);
-        playerToBeTeamOwner= teamManagement.addAdditionalTeamOwner(playerToBeTeamOwner, team, teamOwner);
+        playerToBeTeamOwner= teamManagement.addAdditionalTeamOwner(playerToBeTeamOwner, teamOwner);
 
-        playerToBeManager = teamManagement.addTeamManager(playerToBeManager, team,  playerToBeTeamOwner, true);
+        playerToBeManager = teamManagement.addTeamManager(playerToBeManager, playerToBeTeamOwner, true);
         team.getPersonalPage().setDescription(team.getPersonalPage().getDescription() + ", " + "Team manager: " + ((TeamManager)playerToBeManager).getFullName());
 
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
@@ -541,7 +558,7 @@ public class TeamManagementAT {
             System.out.println("--Select to remove the team manager--");
             System.out.println("Are you sure you want to remove the team manager: " + team.getManager().getFullName());
             System.out.println("confirm");
-            playerToBeManager = teamManagement.removeTeamManager(playerToBeManager, team, teamOwner);
+            playerToBeManager = teamManagement.removeTeamManager(playerToBeManager, teamOwner);
             if (! (playerToBeManager instanceof TeamManager)) {
                 System.out.println("The team manager was removed successfully");
             }
@@ -566,7 +583,7 @@ public class TeamManagementAT {
         User player = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
         team.addPlayerToTeam((Player) player);
         ((Player)player).setTeam(team);
-        teamManagement.addAdditionalTeamOwner(player, team, teamOwner);
+        teamManagement.addAdditionalTeamOwner(player, teamOwner);
 
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
 
@@ -576,15 +593,15 @@ public class TeamManagementAT {
             //checks if the user can remove team owner
             if (teamManagement.canAddRemoveTeamOwner(teamOwner)) {
                 System.out.println("These are the team owners of " + team.getName() + ":");
-                System.out.println(teamManagement.showTeamOwners(myTeam));
+                System.out.println(teamManagement.showTeamOwners());
                 System.out.println("Please enter the full name of the user you want to remove");
                 String fullName = "Rami Oron";
                 System.out.println(fullName);
-                User removedTeamOwner = teamManagement.getTeamOwnerUserByName(fullName, team);
+                User removedTeamOwner = teamManagement.getTeamOwnerUserByName(fullName);
 
                 //checks if the user that chosen is legal
                 if (removedTeamOwner  != null) {
-                    removedTeamOwner = teamManagement.removeTeamOwner(removedTeamOwner, team, teamOwner);
+                    removedTeamOwner = teamManagement.removeTeamOwner(removedTeamOwner, teamOwner);
 
                     if (removedTeamOwner != null && !(removedTeamOwner instanceof TeamOwner)) {
                         assertFalse(myTeam.getOwners().contains(removedTeamOwner));
@@ -610,11 +627,11 @@ public class TeamManagementAT {
         User playerRami = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
         team.addPlayerToTeam((Player) playerRami);
         ((Player)playerRami).setTeam(team);
-        playerRami = teamManagement.addAdditionalTeamOwner(playerRami, team, teamOwner);
+        playerRami = teamManagement.addAdditionalTeamOwner(playerRami, teamOwner);
         User playerZohar = userController.createUser("ZoharC", "Zohar321", "Zohar Catz", UserType.PLAYER, true, null);
         team.addPlayerToTeam((Player) playerZohar);
         ((Player)playerZohar).setTeam(team);
-        playerZohar = teamManagement.addAdditionalTeamOwner(playerZohar, team, playerRami);
+        playerZohar = teamManagement.addAdditionalTeamOwner(playerZohar, playerRami);
 
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
 
@@ -624,15 +641,15 @@ public class TeamManagementAT {
             //checks if the user can remove team owner
             if (teamManagement.canAddRemoveTeamOwner(teamOwner)) {
                 System.out.println("These are the team owners of " + team.getName() + ":");
-                System.out.println(teamManagement.showTeamOwners(myTeam));
+                System.out.println(teamManagement.showTeamOwners());
                 System.out.println("Please enter the full name of the user you want to remove");
                 String fullName = "Zohar Catz";
                 System.out.println(fullName);
-                User removedTeamOwner = teamManagement.getTeamOwnerUserByName(fullName, team);
+                User removedTeamOwner = teamManagement.getTeamOwnerUserByName(fullName);
 
                 //checks if the user that chosen is legal
                 if (removedTeamOwner  != null) {
-                    removedTeamOwner = teamManagement.removeTeamOwner(removedTeamOwner, team, teamOwner);
+                    removedTeamOwner = teamManagement.removeTeamOwner(removedTeamOwner, teamOwner);
 
                     if (removedTeamOwner != null && (removedTeamOwner instanceof TeamOwner)) {
                         assertTrue(myTeam.getOwners().contains(removedTeamOwner));
@@ -681,7 +698,7 @@ public class TeamManagementAT {
                     }
                 };
 
-                Transaction trans = teamManagement.addTransactionToTeam(myTeam, details, teamOwner);
+                Transaction trans = teamManagement.addTransactionToTeam(details, teamOwner);
                 assertTrue(myTeam.getTransactionList().contains(trans));
                 System.out.println("The transaction added successfully.");
             }
@@ -736,7 +753,7 @@ public class TeamManagementAT {
                     }
                 };
 
-                Transaction trans = teamManagement.addTransactionToTeam(myTeam, details, teamOwner);
+                Transaction trans = teamManagement.addTransactionToTeam(details, teamOwner);
             }
 
             else {
@@ -763,7 +780,7 @@ public class TeamManagementAT {
             if (teamManagement.canCloseOpenTeam(teamOwner)) {
                 System.out.println("If you want to close the team please enter confirm");
                 System.out.println("confirm");
-                assertTrue(teamManagement.closeTeam(myTeam, teamOwner));
+                assertTrue(teamManagement.closeTeam(teamOwner));
 
                 assertFalse(myTeam.isActive());
                 System.out.println("The team has been closed.");
@@ -791,7 +808,7 @@ public class TeamManagementAT {
             if (teamManagement.canCloseOpenTeam(teamOwner)) {
                 System.out.println("If you want to close the team please enter confirm");
                 System.out.println("confirm");
-                assertTrue(teamManagement.closeTeam(myTeam, teamOwner));
+                assertTrue(teamManagement.closeTeam(teamOwner));
 
                 assertFalse(myTeam.isActive());
             }
@@ -813,7 +830,7 @@ public class TeamManagementAT {
         ((TeamOwner)teamOwner).getTeam().getPersonalPage().showPersonalPage();
 
         //close the team
-        teamManagement.closeTeam(myTeam, teamOwner);
+        teamManagement.closeTeam(teamOwner);
 
         //enter editing mode
         if (teamManagement.enterEditingMode(teamOwner, ((TeamOwner) teamOwner).getTeam())){
@@ -822,7 +839,7 @@ public class TeamManagementAT {
             if (teamManagement.canCloseOpenTeam(teamOwner)) {
                 System.out.println("If you want to open the team please enter confirm");
                 System.out.println("confirm");
-                assertTrue(teamManagement.openTeam(myTeam, teamOwner));
+                assertTrue(teamManagement.openTeam(teamOwner));
 
                 assertTrue(myTeam.isActive());
                 System.out.println("The team has been opened.");
@@ -850,7 +867,7 @@ public class TeamManagementAT {
             if (teamManagement.canCloseOpenTeam(teamOwner)) {
                 System.out.println("If you want to open the team please enter confirm");
                 System.out.println("confirm");
-                assertFalse(teamManagement.openTeam(myTeam, teamOwner));
+                assertFalse(teamManagement.openTeam(teamOwner));
                 assertTrue(myTeam.isActive());
             }
 

@@ -87,7 +87,7 @@ public class UsersCRUD {
             return false;
         }
         try {
-            String roleInsert = String.format("insert into user_role (user_id, user_name, user_role) values ( \"%d\", \"%s\", \"%s\");", userId, userName, role.toLowerCase());
+            String roleInsert = String.format("insert into user_role (user_id, user_name, user_role) values ( \"%d\", \"%s\", \"%s\");", userId, userName, role.toUpperCase());
             jdbcTemplate.update(roleInsert);
         }
         catch (Exception e){
@@ -200,9 +200,9 @@ public class UsersCRUD {
      * @param fieldRole
      * @return
      */
-    public static boolean setPlayerDetails(int userID, String dateOfBirth, String fieldRole) {
+    public static boolean setPlayerDetails(int userID, String dateOfBirth, String fieldRole, String teamName) {
         if(inRoleTable(userID, "player")){
-            String queryUpdate = String.format("UPDATE player SET date_of_birth=\"%s\", field_role=\"%s\" WHERE user_id = \"%d\";", dateOfBirth, fieldRole.toUpperCase(), userID);
+            String queryUpdate = String.format("UPDATE player SET date_of_birth=\"%s\", field_role=\"%s\", team_name=\"%s\" WHERE user_id = \"%d\";", dateOfBirth, fieldRole.toUpperCase(), teamName, userID);
             try{
                 jdbcTemplate.update(queryUpdate);
                 return true;
@@ -211,7 +211,7 @@ public class UsersCRUD {
             }
         }else{
             try{
-                String playerToInsert = String.format("INSERT into player (user_id, date_of_birth, field_role) values ( \"%d\", \"%s\", \"%s\");", userID, dateOfBirth, fieldRole.toUpperCase());
+                String playerToInsert = String.format("INSERT into player (user_id, date_of_birth, field_role) values ( \"%d\", \"%s\", \"%s\");", userID, dateOfBirth, fieldRole.toLowerCase());
                 jdbcTemplate.update(playerToInsert);
                 return true;
             } catch (Exception e){
@@ -415,39 +415,49 @@ public class UsersCRUD {
     }
 
     private static User createRoleComplex(int id, User user, String username, List<String> roles) {
+        String sql;
+        Map<String, Object> result;
+
         for (String role : roles) {
             if (roleOrder.get(role) == 1) {
                 switch (role) {
                     case "player":
                         user = new Player(user, username);
-                        String sql = "SELECT team_name, date_of_birth,field_role FROM player WHERE user_id = ?";
-                        Map<String, Object> result = jdbcTemplate.queryForMap(sql, new Object[]{id});
+                        sql = "SELECT team_name, date_of_birth,field_role FROM player WHERE user_id = ?";
+                        result = jdbcTemplate.queryForMap(sql, new Object[]{id});
                         ((Player) user).setDateOfBirth(LocalDate.parse(result.get("date_of_birth").toString()));
-                        ((Player) user).setFieldRole(Role.convertStringToFieldRole((String)result.get("field_role")));
+                        String fieldRole = (String)result.get("field_role");
+                        ((Player) user).setFieldRole(Role.convertStringToFieldRole(fieldRole.substring(0,1) + fieldRole.substring(1).toLowerCase()));
                         ((Player) user).setTeam(new Team((String)result.get("team_name")));
+                        return user;
+                    case "coach":
+                        user = new Coach(user, username);
+                        sql = "SELECT team_name, level, field_role FROM coach WHERE user_id = ?";
+                        result = jdbcTemplate.queryForMap(sql, new Object[]{id});
+                        ((Coach) user).setLevel(Integer.parseInt(result.get("date_of_birth").toString()));
+                        ((Coach) user).setFieldRole(Role.convertStringToFieldRole((String)result.get("field_role")));
+                        ((Coach) user).setTeam(new Team((String)result.get("team_name")));
                         return user;
                     default:
                         return null;
                 }
             }
         }
-        return null;
-    }
 
-//                if (role.equals("PLAYER")) {
-//
-//                } else if (role.equals("COACH")) {
-//                    user = new Coach(user, username);
-//                }
-//                if (role.equals("TEAM_MANAGER"))
-//                    manager = true;
-//            }
-//            if (manager) {
-//                user = new TeamManager(user, username);
-//            }
-//            user = new TeamOwner(user, username);
-//            ((TeamOwner) user).setTeam(team);
-//            team.addTeamOwner((TeamOwner) user);
+        if (roles.contains("team_manager")) {
+            user = new TeamManager(user, username);
+            sql = "SELECT team_name FROM team_manager WHERE user_id = ?";
+            ((TeamManager) user).setTeam(new Team(jdbcTemplate.queryForObject(sql, String.class)));
+        }
+
+        if (roles.contains("team_owner")) {
+            user = new TeamOwner(user, username);
+            sql = "SELECT team_name FROM team_owner WHERE user_id = ?";
+            ((TeamOwner) user).setTeam(new Team(jdbcTemplate.queryForObject(sql, String.class)));
+        }
+
+        return user;
+    }
 
 
     /**
