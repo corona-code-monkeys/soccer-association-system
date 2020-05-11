@@ -261,4 +261,159 @@ public class UserController {
         logger.logError("Fault: unable to send: team does not exist");
         return false;
     }
+
+    /**
+     * This function deletes a user
+     * @param username
+     * @return true if the user was deleted, otherwise false
+     */
+    public boolean deleteUSer(String username){
+        if (username==null || username.trim().isEmpty())
+            return false;
+        return UsersCRUD.deleteUser(username);
+    }
+
+    /**
+     * This function deletes a user role
+     * @param username
+     * @return true if the user was deleted, otherwise false
+     */
+    public boolean deleteUserRole(String username, String role){
+        if (username==null || username.trim().isEmpty())
+            return false;
+        return UsersCRUD.deleteRole(username, role);
+    }
+
+
+
+
+    /**
+     * This function checks if the user exist in the DB
+     * @param username
+     * @param password
+     * @return true if the user exists, otherwise false
+     */
+    public boolean isUserExist(String username, String password){
+        if (validParam(username) && validParam(password)) {
+            return UsersCRUD.isUserValid(username, password);
+        }
+        return false;
+    }
+
+    /**
+     * This function validates a single param
+     * @param param
+     * @return
+     */
+    private boolean validParam(String param){
+        return (param!=null || (param.trim().isEmpty()));
+    }
+
+    /**
+     * This function edits the user details
+     *
+     * @param username
+     * @param details
+     * @param type
+     * @return true if were edited, otherwise false
+     */
+    public boolean editUserDetails(String username, List<String> details, String type) {
+        int userID = UsersCRUD.getUserIdByUserName(username);
+        if (userID == -1)
+            return false;
+        switch (type) {
+                case "PLAYER":
+                  return editPlayerDetails(userID, details);
+                case "TEAM_OWNER":
+                    return editTeamOwnerDetails(userID, details);
+                case "COACH":
+                    return editCoachDetails(userID, details);
+                case "REFEREE":
+                    return editRefereeDetails(userID, details);
+                case "TEAM_MANAGER":
+                    return editTeamManagerDetails(userID, details);
+                default:
+                    return false;
+            }
+    }
+
+    /**
+     * This function sends the coach details to the DB
+     * @param userID
+     * @param details
+     * @return
+     */
+    private boolean editCoachDetails(int userID, List<String> details) {
+       //level, fieldRole, team
+        if (details.size()==3 && validParam(details.get(0)) && validParam(details.get(1))&& validParam(details.get(2))){
+            return UsersCRUD.setCoachDetails(userID, details.get(0), details.get(1), details.get(2));
+        }
+        else
+            return false;
+    }
+
+    /**
+     * This function sends the team manager details to the DB
+     * @param userID
+     * @param details
+     * @return
+     */
+    private boolean editTeamManagerDetails(int userID, List<String> details) {
+        //team, nominatedBy
+        if (details.size()==2 && validParam(details.get(0)) && validParam(details.get(1))){
+            return UsersCRUD.setTeamOwnerOrManagerDetails(userID, details.get(0), details.get(1), "team_manager");
+        }
+        else
+            return false;
+        }
+
+    /**
+     * This function sends the referee details to the DB
+     * @param userID
+     * @param details
+     * @return
+     */
+    private boolean editRefereeDetails(int userID, List<String> details) {
+        //level
+        if (details.size()==1 && validParam(details.get(0))){
+            return UsersCRUD.setRefereeDetails(userID, details.get(0));
+        }
+        else
+            return false;
+    }
+
+
+
+    /**
+     * This function send the team owner details to the DB
+     * @param userID
+     * @param details
+     * @return
+     */
+    private boolean editTeamOwnerDetails(int userID, List<String> details) {
+        //just team
+        if (details.size()==1 && validParam(details.get(0))){
+            return UsersCRUD.setTeamOwnerDetails(userID, details.get(0));
+        }
+        //team, nominatedBy
+        else if (details.size()==2 && validParam(details.get(0)) && validParam(details.get(1))){
+            return UsersCRUD.setTeamOwnerOrManagerDetails(userID, details.get(0), details.get(1), "team_owner");
+        }
+        else
+            return false;
+    }
+
+    /**
+     * This function edits the player details
+     * @param userID
+     * @param details
+     * @return true or false
+     */
+    private boolean editPlayerDetails(int userID, List<String> details) {
+        if (details.size() == 2 && validParam(details.get(0)) && validParam(details.get(1))) {
+            //first is dateOfBirth, second is fieldRole
+            return UsersCRUD.setPlayerDetails(userID, details.get(0), details.get(1));
+        }
+        return false;
+    }
 }

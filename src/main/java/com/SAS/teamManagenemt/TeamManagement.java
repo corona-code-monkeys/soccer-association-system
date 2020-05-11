@@ -5,6 +5,7 @@ package com.SAS.teamManagenemt;
 
 import com.SAS.User.*;
 import com.SAS.crudoperations.CRUD;
+import com.SAS.crudoperations.TeamCRUD;
 import com.SAS.facility.*;
 import com.SAS.systemLoggers.LoggerFactory;
 import com.SAS.team.Team;
@@ -320,7 +321,7 @@ public class TeamManagement {
      */
     private boolean ownsTeam(Team team, User nominatedBy) {
         if (team != null && nominatedBy != null)
-            return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam() == team;
+            return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam()==team;
         return false;
     }
 
@@ -392,22 +393,23 @@ public class TeamManagement {
      * @return true or false
      */
     public boolean closeTeam(Team team, User teamOwner) {
-        if (ownsTeam(team, teamOwner)) {
-            if (team.isActive()) {
-                team.inactivateTeam();
-                sendNotificationClose(team, "closed");
-                logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ". Closed " + team.getName() + " team.");
-                return true;
-            }
-
-            logger.logError("Fault: unable to close: the team is already closed");
-            return false;
-        }
-
-        else {
-            logger.logError("Fault: unable to close: user not authorized to close this team");
-            return false;
-        }
+////        if (ownsTeam(teamName, teamOwner)) {
+//            if (TeamCRUD.isTeamActive(teamName)) {
+//                TeamCRUD.inactivateTeam(teamName);
+//                sendNotificationClose(teamName, "closed");
+//                logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ". Closed " + teamName + " team.");
+//                return true;
+//            }
+//
+//            logger.logError("Fault: unable to close: the team is already closed");
+//            return false;
+//        }
+//
+//        else {
+//            logger.logError("Fault: unable to close: user not authorized to close this team");
+//            return false;
+//        }
+        return true;
     }
 
     /**
@@ -417,48 +419,50 @@ public class TeamManagement {
      * @param teamOwner
      */
     public boolean openTeam(Team team, User teamOwner) {
-        if (ownsTeam(team, teamOwner)) {
-            if (!team.isActive()) {
-                team.reactivateTeam();
-                sendNotificationClose(team, "opened");
-                logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ".Opened " + team.getName() + " team.");
-                return true;
-            }
-
-            else {
-                logger.logError("Fault: unable to open: the team is already open");
-                return false;
-            }
-        }
-
-        else {
-            logger.logError("Fault: unable to open: user not authorized to open this team");
-            return false;
-        }
+//        if (ownsTeam(teamName, teamOwner)) {
+//            if (!TeamCRUD.isTeamActive(teamName)) {
+//                TeamCRUD.reactivateTeam(teamName);
+//                sendNotificationClose(teamName, "opened");
+//                logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ".Opened " + teamName + " team.");
+//                return true;
+//            }
+//
+//            else {
+//                logger.logError("Fault: unable to open: the team is already open");
+//                return false;
+//            }
+//        }
+//
+//        else {
+//            logger.logError("Fault: unable to open: user not authorized to open this team");
+//            return false;
+//        }
+        return true;
     }
 
     /**
      * The function receives a team that has been closed and send the message to all the team management
      * and the system admins
-     * @param team
+     * @param teamName
      */
     //TODO: add system admins from DB
-    private void sendNotificationClose(Team team, String message) {
-        String close = "The team " + team.getName() + " has been " + message + ".";
+    private void sendNotificationClose(String teamName, String message) {
+        String close = "The team " + teamName + " has been " + message + ".";
 
         //get all the management of the team
         List<User> management = new LinkedList<>();
-        management.addAll(team.getOwners());
-        User manager = team.getManager();
-        if (manager != null) {
-            management.add(manager);
-        }
-
-        //add the system admins from DB
-
-        for (User user: management) {
-            ((Role)user).getNotification(close);
-        }
+//        management.addAll(team.getOwners());
+//        User manager = team.getManager();
+//        if (manager != null) {
+//            management.add(manager);
+//        }
+//
+//        //add the system admins from DB
+//
+//        for (User user: management) {
+//            ((Role)user).getNotification(close);
+//        }
+        //TODO ask yaar if to keep this
 
     }
 

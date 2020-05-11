@@ -36,6 +36,21 @@ public class Team {
 
 
     /**
+     * Empty constructor with name
+     */
+    public Team(String name) {
+        this.name = name;
+        this.players = new LinkedList<>();
+        this.transactionList = new LinkedList<>();
+        this.budgets = new HashMap<>();
+        this.teamFacilities = new LinkedList<>();
+        this.owners = new LinkedList<>();
+        this.active = true;
+        this.isRegistered = false;
+        initializeFinanceYear();
+    }
+
+    /**
      * Empty constructor
      */
     public Team() {
@@ -56,7 +71,6 @@ public class Team {
      * @param owner
      */
     public Team(String name, TeamOwner owner) {
-
         this.name = name;
         this.players = new LinkedList<>();
         this.owners = new LinkedList<>();
@@ -556,5 +570,17 @@ public class Team {
      */
     public boolean isRegistered() {
         return isRegistered;
+    }
+
+    /**
+     * This function sets the team's owners
+     * @param team_owners
+     */
+    public boolean setTeamOwners(List<TeamOwner> team_owners) {
+        if (team_owners!=null){
+            this.owners.addAll(team_owners);
+            return true;
+        }
+        return false;
     }
 }

@@ -1,10 +1,18 @@
 package com.SAS.crudoperations;
 
+import com.SAS.User.*;
+import com.SAS.team.Team;
+import org.json.JSONObject;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+
+import java.util.List;
+import java.util.Map;
 
 public class TeamCRUD {
 
     private static JdbcTemplate jdbcTemplate;
+
 
     public void setTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -43,6 +51,54 @@ public class TeamCRUD {
             jdbcTemplate.update(query);
             return true;
 
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * This function returns true if the team is active, otherwise false
+     * @param teamName
+     * @return
+     */
+    public static boolean isTeamActive(String teamName) {
+        try {
+            String queryTeamActive = String.format("SELECT is_active FROM team WHERE team_name = \"%s\";", teamName);
+            jdbcTemplate.queryForObject(queryTeamActive, Boolean.class);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * This function inactivates a team
+     * @param teamName
+     * @return
+     */
+    public static boolean inactivateTeam(String teamName) {
+        try {
+            String query = String.format("UPDATE team SET is_active=\"%s\" WHERE team_name = \"%s\";", "false", teamName);
+            jdbcTemplate.update(query);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * This function reactivates a team
+     * @param teamName
+     * @return
+     */
+    public static boolean reactivateTeam(String teamName) {
+        try {
+            String query = String.format("UPDATE team SET is_active=\"%s\" WHERE team_name = \"%s\";", "true", teamName);
+            jdbcTemplate.update(query);
+            return true;
         }
         catch (Exception e){
             return false;
@@ -315,7 +371,7 @@ public class TeamCRUD {
      * @param isRegistered
      * @return
      */
-    public static boolean setTeamRegistration( String teamName, boolean isRegistered) {
+    public static boolean setTeamRegistration(String teamName, boolean isRegistered) {
         if (!isTeamExist(teamName)) {
             return false;
         }
@@ -331,4 +387,68 @@ public class TeamCRUD {
             return false;
         }
     }
+
+    /**
+     * This function creates a team from DB
+     * @param teamName
+     * @return
+     */
+    public static Team getTeamByName(String teamName){
+        if (!isTeamExist(teamName)) {
+            return null;
+        }
+        try {
+
+            Team team = new Team (teamName);
+            //owner
+            String sql = String.format("SELECT owner_user_id FROM team_owners WHERE team_name = \"%s\";", teamName);
+            List<Integer> team_owners = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Integer.class));
+            for (Integer id: team_owners){
+                User user = UsersCRUD.getRegisteredUserByID(id); //return registered
+
+
+                String username= ((Registered)user).getUserName();
+                //check roles
+                String sqlroles = String.format("SELECT user_role FROM user_role WHERE user_id = \"%d\";", id);
+                List<String> roles = jdbcTemplate.query(sqlroles, new BeanPropertyRowMapper(String.class));
+                boolean manager = false;
+                /*build user*/
+                for (String role: roles){
+                    if (role.equals("PLAYER")) {
+                        user = new Player(user, username);
+                        ((Player) user).setTeam(team);
+                    }
+                    else if (role.equals("COACH")) {
+                        user = new Coach(user, username);
+                        ((Coach) user).setTeam(team);
+                    }
+                    if (role.equals("TEAM_MANAGER"))
+                        manager = true;
+                }
+                if (manager) {
+                    user = new TeamManager(user, username);
+                    ((TeamManager) user).setTeam(team);
+                }
+                user= new TeamOwner(user, username);
+                ((TeamOwner) user).setTeam(team);
+                team.addTeamOwner((TeamOwner)user);
+            }
+
+            //players
+            String sqlplayers = String.format("SELECT user_id FROM player WHERE team_name = \"%s\";", teamName);
+            List<Integer> players = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Integer.class));
+            for (Integer idp: players) {
+                User player = UsersCRUD.getRegisteredUserByID(idp); //return registered
+                String fullName = ((Registered) player).getFullName();
+                player = new Player(player, fullName);
+                ((Player) player).setTeam(team);
+                team.addPlayerToTeam((Player) player);
+            }
+
+        }catch (Exception e) {
+            return null;
+        }
+        return null;
+    }
+
 }
