@@ -95,6 +95,15 @@ public class Game {
         }
     }
 
+
+    public League getLeague() {
+        return league;
+    }
+
+    public void setLeague(League league) {
+        this.league = league;
+    }
+
     /**
      * The function returns the current season
      *
