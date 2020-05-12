@@ -25,9 +25,8 @@ public class TeamCRUD {
      * @return true if the team created, otherwise returns false
      */
     public static boolean postTeam(String teamName) {
-
         try {
-            String query = String.format("INSERT into team (team_name, isActive, isRegistered) values ( \"%s\", 0, 0);", teamName);
+            String query = String.format("INSERT into team (team_name, isActive, isRegistered) values (\"%s\", 0, 0);", teamName);
             jdbcTemplate.update(query);
             return true;
 
@@ -74,37 +73,6 @@ public class TeamCRUD {
         }
     }
 
-    /**
-     * This function inactivates a team
-     * @param teamName
-     * @return
-     */
-    public static boolean inactivateTeam(String teamName) {
-        try {
-            String query = String.format("UPDATE team SET is_active=\"%s\" WHERE team_name = \"%s\";", "false", teamName);
-            jdbcTemplate.update(query);
-            return true;
-        }
-        catch (Exception e){
-            return false;
-        }
-    }
-
-    /**
-     * This function reactivates a team
-     * @param teamName
-     * @return
-     */
-    public static boolean reactivateTeam(String teamName) {
-        try {
-            String query = String.format("UPDATE team SET is_active=\"%s\" WHERE team_name = \"%s\";", "true", teamName);
-            jdbcTemplate.update(query);
-            return true;
-        }
-        catch (Exception e){
-            return false;
-        }
-    }
 
     /**
      * The fucntion returns true if the team exists, otherwise returns false
@@ -125,6 +93,22 @@ public class TeamCRUD {
     }
 
     /**
+     * The fucntion returns true if the facility exists, otherwise returns false
+     * @param facilityName
+     * @return true or false
+     */
+    public static boolean isFacilityExist(String facilityName) {
+        try {
+            String queryTeamExist = String.format("SELECT type FROM facilities WHERE facility_name = \"%s\";", facilityName);
+            jdbcTemplate.queryForObject(queryTeamExist, String.class);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
      * The function set coach to a team
      * @param coachUserName
      * @param teamName
@@ -134,14 +118,11 @@ public class TeamCRUD {
         if (!isTeamExist(teamName)) {
             return false;
         }
-
         int coachId = UsersCRUD.getUserIdByUserName(coachUserName);
-
         //The user doesnt exist
         if(coachId == -1){
             return false;
         }
-
         try {
             String query = String.format("update team set coach_user_id = %d where team_name = \"%s\";", coachId, teamName);
             jdbcTemplate.update(query);
@@ -306,13 +287,40 @@ public class TeamCRUD {
      * @param location
      * @return
      */
-    public static boolean addFacilityToTeam( String homeTeamName, String facilityName, String type, String location) {
+    public static boolean addOrEditFacilityToTeam( String homeTeamName, String facilityName, String type, String location) {
         if (!isTeamExist(homeTeamName)) {
             return false;
         }
-
         try {
-            String query = String.format("insert into facilities values(\"%s\", \"%s\", \"%s\", \"%s\");", homeTeamName, facilityName, type, location);
+            //insert
+            if (!isFacilityExist(facilityName)) {
+                String query = String.format("insert into facilities values(\"%s\", \"%s\", \"%s\", \"%s\");", homeTeamName, facilityName, type, location);
+                jdbcTemplate.update(query);
+            }
+            else{
+                String query = String.format("UPDATE facilities SET homeTeamName=\"%s\", type=\"%s\", location=\"%s\" WHERE facility_name=\"%s\");", homeTeamName, type, location, facilityName);
+                jdbcTemplate.update(query);
+            }
+            return true;
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * This function adds a player to the team
+     * @param homeTeamName
+     * @param player_username
+     * @return
+     */
+    public static boolean addPlayerToTeam(String homeTeamName, String player_username) {
+        int id= UsersCRUD.getUserIdByUserName(player_username);
+        if (!isTeamExist(homeTeamName) || id != -1) {
+            return false;
+        }
+        try {
+            String query = String.format("insert into team_players values(\"%s\", %d);", homeTeamName, id);
             jdbcTemplate.update(query);
             return true;
 
@@ -443,4 +451,28 @@ public class TeamCRUD {
         return team;
     }
 
+    /**
+     * This function removes a player from team
+     * @param playerUserName
+     * @param teamName
+     * @return
+     */
+    public static boolean removePlayerFromTeam(String playerUserName, String teamName) {
+        if (!isTeamExist(teamName)){
+            return false;
+        }
+        int playerId = UsersCRUD.getUserIdByUserName(playerUserName);
+        if(playerId == -1){
+            return false;
+        }
+        try {
+            String playerQuery = String.format("delete from team_players where team_name = \"%s\" AND player_user_id = %d;", teamName, playerId);
+            jdbcTemplate.update(playerQuery);
+
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
 }

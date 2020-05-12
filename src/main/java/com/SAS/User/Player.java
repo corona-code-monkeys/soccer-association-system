@@ -171,4 +171,9 @@ public class Player extends Role implements TeamAsset {
                 "fullName='" + getFullName() + '\'' +
                 '}';
     }
+
+    @Override
+    public String type() {
+        return "Player";
+    }
 }

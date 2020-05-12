@@ -61,7 +61,7 @@ class TeamCRUDTest {
 
     @Test
     void addAndRemoveFacilityTeam() {
-        assertTrue(TeamCRUD.addFacilityToTeam("Macabi", "Terner", "STADIUM", "Beer-Sheva"));
+        assertTrue(TeamCRUD.addOrEditFacilityToTeam("Macabi", "Terner", "STADIUM", "Beer-Sheva"));
         assertTrue(TeamCRUD.removeFacilityFromTeam("Macabi", "Terner"));
 
     }

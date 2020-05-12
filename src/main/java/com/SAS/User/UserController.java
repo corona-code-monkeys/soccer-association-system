@@ -194,7 +194,9 @@ public class UserController {
             }
 
             setPrivilegesforUser(user, ((Role)user).getRole(), approval);
-            logger.logEvent("User: " + ((Role)user).getUserName() + ". New " + type + " role has been added.");
+            //save in DB
+            UsersCRUD.addRoleToUser(userName, type.toString());
+            logger.logEvent("User: " + ((Role)user).getUserName() + ". New " + type.toString() + " role has been added.");
             return user;
             //keep in database
 

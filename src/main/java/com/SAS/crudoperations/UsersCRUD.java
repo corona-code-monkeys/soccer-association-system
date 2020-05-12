@@ -446,13 +446,13 @@ public class UsersCRUD {
 
         if (roles.contains("team_manager")) {
             user = new TeamManager(user, username);
-            sql = "SELECT team_name FROM team_manager WHERE user_id = ?";
+            sql = String.format("SELECT team_name FROM team_manager WHERE user_id = \"%d\";", id);
             ((TeamManager) user).setTeam(new Team(jdbcTemplate.queryForObject(sql, String.class)));
         }
 
         if (roles.contains("team_owner")) {
             user = new TeamOwner(user, username);
-            sql = "SELECT team_name FROM team_owner WHERE user_id = ?";
+            sql = String.format("SELECT team_name FROM team_owner WHERE ser_id = \"%d\";", id);
             ((TeamOwner) user).setTeam(new Team(jdbcTemplate.queryForObject(sql, String.class)));
         }
 

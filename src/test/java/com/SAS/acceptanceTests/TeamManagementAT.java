@@ -70,22 +70,17 @@ public class TeamManagementAT {
             System.out.println("Please enter facility type: 1 for Stadium, 2 for Training");
             System.out.println("Type: Stadium");
             System.out.println("Confirm");
-            TeamAsset asset = teamManagement.AddAssetToTeam("Facility", teamOwner);
+            ArrayList<String> details = new ArrayList<String>() {
+                {
+                    add("Bloomfield");
+                    add("Tel Aviv");
+                    add("Stadium");
+                }
+            };
+            TeamAsset asset = teamManagement.AddAssetToTeam("Facility", teamOwner, details);
             if (asset != null) {
-                ArrayList<String> details = new ArrayList<String>() {
-                    {
-                        add("Bloomfield");
-                        add("Tel Aviv");
-                        add("Stadium");
-                    }
-                };
-                if (asset.editDetails(details) == false) {
-                    myTeam.removeFacility((Facility) asset);
-                    System.out.println("The asset details are not valid. Please try again to add the asset");
-                } else {
                     assertTrue(myTeam.getFacilities().contains(asset));
                     System.out.println("The asset was added to the team successfully");
-                }
             }
             else{
                 System.out.println("The asset could not be added. Please try again to add the asset");
@@ -113,25 +108,18 @@ public class TeamManagementAT {
             System.out.println("Please enter facility type: 1 for Stadium, 2 for Training");
             System.out.println("Type: Stadium");
             System.out.println("Confirm");
-            TeamAsset asset = teamManagement.AddAssetToTeam("Facility", teamOwner);
-            if (asset != null) {
-                ArrayList<String> details = new ArrayList<String>() {
-                    {
-                        add("Bloomfield");
-                        add(null);
-                        add("Stadium");
-                    }
-                };
-                if (asset.editDetails(details) == false) {
-                    myTeam.removeFacility((Facility) asset);
-                    assertFalse(myTeam.getFacilities().contains(asset));
-                    System.out.println("The asset details are not valid. Please try again to add the asset");
-                } else {
-                    System.out.println("The asset was added to the team successfully");
+            ArrayList<String> details = new ArrayList<String>() {
+                {
+                    add("Bloomfield");
+                    add(null);
+                    add("Stadium");
                 }
-            }
-            else{
-                System.out.println("The asset could not be added. Please try again to add the asset");
+            };
+            TeamAsset asset = teamManagement.AddAssetToTeam("Facility", teamOwner, details);
+            if (asset != null) {
+                myTeam.removeFacility((Facility) asset);
+                assertFalse(myTeam.getFacilities().contains(asset));
+                System.out.println("The asset details are not valid. Please try again to add the asset");
             }
         }
         long endTime = System.nanoTime();

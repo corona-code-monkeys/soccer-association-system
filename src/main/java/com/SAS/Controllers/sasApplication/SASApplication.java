@@ -114,25 +114,25 @@ public class SASApplication {
         return false;
     }
 
-//    /**
-//     * This function closes a team by team owner
-//     * @param teamName
-//     * @param owner
-//     * @return
-//     */
-//    public boolean closeTeam(String teamName, User owner){
-//        return teamManagement.closeTeam(teamName, owner);
-//    }
-//
-//    /**
-//     * This function reopens a team by team owner
-//     * @param teamName
-//     * @param owner
-//     * @return
-//     */
-//    public boolean openTeam(String teamName, User owner){
-//        return teamManagement.openTeam(teamName, owner);
-//    }
+    /**
+     * This function closes a team by team owner
+     * @param teamName
+     * @param owner
+     * @return
+     */
+    public boolean closeTeam(String teamName, User owner){
+        return teamManagement.closeTeam(owner);
+    }
+
+    /**
+     * This function reopens a team by team owner
+     * @param teamName
+     * @param owner
+     * @return
+     */
+    public boolean openTeam(String teamName, User owner){
+        return teamManagement.openTeam(owner);
+    }
 
 
 
