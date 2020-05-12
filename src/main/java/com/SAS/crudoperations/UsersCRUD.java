@@ -2,8 +2,11 @@ package com.SAS.crudoperations;
 
 import com.SAS.User.*;
 import com.SAS.team.Team;
+import com.SAS.User.FieldRole;
+import com.SAS.usersDB.UsersDB;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.time.LocalDate;
@@ -11,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 
 public class UsersCRUD {
 
@@ -192,6 +196,146 @@ public class UsersCRUD {
         return encryptPass;
     }
 
+    /**
+     * This function sets the player details in the DB
+     * @param userID
+     * @param dateOfBirth
+     * @param fieldRole
+     * @return
+     */
+    public static boolean setPlayerDetails(int userID, String dateOfBirth, String fieldRole) {
+        if(inRoleTable(userID, "player")){
+            String queryUpdate = String.format("UPDATE player SET date_of_birth=\"%s\", field_role=\"%s\" WHERE user_id = \"%d\";", dateOfBirth, fieldRole.toUpperCase(), userID);
+            try{
+                jdbcTemplate.update(queryUpdate);
+                return true;
+            } catch (Exception e){
+                return false;
+            }
+        }else{
+            try{
+                String playerToInsert = String.format("INSERT into player (user_id, date_of_birth, field_role) values ( \"%d\", \"%s\", \"%s\");", userID, dateOfBirth, fieldRole.toUpperCase());
+                jdbcTemplate.update(playerToInsert);
+                return true;
+            } catch (Exception e){
+                return false;
+            }
+        }
+    }
+
+    /**
+     * This function checks if the user is in the role table
+     * @param userID
+     * @param role
+     * @return
+     */
+    private static boolean inRoleTable(int userID, String role) {
+        String queryUserRole = String.format("SELECT user_id FROM %s WHERE user_id = %d;", role, userID);
+        try {
+            jdbcTemplate.queryForObject(queryUserRole, Integer.class);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * This function edits the team ownerdetails in the DB- including nominated by
+     * @param userID
+     * @param teamName
+     * @return
+     */
+    public static boolean setTeamOwnerDetails(int userID, String teamName) {
+        if(!inRoleTable(userID, "team_owner")){
+            try{
+                String teamOwnerToInsert = String.format("INSERT into team_owner (user_id, team_name) values ( \"%d\", \"%s\");", userID, teamName);
+                jdbcTemplate.update(teamOwnerToInsert);
+                return true;
+            } catch (Exception e){
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * This function edits the team owner or manager details in the DB- including nominated by
+     * @param userID
+     * @param teamName
+     * @param nominatedBy
+     * @param role
+     * @return
+     */
+    public static boolean setTeamOwnerOrManagerDetails(int userID, String teamName, String nominatedBy, String role) {
+        int nominatedByID = getUserIdByUserName(nominatedBy);
+        if(!inRoleTable(userID, role)){
+            try{
+                String teamOwnerToInsert = String.format("INSERT into %s (user_id, team_name, nominated_by) values ( \"%d\", \"%s\", \"%s\");", role, userID, teamName, nominatedByID);
+                jdbcTemplate.update(teamOwnerToInsert);
+                return true;
+            } catch (Exception e){
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * This function sets the coach details in the DB
+     * @param userID
+     * @param level
+     * @param fieldRole
+     * @param teamName
+     * @return
+     */
+    public static boolean setCoachDetails(int userID, String level, String fieldRole, String teamName) {
+        if(inRoleTable(userID, "coach")) {
+            //edit level and field role only
+            String queryUpdate = String.format("UPDATE coach SET level= \"%d\", field_role=\"%s\", WHERE user_id = \"%d\";", Integer.parseInt(level), fieldRole.toUpperCase(), userID);
+            try{
+                jdbcTemplate.update(queryUpdate);
+                return true;
+            } catch (Exception e){
+                return false;
+            }
+        }else{
+            try{
+                String coachToInsert = String.format("INSERT into coach (user_id, level, field_role, team_name) values ( \"%d\", \"%d\", \"%s\", \"%s\");", userID, Integer.parseInt(level), fieldRole.toUpperCase(), teamName);
+                jdbcTemplate.update(coachToInsert);
+                return true;
+            } catch (Exception e){
+                return false;
+            }
+        }
+    }
+
+    /**
+     * This function sets the referee details in the DB
+     * @param userID
+     * @param level
+     * @return
+     */
+    public static boolean setRefereeDetails(int userID, String level) {
+        if(inRoleTable(userID, "referee")) {
+            //edit level and field role only
+            String queryUpdate = String.format("UPDATE referee SET level=%d WHERE user_id = %d;", Integer.parseInt(level),userID);
+            try{
+                jdbcTemplate.update(queryUpdate);
+                return true;
+            } catch (Exception e){
+                return false;
+            }
+        }else{
+            try{
+                String refereeToInsert = String.format("INSERT into referee (user_id, level) values ( \"%d\", \"%d\");", userID, Integer.parseInt(level));
+                jdbcTemplate.update(refereeToInsert);
+                return true;
+            } catch (Exception e){
+                return false;
+            }
+        }
+    }
 
     /**
      * This function sets the player details in the DB

@@ -77,7 +77,7 @@ class SASApplicationUT {
 
     @Test
     public void insertFullRefereeSuccess(){
-        sasApp.createUser("BeniCoo", "Beni2468","Beni Cohen", UserType.REFEREE, true, null );
+       sasApp.createUser("BeniCoo", "Beni2468","Beni Cohen", UserType.REFEREE, true, null );
         List<String> details = new LinkedList<String>(){
             {
                 add("1");
@@ -103,29 +103,29 @@ class SASApplicationUT {
 
     @Test
     public void insertFullTeamOwnerSuccess(){
-        sasApp.createUser("BenCohen1245", "Ben2468","Ben Cohen", UserType.TEAM_OWNER, true, null );
+        sasApp.createUser("BenCohen12456", "Ben2468","Ben Cohen", UserType.TEAM_OWNER, true, null );
         List<String> details = new LinkedList<String>(){
             {
                 add("Macabi Tel Aviv");
             }
         };
-        sasApp.editUserDetails("BenCohen1245", details, "TEAM_OWNER");
-        assertTrue(sasApp.deleteUser("BenCohen1245"));
+        assertTrue(sasApp.editUserDetails("BenCohen12456", details, "TEAM_OWNER"));
+        sasApp.deleteUser("BenCohen12456");
     }
 
     @Test
     public void insertFullTeamManagerSuccess(){
         sasApp.createUser("AviL1", "Avi2468","Avi Co", UserType.TEAM_OWNER, true, null );
-        sasApp.createUser("RamCo345", "Ram2468","Ram Cohen", UserType.TEAM_MANAGER, true, null );
+        sasApp.createUser("RamCo3456", "Ram2468","Ram Cohen", UserType.TEAM_MANAGER, true, null );
         List<String> details = new LinkedList<String>(){
             {
                 add("Macabi Tel Aviv");
                 add("AviL1");
             }
         };
-        assertTrue(sasApp.editUserDetails("RamCo345", details, "TEAM_MANAGER"));
+        assertTrue(sasApp.editUserDetails("RamCo3456", details, "TEAM_MANAGER"));
         sasApp.deleteUser("AviL1");
-        sasApp.deleteUser("RamCo345");
+        sasApp.deleteUser("RamCo3456");
     }
 
 
@@ -142,6 +142,4 @@ class SASApplicationUT {
         sasApp.editUserDetails("AviL12", details, "PLAYER");
         User user = UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName("AviL12"));
     }
-
-
 }
