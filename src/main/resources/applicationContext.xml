@@ -6,23 +6,23 @@
         xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <!--Test DB-->
-    <bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-    <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-    <property name="url" value="jdbc:mysql://uvk92ifup2c1zsnv:l78UywPzvAEqQyb7O8XC@b671lvi3ihw2r6zl9wc6-mysql.services.clever-cloud.com:3306/b671lvi3ihw2r6zl9wc6?useSSL=false" />
-    <property name="username" value="uvk92ifup2c1zsnv" />
-    <property name="password" value="l78UywPzvAEqQyb7O8XC" />
-    </bean>
+    <!--&lt;!&ndash;Test DB&ndash;&gt;-->
+    <!--<bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+    <!--<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />-->
+    <!--<property name="url" value="jdbc:mysql://uvk92ifup2c1zsnv:l78UywPzvAEqQyb7O8XC@b671lvi3ihw2r6zl9wc6-mysql.services.clever-cloud.com:3306/b671lvi3ihw2r6zl9wc6?useSSL=false" />-->
+    <!--<property name="username" value="uvk92ifup2c1zsnv" />-->
+    <!--<property name="password" value="l78UywPzvAEqQyb7O8XC" />-->
+    <!--</bean>-->
 
 
-    <!--Local DB
+    <!--Local DB-->
     <bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/sas?useJDBCCompliantTimezoneShift=true&amp;useSSL=false" />
+        <property name="url" value="jdbc:mysql://localhost:3306/b671lvi3ihw2r6zl9wc6?useJDBCCompliantTimezoneShift=true&amp;useSSL=false" />
         <property name="username" value="root" />
         <property name="password" value="sas123456" />
     </bean>
-    -->
+
 
     <!--App DB
     <bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
