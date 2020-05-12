@@ -5,6 +5,7 @@
 package com.SAS.User;
 
 import com.SAS.crudoperations.CRUD;
+import com.SAS.crudoperations.UsersCRUD;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +32,7 @@ public Role(String userName) {
      * @return fullName - String
      */
     public String getFullName() {
-        return CRUD.getFullNameByUserName(userName);
+        return UsersCRUD.getFullNameByUserName(userName);
     }
 
     /**

@@ -10,5 +10,6 @@ public interface TeamAsset {
     boolean setTeam(Team team);
     void removeAssetFromTeam();
     String toString();
+    String type();
 
 }

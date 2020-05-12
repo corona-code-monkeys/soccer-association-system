@@ -8,7 +8,7 @@ import com.SAS.LeagueManagement.LeagueManagementController;
 import com.SAS.User.User;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
-import com.SAS.crudoperations.UsersCRUD;
+import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamManagement;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class SASApplication {
      */
 
     public boolean login(String username, String password){
-       return userController.isUserExist(username, password);
+        return userController.isUserExist(username, password);
     }
 
     //TODO: In UI: if true- show alert that the user was created and switch to home page so he would log in, wlse show error message
@@ -114,8 +114,25 @@ public class SASApplication {
         return false;
     }
 
+    /**
+     * This function closes a team by team owner
+     * @param teamName
+     * @param owner
+     * @return
+     */
+    public boolean closeTeam(String teamName, User owner){
+        return teamManagement.closeTeam(owner);
+    }
 
-
+    /**
+     * This function reopens a team by team owner
+     * @param teamName
+     * @param owner
+     * @return
+     */
+    public boolean openTeam(String teamName, User owner){
+        return teamManagement.openTeam(owner);
+    }
 
 
 

@@ -224,4 +224,9 @@ public class Facility implements TeamAsset {
                 ", facility type= " + facilityT +
                 '}';
     }
+
+    @Override
+    public String type() {
+        return "Facility";
+    }
 }

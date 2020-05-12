@@ -1,22 +1,43 @@
 package com.SAS.crudoperations;
 
+import com.SAS.User.*;
+import com.SAS.team.Team;
 import com.SAS.User.FieldRole;
 import com.SAS.usersDB.UsersDB;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import javax.servlet.http.PushBuilder;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 
 public class UsersCRUD {
 
     private static JdbcTemplate jdbcTemplate;
-
+    private static HashMap<String, Integer> roleOrder;
 
     public UsersCRUD() {
+        this.roleOrder = new HashMap<>();
+        initRolesOrder();
+    }
+
+    /**
+     * This function initializes the role order hash map
+     */
+    private void initRolesOrder() {
+        this.roleOrder.put("fan", 0);
+        this.roleOrder.put("system_admin", 0);
+        this.roleOrder.put("referee", 0);
+        this.roleOrder.put("association_representative", 0);
+        this.roleOrder.put("player", 1);
+        this.roleOrder.put("coach", 1);
+        this.roleOrder.put("team_manager", 2);
+        this.roleOrder.put("team_owner", 3);
     }
 
 
@@ -49,6 +70,11 @@ public class UsersCRUD {
         }
     }
 
+    /**
+     * This function returns the user id by username
+     * @param userName
+     * @return
+     */
     public static int getUserIdByUserName(String userName){
         try {
             String queryUserId = String.format("SELECT user_id FROM user WHERE user_name = \"%s\";", userName);
@@ -65,7 +91,7 @@ public class UsersCRUD {
             return false;
         }
         try {
-            String roleInsert = String.format("insert into user_role (user_id, user_name, user_role) values ( \"%d\", \"%s\", \"%s\");", userId, userName, role.toLowerCase());
+            String roleInsert = String.format("insert into user_role (user_id, user_name, user_role) values ( \"%d\", \"%s\", \"%s\");", userId, userName, role.toUpperCase());
             jdbcTemplate.update(roleInsert);
         }
         catch (Exception e){
@@ -177,9 +203,9 @@ public class UsersCRUD {
      * @param fieldRole
      * @return
      */
-    public static boolean setPlayerDetails(int userID, String dateOfBirth, String fieldRole) {
+    public static boolean setPlayerDetails(int userID, String dateOfBirth, String fieldRole, String teamName) {
         if(inRoleTable(userID, "player")){
-            String queryUpdate = String.format("UPDATE player SET date_of_birth=\"%s\", field_role=\"%s\" WHERE user_id = \"%d\";", dateOfBirth, fieldRole.toUpperCase(), userID);
+            String queryUpdate = String.format("UPDATE player SET date_of_birth=\"%s\", field_role=\"%s\", team_name=\"%s\" WHERE user_id = \"%d\";", dateOfBirth, fieldRole.toUpperCase(), teamName, userID);
             try{
                 jdbcTemplate.update(queryUpdate);
                 return true;
@@ -188,7 +214,7 @@ public class UsersCRUD {
             }
         }else{
             try{
-                String playerToInsert = String.format("INSERT into player (user_id, date_of_birth, field_role) values ( \"%d\", \"%s\", \"%s\");", userID, dateOfBirth, fieldRole.toUpperCase());
+                String playerToInsert = String.format("INSERT into player (user_id, date_of_birth, field_role) values ( \"%d\", \"%s\", \"%s\");", userID, dateOfBirth, fieldRole.toLowerCase());
                 jdbcTemplate.update(playerToInsert);
                 return true;
             } catch (Exception e){
@@ -308,6 +334,161 @@ public class UsersCRUD {
             } catch (Exception e){
                 return false;
             }
+        }
+    }
+
+    /**
+     * This function builds and returns a registered user from userid
+     * @param id
+     * @return Registered
+     */
+    public static User getRegisteredUserByID(int id) {
+        String sql = "SELECT * FROM user WHERE user_id = ?";
+        try {
+            User user = jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) ->
+                    new Registered(
+                            rs.getString("user_name"),
+                            rs.getString("password"),
+                            rs.getString("full_name")
+                    ));
+            return user;
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    /**
+     * This function returns the user name by id
+     * @param id
+     * @return username
+     */
+    public static String getUserNameById(int id){
+        try {
+            String queryUserId = String.format("SELECT user_name FROM user WHERE user_id = \"%d\";", id);
+            return jdbcTemplate.queryForObject(queryUserId, String.class);
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    /**
+     * The function receives a userName and returns the full name of the user
+     * @param userName
+     * @return
+     */
+    public static String getFullNameByUserName(String userName) {
+        try {
+            String queryUserfullname = String.format("SELECT full_name FROM user WHERE user_name = \"%s\";", userName);
+            return jdbcTemplate.queryForObject(queryUserfullname, String.class);
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    /**
+     * This function restore the user from db
+     * @param id
+     * @return
+     */
+    public static User restoreRoleForUser(int id) {
+        User user = UsersCRUD.getRegisteredUserByID(id); //return registered
+        String username= ((Registered)user).getUserName();
+        //check roles
+        try {
+            String sqlroles = String.format("SELECT user_role FROM user_role WHERE user_id = \"%d\";", id);
+            List<Map<String, Object>> rows = jdbcTemplate.queryForList(sqlroles);
+            List<String> roles = new LinkedList<>();
+            for(Map<String, Object> row: rows){
+                roles.add((String)row.get("user_role"));
+            }
+            /*build user*/
+            String role = roles.get(0);
+            if (roles.size() == 1 && roleOrder.get(role) == 0){
+                return createRoleSimple(id, user, username, role);
+            }
+            else {
+                return createRoleComplex(id, user, username, roles);
+            }
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    private static User createRoleComplex(int id, User user, String username, List<String> roles) {
+        String sql;
+        Map<String, Object> result;
+
+        for (String role : roles) {
+            if (roleOrder.get(role) == 1) {
+                switch (role) {
+                    case "player":
+                        user = new Player(user, username);
+                        sql = "SELECT team_name, date_of_birth,field_role FROM player WHERE user_id = ?";
+                        result = jdbcTemplate.queryForMap(sql, new Object[]{id});
+                        ((Player) user).setDateOfBirth(LocalDate.parse(result.get("date_of_birth").toString()));
+                        String fieldRole = (String)result.get("field_role");
+                        ((Player) user).setFieldRole(Role.convertStringToFieldRole(fieldRole.substring(0,1) + fieldRole.substring(1).toLowerCase()));
+                        ((Player) user).setTeam(new Team((String)result.get("team_name")));
+                        return user;
+                    case "coach":
+                        user = new Coach(user, username);
+                        sql = "SELECT team_name, level, field_role FROM coach WHERE user_id = ?";
+                        result = jdbcTemplate.queryForMap(sql, new Object[]{id});
+                        ((Coach) user).setLevel(Integer.parseInt(result.get("date_of_birth").toString()));
+                        ((Coach) user).setFieldRole(Role.convertStringToFieldRole((String)result.get("field_role")));
+                        ((Coach) user).setTeam(new Team((String)result.get("team_name")));
+                        return user;
+                    default:
+                        return null;
+                }
+            }
+        }
+
+        if (roles.contains("team_manager")) {
+            user = new TeamManager(user, username);
+            sql = String.format("SELECT team_name FROM team_manager WHERE user_id = \"%d\";", id);
+            ((TeamManager) user).setTeam(new Team(jdbcTemplate.queryForObject(sql, String.class)));
+        }
+
+        if (roles.contains("team_owner")) {
+            user = new TeamOwner(user, username);
+            sql = String.format("SELECT team_name FROM team_owner WHERE ser_id = \"%d\";", id);
+            ((TeamOwner) user).setTeam(new Team(jdbcTemplate.queryForObject(sql, String.class)));
+        }
+
+        return user;
+    }
+
+
+    /**
+     * This function creates a simple role user
+     * @param id
+     * @param user
+     * @param username
+     * @param role
+     * @return
+     */
+    private static User createRoleSimple(int id, User user, String username, String role) {
+        switch(role){
+            case "fan":
+                return new Fan(user, username);
+
+            case "referee":
+                user= new Referee(user, username);
+                String refereelevel = String.format("SELECT level FROM referee WHERE user_id = \"%d\";", id);
+                ((Referee)user).setLevel(jdbcTemplate.queryForObject(refereelevel, Integer.class));
+                return user;
+
+            case "system_admin":
+               return new SystemAdmin(user, username);
+
+            case "association_representative":
+              return new AssociationRepresentative(user, username);
+
+              default: return null;
         }
     }
 

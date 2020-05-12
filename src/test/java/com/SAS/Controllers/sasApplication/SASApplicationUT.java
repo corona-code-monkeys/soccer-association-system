@@ -53,6 +53,7 @@ class SASApplicationUT {
             {
                 add("1992-12-20");
                 add("Striker");
+                add("macabi");
             }
         };
         sasApp.editUserDetails("AviCo", details, "PLAYER");
@@ -67,6 +68,7 @@ class SASApplicationUT {
             {
                 add("1992-12-20");
                 add("Striker");
+                add("macabi");
             }
         };
         assertTrue(sasApp.editUserDetails("AviCo", details, "PLAYER"));
@@ -126,4 +128,18 @@ class SASApplicationUT {
         sasApp.deleteUser("RamCo3456");
     }
 
+
+    @Test
+    public void restoreComplexUserSuccess() {
+        sasApp.createUser("AviL12", "Avi2468", "Avi Co", UserType.PLAYER, true, null);
+        List<String> details = new LinkedList<String>() {
+            {
+                add("1992-12-20");
+                add("Striker");
+                add("Macabi");
+            }
+        };
+        sasApp.editUserDetails("AviL12", details, "PLAYER");
+        User user = UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName("AviL12"));
+    }
 }

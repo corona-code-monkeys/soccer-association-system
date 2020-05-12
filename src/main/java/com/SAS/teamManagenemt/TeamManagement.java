@@ -5,6 +5,8 @@ package com.SAS.teamManagenemt;
 
 import com.SAS.User.*;
 import com.SAS.crudoperations.CRUD;
+import com.SAS.crudoperations.TeamCRUD;
+import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.facility.*;
 import com.SAS.systemLoggers.LoggerFactory;
 import com.SAS.team.Team;
@@ -21,6 +23,7 @@ public class TeamManagement {
 
     private LoggerFactory logger;
     private UserController userController;
+    private Team team;
 
     /**
      * Constructor
@@ -32,39 +35,84 @@ public class TeamManagement {
     }
 
     /**
-     * This function allows the team owner to add an asset to the team. Assets are facility, player, coach.
-     * @param assetType
-     * @param team
+     * The function receives a team name and enter to the team page if exists and returns true,
+     * otherwise returns false
+     * @param teamName
+     * @return true or false
+     */
+    public boolean enterTeamPage(String teamName) {
+        if (teamName == null || teamName.trim().isEmpty()) {
+            logger.logError("Fault: unable to get the team page - team name is empty");
+            return false;
+        }
+        Team getTeam = TeamCRUD.getTeamByName(teamName);
+        if (getTeam == null) {
+            logger.logError("Fault: unable to get the team - team doesn't exist");
+            return false;
+        }
+
+        team = getTeam;
+        return true;
+    }
+
+    /**
+     * This function allows the team owner to add an asset to the team.
+     * @param assetType - is player or coach
      * @return the created asset
      */
-    public TeamAsset AddAssetToTeam (String assetType, Team team, User user) {
-        if (! canAddRemoveAsset(user)){
+    public TeamAsset AddAssetToTeam (String assetType, User user, String username, String password, String fullname, List<String> details) {
+        if (!canAddRemoveAsset(user)){
             logger.logError("Fault: unable to add: user not authorized to add an asset to this team");
             return null;
         }
-
         TeamAsset asset = null;
         //create the asset
         switch (assetType) {
             case "Player":
-                asset = (Player) userController.createUser(null, null, null, UserType.PLAYER, true, null);
+                asset = (Player) userController.createUser(username, password, fullname, UserType.PLAYER, true, null);
                 team.addPlayerToTeam((Player)asset);
+                TeamCRUD.addPlayerToTeam(team.getName(), username);
+                editAssetDetails(asset, details);
                 logger.logEvent("User: " + ((Role)user).getUserName() + ". Added player to " + team.getName() + " team.");
                 break;
-            case "Facility":
-                asset = new Facility();
-                team.addFacility((Facility)asset);
-                logger.logEvent("User: " + ((Role)user).getUserName() + ". Added facility to " + team.getName() + " team.");
-                break;
             case "Coach":
-                asset = (Coach) userController.createUser(null, null, null, UserType.COACH, true, null);
+                asset = (Coach) userController.createUser(username, password, fullname, UserType.COACH, true, null);
                 team.setCoach((Coach)asset);
+                TeamCRUD.setCoachToTeam(username, team.getName());
+                editAssetDetails(asset, details);
                 logger.logEvent("User: " + ((Role)user).getUserName() + ". Added coach to " + team.getName() + " team.");
                 break;
+             default:
+                return null;
         }
         asset.setTeam(team);
         return asset;
     }
+
+    /**
+     * This function allows the team owner to add a facility to the team.
+     * @param assetType is Facility
+     * @return the created asset
+     */
+    public TeamAsset AddAssetToTeam (String assetType, User user, List<String>details) {
+        if (!canAddRemoveAsset(user)){
+            logger.logError("Fault: unable to add: user not authorized to add an asset to this team");
+            return null;
+        }
+        if (assetType.equals("Facility")) {
+            TeamAsset asset = null;
+            //create the facility
+            asset = new Facility();
+            team.addFacility((Facility) asset);
+            editAssetDetails(asset, details);
+            logger.logEvent("User: " + ((Role) user).getUserName() + ". Added facility to " + team.getName() + " team.");
+            asset.setTeam(team);
+            return asset;
+        }else{
+            return null;
+        }
+    }
+
 
     /**
      * This function receives a list of details and a teamAsset and updates the asset's details
@@ -75,21 +123,65 @@ public class TeamManagement {
      */
     public boolean editAssetDetails(TeamAsset asset, List<String> details)
     {
-        return asset.editDetails(details);
+        boolean result = false;
+        if (asset != null && details != null && details.size()>0) {
+                result = asset.editDetails(details);
+                //update db
+                String type = asset.type();
+                if (type.equals("Facility")) {
+                    Facility facility = (Facility) asset;
+                    TeamCRUD.addOrEditFacilityToTeam(team.getName(), facility.getName(),facility.getFacilityType().toString(), facility.getLocation());
+                } else {
+                    userController.editUserDetails(((Role) asset).getUserName(), details, type.toUpperCase());
+                }
+                return result;
+        }
+        else {
+            logger.logError("Invalid details");
+            return result;
+        }
     }
+
+    /**
+     * This function receives a list of details and a teamAsset and updates the asset's details
+     * @param assetType
+     * @param details
+     * @return true if details have been edited successfully, false otherwise.
+     * If return false should ask the user to enter the details again
+     */
+    public boolean editAssetDetails(String assetType, String name, List<String> details){
+        if (validParam(assetType) && validParam(name) && details !=null && details.size()>0) {
+            TeamAsset asset = team.getAssetByNameAndType(assetType, name);
+            if (asset == null) {
+                logger.logError("Asset not found");
+                return false;
+            } else
+                return editAssetDetails(asset, details);
+        }
+        else {
+            logger.logError("Invalid details");
+            return false;
+        }
+    }
+
 
     /**
      * This function removes a team asset
      * @param asset
-     * @param team
      * @param user
      */
-    public boolean removeAsset(TeamAsset asset, Team team, User user){
-        if (canAddRemoveAsset(user) && (ownsTeam(team, user) || managesTeam(team, user))) {
+    public boolean removeAsset(TeamAsset asset, User user){
+        if (canAddRemoveAsset(user) && (ownsTeam(user) || managesTeam(user))) {
             asset.removeAssetFromTeam();
-            asset = null;
-            logger.logEvent("User: " + ((Role)user).getUserName() + ". Removed asset from " + team.getName() + " team.");
-            return true;
+            //remove from db
+            if (!removeAssetFromDB(asset)) {
+                logger.logError("Error in deleting asset");
+                return false;
+            }
+            else {
+                logger.logEvent("User: " + ((Role) user).getUserName() + ". Removed asset from " + team.getName() + " team.");
+                return true;
+            }
         }
         else{
             logger.logError("Fault: unable to remove: the asset is not on te possession of the team");
@@ -98,26 +190,45 @@ public class TeamManagement {
     }
 
     /**
+     * This function removes the asset from the db
+     * @param asset
+     * @return
+     */
+    private boolean removeAssetFromDB(TeamAsset asset) {
+        switch(asset.type()){
+            case "Player":
+                String usernameP = ((Player) asset).getUserName();
+                return TeamCRUD.removePlayerFromTeam(usernameP,team.getName()) && UsersCRUD.deleteRole(usernameP, "player");
+            case "Coach":
+                String usernameC = ((Coach) asset).getUserName();
+                return TeamCRUD.removeCoachFromTeam(usernameC, team.getName()) && UsersCRUD.deleteRole(usernameC, "coach");
+            case "Facility":
+                return TeamCRUD.removeFacilityFromTeam(team.getName(),((Facility)asset).getName());
+            default:
+                return false;
+        }
+    }
+
+    /**
      * The function receives a user and a team and adds the user to the owners of the team
      * in case he's not already a team owner
      * @param newTeamOwner
-     * @param team
      * @param nominatedBy
      */
-    public User addAdditionalTeamOwner(User newTeamOwner, Team team, User nominatedBy) {
+    public User addAdditionalTeamOwner(User newTeamOwner, User nominatedBy) {
         //check if the user can owns the team and that the nominate is the owner of the team
-        if (validateUserCanOwnTeam(newTeamOwner, team) && ownsTeam(team, nominatedBy)) {
+        if (validateUserCanOwnTeam(newTeamOwner) && ownsTeam(nominatedBy)) {
             newTeamOwner = userController.addRoleToUser(newTeamOwner, UserType.TEAM_OWNER, true);
             team.addTeamOwner((TeamOwner)newTeamOwner);
             ((TeamOwner) newTeamOwner).setTeam(team);
             ((TeamOwner) newTeamOwner).setNominatedBy((TeamOwner)nominatedBy);
+            //add to db
+            TeamCRUD.addOwnerToTeam(((TeamOwner) newTeamOwner).getUserName(), team.getName());
             logger.logEvent("User: " + ((Role)nominatedBy).getUserName() + ". Added team owner to " + team.getName() + " team.");
         }
-
         else {
             System.out.println("The user is unauthorized to own the team");
         }
-
         return newTeamOwner;
     }
 
@@ -125,23 +236,31 @@ public class TeamManagement {
      * The function receives a user and a team and adds the user as the team manager
      * TODO: UI will need to popup a window to get approval
      * @param newTeamManager
-     * @param team
      * @param nominatedBy
      * @param approval - a boolean which determines if the manager got privileges from the team owner
      * @return newTeamManager - the team manager
      */
-    public User addTeamManager(User newTeamManager, Team team, User nominatedBy, boolean approval){
+    public User addTeamManager(User newTeamManager, User nominatedBy, boolean approval){
         //check if the team already has a manager
-        if(teamHasManager(team)){
+        if(teamHasManager()){
             System.out.println("The team already has a manager, please remove it first to nominate a new manager");
             return newTeamManager;
         }
         //check if the user can manage this team and that the user that nominates him is the team owner
-        if (validateTeamManager(newTeamManager, team) && ownsTeam(team, nominatedBy)){
+        if (validateTeamManager(newTeamManager) && ownsTeam(nominatedBy)){
             newTeamManager = userController.addRoleToUser(newTeamManager, UserType.TEAM_MANAGER,approval);
             team.setTeamManager((TeamManager)newTeamManager);
             ((TeamManager)newTeamManager).setTeam(team);
             ((TeamManager)newTeamManager).setNominatedBy((TeamOwner)nominatedBy);
+            //update in db
+            List <String> details = new LinkedList<String>(){{
+                add(team.getName());
+                add(((TeamOwner)nominatedBy).getUserName());
+            }};
+            String username = ((TeamManager)newTeamManager).getUserName();
+            userController.editUserDetails(username, details, "TEAM_MANAGER");
+            TeamCRUD.setManagerToTeam(username, team.getName());
+
             logger.logEvent("User: " + ((Role)nominatedBy).getUserName() + ". Added team manager to " + team.getName() + " team.");
         }
         else{
@@ -152,20 +271,18 @@ public class TeamManagement {
 
     /**
      * This function checks if the team already has a manager, if so returns true, otherwise returns false
-     * @param team
      * @return true or false
      */
-    private boolean teamHasManager(Team team) {
+    private boolean teamHasManager() {
         return team.getManager() != null;
     }
 
     /**
      * This function checks if the user is not already a team manager or owner
      * @param newTeamManager
-     * @param team
      * @return true or false
      */
-    private boolean validateTeamManager(User newTeamManager, Team team) {
+    private boolean validateTeamManager(User newTeamManager) {
         if ((newTeamManager instanceof TeamManager || newTeamManager instanceof TeamOwner)){
             logger.logError("Fault: unable to validate team manager");
             return false;
@@ -176,17 +293,22 @@ public class TeamManagement {
     /**
      * This function removes a user from being a team manager by the team owner
      * @param teamManager
-     * @param team
-     * @param removedBy
+=     * @param removedBy
      * @return
      */
-    public User removeTeamManager(User teamManager, Team team, User removedBy) {
+    public User removeTeamManager(User teamManager, User removedBy) {
         //checks if the user manages the team and that the removing user is the owner of the team and nominated him
-        if (validateTeamManager(teamManager, team, removedBy) && ownsTeam(team, removedBy)) {
+        if (validateTeamManager(teamManager, removedBy) && ownsTeam(removedBy)) {
             team.removeTeamManager((TeamManager)teamManager);
             ((TeamManager)teamManager).removeTeam();
             //get the inner user (previous role)
             teamManager = ((TeamManager) teamManager).getUser();
+
+            //remove from db
+            String username = ((TeamManager)teamManager).getUserName();
+            UsersCRUD.deleteRole(username, "team_manager");
+            TeamCRUD.removeManagerFromTeam(username, team.getName());
+
             logger.logEvent("User: " + ((Role)removedBy).getUserName() + ". Removed team manager from " + team.getName() + " team.");
         }
 
@@ -197,26 +319,28 @@ public class TeamManagement {
      * This function verify whether the user is the team manager of the team,
      * and that the team owner that nominated him is the same user trying to remove him
      * @param teamManager
-     * @param team
      * @param removedBy
      * @return true or false
      */
-    private boolean validateTeamManager(User teamManager, Team team, User removedBy) {
+    private boolean validateTeamManager(User teamManager, User removedBy) {
         return teamManager instanceof TeamManager && ((TeamManager)teamManager).getTeam() == team &&
                 removedBy instanceof TeamOwner && ((TeamManager)teamManager).getNominatedBy() == removedBy;
     }
 
-     /* The function receives a team owner, the team and the nominated user and removes the owner from the team owners
+     /** The function receives a team owner, the team and the nominated user and removes the owner from the team owners
      * if the user authorized to do so
      * @param teamOwner
-     * @param team
      * @param nominatedBy
      * @return user
      */
-    public User removeTeamOwner(User teamOwner, Team team, User nominatedBy) {
+    public User removeTeamOwner(User teamOwner, User nominatedBy) {
         //check if the user is owns the team and that the nominate is the owner of the team and nominated this user
-        if (validateTeamOwner(teamOwner, team, nominatedBy) && ownsTeam(team, nominatedBy)) {
-            teamOwner = removeTeamOwnerAndNominees(teamOwner, team);
+        if (validateTeamOwner(teamOwner, nominatedBy) && ownsTeam(nominatedBy)) {
+            teamOwner = removeTeamOwnerAndNominees(teamOwner);
+            //remove from db
+            String username = ((TeamOwner)teamOwner).getUserName();
+            UsersCRUD.deleteRole(username, "team_owner");
+            TeamCRUD.removeOwnerFromTeam(username, team.getName());
         }
 
         else {
@@ -229,32 +353,28 @@ public class TeamManagement {
     /**
      * The function receives a team owner and a team and removes the team owner and all his nominees
      * @param teamOwner
-     * @param team
      */
-    private User removeTeamOwnerAndNominees(User teamOwner, Team team) {
+    private User removeTeamOwnerAndNominees(User teamOwner) {
         if (team == null || teamOwner == null)
             return null;
 
-        List<TeamOwner> nominees = getUserNominees(teamOwner, team);
+        List<TeamOwner> nominees = getUserNominees(teamOwner);
         team.removeTeamOwner((TeamOwner)teamOwner);
         ((TeamOwner) teamOwner).removeTeam();
         teamOwner = ((TeamOwner) teamOwner).getUser();
 
         for (User nominee: nominees) {
-            removeTeamOwnerAndNominees(nominee, team);
+            removeTeamOwnerAndNominees(nominee);
         }
-
         return teamOwner;
-
     }
 
     /**
      * The function receives a team owner and a team and returns the team owners that nominated by this team owner
      * @param teamOwner
-     * @param team
      * @return
      */
-    private List<TeamOwner> getUserNominees(User teamOwner, Team team) {
+    private List<TeamOwner> getUserNominees(User teamOwner) {
         List<TeamOwner> nominees = new LinkedList<>();
         if (team == null)
             return nominees;
@@ -272,11 +392,10 @@ public class TeamManagement {
      * The function returns true if the user is the owner of the team and if the nominated is the user
      * that nominates him to be the team's owner
      * @param teamOwner
-     * @param team
      * @param nominatedBy
      * @return true or false
      */
-    private boolean validateTeamOwner(User teamOwner, Team team, User nominatedBy) {
+    private boolean validateTeamOwner(User teamOwner, User nominatedBy) {
         if (teamOwner == null || team == null || nominatedBy == null)
             return false;
 
@@ -287,10 +406,9 @@ public class TeamManagement {
     /**
      * The function returns true if the user can be the team owner (he's a player / coach / manager of the team)
      * @param user
-     * @param team
      * @return
      */
-    private boolean validateUserCanOwnTeam(User user, Team team) {
+    private boolean validateUserCanOwnTeam(User user) {
         boolean valid = false;
 
         // checks that the user doesn't owns other teams
@@ -314,35 +432,32 @@ public class TeamManagement {
 
     /**
      * The function returns true if the user is the owner of the team, otherwise returns false
-     * @param team
      * @param nominatedBy
      * @return true - if the user is the team owner, otherwise - false
      */
-    private boolean ownsTeam(Team team, User nominatedBy) {
+    private boolean ownsTeam(User nominatedBy) {
         if (team != null && nominatedBy != null)
-            return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam() == team;
+            return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam()==team;
         return false;
     }
 
     /**
      * The function returns true if the user is the manages of the team, otherwise returns false
-     * @param team
      * @param user
      * @return true - if the user is the team manager, otherwise - false
      */
-    private boolean managesTeam(Team team, User user) {
+    private boolean managesTeam(User user) {
         return user instanceof TeamManager && ((TeamManager) user).getTeam() == team;
     }
 
     /**
      * The fcuntion receives the parameters of new transaction and the team and add it if it's legal -
      * not exceed the budget of the team
-     * @param team
      * @param transDetails
      * @return
      */
-    public Transaction addTransactionToTeam(Team team, List<String> transDetails, User teamOwner) {
-        if (ownsTeam(team, teamOwner)) {
+    public Transaction addTransactionToTeam(List<String> transDetails, User teamOwner) {
+        if (ownsTeam(teamOwner)) {
             //first amount, second type, third date and last description
             double amount = Double.parseDouble(transDetails.get(0));
             TransactionType type = convertStringToTrasactionType(transDetails.get(1));
@@ -387,19 +502,17 @@ public class TeamManagement {
     /**
      * The function receives a team and a team owner and closes this team and returns true if it succeeded,
      * otherwise returns false
-     * @param team
      * @param teamOwner
      * @return true or false
      */
-    public boolean closeTeam(Team team, User teamOwner) {
-        if (ownsTeam(team, teamOwner)) {
-            if (team.isActive()) {
-                team.inactivateTeam();
-                sendNotificationClose(team, "closed");
+    public boolean closeTeam(User teamOwner) {
+        if (ownsTeam(teamOwner)) {
+            if (TeamCRUD.isTeamActive(team.getName())) {
+                TeamCRUD.setTeamActivity(team.getName(), false);
+                sendNotificationClose(team.getName(), "closed");
                 logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ". Closed " + team.getName() + " team.");
                 return true;
             }
-
             logger.logError("Fault: unable to close: the team is already closed");
             return false;
         }
@@ -413,18 +526,16 @@ public class TeamManagement {
     /**
      * The function receives a team and a team owner and opens this team and returns true if it succeeded,
      * otherwise returns false
-     * @param team
-     * @param teamOwner
+=     * @param teamOwner
      */
-    public boolean openTeam(Team team, User teamOwner) {
-        if (ownsTeam(team, teamOwner)) {
-            if (!team.isActive()) {
-                team.reactivateTeam();
-                sendNotificationClose(team, "opened");
+    public boolean openTeam(User teamOwner) {
+        if (ownsTeam(teamOwner)) {
+            if (!TeamCRUD.isTeamActive(team.getName())) {
+                TeamCRUD.setTeamActivity(team.getName(), true);
+                sendNotificationClose(team.getName(), "opened");
                 logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ".Opened " + team.getName() + " team.");
                 return true;
             }
-
             else {
                 logger.logError("Fault: unable to open: the team is already open");
                 return false;
@@ -440,25 +551,26 @@ public class TeamManagement {
     /**
      * The function receives a team that has been closed and send the message to all the team management
      * and the system admins
-     * @param team
+     * @param teamName
      */
     //TODO: add system admins from DB
-    private void sendNotificationClose(Team team, String message) {
-        String close = "The team " + team.getName() + " has been " + message + ".";
+    private void sendNotificationClose(String teamName, String message) {
+        String close = "The team " + teamName + " has been " + message + ".";
 
         //get all the management of the team
         List<User> management = new LinkedList<>();
-        management.addAll(team.getOwners());
-        User manager = team.getManager();
-        if (manager != null) {
-            management.add(manager);
-        }
-
-        //add the system admins from DB
-
-        for (User user: management) {
-            ((Role)user).getNotification(close);
-        }
+//        management.addAll(team.getOwners());
+//        User manager = team.getManager();
+//        if (manager != null) {
+//            management.add(manager);
+//        }
+//
+//        //add the system admins from DB
+//
+//        for (User user: management) {
+//            ((Role)user).getNotification(close);
+//        }
+        //TODO ask yaar if to keep this
 
     }
 
@@ -478,7 +590,7 @@ public class TeamManagement {
      * @return true or false
      */
     public boolean enterEditingMode(User user, Team team){
-        return (user instanceof TeamOwner && ownsTeam(team, user) || user instanceof TeamManager && managesTeam(team, user));
+        return (user instanceof TeamOwner && ownsTeam(user) || user instanceof TeamManager && managesTeam(user));
 
     }
 
@@ -531,10 +643,9 @@ public class TeamManagement {
 
 
     /**
-     * The function retuns a string of the owners of the team
-     * @param team
+     * The function returns a string of the owners of the team
      */
-    public String showTeamOwners(Team team) {
+    public String showTeamOwners() {
         StringBuilder builder = new StringBuilder();
         if (team != null) {
             List<TeamOwner> owners = team.getOwners();
@@ -546,13 +657,12 @@ public class TeamManagement {
     }
 
     /**
-     * The function receives a name of user and returns the team onwer user if it exists,
+     * The function receives a name of user and returns the team owner user if it exists,
      * otherwise return null
      * @param fullName
-     * @param team
      * @return
      */
-    public User getTeamOwnerUserByName(String fullName, Team team) {
+    public User getTeamOwnerUserByName(String fullName) {
         if (team != null && fullName != null)
             return team.getTeamOwnerByFullName(fullName);
         logger.logError("Fault: unable to get: the team or owner does not exist");
@@ -570,10 +680,9 @@ public class TeamManagement {
 
      /**
      * This function returns all the team assets
-     * @param team
      * @return
      */
-    public StringBuilder getAllTeamAssets(Team team){
+    public StringBuilder getAllTeamAssets(){
         StringBuilder assets = new StringBuilder();
         if (team != null) {
             for (TeamAsset asset : team.getAllAssets())
@@ -584,12 +693,11 @@ public class TeamManagement {
 
     /**
      * This function returns the team asset by type and name
-     * @param team
      * @param type
      * @param name
      * @return
      */
-    public TeamAsset getAssetByNameAndType(Team team, String type, String name) {
+    public TeamAsset getAssetByNameAndType(String type, String name) {
         if (team!=null)
             return team.getAssetByNameAndType(type, name);
         logger.logError("Fault: unable to get: the team does not exist");
@@ -608,9 +716,8 @@ public class TeamManagement {
 
     /**
      * The function returns a string of the optional nominees for team manager
-     * @param team
      */
-    public String showOptionalNomineesForTeamManager(Team team) {
+    public String showOptionalNomineesForTeamManager() {
         StringBuilder builder = new StringBuilder();
         if (team !=null) {
             List<User> optionalNominees = team.getOptionalNomineesForTeamManager();
@@ -623,11 +730,10 @@ public class TeamManagement {
 
     /**
      * This function return a user with the full name 'name' from the team 'team'
-     * @param team
      * @param name
      * @return
      */
-    public User getUserForTeamManagerNominees(Team team, String name) {
+    public User getUserForTeamManagerNominees(String name) {
         if (team != null)
             return team.getUserForTeamManager(name);
         logger.logError("Fault: unable to get: the team does not exist");
@@ -641,6 +747,7 @@ public class TeamManagement {
     public Team createANewTeam(User teamOwner, String teamName){
         if (teamOwner != null && teamOwner instanceof TeamOwner){
             Team team = new Team(teamName, (TeamOwner)teamOwner);
+            TeamCRUD.postTeam(teamName);
             return team;
         }
         logger.logError("Fault: unable to create: the team owner does not exist or not a team owner");
@@ -660,18 +767,28 @@ public class TeamManagement {
                 if (!confirmed) {
                     for (TeamOwner owner : team.getOwners())
                         owner.getNotification("Your team registration request for " + teamName + " was rejected");
-                    CRUD.removeTeam(team);
+                    TeamCRUD.removeTeam(team.getName());
                 } else {
                     team.registerTeam();
+                    TeamCRUD.setTeamActivity(team.getName(), true);
+                    TeamCRUD.setTeamRegistration(team.getName(), true);
                     for (TeamOwner owner : team.getOwners())
                         owner.getNotification("Your team registration request for " + teamName + " was approved");
-
                 }
             }
             return true;
         }
         logger.logError("Fault: unable to commit: the team name is empty");
         return false;
+    }
+
+    /**
+     * This function validates a single param
+     * @param param
+     * @return
+     */
+    private boolean validParam(String param){
+        return (param!=null || (param.trim().isEmpty()));
     }
 }
 
