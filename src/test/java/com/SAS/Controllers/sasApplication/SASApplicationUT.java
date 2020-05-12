@@ -53,6 +53,7 @@ class SASApplicationUT {
             {
                 add("1992-12-20");
                 add("Striker");
+                add("macabi");
             }
         };
         sasApp.editUserDetails("AviCo", details, "PLAYER");
@@ -67,6 +68,7 @@ class SASApplicationUT {
             {
                 add("1992-12-20");
                 add("Striker");
+                add("macabi");
             }
         };
         assertTrue(sasApp.editUserDetails("AviCo", details, "PLAYER"));

@@ -406,12 +406,9 @@ public class TeamCRUD {
         if (!isTeamExist(teamName)) {
             return null;
         }
-
         Team team;
         Map<String, Object> result;
-
         try {
-
             String sqlTeam = "SELECT team_name, manager_user_id, coach_user_id FROM team WHERE team_name = ?";
             result = jdbcTemplate.queryForMap(sqlTeam, new Object[]{teamName});
             team = new Team (teamName);

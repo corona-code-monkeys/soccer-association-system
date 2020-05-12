@@ -497,7 +497,7 @@ public class TeamManagementAT {
         ((Player)playerToBeManager).setDateOfBirth(LocalDate.parse("1990-12-01"));
         team.addPlayerToTeam((Player)playerToBeManager);
         playerToBeManager = teamManagement.addTeamManager(playerToBeManager, teamOwner, true);
-        team.getPersonalPage().setDescription(team.getPersonalPage().getDescription() + ", " + "Team manager: " + ((TeamManager)playerToBeManager).getFullName());
+        team.getPersonalPage().setDescription(team.getPersonalPage().getDescription() + ", " + "Team manager: " + ((Player)playerToBeManager).getFullName());
 
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         myTeam.getPersonalPage().showPersonalPage();
@@ -536,7 +536,7 @@ public class TeamManagementAT {
         playerToBeTeamOwner= teamManagement.addAdditionalTeamOwner(playerToBeTeamOwner, teamOwner);
 
         playerToBeManager = teamManagement.addTeamManager(playerToBeManager, playerToBeTeamOwner, true);
-        team.getPersonalPage().setDescription(team.getPersonalPage().getDescription() + ", " + "Team manager: " + ((TeamManager)playerToBeManager).getFullName());
+        team.getPersonalPage().setDescription(team.getPersonalPage().getDescription() + ", " + "Team manager: " + ((Player)playerToBeManager).getFullName());
 
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
         myTeam.getPersonalPage().showPersonalPage();
