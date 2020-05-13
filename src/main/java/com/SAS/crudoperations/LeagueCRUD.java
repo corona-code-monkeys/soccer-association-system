@@ -90,6 +90,9 @@ public class LeagueCRUD {
     public static boolean isRefExist(Referee ref) {
         try {
             String query = String.format("SELECT user_id FROM referee WHERE user_id=\"%d\"", UsersCRUD.getUserIdByUserName(ref.getUserName()));
+            if (UsersCRUD.getUserIdByUserName(ref.getUserName()) == -1) {
+                return false;
+            }
             jdbcTemplate.queryForObject(query, int.class);
             return true;
         } catch (EmptyResultDataAccessException e) {
@@ -98,22 +101,21 @@ public class LeagueCRUD {
     }
 
     public static boolean removeRefFromLeague(Referee ref, League league) {
-        if (isRefExist(ref) && isLeagueExist(league.getName())) {
-            try {
-                String query = String.format("DELETE FROM referees_in_duty WHERE referee_id=\"%d\" AND league_name=\"%s\"", ref.getUser().getUserID(), league.getName());
-                jdbcTemplate.update(query, int.class);
-                return true;
-            } catch (EmptyResultDataAccessException e) {
+        try {
+            String query = String.format("DELETE FROM referees_in_duty WHERE user_id=%d AND league_name=\"%s\"", ref.getUserID(), league.getName());
+            if(jdbcTemplate.update(query)==0||ref.getUserID()==-1){
                 return false;
             }
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
         }
-        return false;
     }
 
     public static boolean addRefToLeagueInSeason(League league, Season season, HashSet<Referee> referees) {
         for (Referee ref : referees) {
             if (!isRefExistInLeagueInSeason(ref)) {
-                String query = String.format("insert into referees_in_duty values (\"%s\",%d, %d, %d);", league.getName(), season.getYear(), ref.getUser().getUserID(), ref.getLevel());
+                String query = String.format("insert into referees_in_duty values (\"%s\",%d, %d, %d);", league.getName(), season.getYear(), ref.getUserID(), ref.getLevel());
                 jdbcTemplate.update(query);
             } else {
                 removeRefFromLeague(ref, league);
@@ -125,7 +127,7 @@ public class LeagueCRUD {
     public static boolean isRefExistInLeagueInSeason(Referee ref) {
         if (isRefExist(ref)) {
             try {
-                String query = String.format("SELECT * FROM referees_in_duty WHERE referee_id=\"%d\"", ref.getUserID());
+                String query = String.format("SELECT * FROM referees_in_duty WHERE user_id=\"%d\"", ref.getUserID());
                 jdbcTemplate.queryForObject(query, int.class);
                 return true;
             } catch (EmptyResultDataAccessException e) {
@@ -157,21 +159,24 @@ public class LeagueCRUD {
     }
 
     public static boolean addReferee(Referee referee) {
-        if (!isRefExist(referee)) {
-            try {
-                String query = String.format("insert into referee (user_id,level) values (\"%d\",\"%d\")", UsersCRUD.getUserIdByUserName(referee.getUserName()), referee.getLevel());
-                jdbcTemplate.update(query);
-                return true;
-            } catch (EmptyResultDataAccessException e) {
+        try {
+            String query = String.format("insert into referee (user_id,level) values (\"%d\",\"%d\")", UsersCRUD.getUserIdByUserName(referee.getUserName()), referee.getLevel());
+            if (UsersCRUD.getUserIdByUserName(referee.getUserName()) == -1) {
                 return false;
             }
+            jdbcTemplate.update(query);
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
         }
-        return false;
     }
 
     public static boolean removeReferee(Referee referee) {
         try {
             String query = String.format("DELETE FROM referee WHERE user_id=%d", UsersCRUD.getUserIdByUserName(referee.getUserName()));
+            if (UsersCRUD.getUserIdByUserName(referee.getUserName()) == -1) {
+                return false;
+            }
             jdbcTemplate.update(query);
             return true;
         } catch (EmptyResultDataAccessException e) {
