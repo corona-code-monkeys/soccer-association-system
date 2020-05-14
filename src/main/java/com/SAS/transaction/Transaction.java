@@ -43,7 +43,7 @@ public class Transaction {
     public Transaction(double amount, String type, LocalDate date, String teamName, String description) {
         this.amount = amount;
         this.description = description;
-        this.type = TransactionType.valueOf(type);;
+        this.type = TransactionType.valueOf(type);
         this.date = date;
     }
 
