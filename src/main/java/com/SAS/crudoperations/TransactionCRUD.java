@@ -21,20 +21,44 @@ public class TransactionCRUD {
 
     /**
      * The function receives transaction and add it to the db
-     * @param newTransaction
+     * @param teamName
+     * @param amount
+     * @param type
+     * @param teamOwnerUserName
+     * @param date
+     * @param description
      * @return
      */
-    public static boolean addTransactionToDB(Transaction newTransaction){
+    public static boolean addTransactionToDB(String teamName, double amount, String type, String teamOwnerUserName, String date, String description){
         try {
-            String team_name = newTransaction.getTeam().getName();
-            Double amount = newTransaction.getAmount();
-            TransactionType type = newTransaction.getType();
-            int teamOwnerId = UsersCRUD.getUserIdByUserName(newTransaction.getReportedBy().getUserName());
-            String date = newTransaction.getDate().toString();
-            String description = newTransaction.getDescription();
+            int teamOwnerId = UsersCRUD.getUserIdByUserName(teamOwnerUserName);
+            if(teamOwnerId == -1){
+                return false;
+            }
 
-            String query = String.format("insert into transactions (team_name, amount, type, team_owner_reported_id, date, description) values ( \"%s\", \"%f\", \"%s\", \"%d\", \"%s\", \"%s\");", team_name, amount, type, teamOwnerId, date, description);
+            String query = String.format("insert into transactions (team_name, amount, type, team_owner_reported_id, date, description) values ( \"%s\", \"%f\", \"%s\", \"%d\", \"%s\", \"%s\");", teamName, amount, type, teamOwnerId, date, description);
             jdbcTemplate.update(query);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * The function delete transaction
+     * @param userName
+     * @return
+     */
+    public static boolean deleteTransaction(String userName) {
+        if(userName == null || userName.trim().isEmpty()) {
+            return false;
+        }
+
+        try {
+            int userId = UsersCRUD.getUserIdByUserName(userName);
+            String delete = String.format("delete from transactions where team_owner_reported_id = \"%d\";", userId);
+            jdbcTemplate.update(delete);
             return true;
         }
         catch (Exception e){
