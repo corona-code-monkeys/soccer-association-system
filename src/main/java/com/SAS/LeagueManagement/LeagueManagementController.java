@@ -72,9 +72,8 @@ public class LeagueManagementController {
     }
 
     public boolean initLeague(String name) {
-        League league = new League(name);
-        if (!LeagueCRUD.isLeagueExist(league.getName())) {
-            if (LeagueCRUD.addLeague(league)) {
+        if (!LeagueCRUD.isLeagueExist(name)) {
+            if (LeagueCRUD.addLeague(name)) {
                 return true;
             }
             logger.logError("Fault: unable to init league");
@@ -87,7 +86,7 @@ public class LeagueManagementController {
 
     public boolean addSeasonToALeague(Season season, League league) {
         if (LeagueCRUD.isLeagueExist(league.getName()) && LeagueCRUD.isSeasonExist(season.getYear())) {
-            LeagueCRUD.addLeagueToSeason(league, season);
+            LeagueCRUD.addLeagueToSeason(league.getName(), season.getYear());
         }
         logger.logError("Fault: unable to add season to league");
         return false;
@@ -97,7 +96,7 @@ public class LeagueManagementController {
     public boolean assignRefereesToLeagueInSpecificSeason(League league, Season season, HashSet<Referee> referees, User user) {
         if (canAccessSettingsPage(user)) {
             if (LeagueCRUD.isLeagueExist(league.getName()) && LeagueCRUD.isSeasonExist(season.getYear())) {
-                if (LeagueCRUD.addRefToLeagueInSeason(league, season, referees)) {
+                if (LeagueCRUD.addRefToLeagueInSeason(league.getName(), season.getYear(), referees)) {
                     boolean isNew = true;
                     //add referees
                     for (Referee referee : referees) {
@@ -257,7 +256,7 @@ public class LeagueManagementController {
                 logger.logError("Fault: false points policy");
                 return false;
         }
-        if (LeagueCRUD.addPoliciesToLeagueInSeason(league, season, rankPolicy, pointsPolicy, gamePolicy)) {
+        if (LeagueCRUD.addPoliciesToLeagueInSeason(league.getName(), season.getYear(), rankPolicy.getName(), pointsPolicy.getName(), gamePolicy.getName())) {
             return true;
         }
         return false;
@@ -357,7 +356,7 @@ public class LeagueManagementController {
         if (canAccessSettingsPage(user)) {
             if (referee != null) {
                 referees.remove(referee);
-                if (LeagueCRUD.removeReferee((Referee) referee)) {
+                if (LeagueCRUD.removeReferee(referee.getUserID())) {
                     logger.logEvent("User: " + ((Role) user).getUserName() + ". Removed referee");
                     return true;
                 }
@@ -384,9 +383,8 @@ public class LeagueManagementController {
             if (name == null || name.trim().isEmpty()) {
                 return false;
             }
-            League league=new League(name);
-            leagues.add(league);
-            if(LeagueCRUD.addLeague(league)) {
+            leagues.add(new League(name));
+            if(LeagueCRUD.addLeague(name)) {
                 logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new league");
                 return true;
             }
@@ -456,7 +454,7 @@ public class LeagueManagementController {
                 int year = Integer.parseInt(yearStr);
                 Season season=new Season(year, new HashSet<>(), new HashSet<>());
                 league.addSeason(season);
-                if(LeagueCRUD.addLeagueToSeason(league,season)) {
+                if(LeagueCRUD.addLeagueToSeason(league.getName(),season.getYear())) {
                     logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new season to league: " + league.getName());
                     return true;
                 }

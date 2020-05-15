@@ -33,7 +33,7 @@ class LeagueCRUDTest {
 
         }
         if (LeagueCRUD.isSeasonExist(season.getYear())) {
-            LeagueCRUD.removeSeason(season);
+            LeagueCRUD.removeSeason(season.getYear());
         }
 //        if(LeagueCRUD.isRefExist(ref)){
 //            UsersCRUD.deleteUser(ref.getUserName());
@@ -42,33 +42,30 @@ class LeagueCRUDTest {
 
     @Test
     void isLeagueExist() {
-        League league = new League(name);
         Assertions.assertFalse(LeagueCRUD.isLeagueExist(name));
-        LeagueCRUD.addLeague(league);
+        LeagueCRUD.addLeague(name);
         Assertions.assertTrue(LeagueCRUD.isLeagueExist(name));
     }
 
     @Test
     void addLeague() {
-        League league = new League(name);
-        Assertions.assertTrue(LeagueCRUD.addLeague(league));
+        Assertions.assertTrue(LeagueCRUD.addLeague(name));
     }
 
     @Test
     void addLeagueToSeason() {
-        League league = new League(name);
-        LeagueCRUD.addLeague(league);
-        LeagueCRUD.addSeason(season);
-        Assertions.assertTrue(LeagueCRUD.addLeagueToSeason(league, season));
+        LeagueCRUD.addLeague(name);
+        LeagueCRUD.addSeason(season.getYear());
+        Assertions.assertTrue(LeagueCRUD.addLeagueToSeason(name, season.getYear()));
     }
 
     @Test
     void isRefExist() {
         ref.setLevel(2);
-        Assertions.assertFalse(LeagueCRUD.isRefExist(ref));
+        Assertions.assertFalse(LeagueCRUD.isRefExist(ref.getUserName()));
         UsersCRUD.postUser(ref.getUserName(),"dekel",ref.getFullName(),ref.getRole());
         LeagueCRUD.addReferee(ref);
-        Assertions.assertTrue(LeagueCRUD.isRefExist(ref));
+        Assertions.assertTrue(LeagueCRUD.isRefExist(ref.getUserName()));
         UsersCRUD.deleteUser(ref.getUserName());
     }
 
@@ -79,7 +76,7 @@ class LeagueCRUDTest {
     @Test
     void isSeasonExist() {
         Assertions.assertFalse(LeagueCRUD.isSeasonExist(season.getYear()));
-        LeagueCRUD.addSeason(season);
+        LeagueCRUD.addSeason(season.getYear());
         Assertions.assertTrue(LeagueCRUD.isSeasonExist(season.getYear()));
     }
 
@@ -89,24 +86,24 @@ class LeagueCRUDTest {
         ref.setLevel(1);
         UsersCRUD.postUser(ref.getUserName(),"dekel","dekel",ref.getRole());
         Assertions.assertTrue(LeagueCRUD.addReferee(ref));
-        LeagueCRUD.removeReferee(ref);
+        LeagueCRUD.removeReferee(ref.getUserID());
         UsersCRUD.deleteUser(ref.getUserName());
 
     }
 
     @Test
     void removeReferee() {
-        Assertions.assertFalse(LeagueCRUD.removeReferee(ref));
+        Assertions.assertFalse(LeagueCRUD.removeReferee(ref.getUserID()));
         ref.setLevel(1);
         UsersCRUD.postUser(ref.getUserName(),"dekel","dekel",ref.getRole());
         LeagueCRUD.addReferee(ref);
-        Assertions.assertTrue(LeagueCRUD.removeReferee(ref));
+        Assertions.assertTrue(LeagueCRUD.removeReferee(ref.getUserID()));
         UsersCRUD.deleteUser(ref.getUserName());
     }
     @Test
     void addPoliciesToLeagueInSeason() {
         League league = new League(name);
-        Assertions.assertTrue(LeagueCRUD.addPoliciesToLeagueInSeason(league, season, new GoalDifference(), new ThreeForWinOneForDrawPolicy(), new TwoRoundsLeague()));
+        Assertions.assertTrue(LeagueCRUD.addPoliciesToLeagueInSeason(name, season.getYear(), new GoalDifference().getName(), new ThreeForWinOneForDrawPolicy().getName(), new TwoRoundsLeague().getName()));
     }
 //    @Test
 //    void addRefToLeagueInSeason() {

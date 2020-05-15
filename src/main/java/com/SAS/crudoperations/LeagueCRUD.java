@@ -27,10 +27,10 @@ public class LeagueCRUD {
         }
     }
 
-    public static boolean addLeague(League league) {
-        if (!isLeagueExist(league.getName())) {
+    public static boolean addLeague(String name) {
+        if (!isLeagueExist(name)) {
             try {
-                String query = String.format("insert into league values (\"%s\")", league.getName());
+                String query = String.format("insert into league values (\"%s\")", name);
                 jdbcTemplate.update(query);
                 return true;
             } catch (EmptyResultDataAccessException e) {
@@ -40,10 +40,10 @@ public class LeagueCRUD {
         return false;
     }
 
-    public static boolean addSeason(Season season) {
-        if (!isSeasonExist(season.getYear())) {
+    public static boolean addSeason(int year) {
+        if (!isSeasonExist(year)) {
             try {
-                String query = String.format("insert into season (season_year) values (\"%d\")", season.getYear());
+                String query = String.format("insert into season (season_year) values (\"%d\")", year);
                 jdbcTemplate.update(query);
                 return true;
             } catch (EmptyResultDataAccessException e) {
@@ -53,10 +53,10 @@ public class LeagueCRUD {
         return false;
     }
 
-    public static boolean addLeagueToSeason(League league, Season season) {
-        if (LeagueCRUD.isLeagueExist(league.getName()) && LeagueCRUD.isSeasonExist(season.getYear())) {
+    public static boolean addLeagueToSeason(String name, int  year) {
+        if (LeagueCRUD.isLeagueExist(name) && LeagueCRUD.isSeasonExist(year)) {
             try {
-                String query = String.format("UPDATE season SET league_name =(\"%s\") WHERE season_year = \"%d\";", league.getName(), season.getYear());
+                String query = String.format("UPDATE season SET league_name =(\"%s\") WHERE season_year = \"%d\";", name, year);
                 jdbcTemplate.update(query);
                 return true;
             } catch (EmptyResultDataAccessException e) {
@@ -77,9 +77,9 @@ public class LeagueCRUD {
         }
     }
 
-    public static boolean removeSeason(Season season) {
+    public static boolean removeSeason(int year) {
         try {
-            String query = String.format("DELETE FROM season WHERE season_year=\"%d\"", season.getYear());
+            String query = String.format("DELETE FROM season WHERE season_year=\"%d\"", year);
             jdbcTemplate.update(query);
             return true;
         } catch (EmptyResultDataAccessException e) {
@@ -87,10 +87,10 @@ public class LeagueCRUD {
         }
     }
 
-    public static boolean isRefExist(Referee ref) {
+    public static boolean isRefExist(String username) {
         try {
-            String query = String.format("SELECT user_id FROM referee WHERE user_id=\"%d\"", UsersCRUD.getUserIdByUserName(ref.getUserName()));
-            if (UsersCRUD.getUserIdByUserName(ref.getUserName()) == -1) {
+            String query = String.format("SELECT user_id FROM referee WHERE user_id=\"%d\"", UsersCRUD.getUserIdByUserName(username));
+            if (UsersCRUD.getUserIdByUserName(username) == -1) {
                 return false;
             }
             jdbcTemplate.queryForObject(query, int.class);
@@ -100,10 +100,10 @@ public class LeagueCRUD {
         }
     }
 
-    public static boolean removeRefFromLeague(Referee ref, League league) {
+    public static boolean removeRefFromLeague(String username, String name) {
         try {
-            String query = String.format("DELETE FROM referees_in_duty WHERE user_id=%d AND league_name=\"%s\"", ref.getUserID(), league.getName());
-            if(jdbcTemplate.update(query)==0||ref.getUserID()==-1){
+            String query = String.format("DELETE FROM referees_in_duty WHERE user_id=%d AND league_name=\"%s\"", username, name);
+            if(jdbcTemplate.update(query)==0||UsersCRUD.getUserIdByUserName(username)==-1){
                 return false;
             }
             return true;
@@ -112,22 +112,22 @@ public class LeagueCRUD {
         }
     }
 
-    public static boolean addRefToLeagueInSeason(League league, Season season, HashSet<Referee> referees) {
+    public static boolean addRefToLeagueInSeason(String name, int year, HashSet<Referee> referees) {
         for (Referee ref : referees) {
-            if (!isRefExistInLeagueInSeason(ref)) {
-                String query = String.format("insert into referees_in_duty values (\"%s\",%d, %d, %d);", league.getName(), season.getYear(), ref.getUserID(), ref.getLevel());
+            if (!isRefExistInLeagueInSeason(ref.getUserName())) {
+                String query = String.format("insert into referees_in_duty values (\"%s\",%d, %d, %d);", name, year, ref.getUserID(), ref.getLevel());
                 jdbcTemplate.update(query);
             } else {
-                removeRefFromLeague(ref, league);
+                removeRefFromLeague(ref.getUserName(), name);
             }
         }
         return true;
     }
 
-    public static boolean isRefExistInLeagueInSeason(Referee ref) {
-        if (isRefExist(ref)) {
+    public static boolean isRefExistInLeagueInSeason(String username) {
+        if (isRefExist(username)) {
             try {
-                String query = String.format("SELECT * FROM referees_in_duty WHERE user_id=\"%d\"", ref.getUserID());
+                String query = String.format("SELECT * FROM referees_in_duty WHERE user_id=\"%d\"", username);
                 jdbcTemplate.queryForObject(query, int.class);
                 return true;
             } catch (EmptyResultDataAccessException e) {
@@ -148,9 +148,9 @@ public class LeagueCRUD {
         }
     }
 
-    public static boolean addPoliciesToLeagueInSeason(League league, Season season, LeagueRankPolicy rankPolicy, PointsPolicy pointsPolicy, GamesPolicy gamePolicy) {
+    public static boolean addPoliciesToLeagueInSeason(String name, int year, String rankPolicy, String pointsPolicy, String gamePolicy) {
         try {
-            String query = String.format("insert into policies values (%d,\"%s\", \"%s\", \"%s\",\"%s\");", season.getYear(), league.getName(), rankPolicy.getName(), pointsPolicy.getName(), gamePolicy.getName());
+            String query = String.format("insert into policies values (%d,\"%s\", \"%s\", \"%s\",\"%s\");", year,name, rankPolicy, pointsPolicy, gamePolicy);
             jdbcTemplate.update(query);
             return true;
         } catch (EmptyResultDataAccessException e) {
@@ -171,10 +171,10 @@ public class LeagueCRUD {
         }
     }
 
-    public static boolean removeReferee(Referee referee) {
+    public static boolean removeReferee(int  userid) {
         try {
-            String query = String.format("DELETE FROM referee WHERE user_id=%d", UsersCRUD.getUserIdByUserName(referee.getUserName()));
-            if (UsersCRUD.getUserIdByUserName(referee.getUserName()) == -1) {
+            String query = String.format("DELETE FROM referee WHERE user_id=%d", userid);
+            if (userid == -1) {
                 return false;
             }
             jdbcTemplate.update(query);
