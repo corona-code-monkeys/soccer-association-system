@@ -34,6 +34,20 @@ public class Transaction {
     }
 
     /**
+     * constructor from sql
+     * @param amount
+     * @param type
+     * @param date
+     * @param teamName
+     */
+    public Transaction(double amount, String type, LocalDate date, String teamName, String description) {
+        this.amount = amount;
+        this.description = description;
+        this.type = TransactionType.valueOf(type);
+        this.date = date;
+    }
+
+    /**
      * The function returns the amount of the transactions
      * @return
      */
