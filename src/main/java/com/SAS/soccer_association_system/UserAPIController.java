@@ -27,4 +27,16 @@ public class UserAPIController {
         return app.login(username, password) ? "Found" : "NotFound";
     }
 
+    /**
+     * The function receives username and password and returns response OK if the exists in the system,
+     * otherwise returns false
+     * @return the list
+     */
+    @PostMapping(value ="/exit")
+    public String postExitUser(@RequestBody String credentials) {
+        JSONObject json = new JSONObject(credentials);
+        String username = json.get("username").toString();
+        return app.exit(username) ? "OK" : "Failed";
+    }
+
 }
