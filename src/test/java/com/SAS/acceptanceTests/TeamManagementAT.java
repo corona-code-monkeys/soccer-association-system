@@ -1,9 +1,9 @@
 package com.SAS.acceptanceTests;
 
 import com.SAS.Controllers.sasApplication.SASApplication;
-import com.SAS.Controllers.systemController.SystemController;
 import com.SAS.User.*;
 import com.SAS.crudoperations.TeamCRUD;
+import com.SAS.dbstub.dbStub;
 import com.SAS.facility.Facility;
 import com.SAS.facility.facilityType;
 import com.SAS.team.Team;
@@ -30,12 +30,12 @@ public class TeamManagementAT {
     private Team team;
     private User teamOwner;
     private SASApplication sasApp;
-    private SystemController sys;
+    private dbStub db;
 
     @BeforeEach
     public void setUp()  {
-        sys = new SystemController();
-        sys.initializeDB();
+        db = new dbStub();
+        db.initializeDB();
         sasApp= new SASApplication();
 
         userController = new UserController();

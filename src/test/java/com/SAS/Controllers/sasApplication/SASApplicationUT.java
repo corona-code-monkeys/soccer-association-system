@@ -1,15 +1,13 @@
 package com.SAS.Controllers.sasApplication;
 
-import com.SAS.Controllers.systemController.SystemController;
 import com.SAS.User.User;
 import com.SAS.User.UserType;
-import com.SAS.crudoperations.CRUD;
 import com.SAS.crudoperations.UsersCRUD;
+import com.SAS.dbstub.dbStub;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,12 +16,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class SASApplicationUT {
 
     private SASApplication sasApp;
-    private SystemController sys;
+    private dbStub db;
 
     @BeforeEach
     public void setUp() {
-        sys = new SystemController();
-        sys.initializeDB();
+        db = new dbStub();
+        db.initializeDB();
         sasApp= new SASApplication();
         sasApp.createUser("AviCo", "Avi2468","Avi Cohen", UserType.PLAYER, true, null );
     }

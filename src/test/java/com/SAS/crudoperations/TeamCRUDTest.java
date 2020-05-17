@@ -1,7 +1,6 @@
 package com.SAS.crudoperations;
 
-import com.SAS.Controllers.systemController.SystemController;
-import com.SAS.team.Team;
+import com.SAS.dbstub.dbStub;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TeamCRUDTest {
 
-    private SystemController sys;
+    private dbStub db;
 
     @BeforeEach
     void setUp() {
-        sys = new SystemController();
-        sys.initializeDB();
+        db = new dbStub();
+        db.initializeDB();
         TeamCRUD.postTeam("Macabi");
         UsersCRUD.postUser("aviC", "cohen123", "Avi Choen", "COACH");
     }
