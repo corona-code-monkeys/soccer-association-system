@@ -5,6 +5,7 @@ import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.team.Team;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import com.SAS.systemLoggers.LoggerFactory;
 
@@ -15,6 +16,7 @@ public class UserController {
      */
     private LoggerFactory logger;
     private Privileges globalPrivileges;
+    private List<String> loggedInUsers;
 
     /**
      * Constructor
@@ -22,7 +24,7 @@ public class UserController {
     public UserController() {
         this.globalPrivileges = Privileges.getInstance();
         this.logger = LoggerFactory.getInstance();
-
+        this.loggedInUsers = new LinkedList<>();
     }
 
     /**
@@ -299,7 +301,12 @@ public class UserController {
      */
     public boolean isUserExist(String username, String password){
         if (validParam(username) && validParam(password)) {
-            return UsersCRUD.isUserValid(username, password);
+            Boolean isExist = UsersCRUD.isUserValid(username, password);
+            if (isExist) {
+                this.loggedInUsers.add(username);
+            }
+
+            return isExist;
         }
         return false;
     }
