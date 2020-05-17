@@ -1,12 +1,12 @@
 package com.SAS.crudoperations;
 
-import com.SAS.Controllers.systemController.SystemController;
 import com.SAS.League.League;
 import com.SAS.League.Season;
 import com.SAS.User.Player;
 import com.SAS.User.Referee;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
+import com.SAS.dbstub.dbStub;
 import com.SAS.facility.Facility;
 import com.SAS.facility.facilityType;
 import com.SAS.game.Game;
@@ -26,7 +26,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameCRUDTest {
-    private SystemController sys;
+
+    private dbStub db;
     private Game game;
     private Player player1;
     private Player player2;
@@ -36,8 +37,8 @@ public class GameCRUDTest {
     @BeforeEach
     void setUp() {
         UserController uc = new UserController();
-        sys = new SystemController();
-        sys.initializeDB();
+        db = new dbStub();
+        db.initializeDB();
         Season season = new Season(1992, new HashSet<>(), new HashSet<>());
         League league = new League("testLeague");
         Team host = new Team();

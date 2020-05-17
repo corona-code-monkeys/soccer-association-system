@@ -1,14 +1,10 @@
-package com.SAS.soccer_association_system;
+package com.SAS.dbstub;
 
 import com.SAS.crudoperations.*;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
-public class SoccerAssociationSystemApplication {
+public class dbStub {
 
     private static ApplicationContext ctx;
     public static TransactionCRUD transDao;
@@ -17,18 +13,13 @@ public class SoccerAssociationSystemApplication {
     public static TeamCRUD teamDao;
     public static LeagueCRUD leagueCRUD;
 
-    public static void main(String[] args) {
-        SpringApplication.run(SoccerAssociationSystemApplication.class, args);
-        init();
-    }
-
 
     /**
      * The function initialize all the schemas in the DB
      *
      * @return
      */
-    public static void init() {
+    public static void initializeDB() {
         ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         transDao = (TransactionCRUD) ctx.getBean("transDao");
         usersDao = (UsersCRUD) ctx.getBean("usersDao");
@@ -36,5 +27,4 @@ public class SoccerAssociationSystemApplication {
         teamDao = (TeamCRUD) ctx.getBean("teamDao");
         leagueCRUD = (LeagueCRUD) ctx.getBean("leagueDao");
     }
-
 }

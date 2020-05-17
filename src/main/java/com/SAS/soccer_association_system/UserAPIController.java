@@ -24,7 +24,7 @@ public class UserAPIController {
         JSONObject json = new JSONObject(credentials);
         String username = json.get("username").toString();
         String password = json.get("password").toString();
-        return app.login(username, password) ? "OK" : "Failed";
+        return app.login(username, password) ? "Found" : "NotFound";
     }
 
 }

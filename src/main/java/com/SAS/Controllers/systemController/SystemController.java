@@ -3,10 +3,7 @@ package com.SAS.Controllers.systemController;
 import com.SAS.User.User;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
-import com.SAS.crudoperations.*;
 import com.SAS.systemLoggers.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.LinkedList;
 
@@ -18,12 +15,6 @@ public class SystemController {
     private LinkedList<ExternalSystem> connectedExternalSystems;
     private UserController userController;
     private User admin;
-    private static ApplicationContext ctx;
-    public static TransactionCRUD transDao;
-    public static UsersCRUD usersDao;
-    public static GameCRUD gameDao;
-    public static TeamCRUD teamDao;
-    public static LeagueCRUD leagueCRUD;
 
 
 
@@ -52,21 +43,6 @@ public class SystemController {
     //TODO: insert data to DB
     public boolean insertDateToDB() {
         return false;
-    }
-
-    /**
-     * The function initialize all the schemas in the DB
-     *
-     * @return
-     */
-    //TODO: initialize DB schemas
-    public void initializeDB() {
-        ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-        transDao = (TransactionCRUD) ctx.getBean("transDao");
-        usersDao = (UsersCRUD) ctx.getBean("usersDao");
-        gameDao = (GameCRUD) ctx.getBean("gameDao");
-        teamDao = (TeamCRUD) ctx.getBean("teamDao");
-        leagueCRUD = (LeagueCRUD) ctx.getBean("leagueDao");
     }
 
 

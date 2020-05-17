@@ -1,10 +1,10 @@
 package com.SAS.crudoperations;
 
-import com.SAS.Controllers.systemController.SystemController;
 import com.SAS.User.TeamOwner;
 import com.SAS.User.User;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
+import com.SAS.dbstub.dbStub;
 import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamManagement;
 import com.SAS.transaction.Transaction;
@@ -24,15 +24,15 @@ class TransactionCRUDTest {
     private UserController userController;
     private Team team;
     private User teamOwner;
-    private SystemController sys;
+    private dbStub db;
     private Transaction t;
     LocalDate date;
 
 
     @BeforeEach
     public void setUp() {
-        sys = new SystemController();
-        sys.initializeDB();
+        db = new dbStub();
+        db.initializeDB();
         date = LocalDate.now();
         t = new Transaction(1000, TransactionType.INCOME, date , team, "bought arnon", (TeamOwner) teamOwner);
         userController = new UserController();
