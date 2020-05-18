@@ -4,7 +4,6 @@
 package com.SAS.teamManagenemt;
 
 import com.SAS.User.*;
-import com.SAS.crudoperations.CRUD;
 import com.SAS.crudoperations.TeamCRUD;
 import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.facility.*;
@@ -60,7 +59,7 @@ public class TeamManagement {
      * @param assetType - is player or coach
      * @return the created asset
      */
-    public TeamAsset AddAssetToTeam (String assetType, User user, String username, String password, String fullname, List<String> details) {
+    public TeamAsset AddAssetToTeam (String assetType, User user, String username, String password, String fullname, String email, List<String> details) {
         if (!canAddRemoveAsset(user)){
             logger.logError("Fault: unable to add: user not authorized to add an asset to this team");
             return null;
@@ -69,14 +68,14 @@ public class TeamManagement {
         //create the asset
         switch (assetType) {
             case "Player":
-                asset = (Player) userController.createUser(username, password, fullname, UserType.PLAYER, true, null);
+                asset = (Player) userController.createUser(username, password, fullname, email, "PLAYER", true);
                 team.addPlayerToTeam((Player)asset);
                 TeamCRUD.addPlayerToTeam(team.getName(), username);
                 editAssetDetails(asset, details);
                 logger.logEvent("User: " + ((Role)user).getUserName() + ". Added player to " + team.getName() + " team.");
                 break;
             case "Coach":
-                asset = (Coach) userController.createUser(username, password, fullname, UserType.COACH, true, null);
+                asset = (Coach) userController.createUser(username, password, fullname, email,"COACH", true);
                 team.setCoach((Coach)asset);
                 TeamCRUD.setCoachToTeam(username, team.getName());
                 editAssetDetails(asset, details);
@@ -218,7 +217,7 @@ public class TeamManagement {
     public User addAdditionalTeamOwner(User newTeamOwner, User nominatedBy) {
         //check if the user can owns the team and that the nominate is the owner of the team
         if (validateUserCanOwnTeam(newTeamOwner) && ownsTeam(nominatedBy)) {
-            newTeamOwner = userController.addRoleToUser(newTeamOwner, UserType.TEAM_OWNER, true);
+            newTeamOwner = userController.addRoleToUser(newTeamOwner, "TEAM_OWNER", true);
             team.addTeamOwner((TeamOwner)newTeamOwner);
             ((TeamOwner) newTeamOwner).setTeam(team);
             ((TeamOwner) newTeamOwner).setNominatedBy((TeamOwner)nominatedBy);
@@ -248,7 +247,7 @@ public class TeamManagement {
         }
         //check if the user can manage this team and that the user that nominates him is the team owner
         if (validateTeamManager(newTeamManager) && ownsTeam(nominatedBy)){
-            newTeamManager = userController.addRoleToUser(newTeamManager, UserType.TEAM_MANAGER,approval);
+            newTeamManager = userController.addRoleToUser(newTeamManager, "TEAM_MANAGER",approval);
             team.setTeamManager((TeamManager)newTeamManager);
             ((TeamManager)newTeamManager).setTeam(team);
             ((TeamManager)newTeamManager).setNominatedBy((TeamOwner)nominatedBy);
@@ -381,7 +380,8 @@ public class TeamManagement {
 
         List<TeamOwner> teamOwners = team.getOwners();
         for (TeamOwner owner: teamOwners) {
-            if (owner.getNominatedBy() != null && owner.getNominatedBy().getUserID() == teamOwner.getUserID()) {
+            String username = owner.getNominatedByUserName();
+            if ( username!= null && UsersCRUD.getUserIdByUserName(username)== UsersCRUD.getUserIdByUserName(((TeamOwner)teamOwner).getUserName())) {
                 nominees.add(owner);
             }
         }
@@ -762,7 +762,7 @@ public class TeamManagement {
      */
     public boolean commitConfirmationOfTeam(String teamName, User representative, boolean confirmed) {
         if (teamName != null && !teamName.trim().isEmpty()) {
-            Team team = CRUD.getTeamByName(teamName);
+            Team team = TeamCRUD.getTeamByName(teamName);
             if (representative != null && representative instanceof AssociationRepresentative) {
                 if (!confirmed) {
                     for (TeamOwner owner : team.getOwners())

@@ -51,7 +51,7 @@ public class UsersCRUD {
      * @param password
      * @return
      */
-    public static boolean postUser(String userName, String password, String fullName, String role) {
+    public static boolean postUser(String userName, String password, String fullName, String email, String role) {
         if(!validParams(userName, password)){
             return false;
         }
@@ -59,7 +59,7 @@ public class UsersCRUD {
         String encrypt = hashPasswords(password);
 
         try {
-            String query = String.format("insert into user (user_name, password, full_name) values ( \"%s\", \"%s\", \"%s\");", userName, encrypt, fullName);
+            String query = String.format("insert into user (user_name, password, full_name, email) values ( \"%s\", \"%s\", \"%s\");", userName, encrypt, fullName, email);
             jdbcTemplate.update(query);
 
             return addRoleToUser(userName, role);
@@ -349,7 +349,8 @@ public class UsersCRUD {
                     new Registered(
                             rs.getString("user_name"),
                             rs.getString("password"),
-                            rs.getString("full_name")
+                            rs.getString("full_name"),
+                            rs.getString("email")
                     ));
             return user;
         }
@@ -382,6 +383,21 @@ public class UsersCRUD {
         try {
             String queryUserfullname = String.format("SELECT full_name FROM user WHERE user_name = \"%s\";", userName);
             return jdbcTemplate.queryForObject(queryUserfullname, String.class);
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    /**
+     * The function receives a userName and returns the email of the user
+     * @param userName
+     * @return
+     */
+    public static String getEmailByUserName(String userName) {
+        try {
+            String queryUserEmail = String.format("SELECT email FROM user WHERE user_name = \"%s\";", userName);
+            return jdbcTemplate.queryForObject(queryUserEmail, String.class);
         }
         catch (Exception e){
             return null;

@@ -15,7 +15,7 @@ public class CoachUT {
 
     @BeforeEach
     public void setUp() throws Exception {
-        user = new Registered("avil", "123456", "Avi Levi");
+        user = new Registered("avil", "123456", "Avi Levi", "avi@gmail.com");
         user = new Coach(user, "Avi Levi");
         ((Coach) user).setFieldRole(FieldRole.STRIKER);
         Team team = new Team();

@@ -19,7 +19,7 @@ class UsersCRUDTest {
 
     @Test
     void postUser() {
-        assertTrue(UsersCRUD.postUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER.toString()));
+        assertTrue(UsersCRUD.postUser("VladimirI", "Vladi123", "Vladimir Ivich", "vlad@gmail.com","TEAM_OWNER"));
     }
 
     @Test

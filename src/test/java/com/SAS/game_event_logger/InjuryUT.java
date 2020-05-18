@@ -16,7 +16,7 @@ class InjuryUT {
     void getInjuredPlayer() {
         UserController u = new UserController();
         String gameID = "1";
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", "rami@gmail.com", "PLAYER", true);
         Injury injury = new Injury(gameID, LocalDate.now(), 0, p, "bla bla");
         assertEquals(p.getFullName(), injury.getInjuredPlayer().getFullName());
 
@@ -26,7 +26,7 @@ class InjuryUT {
     void setInjuredPlayer() {
         UserController u = new UserController();
         String gameID = "1";
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", "rami@gmail.com","PLAYER", true);
         Injury injury = new Injury(gameID, LocalDate.now(), 0, null, "bla bla");
         assertNull(injury.getInjuredPlayer());
         injury.setInjuredPlayer(p);
@@ -37,7 +37,7 @@ class InjuryUT {
     void getDescription() {
         UserController u = new UserController();
         String gameID = "1";
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", "rami@gmail.com","PLAYER", true);
         Injury injury = new Injury(gameID, LocalDate.now(), 0, p, "bla bla");
         assertEquals("bla bla", injury.getDescription());
     }
@@ -46,7 +46,7 @@ class InjuryUT {
     void setDescription() {
         UserController u = new UserController();
         String gameID = "1";
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", "rami@gmail.com","PLAYER", true);
         Injury injury = new Injury(gameID, LocalDate.now(), 0, p, "bla bla");
         assertEquals("bla bla", injury.getDescription());
         injury.setDescription("not bla bla");

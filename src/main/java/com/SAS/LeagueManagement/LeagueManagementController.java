@@ -6,6 +6,7 @@ import com.SAS.User.*;
 import com.SAS.crudoperations.CRUD;
 import com.SAS.User.User;
 import com.SAS.crudoperations.LeagueCRUD;
+import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.systemLoggers.LoggerFactory;
 
 import java.util.HashSet;
@@ -357,7 +358,7 @@ public class LeagueManagementController {
         if (canAccessSettingsPage(user)) {
             if (referee != null) {
                 referees.remove(referee);
-                if (LeagueCRUD.removeReferee(referee.getUserID())) {
+                if (LeagueCRUD.removeReferee(UsersCRUD.getUserIdByUserName(((Referee)referee).getUserName()))) {
                     logger.logEvent("User: " + ((Role) user).getUserName() + ". Removed referee");
                     return true;
                 } else {
@@ -506,7 +507,6 @@ public class LeagueManagementController {
             return null;
         }
 
-
         for (Referee referee : referees) {
             if (referee.getUserName().equals(userName)) {
                 return referee;
@@ -516,7 +516,12 @@ public class LeagueManagementController {
         return null;
     }
 
+    /**
+     * This function return a referee by it's id
+     * @param id
+     * @return
+     */
     public User getRefereeID(int id) {
-        return null;// dont know how the return an object from the db
+        return UsersCRUD.restoreRoleForUser(id);
     }
 }

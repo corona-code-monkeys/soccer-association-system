@@ -50,9 +50,9 @@ public class GameCRUDTest {
         Team guest = new Team();
         guest.setName("Hapoel");
         game = new Game(season, league, LocalDate.now(), host, guest, 0, 0, f, new GameEventLogger(), new GameReport(), new LinkedList<Referee>());
-        player1 = (Player) uc.createUser("TheKing", "123465", "Avi Cohen", UserType.PLAYER, true, null);
-        player2 = (Player) uc.createUser("TheQueen", "123465", "Limur Asayag", UserType.PLAYER, true, null);
-        referee = (Referee) uc.createUser("NotSoCool", "123456", "Adva Polak", UserType.REFEREE, true, null);
+        player1 = (Player) uc.createUser("TheKing", "123465", "Avi Cohen", "rami@gmail.com","PLAYER", true);
+        player2 = (Player) uc.createUser("TheQueen", "123465", "Limur Asayag", "rami@gmail.com","PLAYER", true);
+        referee = (Referee) uc.createUser("NotSoCool", "123456", "Adva Polak", "rami@gmail.com","REFEREE", true);
     }
 
     @AfterEach

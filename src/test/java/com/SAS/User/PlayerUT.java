@@ -17,7 +17,7 @@ public class PlayerUT {
 
     @BeforeEach
     public void setUp() throws Exception {
-        user = new Registered("avil", "123456", "Avi Levi");
+        user = new Registered("avil", "123456", "Avi Levi", "avi@gmail.com");
         user = new Player(user, "Avi Levi");
         Team team = new Team();
         ((Player)user).setTeam(team);

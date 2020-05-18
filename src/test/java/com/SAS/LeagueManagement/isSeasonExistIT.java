@@ -36,7 +36,7 @@ public class isSeasonExistIT {
         League league = new League("Ligat Ha'al");
         Season season = new Season(2020, new HashSet<>(), new HashSet<>());
         HashSet<Referee> referees = new HashSet<>();
-        Referee ref = new Referee(new Registered("asd", "asd", "asd"), "dekel lev");
+        Referee ref = new Referee(new Registered("asd", "asd", "asd", "asd@gmail.com"), "dekel lev");
         referees.add(ref);
         Assertions.assertTrue(driverAddSeasonToALeague(season, league));
         Assertions.assertTrue(driverAssignRefereesToLeagueInSpecificSeason(league, season, referees));

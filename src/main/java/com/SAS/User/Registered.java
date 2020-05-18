@@ -9,6 +9,7 @@ public class Registered extends User {
     private String userName;
     private String password;
     private String fullName;
+    private String email;
 
 
     /**
@@ -17,10 +18,11 @@ public class Registered extends User {
      * @param password
      * @param fullName
      */
-    public Registered(String userName, String password, String fullName) {
+    public Registered(String userName, String password, String fullName, String email) {
         this.userName = userName;
         this.password = password;
         this.fullName = fullName;
+        this.email = email;
     }
 
     /**
@@ -63,4 +65,20 @@ public class Registered extends User {
         }
     }
 
+    /**
+     * This function return the user email
+     * @return
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * This function sets the user email
+     * @param email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
+

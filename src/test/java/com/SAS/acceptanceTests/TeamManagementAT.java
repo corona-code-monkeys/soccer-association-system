@@ -40,7 +40,7 @@ public class TeamManagementAT {
 
         userController = new UserController();
         teamManagement = new TeamManagement(userController);
-        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true, null);
+        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", "vlad@gmail.com", "TEAM_OWNER", true);
         team = new Team("Maccabi Tel Aviv", (TeamOwner)teamOwner);
         ((TeamOwner) teamOwner).setTeam(team);
         TeamCRUD.postTeam("Maccabi Tel Aviv");
@@ -182,7 +182,7 @@ public class TeamManagementAT {
         long startTime = System.nanoTime();
         //preparations for the test
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
-        User coach = userController.createUser("EitanS", "Ei123", "Eitan Sela", UserType.COACH, true, null);
+        User coach = userController.createUser("EitanS", "Ei123", "Eitan Sela", "Ei@gmail.com","COACH", true);
         ((Coach) coach).setLevel(3);
         ((Coach) coach).setFieldRole(FieldRole.MIDFIELDER);
         ((Coach) coach).setTeam(myTeam);
@@ -324,7 +324,7 @@ public class TeamManagementAT {
     public void addAdditionalTeamOwnerSuccess() {
         long startTime = System.nanoTime();
         //add player to the team
-        User player = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
+        User player = userController.createUser("RamiO", "Rami321", "Rami Oron", "rami@gmail.com", "PLAYER", true);
         team.addPlayerToTeam((Player) player);
         ((Player)player).setTeam(team);
 
@@ -367,7 +367,7 @@ public class TeamManagementAT {
     public void addAdditionalTeamOwnerFail() {
         long startTime = System.nanoTime();
         //add player to the team
-        User player = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
+        User player = userController.createUser("RamiO", "Rami321", "Rami Oron", "rami@gmail.com", "PLAYER", true);
         team.addPlayerToTeam((Player) player);
         ((Player)player).setTeam(team);
 
@@ -413,7 +413,7 @@ public class TeamManagementAT {
     public void addTeamManagerSuccess() {
         long startTime = System.nanoTime();
         //preparations- create a player
-        User player = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", UserType.PLAYER, true, null);
+        User player = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", "itay@gmail.com", "PLAYER", true);
         ((Player)player).setFieldRole(FieldRole.MIDFIELDER);
         ((Player)player).setTeam(team);
         ((Player)player).setDateOfBirth(LocalDate.parse("1990-12-01"));
@@ -452,7 +452,7 @@ public class TeamManagementAT {
     public void addTeamManagerFailWrongName() {
         long startTime = System.nanoTime();
         //preparations- create a player
-        User player = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", UserType.PLAYER, true, null);
+        User player = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", "itay@gmail.com", "PLAYER", true);
         ((Player)player).setFieldRole(FieldRole.MIDFIELDER);
         ((Player)player).setTeam(team);
         ((Player)player).setDateOfBirth(LocalDate.parse("1990-12-01"));
@@ -491,7 +491,7 @@ public class TeamManagementAT {
     public void removeTeamManagerSuccess() {
         long startTime = System.nanoTime();
         //preparations- create a player and nominate it to team manager
-        User playerToBeManager = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", UserType.PLAYER, true, null);
+        User playerToBeManager = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", "itay@gmail.com", "PLAYER", true);
         ((Player)playerToBeManager).setFieldRole(FieldRole.MIDFIELDER);
         ((Player)playerToBeManager).setTeam(team);
         ((Player)playerToBeManager).setDateOfBirth(LocalDate.parse("1990-12-01"));
@@ -523,14 +523,14 @@ public class TeamManagementAT {
     public void removeTeamManagerFailNominatedByAnotherTeamOwner() {
         long startTime = System.nanoTime();
         //preparations- create a player and nominate it to team manager
-        User playerToBeManager = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", UserType.PLAYER, true, null);
+        User playerToBeManager = userController.createUser("ItayC", "ItAY1234", "Itay Cohen", "itay@gmail.com", "PLAYER", true);
         ((Player)playerToBeManager).setFieldRole(FieldRole.MIDFIELDER);
         ((Player)playerToBeManager).setTeam(team);
         ((Player)playerToBeManager).setDateOfBirth(LocalDate.parse("1990-12-01"));
         team.addPlayerToTeam((Player)playerToBeManager);
 
         //another team owner
-        User playerToBeTeamOwner = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
+        User playerToBeTeamOwner = userController.createUser("RamiO", "Rami321", "Rami Oron", "rmi@gmail.com","PLAYER", true);
         team.addPlayerToTeam((Player) playerToBeTeamOwner);
         ((Player)playerToBeTeamOwner).setTeam(team);
         playerToBeTeamOwner= teamManagement.addAdditionalTeamOwner(playerToBeTeamOwner, teamOwner);
@@ -568,7 +568,7 @@ public class TeamManagementAT {
         //add owner to the team
         long startTime = System.nanoTime();
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
-        User player = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
+        User player = userController.createUser("RamiO", "Rami321", "Rami Oron", "rami@gmail.com","PLAYER", true);
         team.addPlayerToTeam((Player) player);
         ((Player)player).setTeam(team);
         teamManagement.addAdditionalTeamOwner(player, teamOwner);
@@ -612,11 +612,11 @@ public class TeamManagementAT {
         long startTime = System.nanoTime();
         //add owner to the team
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
-        User playerRami = userController.createUser("RamiO", "Rami321", "Rami Oron", UserType.PLAYER, true, null);
+        User playerRami = userController.createUser("RamiO", "Rami321", "Rami Oron", "rami@gmail.com","PLAYER", true);
         team.addPlayerToTeam((Player) playerRami);
         ((Player)playerRami).setTeam(team);
         playerRami = teamManagement.addAdditionalTeamOwner(playerRami, teamOwner);
-        User playerZohar = userController.createUser("ZoharC", "Zohar321", "Zohar Catz", UserType.PLAYER, true, null);
+        User playerZohar = userController.createUser("ZoharC", "Zohar321", "Zohar Catz", "zohar@gmail.com","PLAYER", true);
         team.addPlayerToTeam((Player) playerZohar);
         ((Player)playerZohar).setTeam(team);
         playerZohar = teamManagement.addAdditionalTeamOwner(playerZohar, playerRami);
@@ -702,7 +702,7 @@ public class TeamManagementAT {
         Team myTeam = ((TeamOwner) teamOwner).getTeam();
 
         //add team manager
-        User teamManager = userController.createUser("Rami Levi", "RamiL123", "Rami Levi", UserType.TEAM_MANAGER, true, null);
+        User teamManager = userController.createUser("Rami Levi", "RamiL123", "Rami Levi", "rami@gmail.com","TEAM_MANAGER", true);
         ((TeamManager)teamManager).setTeam(myTeam);
         myTeam.setTeamManager((TeamManager) teamManager);
         myTeam.getPersonalPage().setDescription(myTeam.getPersonalPage().getDescription() + "\n Team Manager: " + ((TeamManager) teamManager).getFullName());

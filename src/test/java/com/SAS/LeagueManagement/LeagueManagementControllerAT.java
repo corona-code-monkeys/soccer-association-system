@@ -31,7 +31,7 @@ class LeagueManagementControllerAT {
         league = new League("Premier League");
         leagueManagementController = new LeagueManagementController();
         userController = new UserController();
-        associationRepres = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.ASSOCIATION_REPRESENTATIVE, true, null);
+        associationRepres = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", "vlad@gmail.com","ASSOCIATION_REPRESENTATIVE", true);
 
     }
 
@@ -310,7 +310,7 @@ class LeagueManagementControllerAT {
 
     @Test
     public void addLeagueFail() {
-        User teamOwner = userController.createUser("Yossil", "tossi123", "Yossi Levi", UserType.TEAM_OWNER, true, null);
+        User teamOwner = userController.createUser("Yossil", "tossi123", "Yossi Levi", "yos@gmail.com", "TEAM_OWNER", true);
 
         System.out.println("-- Enter setting mode --");
         assertFalse(leagueManagementController.canAccessSettingsPage(teamOwner));

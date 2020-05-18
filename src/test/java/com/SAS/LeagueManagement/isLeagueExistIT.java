@@ -50,7 +50,7 @@ public class isLeagueExistIT {
     public void isLeagueExistTester() {
         League league= driverInitLeague("Ligat Ha'al");
         HashSet<Referee> referees= new HashSet<>();
-        Referee ref= new Referee(new Registered("asd", "asd", "asd"),"dekel lev");
+        Referee ref= new Referee(new Registered("asd", "asd", "asd", "de@gmail.com"),"dekel lev");
         referees.add(ref);
         Assertions.assertNotNull(league);
         Assertions.assertTrue(driverAddSeasonToALeague(new Season(2020, new HashSet<>(),new HashSet<>()), league));
