@@ -43,7 +43,7 @@ class LeagueManagementControllerAT {
         System.out.println(leagueManagementController.showRankPolicies());
         userChoose = "2";
         System.out.println(userChoose);
-        res = leagueManagementController.addRankPolicy(league, season, userChoose, associationRepres);
+        res = leagueManagementController.addPolicies(league, season, userChoose,"1","1", associationRepres);
         if (res) {
             System.out.println("The policy was added successfully");
             assertTrue(res);
@@ -61,7 +61,7 @@ class LeagueManagementControllerAT {
         System.out.println(leagueManagementController.showPointsPolicies());
         userChoose = "1";
         System.out.println(userChoose);
-        res = leagueManagementController.addPointsPolicy(league, season, userChoose, associationRepres);
+        res = leagueManagementController.addPolicies(league, season, userChoose,"1","1", associationRepres);
         if (res) {
             System.out.println("The policy was added successfully");
             assertTrue(res);
@@ -79,7 +79,7 @@ class LeagueManagementControllerAT {
         System.out.println(leagueManagementController.showGamePolicies());
         userChoose = "1";
         System.out.println(userChoose);
-        res = leagueManagementController.addGamePolicy(league, season, userChoose, associationRepres);
+        res = leagueManagementController.addPolicies(league, season, userChoose,"1","1", associationRepres);
         if (res) {
             System.out.println("The policy was added successfully");
             assertTrue(res);
@@ -97,7 +97,7 @@ class LeagueManagementControllerAT {
         System.out.println(leagueManagementController.showRankPolicies());
         userChoose = "5";
         System.out.println(userChoose);
-        res = leagueManagementController.addRankPolicy(league, season, userChoose, associationRepres);
+        res = leagueManagementController.addPolicies(league, season, userChoose,"1","1", associationRepres);
         if (res) {
             System.out.println("The policy was added successfully");
         }
@@ -115,7 +115,7 @@ class LeagueManagementControllerAT {
         System.out.println(leagueManagementController.showPointsPolicies());
         userChoose = "5";
         System.out.println(userChoose);
-        res = leagueManagementController.addPointsPolicy(league, season, userChoose, associationRepres);
+        res = leagueManagementController.addPolicies(league, season, userChoose, "1", "1", associationRepres);
         if (res) {
             System.out.println("The policy was added successfully");
             assertTrue(res);
@@ -134,7 +134,7 @@ class LeagueManagementControllerAT {
         System.out.println(leagueManagementController.showGamePolicies());
         userChoose = "5";
         System.out.println(userChoose);
-        res = leagueManagementController.addGamePolicy(league, season, userChoose, associationRepres);
+        res = leagueManagementController.addPolicies(league, season, userChoose,"1","1", associationRepres);
         if (res) {
             System.out.println("The policy was added successfully");
             assertTrue(res);
@@ -276,14 +276,14 @@ class LeagueManagementControllerAT {
             System.out.println("-- choose remove referee");
             System.out.println(leagueManagementController.showAllReferees());
 
-            System.out.println("Please choose the referee you want to remove");
-            String fullName = "Yossi Lev";
-            System.out.println(fullName);
+            System.out.println("Please choose the id of the referee you want to remove");
+            int id = 123456;
+            System.out.println(123456);
 
             System.out.println("Please confirm");
             System.out.println("Confirm");
 
-            User referee = leagueManagementController.getRefereeByName(fullName);
+            User referee = leagueManagementController.getRefereeID(id);
 
             assertNull(referee);
             leagueManagementController.removeReferee(referee, associationRepres);
