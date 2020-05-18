@@ -5,6 +5,7 @@ import com.SAS.League.*;
 import com.SAS.User.Referee;
 import com.SAS.User.Registered;
 import com.SAS.User.User;
+import com.SAS.dbstub.dbStub;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,15 +16,15 @@ import java.util.HashSet;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LeagueCRUDTest {
-    private SystemController sys;
+    private dbStub db;
     String name = "Ligat Ha'al";
     Season season = new Season(2020, new HashSet<>(), new HashSet<>());
     Referee ref = new Referee(new Registered("dekelle", "dekel", "dekel"), "dekel");
 
     @BeforeEach
     void setUp() {
-        sys = new SystemController();
-        sys.initializeDB();
+        db = new dbStub();
+        db.initializeDB();
     }
 
     @AfterEach
