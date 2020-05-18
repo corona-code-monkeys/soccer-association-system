@@ -37,9 +37,17 @@ public class SASApplication {
      * @param password
      * @return true if the user exists in the system, thus was logged in, otherwise false
      */
-
     public boolean login(String username, String password){
         return userController.isUserExist(username, password);
+    }
+
+    /**
+     * This function removes the user from logged in users
+     * @param username
+     * @return true of false
+     */
+    public boolean exit(String username){
+        return userController.exit(username);
     }
 
     //TODO: In UI: if true- show alert that the user was created and switch to home page so he would log in, wlse show error message
