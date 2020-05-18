@@ -94,12 +94,13 @@ public class LeagueManagementController {
 
 
     public boolean assignRefereesToLeagueInSpecificSeason(League league, Season season, HashSet<Referee> referees, User user) {
+        boolean isNew = false;
         if (canAccessSettingsPage(user)) {
             if (LeagueCRUD.isLeagueExist(league.getName()) && LeagueCRUD.isSeasonExist(season.getYear())) {
-                if (LeagueCRUD.addRefToLeagueInSeason(league.getName(), season.getYear(), referees)) {
-                    boolean isNew = true;
-                    //add referees
-                    for (Referee referee : referees) {
+                for (Referee referee : referees) {
+                    if (LeagueCRUD.addRefToLeagueInSeason(league.getName(), season.getYear(), referee.getUserName(), referee.getLevel())) {
+                        isNew=true;
+                        //add referees
                         if (!league.isRefereeInSeason(season, referee)) {
                             league.addReferee(season, referee);
                             logger.logEvent("User: " + ((Role) user).getUserName() + ". Assign new referees");
@@ -107,8 +108,8 @@ public class LeagueManagementController {
                             isNew = false;
                         }
                     }
-                    return isNew;
                 }
+                return isNew;
             }
         }
         logger.logError("Fault: unable to add referees to a specific season");
@@ -359,8 +360,7 @@ public class LeagueManagementController {
                 if (LeagueCRUD.removeReferee(referee.getUserID())) {
                     logger.logEvent("User: " + ((Role) user).getUserName() + ". Removed referee");
                     return true;
-                }
-                else{
+                } else {
                     logger.logError("Fault: unable to remove referee");
                     return false;
                 }
@@ -384,11 +384,10 @@ public class LeagueManagementController {
                 return false;
             }
             leagues.add(new League(name));
-            if(LeagueCRUD.addLeague(name)) {
+            if (LeagueCRUD.addLeague(name)) {
                 logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new league");
                 return true;
-            }
-            else{
+            } else {
                 logger.logError("Fault: could not able to add league");
                 return false;
             }
@@ -452,9 +451,9 @@ public class LeagueManagementController {
             }
             try {
                 int year = Integer.parseInt(yearStr);
-                Season season=new Season(year, new HashSet<>(), new HashSet<>());
+                Season season = new Season(year, new HashSet<>(), new HashSet<>());
                 league.addSeason(season);
-                if(LeagueCRUD.addLeagueToSeason(league.getName(),season.getYear())) {
+                if (LeagueCRUD.addLeagueToSeason(league.getName(), season.getYear())) {
                     logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new season to league: " + league.getName());
                     return true;
                 }

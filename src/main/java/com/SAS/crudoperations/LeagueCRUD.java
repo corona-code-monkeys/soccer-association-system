@@ -112,15 +112,13 @@ public class LeagueCRUD {
         }
     }
 
-    public static boolean addRefToLeagueInSeason(String name, int year, HashSet<Referee> referees) {
-        for (Referee ref : referees) {
-            if (!isRefExistInLeagueInSeason(ref.getUserName())) {
-                String query = String.format("insert into referees_in_duty values (\"%s\",%d, %d, %d);", name, year, ref.getUserID(), ref.getLevel());
+    public static boolean addRefToLeagueInSeason(String leagueName, int year, String referee, int level) {
+            if (!isRefExistInLeagueInSeason(referee)) {
+                String query = String.format("insert into referees_in_duty values (\"%s\",%d, %d, %d);", leagueName, year, UsersCRUD.getUserIdByUserName(referee), level);
                 jdbcTemplate.update(query);
             } else {
-                removeRefFromLeague(ref.getUserName(), name);
+                removeRefFromLeague(referee, leagueName);
             }
-        }
         return true;
     }
 
