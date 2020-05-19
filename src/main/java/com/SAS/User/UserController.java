@@ -4,7 +4,10 @@ import com.SAS.crudoperations.CRUD;
 import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.team.Team;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import com.SAS.systemLoggers.LoggerFactory;
 
 public class UserController {
@@ -14,6 +17,7 @@ public class UserController {
      */
     private LoggerFactory logger;
     private Privileges globalPrivileges;
+    private Set<String> loggedInUsers;
 
     /**
      * Constructor
@@ -21,7 +25,7 @@ public class UserController {
     public UserController() {
         this.globalPrivileges = Privileges.getInstance();
         this.logger = LoggerFactory.getInstance();
-
+        this.loggedInUsers = new HashSet<>();
     }
 
     /**
@@ -308,8 +312,27 @@ public class UserController {
      */
     public boolean isUserExist(String username, String password){
         if (validParam(username) && validParam(password)) {
-            return UsersCRUD.isUserValid(username, password);
+            Boolean isExist = UsersCRUD.isUserValid(username, password);
+            if (isExist) {
+                this.loggedInUsers.add(username);
+            }
+
+            return isExist;
         }
+        return false;
+    }
+
+    /**
+     * The function receives username and removes it from the logged in users
+     * @param username
+     * @return true of false
+     */
+    public boolean exit(String username){
+        if (validParam(username)) {
+            this.loggedInUsers.remove(username);
+            return true;
+        }
+
         return false;
     }
 
