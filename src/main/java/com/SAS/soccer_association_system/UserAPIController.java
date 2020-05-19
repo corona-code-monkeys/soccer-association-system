@@ -46,7 +46,7 @@ public class UserAPIController {
         return app.createUser(username, password, fullName, email, occupation, true) ? "Created" : "Error";
     }
 
-
+    /**
      * The function receives username and password and returns response OK if the exists in the system,
      * otherwise returns false
      * @return the list
