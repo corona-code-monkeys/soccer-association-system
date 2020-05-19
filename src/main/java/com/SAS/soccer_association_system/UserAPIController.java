@@ -35,7 +35,7 @@ public class UserAPIController {
      * otherwise returns false
      * @return the list
      */
-    @PostMapping(value ="/Register")
+    @PostMapping(value ="/register")
     public String postUserRegister(@RequestBody String credentials) {
         JSONObject json = new JSONObject(credentials);
         String username = json.get("username").toString();

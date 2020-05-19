@@ -19,7 +19,7 @@ class LeagueCRUDTest {
     private dbStub db;
     String name = "Ligat Ha'al";
     Season season = new Season(2020, new HashSet<>(), new HashSet<>());
-    Referee ref = new Referee(new Registered("dekelle", "dekel", "dekel"), "dekel");
+    Referee ref = new Referee(new Registered("dekelle", "dekel", "dekel", "dek@gmail.com"), "dekel");
 
     @BeforeEach
     void setUp() {
@@ -64,7 +64,7 @@ class LeagueCRUDTest {
     void isRefExist() {
         ref.setLevel(2);
         Assertions.assertFalse(LeagueCRUD.isRefExist(ref.getUserName()));
-        UsersCRUD.postUser(ref.getUserName(),"dekel",ref.getFullName(),ref.getRole());
+        UsersCRUD.postUser(ref.getUserName(),"dekel",ref.getFullName(),"dek@gmail.com", ref.getRole());
         LeagueCRUD.addReferee(ref);
         Assertions.assertTrue(LeagueCRUD.isRefExist(ref.getUserName()));
         UsersCRUD.deleteUser(ref.getUserName());
@@ -85,9 +85,9 @@ class LeagueCRUDTest {
     void addReferee() {
         Assertions.assertFalse(LeagueCRUD.addReferee(ref));
         ref.setLevel(1);
-        UsersCRUD.postUser(ref.getUserName(),"dekel","dekel",ref.getRole());
+        UsersCRUD.postUser(ref.getUserName(),"dekel","dekel","dek@gmail.com", ref.getRole());
         Assertions.assertTrue(LeagueCRUD.addReferee(ref));
-        LeagueCRUD.removeReferee(ref.getUserID());
+        LeagueCRUD.removeReferee(UsersCRUD.getUserIdByUserName(ref.getUserName()));
         UsersCRUD.deleteUser(ref.getUserName());
 
     }
@@ -96,7 +96,7 @@ class LeagueCRUDTest {
     void removeReferee() {
         Assertions.assertFalse(LeagueCRUD.removeReferee(UsersCRUD.getUserIdByUserName(ref.getUserName())));
         ref.setLevel(1);
-        UsersCRUD.postUser(ref.getUserName(),"dekel","dekel",ref.getRole());
+        UsersCRUD.postUser(ref.getUserName(),"dekel","dekel","dek@gmail.com", ref.getRole());
         LeagueCRUD.addReferee(ref);
         Assertions.assertTrue(LeagueCRUD.removeReferee(UsersCRUD.getUserIdByUserName(ref.getUserName())));
         UsersCRUD.deleteUser(ref.getUserName());
