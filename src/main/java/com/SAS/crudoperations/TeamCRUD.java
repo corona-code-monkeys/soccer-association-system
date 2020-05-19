@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -471,5 +472,20 @@ public class TeamCRUD {
         catch (Exception e){
             return false;
         }
+    }
+
+    /**
+     * The function returns all the teams
+     * @return list of names
+     */
+    public static List<String> getTeams() {
+        String query = String.format("SELECT team_name FROM team");
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
+        List<String> teams = new LinkedList<>();
+        for(Map<String, Object> row: rows){
+            teams.add((String)row.get("team_name"));
+        }
+
+        return teams;
     }
 }
