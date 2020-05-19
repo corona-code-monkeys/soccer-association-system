@@ -59,7 +59,7 @@ public class UsersCRUD {
         String encrypt = hashPasswords(password);
 
         try {
-            String query = String.format("insert into user (user_name, password, full_name, email) values ( \"%s\", \"%s\", \"%s\");", userName, encrypt, fullName, email);
+            String query = String.format("insert into user (user_name, password, full_name, email) values ( \"%s\", \"%s\", \"%s\", \"%s\");", userName, encrypt, fullName, email);
             jdbcTemplate.update(query);
 
             return addRoleToUser(userName, role);
