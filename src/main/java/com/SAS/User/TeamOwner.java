@@ -95,4 +95,15 @@ public class TeamOwner extends Role {
     public String getTeamName() {
         return this.team.getName();
     }
+
+    /**
+     * This function returns the username of the nominatedBy
+     * @return
+     */
+    public String getNominatedByUserName() {
+        if (nominatedBy!=null)
+            return nominatedBy.getUserName();
+        else
+            return null;
+    }
 }

@@ -23,7 +23,7 @@ class SASApplicationUT {
         db = new dbStub();
         db.initializeDB();
         sasApp= new SASApplication();
-        sasApp.createUser("AviCo", "Avi2468","Avi Cohen", UserType.PLAYER, true, null );
+        sasApp.createUser("AviCo", "Avi2468","Avi Cohen", "rami@gmail.com","PLAYER", true);
     }
 
     @AfterEach
@@ -75,7 +75,7 @@ class SASApplicationUT {
 
     @Test
     public void insertFullRefereeSuccess(){
-       sasApp.createUser("BeniCoo", "Beni2468","Beni Cohen", UserType.REFEREE, true, null );
+       sasApp.createUser("BeniCoo", "Beni2468","Beni Cohen", "rami@gmail.com","REFEREE", true);
         List<String> details = new LinkedList<String>(){
             {
                 add("1");
@@ -87,7 +87,7 @@ class SASApplicationUT {
 
     @Test
     public void insertFullCoachSuccess(){
-        sasApp.createUser("BenCohen0", "Ben2468","Ben Cohen", UserType.COACH, true, null );
+        sasApp.createUser("BenCohen0", "Ben2468","Ben Cohen", "rami@gmail.com","COACH", true );
         List<String> details = new LinkedList<String>(){
             {
                 add("1");
@@ -101,7 +101,7 @@ class SASApplicationUT {
 
     @Test
     public void insertFullTeamOwnerSuccess(){
-        sasApp.createUser("BenCohen12456", "Ben2468","Ben Cohen", UserType.TEAM_OWNER, true, null );
+        sasApp.createUser("BenCohen12456", "Ben2468","Ben Cohen", "rami@gmail.com","TEAM_OWNER", true );
         List<String> details = new LinkedList<String>(){
             {
                 add("Macabi Tel Aviv");
@@ -113,8 +113,8 @@ class SASApplicationUT {
 
     @Test
     public void insertFullTeamManagerSuccess(){
-        sasApp.createUser("AviL1", "Avi2468","Avi Co", UserType.TEAM_OWNER, true, null );
-        sasApp.createUser("RamCo3456", "Ram2468","Ram Cohen", UserType.TEAM_MANAGER, true, null );
+        sasApp.createUser("AviL1", "Avi2468","Avi Co", "rami@gmail.com","TEAM_OWNER", true);
+        sasApp.createUser("RamCo3456", "Ram2468","Ram Cohen", "rami@gmail.com","TEAM_MANAGER", true);
         List<String> details = new LinkedList<String>(){
             {
                 add("Macabi Tel Aviv");
@@ -129,7 +129,7 @@ class SASApplicationUT {
 
     @Test
     public void restoreComplexUserSuccess() {
-        sasApp.createUser("AviL12", "Avi2468", "Avi Co", UserType.PLAYER, true, null);
+        sasApp.createUser("AviL12", "Avi2468", "Avi Co", "rami@gmail.com","PLAYER", true);
         List<String> details = new LinkedList<String>() {
             {
                 add("1992-12-20");

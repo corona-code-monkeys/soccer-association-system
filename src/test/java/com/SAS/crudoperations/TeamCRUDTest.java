@@ -16,7 +16,7 @@ class TeamCRUDTest {
         db = new dbStub();
         db.initializeDB();
         TeamCRUD.postTeam("Macabi");
-        UsersCRUD.postUser("aviC", "cohen123", "Avi Choen", "COACH");
+        UsersCRUD.postUser("aviC", "cohen123", "Avi Choen", "rami@gmail.com","COACH");
     }
 
     @AfterEach

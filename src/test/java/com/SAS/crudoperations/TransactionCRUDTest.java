@@ -37,7 +37,7 @@ class TransactionCRUDTest {
         t = new Transaction(1000, TransactionType.INCOME, date , team, "bought arnon", (TeamOwner) teamOwner);
         userController = new UserController();
         TeamCRUD.postTeam("hap");
-        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.TEAM_OWNER, true, null);
+        teamOwner = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", "vlad@gmail.com","TEAM_OWNER", true);
         TeamCRUD.addOwnerToTeam("VladimirI", "hap");
         team = new Team("hap", (TeamOwner) teamOwner);
         ((TeamOwner) teamOwner).setTeam(team);

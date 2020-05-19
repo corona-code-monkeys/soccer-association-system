@@ -135,31 +135,31 @@ public class SystemController {
      * @param fullName
      * @return
      */
-    public boolean createSystemAdmin(String userName, String password, String fullName) {
-        if (!validateParams(userName, password, fullName)) {
+    public boolean createSystemAdmin(String userName, String password, String fullName, String email) {
+        if (!validateParams(userName, password, fullName, email)) {
             logger.logError("Fault: unable to create admin user");
             return false;
         }
 
         logger.logEvent("User: System. Admin user created.");
-        admin = userController.createUser(userName, password, fullName, UserType.SYSTEM_ADMIN, true, null);
+        admin = userController.createUser(userName, password, fullName, email, "SYSTEM_ADMIN", true);
         return true;
     }
 
     /**
      * The method receives userName, password and full name as string and checks that they are valid
-     *
-     * @param userName
+     *  @param userName
      * @param password
      * @param fullName
+     * @param email
      */
-    private boolean validateParams(String userName, String password, String fullName) {
-        if (userName == null || password == null || fullName == null) {
+    private boolean validateParams(String userName, String password, String fullName, String email) {
+        if (userName == null || password == null || fullName == null || email==null) {
             logger.logError("Fault: wrong parameters values");
             return false;
         }
 
-        if (userName.length() == 0 || password.length() == 0 || fullName.length() == 0) {
+        if (userName.length() == 0 || password.length() == 0 || fullName.length() == 0 || email.length()==0) {
             logger.logError("Fault: wrong parameters values");
             return false;
         }

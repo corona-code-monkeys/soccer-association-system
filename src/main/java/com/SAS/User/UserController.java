@@ -41,10 +41,17 @@ public class UserController {
      * @param userName
      * @param password
      * @param fullName
+     * @param email
+     * @param userType
      */
-    public User createUser(String userName, String password, String fullName, UserType type, boolean approval, User newUser){
-         //check user parameters
-         if (!validateDetails(userName, password, fullName, type)) {
+    public User createUser(String userName, String password, String fullName, String email, String userType, boolean approval){
+        UserType type = null;
+        if (userType != null) {
+            type= Role.convertStringToUserType(userType);
+        }
+        User newUser = null;
+        //check user parameters
+         if (!validateDetails(userName, password, fullName, email, type)) {
              System.out.println("The parameters aren't valid. Pleas enter the details again.");
              return newUser;
          }
@@ -55,7 +62,7 @@ public class UserController {
              return newUser;
          }
 
-         newUser = new Registered(userName, password, fullName);
+         newUser = new Registered(userName, password, fullName, email);
          if (validateUser(fullName, type)) {
 
              switch (type) {
@@ -97,7 +104,7 @@ public class UserController {
              //keep in database
 
              try {
-                 UsersCRUD.postUser(userName, password, fullName, type.toString());
+                 UsersCRUD.postUser(userName, password, fullName, email, userType);
                  logger.logEvent("User: " + ((Role)newUser).getUserName() + ". New " + type + " Created.");
              }
              catch (Exception e){
@@ -116,13 +123,13 @@ public class UserController {
 
     /**
      * The method receives userName, password and full name as string and checks that they are valid
-     *
-     * @param userName
+     *  @param userName
      * @param password
      * @param fullName
+     * @param email
      */
-    private boolean validateDetails(String userName, String password, String fullName, UserType type) {
-        return  !(empty(userName) || empty(password)|| empty(fullName) || type == null);
+    private boolean validateDetails(String userName, String password, String fullName, String email, UserType type) {
+        return  !(empty(userName) || empty(password)|| empty(fullName) || empty(email) || type == null);
     }
 
 
@@ -165,10 +172,13 @@ public class UserController {
     /**
      * The function sets the privileges of the user
      * @param user
-     * @param type
+     * @param userType
      * @return
      */
-    public User addRoleToUser(User user, UserType type, boolean approval) {
+    public User addRoleToUser(User user, String userType, boolean approval) {
+        if (userType == null)
+            return null;
+        UserType type = Role.convertStringToUserType(userType);
         if (user == null || type == null) {
             return null;
         }

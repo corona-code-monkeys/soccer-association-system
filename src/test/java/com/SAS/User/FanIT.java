@@ -14,7 +14,7 @@ public class FanIT {
 
     @BeforeEach
     public void setUp() throws Exception {
-        user = new Registered("avil", "123456", "Avi Levi");
+        user = new Registered("avil", "123456", "Avi Levi", "avi@gmail.com");
         user = new Fan(user, "Avi Levi");
         personalPage = new PersonalPage("This is the first page.");
         ((Fan)user).addPageToFollow(personalPage);

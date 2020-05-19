@@ -27,7 +27,7 @@ public class assignAndRemoveRefereesFromIT {
         League league = new League("Ligat Ha'al");
         Assertions.assertTrue(isLeagueExistStub(league));
         HashSet referees= new HashSet();
-        Referee ref= new Referee(new Registered("dekelle","dekele","dekele levy"),"dekele levy");
+        Referee ref= new Referee(new Registered("dekelle","dekele","dekele levy", "dekel@gmail.com"),"dekele levy");
         referees.add(ref);
         Assertions.assertTrue(addAndRemoveRefereesFromLeagueStub(league, referees));
 

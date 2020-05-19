@@ -29,6 +29,7 @@ public class SystemControllerAT {
         String userName;
         String password;
         String fullName;
+        String email;
         boolean system1 = false;
         boolean system2 = false;
         boolean createUser = false;
@@ -77,7 +78,10 @@ public class SystemControllerAT {
             System.out.println("Full Name:");
             fullName = "Admin Admin";
             System.out.println("fullName");
-            createUser = systemController.createSystemAdmin(userName, password, fullName);
+            System.out.println("email: ");
+            email = "admin12@gmail.com";
+            System.out.println(email);
+            createUser = systemController.createSystemAdmin(userName, password, fullName, email);
             System.out.println("The setup ended successfully");
 
             assertTrue(system1 && system2 && createUser);
@@ -96,6 +100,7 @@ public class SystemControllerAT {
         String userName;
         String password;
         String fullName;
+        String email;
 
         boolean system1 = false;
         boolean system2 = false;
@@ -141,7 +146,10 @@ public class SystemControllerAT {
             System.out.println("Full Name:");
             fullName = "Admin Admin";
             System.out.println("fullName");
-            systemController.createSystemAdmin(userName, password, fullName);
+            System.out.println("email: ");
+            email = "admin12@gmail.com";
+            System.out.println(email);
+            systemController.createSystemAdmin(userName, password, fullName, email);
             System.out.println("The setup ended successfully");
         }
         long endTime = System.nanoTime();

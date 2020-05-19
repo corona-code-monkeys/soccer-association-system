@@ -10,11 +10,14 @@ import com.SAS.User.UserController;
 import com.SAS.User.UserType;
 import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamManagement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class SASApplication {
 
+    @Autowired
     private UserController userController;
     private LeagueManagementController leaugeManagement;
     private TeamManagement teamManagement;
@@ -58,11 +61,11 @@ public class SASApplication {
      * @param fullName
      * @param type
      * @param approval
-     * @param newUser
+     * @param email
      * @return true if was created, otherwise false
      */
-    public boolean createUser(String userName, String password, String fullName, UserType type, boolean approval, User newUser){
-        if(userController.createUser(userName,password,fullName,type, approval, newUser)!=null)
+    public boolean createUser(String userName, String password, String fullName, String email, String type, boolean approval){
+        if(userController.createUser(userName, password, fullName, email, type, approval) != null)
             return true;
         return false;
     }

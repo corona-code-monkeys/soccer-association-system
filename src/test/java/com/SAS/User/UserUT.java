@@ -16,7 +16,7 @@ public class UserUT {
 
     @BeforeEach
     public void setUp() {
-        user = new Registered("avil", "123456", "Avi Levi");
+        user = new Registered("avil", "123456", "Avi Levi", "avi@gmail.com");
         priv = new HashSet<>();
     }
 

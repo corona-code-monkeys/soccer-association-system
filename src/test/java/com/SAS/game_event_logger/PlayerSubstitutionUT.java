@@ -18,8 +18,8 @@ class PlayerSubstitutionUT {
         String gameID = "1";
         Team t = new Team();
         t.setName("BGU");
-        Player p1 = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
-        Player p2 = (Player) u.createUser("yael", "123456", "yael amit", UserType.PLAYER, true,null);
+        Player p1 = (Player) u.createUser("matan", "123456", "matan anavi", "rami@gmail.com", "PLAYER", true);
+        Player p2 = (Player) u.createUser("yael", "123456", "yael amit","rami@gmail.com","PLAYER", true);
         PlayerSubstitution substitution = new PlayerSubstitution(gameID, LocalDate.now(), 0, p1, p2);
         assertEquals(p1.getFullName(), substitution.getIn().getFullName());
     }
@@ -30,8 +30,8 @@ class PlayerSubstitutionUT {
         String gameID = "1";
         Team t = new Team();
         t.setName("BGU");
-        Player p1 = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
-        Player p2 = (Player) u.createUser("yael", "123456", "yael amit", UserType.PLAYER, true,null);
+        Player p1 = (Player) u.createUser("matan", "123456", "matan anavi", "rami@gmail.com","PLAYER", true);
+        Player p2 = (Player) u.createUser("yael", "123456", "yael amit", "rami@gmail.com","PLAYER", true);
         PlayerSubstitution substitution = new PlayerSubstitution(gameID, LocalDate.now(), 0, null, p2);
         assertNull(substitution.getIn());
         substitution.setIn(p1);
@@ -44,8 +44,8 @@ class PlayerSubstitutionUT {
         String gameID = "1";
         Team t = new Team();
         t.setName("BGU");
-        Player p1 = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
-        Player p2 = (Player) u.createUser("yael", "123456", "yael amit", UserType.PLAYER, true,null);
+        Player p1 = (Player) u.createUser("matan", "123456", "matan anavi", "rami@gmail.com", "PLAYER", true);
+        Player p2 = (Player) u.createUser("yael", "123456", "yael amit", "rami@gmail.com","PLAYER", true);
         PlayerSubstitution substitution = new PlayerSubstitution(gameID, LocalDate.now(), 0, p1, p2);
         assertEquals(p2.getFullName(), substitution.getOut().getFullName());
     }
@@ -56,8 +56,8 @@ class PlayerSubstitutionUT {
         String gameID = "1";
         Team t = new Team();
         t.setName("BGU");
-        Player p1 = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
-        Player p2 = (Player) u.createUser("yael", "123456", "yael amit", UserType.PLAYER, true,null);
+        Player p1 = (Player) u.createUser("matan", "123456", "matan anavi", "rami@gmail.com","PLAYER", true);
+        Player p2 = (Player) u.createUser("yael", "123456", "yael amit", "rami@gmail.com","PLAYER", true);
         PlayerSubstitution substitution = new PlayerSubstitution(gameID, LocalDate.now(), 0, null, p2);
         assertNull(substitution.getIn());
         substitution.setOut(p2);
