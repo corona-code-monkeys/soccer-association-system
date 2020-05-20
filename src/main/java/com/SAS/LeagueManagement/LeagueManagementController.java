@@ -298,17 +298,16 @@ public class LeagueManagementController {
                 logger.logError("Fault: the details inserted does not match the criteria");
                 return null;
             }
+
             //first userName, second password, third fullName and last level
             try {
                 String userName = details.get(0);
                 String pass = details.get(1);
                 String fullName = details.get(2);
                 int level = Integer.parseInt(details.get(3));
-                Referee referee = new Referee(user, fullName);
-                referees.add(referee);
-                if (LeagueCRUD.addReferee(referee)) {
+                if (LeagueCRUD.addReferee(UsersCRUD.getUserIdByUserName(userName),level)) {
                     logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new referee");
-                    return referee;
+                    return user;
                 } else {
                     logger.logError("Fault: unable to add referee");
                     return null;
@@ -504,6 +503,7 @@ public class LeagueManagementController {
             logger.logError("Fault: unable to get: empty name error");
             return null;
         }
+
 
         for (Referee referee : referees) {
             if (referee.getUserName().equals(userName)) {
