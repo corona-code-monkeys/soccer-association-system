@@ -7,13 +7,9 @@ package com.SAS.User;
 import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamAsset;
 import org.json.JSONObject;
-import sun.plugin2.message.JavaScriptMemberOpMessage;
 
-import javax.xml.bind.util.JAXBSource;
-import java.io.File;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 
 public class Player extends Role implements TeamAsset {
 
