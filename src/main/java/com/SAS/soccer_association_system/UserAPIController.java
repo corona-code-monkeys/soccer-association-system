@@ -1,5 +1,5 @@
 /**
- * The class represents the api of the sas application
+ * The class represents the api of the user in the sas application
  */
 package com.SAS.soccer_association_system;
 

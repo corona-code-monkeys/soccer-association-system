@@ -924,5 +924,14 @@ public class TeamManagement {
     private boolean validParam(String param){
         return (param!=null || (param.trim().isEmpty()));
     }
+
+    /**
+     * The function returns the teams
+     * @return
+     */
+    public JSONArray getTeams() {
+        List<String> teams = TeamCRUD.getTeams();
+        return new JSONArray(teams);
+    }
 }
 
