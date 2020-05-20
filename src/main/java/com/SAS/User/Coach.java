@@ -6,6 +6,8 @@ package com.SAS.User;
 
 import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamAsset;
+import org.json.JSONObject;
+
 import java.util.HashSet;
 import java.util.List;
 
@@ -156,14 +158,14 @@ public class Coach extends Role implements TeamAsset {
      * @return true if details have been edited successfully, false otherwise.
      */
     @Override
-    public boolean editDetails(List<String> details) {
+    public boolean editDetails(JSONObject details) {
         //first is level, second is fieldRole
         FieldRole fieldRole = null;
         int level = -1;
 
         try{
-            level = Integer.parseInt(details.get(0));
-            fieldRole = convertStringToFieldRole((details.get(1)));
+            level = Integer.parseInt(details.get("level").toString());
+            fieldRole = convertStringToFieldRole(details.get("fieldRole").toString());
         }catch (Exception e){
 
         }
