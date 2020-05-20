@@ -10,6 +10,7 @@ import com.SAS.User.UserController;
 import com.SAS.User.UserType;
 import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamManagement;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +77,7 @@ public class SASApplication {
      * @param teamOwner
      * @param teamName
      */
-    public boolean registerTeam(User teamOwner, String teamName){
+    public boolean registerTeam(String teamOwner, String teamName){
         return userController.sendNotificationToRepresentative(teamManagement.createANewTeam(teamOwner, teamName));
     }
 
@@ -88,7 +89,7 @@ public class SASApplication {
      * @param representative
      * @param confirm
      */
-    public boolean confirmTeam(String teamName, User representative, boolean confirm){
+    public boolean confirmTeam(String teamName, String representative, boolean confirm){
         return teamManagement.commitConfirmationOfTeam(teamName, representative, confirm);
     }
 
@@ -118,7 +119,7 @@ public class SASApplication {
      * @param type
      * @return true if the details were edited
      */
-    public boolean editUserDetails(String username, List<String> details, String type){
+    public boolean editUserDetails(String username, JSONObject details, String type){
         if (details != null && type != null){
             return userController.editUserDetails(username, details, type);
         }
@@ -131,8 +132,8 @@ public class SASApplication {
      * @param owner
      * @return
      */
-    public boolean closeTeam(String teamName, User owner){
-        return teamManagement.closeTeam(owner);
+    public boolean closeTeam(String teamName, String owner){
+        return teamManagement.closeTeam(teamName, owner);
     }
 
     /**
@@ -141,8 +142,8 @@ public class SASApplication {
      * @param owner
      * @return
      */
-    public boolean openTeam(String teamName, User owner){
-        return teamManagement.openTeam(owner);
+    public boolean openTeam(String teamName, String owner){
+        return teamManagement.openTeam(teamName, owner);
     }
 
 

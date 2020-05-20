@@ -1,6 +1,7 @@
 package com.SAS.User;
 
 import com.SAS.team.Team;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,13 +60,10 @@ public class PlayerUT {
 
     @Test
     public void editDetails() {
-        List<String> details = new ArrayList<String>() {
-            {
-                add("1993-09-09");
-                add("Striker");
-            }
-        };
-
+        JSONObject details = new JSONObject();
+        details.put("dateOfBirth", "1992-12-20");
+        details.put("fieldRole", "Striker");
+        details.put("team", "macabi tel aviv");
         Assertions.assertTrue(((Player)user).editDetails(details));
     }
 

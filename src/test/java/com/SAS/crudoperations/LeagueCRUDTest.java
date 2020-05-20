@@ -101,10 +101,13 @@ class LeagueCRUDTest {
         Assertions.assertTrue(LeagueCRUD.removeReferee(UsersCRUD.getUserIdByUserName(ref.getUserName())));
         UsersCRUD.deleteUser(ref.getUserName());
     }
+
+    /*
     @Test
     void addPoliciesToLeagueInSeason() {
         Assertions.assertTrue(LeagueCRUD.addPoliciesToLeagueInSeason(name, season.getYear(), new GoalDifference().getName(), new ThreeForWinOneForDrawPolicy().getName(), new TwoRoundsLeague().getName()));
     }
+    */
 //    @Test
 //    void addRefToLeagueInSeason() {
 //        League league=new League(name);

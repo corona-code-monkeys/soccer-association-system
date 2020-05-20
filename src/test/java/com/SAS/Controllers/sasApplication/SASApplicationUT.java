@@ -4,6 +4,7 @@ import com.SAS.User.User;
 import com.SAS.User.UserType;
 import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.dbstub.dbStub;
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,28 +48,23 @@ class SASApplicationUT {
 
     @Test
     public void editdetailsPlayerSuccess(){
-        List<String> details = new LinkedList<String>(){
-            {
-                add("1992-12-20");
-                add("Striker");
-                add("macabi");
-            }
-        };
+
+        JSONObject details = new JSONObject();
+        details.put("dateOfBirth", "1992-12-20");
+        details.put("fieldRole", "Striker");
+        details.put("team", "macabi");
         sasApp.editUserDetails("AviCo", details, "PLAYER");
-        details.remove(1);
-        details.add(1, "Midfielder");
+        details.remove("fieldRole");
+        details.put("fieldRole", "Midfielder");
         assertTrue(sasApp.editUserDetails("AviCo", details, "PLAYER"));
     }
 
     @Test
     public void insertFullPlayerSuccess(){
-        List<String> details = new LinkedList<String>(){
-            {
-                add("1992-12-20");
-                add("Striker");
-                add("macabi");
-            }
-        };
+        JSONObject details = new JSONObject();
+        details.put("dateOfBirth", "1992-12-20");
+        details.put("fieldRole", "Striker");
+        details.put("team", "macabi");
         assertTrue(sasApp.editUserDetails("AviCo", details, "PLAYER"));
     }
 
@@ -76,11 +72,8 @@ class SASApplicationUT {
     @Test
     public void insertFullRefereeSuccess(){
        sasApp.createUser("BeniCoo", "Beni2468","Beni Cohen", "rami@gmail.com","REFEREE", true);
-        List<String> details = new LinkedList<String>(){
-            {
-                add("1");
-            }
-        };
+        JSONObject details = new JSONObject();
+        details.put("level", "1");
         assertTrue(sasApp.editUserDetails("BeniCoo", details, "REFEREE"));
         sasApp.deleteUser("BeniCoo");
     }
@@ -88,13 +81,10 @@ class SASApplicationUT {
     @Test
     public void insertFullCoachSuccess(){
         sasApp.createUser("BenCohen0", "Ben2468","Ben Cohen", "rami@gmail.com","COACH", true );
-        List<String> details = new LinkedList<String>(){
-            {
-                add("1");
-                add("Striker");
-                add("Macabi Tel Aviv");
-            }
-        };
+        JSONObject details = new JSONObject();
+        details.put("level", "1");
+        details.put("fieldRole", "Striker");
+        details.put("team", "macabi tel aviv");
         assertTrue(sasApp.editUserDetails("BenCohen0", details, "COACH"));
         sasApp.deleteUser("BenCohen0");
     }
@@ -102,11 +92,8 @@ class SASApplicationUT {
     @Test
     public void insertFullTeamOwnerSuccess(){
         sasApp.createUser("BenCohen12456", "Ben2468","Ben Cohen", "rami@gmail.com","TEAM_OWNER", true );
-        List<String> details = new LinkedList<String>(){
-            {
-                add("Macabi Tel Aviv");
-            }
-        };
+        JSONObject details = new JSONObject();
+        details.put("team", "Macabi Tel Aviv");
         assertTrue(sasApp.editUserDetails("BenCohen12456", details, "TEAM_OWNER"));
         sasApp.deleteUser("BenCohen12456");
     }
@@ -115,12 +102,9 @@ class SASApplicationUT {
     public void insertFullTeamManagerSuccess(){
         sasApp.createUser("AviL1", "Avi2468","Avi Co", "rami@gmail.com","TEAM_OWNER", true);
         sasApp.createUser("RamCo3456", "Ram2468","Ram Cohen", "rami@gmail.com","TEAM_MANAGER", true);
-        List<String> details = new LinkedList<String>(){
-            {
-                add("Macabi Tel Aviv");
-                add("AviL1");
-            }
-        };
+        JSONObject details = new JSONObject();
+        details.put("team", "Macabi Tel Aviv");
+        details.put("nominatedBy", "AviL1");
         assertTrue(sasApp.editUserDetails("RamCo3456", details, "TEAM_MANAGER"));
         sasApp.deleteUser("AviL1");
         sasApp.deleteUser("RamCo3456");
@@ -130,13 +114,10 @@ class SASApplicationUT {
     @Test
     public void restoreComplexUserSuccess() {
         sasApp.createUser("AviL12", "Avi2468", "Avi Co", "rami@gmail.com","PLAYER", true);
-        List<String> details = new LinkedList<String>() {
-            {
-                add("1992-12-20");
-                add("Striker");
-                add("Macabi");
-            }
-        };
+        JSONObject details = new JSONObject();
+        details.put("dateOfBirth", "1992-12-20");
+        details.put("fieldRole", "Striker");
+        details.put("team", "macabi tel aviv");
         sasApp.editUserDetails("AviL12", details, "PLAYER");
         User user = UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName("AviL12"));
     }

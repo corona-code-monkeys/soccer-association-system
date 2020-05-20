@@ -298,7 +298,6 @@ public class LeagueManagementController {
                 logger.logError("Fault: the details inserted does not match the criteria");
                 return null;
             }
-
             //first userName, second password, third fullName and last level
             try {
                 String userName = details.get(0);
@@ -306,7 +305,6 @@ public class LeagueManagementController {
                 String fullName = details.get(2);
                 int level = Integer.parseInt(details.get(3));
                 Referee referee = new Referee(user, fullName);
-                referee.setLevel(level);
                 referees.add(referee);
                 if (LeagueCRUD.addReferee(referee)) {
                     logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new referee");

@@ -85,7 +85,7 @@ public class TeamManagement {
      * @param assetType - is player or coach
      * @return true or false
      */
-    public boolean addAssetToTeam(String teamName, String assetType, String ownerUsername, String username, String password, String fullname, JSONObject details) {
+    public boolean addAssetToTeam(String teamName, String assetType, String ownerUsername, String username, String password, String fullname, String email, JSONObject details) {
         Team team = retrieveTeam(teamName);
         if (team==null)
             return false;
@@ -100,14 +100,14 @@ public class TeamManagement {
         //create the asset
         switch (assetType) {
             case "Player":
-                asset = (Player) userController.createUser(username, password, fullname, UserType.PLAYER, true, null);
+                asset = (Player) userController.createUser(username, password, fullname, email, "PLAYER", true);
                 team.addPlayerToTeam((Player)asset);
                 TeamCRUD.addPlayerToTeam(team.getName(), username);
                 editAssetDetails(teamName, assetType, username, details);
                 logger.logEvent("User: " + ((Role)user).getUserName() + ". Added player to " + team.getName() + " team.");
                 break;
             case "Coach":
-                asset = (Coach) userController.createUser(username, password, fullname, UserType.COACH, true, null);
+                asset = (Coach) userController.createUser(username, password, fullname, email,"COACH", true);
                 team.setCoach((Coach)asset);
                 TeamCRUD.setCoachToTeam(username, team.getName());
                 editAssetDetails(teamName, assetType, username, details);
@@ -275,7 +275,7 @@ public class TeamManagement {
 
         //check if the user can owns the team and that the nominate is the owner of the team
         if (validateUserCanOwnTeam(teamName, newTeamOwner) && ownsTeam(teamName, nominatedBy)) {
-            newTeamOwner = userController.addRoleToUser(newTeamOwner, UserType.TEAM_OWNER, true);
+            newTeamOwner = userController.addRoleToUser(newTeamOwner, "TEAM_OWNER", true);
             team.addTeamOwner((TeamOwner)newTeamOwner);
             ((TeamOwner) newTeamOwner).setTeam(team);
             ((TeamOwner) newTeamOwner).setNominatedBy((TeamOwner)nominatedBy);
@@ -313,7 +313,7 @@ public class TeamManagement {
         }
         //check if the user can manage this team and that the user that nominates him is the team owner
         if (validateTeamManager(newTeamManager) && ownsTeam(teamName, nominatedBy)){
-            newTeamManager = userController.addRoleToUser(newTeamManager, UserType.TEAM_MANAGER,approval);
+            newTeamManager = userController.addRoleToUser(newTeamManager, "TEAM_MANAGER" ,approval);
             team.setTeamManager((TeamManager)newTeamManager);
             ((TeamManager)newTeamManager).setTeam(team);
             ((TeamManager)newTeamManager).setNominatedBy((TeamOwner)nominatedBy);
@@ -469,7 +469,9 @@ public class TeamManagement {
 
         List<TeamOwner> teamOwners = team.getOwners();
         for (TeamOwner owner: teamOwners) {
-            if (owner.getNominatedBy() != null && owner.getNominatedBy().getUserID() == teamOwner.getUserID()) {
+            String nominatedName = ((TeamOwner)owner.getNominatedBy()).getUserName();
+            String ownerName = ((TeamOwner)teamOwner).getUserName();
+            if (owner.getNominatedBy() != null && UsersCRUD.getUserIdByUserName(nominatedName) == UsersCRUD.getUserIdByUserName(ownerName)) {
                 nominees.add(owner);
             }
         }
@@ -894,8 +896,8 @@ public class TeamManagement {
     public boolean commitConfirmationOfTeam(String teamName, String representativeName, boolean confirmed) {
         User representative = retrieveUser(representativeName);
         if (teamName != null && !teamName.trim().isEmpty()) {
-            Team team = TeamCRUD.getTeamByName(teamName);
-            if (representative != null && representative instanceof AssociationRepresentative) {
+            Team team = retrieveTeam(teamName);
+            if (team!=null && representative != null && representative instanceof AssociationRepresentative) {
                 if (!confirmed) {
                     for (TeamOwner owner : team.getOwners())
                         owner.getNotification("Your team registration request for " + teamName + " was rejected");
