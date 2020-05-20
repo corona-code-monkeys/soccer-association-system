@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.SAS.systemLoggers.LoggerFactory;
+import org.json.JSONObject;
 
 public class UserController {
 
@@ -353,7 +354,7 @@ public class UserController {
      * @param type
      * @return true if were edited, otherwise false
      */
-    public boolean editUserDetails(String username, List<String> details, String type) {
+    public boolean editUserDetails(String username, JSONObject details, String type) {
         int userID = UsersCRUD.getUserIdByUserName(username);
         if (userID == -1)
             return false;
@@ -379,10 +380,10 @@ public class UserController {
      * @param details
      * @return
      */
-    private boolean editCoachDetails(int userID, List<String> details) {
+    private boolean editCoachDetails(int userID, JSONObject details) {
        //level, fieldRole, team
-        if (details.size()==3 && validParam(details.get(0)) && validParam(details.get(1))&& validParam(details.get(2))){
-            return UsersCRUD.setCoachDetails(userID, details.get(0), details.get(1), details.get(2));
+        if (details.length()==3 && validParam(details.get("level").toString()) && validParam(details.get("fieldRole").toString())&& validParam(details.get("team").toString())){
+            return UsersCRUD.setCoachDetails(userID, details.get("level").toString(), details.get("fieldRole").toString(), details.get("team").toString());
         }
         else
             return false;
@@ -394,10 +395,10 @@ public class UserController {
      * @param details
      * @return
      */
-    private boolean editTeamManagerDetails(int userID, List<String> details) {
+    private boolean editTeamManagerDetails(int userID, JSONObject details) {
         //team, nominatedBy
-        if (details.size()==2 && validParam(details.get(0)) && validParam(details.get(1))){
-            return UsersCRUD.setTeamOwnerOrManagerDetails(userID, details.get(0), details.get(1), "team_manager");
+        if (details.length()==2 && validParam(details.get("team").toString()) && validParam(details.get("nominatedBy").toString())){
+            return UsersCRUD.setTeamOwnerOrManagerDetails(userID, details.get("team").toString(), details.get("nominatedBy").toString(), "team_manager");
         }
         else
             return false;
@@ -409,10 +410,10 @@ public class UserController {
      * @param details
      * @return
      */
-    private boolean editRefereeDetails(int userID, List<String> details) {
+    private boolean editRefereeDetails(int userID, JSONObject details) {
         //level
-        if (details.size()==1 && validParam(details.get(0))){
-            return UsersCRUD.setRefereeDetails(userID, details.get(0));
+        if (details.length()==1 && validParam(details.get("level").toString())){
+            return UsersCRUD.setRefereeDetails(userID, details.get("level").toString());
         }
         else
             return false;
@@ -426,14 +427,14 @@ public class UserController {
      * @param details
      * @return
      */
-    private boolean editTeamOwnerDetails(int userID, List<String> details) {
+    private boolean editTeamOwnerDetails(int userID, JSONObject details) {
         //just team
-        if (details.size()==1 && validParam(details.get(0))){
-            return UsersCRUD.setTeamOwnerDetails(userID, details.get(0));
+        if (details.length()==1 && validParam(details.get("team").toString())){
+            return UsersCRUD.setTeamOwnerDetails(userID, details.get("team").toString());
         }
         //team, nominatedBy
-        else if (details.size()==2 && validParam(details.get(0)) && validParam(details.get(1))){
-            return UsersCRUD.setTeamOwnerOrManagerDetails(userID, details.get(0), details.get(1), "team_owner");
+        else if (details.length()==2 && validParam(details.get("team").toString()) && validParam(details.get("nominatedBy").toString())){
+            return UsersCRUD.setTeamOwnerOrManagerDetails(userID, details.get("team").toString(), details.get("nominatedBy").toString(), "team_owner");
         }
         else
             return false;
@@ -445,10 +446,10 @@ public class UserController {
      * @param details
      * @return true or false
      */
-    private boolean editPlayerDetails(int userID, List<String> details) {
-        if (details.size() == 3 && validParam(details.get(0)) && validParam(details.get(1)) && validParam(details.get(2))) {
-            //first is dateOfBirth, second is fieldRole
-            return UsersCRUD.setPlayerDetails(userID, details.get(0), details.get(1), details.get(2));
+    private boolean editPlayerDetails(int userID, JSONObject details) {
+        if (details.length() == 3 && validParam(details.get("dateOfBirth").toString()) && validParam(details.get("fieldRole").toString()) && validParam(details.get("team").toString())) {
+            //first is dateOfBirth, second is fieldRole, third is team
+            return UsersCRUD.setPlayerDetails(userID, details.get("dateOfBirth").toString(), details.get("fieldRole").toString(),details.get("team").toString());
         }
         return false;
     }
