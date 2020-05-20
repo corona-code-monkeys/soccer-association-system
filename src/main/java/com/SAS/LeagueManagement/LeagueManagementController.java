@@ -6,6 +6,7 @@ import com.SAS.User.*;
 import com.SAS.crudoperations.CRUD;
 import com.SAS.User.User;
 import com.SAS.crudoperations.LeagueCRUD;
+import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.systemLoggers.LoggerFactory;
 
 import java.util.HashSet;
@@ -19,7 +20,6 @@ public class LeagueManagementController {
     private LinkedList<LeagueRankPolicy> rankPolicies;
     private LinkedList<PointsPolicy> pointsPolicies;
     private LinkedList<GamesPolicy> gamesPolicies;
-    private UserController userController;
     private List<Referee> referees;
     private List<League> leagues;
 
@@ -304,12 +304,9 @@ public class LeagueManagementController {
                 String pass = details.get(1);
                 String fullName = details.get(2);
                 int level = Integer.parseInt(details.get(3));
-                Referee referee = new Referee(user, fullName);
-                referee.setLevel(level);
-                referees.add(referee);
-                if (LeagueCRUD.addReferee(referee)) {
+                if (LeagueCRUD.addReferee(UsersCRUD.getUserIdByUserName(userName),level)) {
                     logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new referee");
-                    return referee;
+                    return user;
                 } else {
                     logger.logError("Fault: unable to add referee");
                     return null;
