@@ -46,6 +46,7 @@ class TransactionCRUDTest {
     @AfterEach
     public void tearDown(){
         TransactionCRUD.deleteTransaction("VladimirI");
+        TeamCRUD.removeTeam("hap");
         UsersCRUD.deleteUser("VladimirI");
     }
 
