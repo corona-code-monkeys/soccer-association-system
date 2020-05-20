@@ -8,13 +8,12 @@ import com.SAS.facility.facilityType;
 import com.SAS.teamManagenemt.TeamAsset;
 import com.SAS.transaction.Transaction;
 import com.SAS.transaction.TransactionType;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.temporal.IsoFields;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The class represent a team in the football association system
@@ -421,18 +420,18 @@ public class Team {
         return this.teamFacilities;
     }
 
-    /**
-     * This function returns all the team assets
-     * @return List<TeamAsset>
-     */
-    public List<TeamAsset> getAllAssets(){
-        List<TeamAsset> assets = new LinkedList<>();
-        assets.addAll(players);
-        assets.addAll(teamFacilities);
-        if (coach!=null)
-            assets.add(coach);
-        return assets;
-    }
+//    /**
+//     * This function returns all the team assets
+//     * @return List<TeamAsset>
+//     */
+//    public List<TeamAsset> getAllAssets(){
+//        List<TeamAsset> assets = new LinkedList<>();
+//        assets.addAll(players);
+//        assets.addAll(teamFacilities);
+//        if (coach!=null)
+//            assets.add(coach);
+//        return assets;
+//    }
 
     /**
      * This function returns the asset by type and name
@@ -582,5 +581,45 @@ public class Team {
             return true;
         }
         return false;
+    }
+
+    /**
+     * This function returns the team JSON representation
+     * @return JSON
+     */
+    public JSONObject getTeamJSON(){
+        JSONObject teamJson = new JSONObject();
+        teamJson.put("Name: ", this.name);
+        JSONArray ownersNames = new JSONArray();
+        for(TeamOwner to: this.owners){
+            ownersNames.put(to.getFullName());
+        }
+        JSONArray playersNames = new JSONArray();
+        for(Player pla: this.players){
+            playersNames.put(pla.getFullName());
+        }
+        JSONArray facilitiesNames = new JSONArray();
+        for(Facility fac: this.teamFacilities){
+            playersNames.put(fac.getFacilityType() + " " + fac.getName());
+        }
+        teamJson.put("Team Owners", ownersNames);
+        teamJson.put("Team Manager", manager.getFullName());
+        teamJson.put("Coach", coach.getFullName());
+        teamJson.put("Players", playersNames);
+        teamJson.put("Facilities",facilitiesNames);
+        teamJson.put("Active", this.active);
+        return teamJson;
+    }
+
+    /**
+     * This function returns all the team assets
+     * @return json of team assets
+     */
+    public JSONObject getAllAssets(){
+        JSONObject assets = new JSONObject();
+        assets.put("players", this.players);
+        assets.put("facilities", this.teamFacilities);
+        assets.put("coach", this.coach);
+        return assets;
     }
 }
