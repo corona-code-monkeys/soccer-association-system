@@ -2,6 +2,7 @@ package com.SAS.crudoperations;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.servlet.http.PushBuilder;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,6 +60,21 @@ public class SystemCRUD {
             return true;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    public static String isSystemInitiate(){
+        try {
+            String query = String.format("SELECT isActive FROM isActive;");
+            String res = jdbcTemplate.queryForObject(query, String.class);
+            if(res.equals("1")){
+                return "true";
+            }
+
+            return "false";
+
+        } catch (Exception e) {
+            return "false";
         }
     }
 
