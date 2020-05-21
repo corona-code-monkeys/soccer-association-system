@@ -62,6 +62,14 @@ public abstract class Role extends User {
                 return FieldRole.STRIKER;
             case "Midfielder":
                 return FieldRole.MIDFIELDER;
+            case "GOAL_KEEPER":
+                return FieldRole.GOAL_KEEPER;
+            case "DEFENDER":
+                return FieldRole.DEFENDER;
+            case "STRIKER":
+                return FieldRole.STRIKER;
+            case "MIDFIELDER":
+                return FieldRole.MIDFIELDER;
             default:
                 System.out.println("Error, no such type");
                 return null;

@@ -281,6 +281,11 @@ public class TeamManagement {
             ((TeamOwner) newTeamOwner).setNominatedBy((TeamOwner)nominatedBy);
             //add to db
             TeamCRUD.addOwnerToTeam(((TeamOwner) newTeamOwner).getUserName(), team.getName());
+            JSONObject details = new JSONObject();
+            details.put("team",teamName);
+            details.put("nominatedBy",nominatedByName);
+            String username = ((TeamOwner)newTeamOwner).getUserName();
+            userController.editUserDetails(username, details, "TEAM_OWNER");
             logger.logEvent("User: " + ((Role)nominatedBy).getUserName() + ". Added team owner to " + team.getName() + " team.");
         }
         else {

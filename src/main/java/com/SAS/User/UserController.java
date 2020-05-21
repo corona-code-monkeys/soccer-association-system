@@ -4,9 +4,9 @@ import com.SAS.crudoperations.CRUD;
 import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.team.Team;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import com.SAS.systemLoggers.LoggerFactory;
 import org.json.JSONObject;
@@ -18,7 +18,7 @@ public class UserController {
      */
     private LoggerFactory logger;
     private Privileges globalPrivileges;
-    private Set<String> loggedInUsers;
+    private Map<String, String> loggedInUsers;
 
     /**
      * Constructor
@@ -26,7 +26,7 @@ public class UserController {
     public UserController() {
         this.globalPrivileges = Privileges.getInstance();
         this.logger = LoggerFactory.getInstance();
-        this.loggedInUsers = new HashSet<>();
+        this.loggedInUsers = new HashMap<>();
     }
 
     /**
@@ -311,16 +311,16 @@ public class UserController {
      * @param password
      * @return true if the user exists, otherwise false
      */
-    public boolean isUserExist(String username, String password){
+    public String isUserExist(String username, String password){
         if (validParam(username) && validParam(password)) {
             Boolean isExist = UsersCRUD.isUserValid(username, password);
             if (isExist) {
-                this.loggedInUsers.add(username);
+                String role = UsersCRUD.getHighestRole(username);
+                this.loggedInUsers.put(username, role);
+                return role;
             }
-
-            return isExist;
         }
-        return false;
+        return "";
     }
 
     /**
