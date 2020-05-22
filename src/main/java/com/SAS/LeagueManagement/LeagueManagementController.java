@@ -14,8 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import static com.SAS.User.UserType.REFEREE;
-
 public class LeagueManagementController {
 
     private LoggerFactory logger;
@@ -24,7 +22,6 @@ public class LeagueManagementController {
     private LinkedList<GamesPolicy> gamesPolicies;
     private List<Referee> referees;
     private List<League> leagues;
-    private UserController userController;
 
     /**
      * Constructor
@@ -37,7 +34,6 @@ public class LeagueManagementController {
         referees = new LinkedList<>();
         leagues = new LinkedList<>();
         initPolicies();
-        userController= new UserController();
     }
 
     /**
@@ -308,7 +304,7 @@ public class LeagueManagementController {
                 String pass = details.get(1);
                 String fullName = details.get(2);
                 int level = Integer.parseInt(details.get(3));
-                if (LeagueCRUD.addReferee(UsersCRUD.getUserIdByUserName(userName),level)&& null!=userController.createUser(userName,pass,fullName,REFEREE,true,user)) {
+                if (LeagueCRUD.addReferee(UsersCRUD.getUserIdByUserName(userName),level)) {
                     logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new referee");
                     return user;
                 } else {
