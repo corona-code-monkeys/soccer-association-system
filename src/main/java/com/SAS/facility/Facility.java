@@ -3,6 +3,8 @@ package com.SAS.facility;
 import com.SAS.game.Game;
 import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamAsset;
+import org.json.JSONObject;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -165,22 +167,18 @@ public class Facility implements TeamAsset {
      * @return true if details have been edited successfully, false otherwise.
      */
     @Override
-    public boolean editDetails(List<String> details) {
+    public boolean editDetails(JSONObject details) {
         if (details == null) {
             return false;
         }
-        for (String value : details) {
-            if (value == null || value.length() == 0) {
-                return false;
-            }
-        }
+
         //first is name, second is location, third is type
-        facilityType ft = convertStringToFacilityType(details.get(2));
+        facilityType ft = convertStringToFacilityType(details.get("type").toString());
         if (ft == null)
             return false;
         else {
-            setName(details.get(0));
-            setLocation(details.get(1));
+            setName(details.get("name").toString());
+            setLocation(details.get("location").toString());
             setFacilityType(ft);
             return true;
         }

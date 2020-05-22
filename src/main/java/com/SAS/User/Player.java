@@ -6,11 +6,10 @@ package com.SAS.User;
 
 import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamAsset;
+import org.json.JSONObject;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 
 public class Player extends Role implements TeamAsset {
 
@@ -144,14 +143,14 @@ public class Player extends Role implements TeamAsset {
      * @return true if details have been edited successfully, false otherwise.
      */
     @Override
-    public boolean editDetails(List<String> details) {
+    public boolean editDetails(JSONObject details) {
         //first is dateOfBirth, second is fieldRole
         FieldRole fieldRole = null;
         LocalDate dateOfBirth = null;
 
         try {
-            fieldRole = convertStringToFieldRole((details.get(1)));
-            dateOfBirth = LocalDate.parse(details.get(0));
+            fieldRole = convertStringToFieldRole((details.get("fieldRole").toString()));
+            dateOfBirth = LocalDate.parse(details.get("dateOfBirth").toString());
         }
         catch (Exception e) {
         }

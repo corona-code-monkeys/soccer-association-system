@@ -121,8 +121,8 @@ class GameIT {
     void setValidReferees() {
         UserController userController = new UserController();
         LinkedList<Referee> referees = new LinkedList<>();
-        User ref1 = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.REFEREE, true, null);
-        User ref2 = userController.createUser("Vladimir2", "Vladi1234", "Vladimir Ivich2", UserType.REFEREE, true, null);
+        User ref1 = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", "rami@gmail.com","REFEREE", true);
+        User ref2 = userController.createUser("Vladimir2", "Vladi1234", "Vladimir Ivich2", "rami@gmail.com","REFEREE", true);
         referees.add((Referee) ref1);
         referees.add((Referee) ref2);
         boolean res = game.setReferees(referees);
@@ -133,7 +133,7 @@ class GameIT {
     void setInvalidRefereesLowerThen2() {
         UserController userController = new UserController();
         LinkedList<Referee> referees = new LinkedList<>();
-        User ref1 = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.REFEREE, true, null);
+        User ref1 = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", "rami@gmail.com","REFEREE", true);
         referees.add((Referee) ref1);
         boolean res = game.setReferees(referees);
         assertFalse(res);
@@ -143,7 +143,7 @@ class GameIT {
     void setInvalidReferees() {
         UserController userController = new UserController();
         LinkedList<Referee> referees = new LinkedList<>();
-        User ref1 = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", UserType.REFEREE, true, null);
+        User ref1 = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", "rami@gmail.com","REFEREE", true);
         User ref2 = null;
         referees.add((Referee) ref1);
         referees.add((Referee) ref2);

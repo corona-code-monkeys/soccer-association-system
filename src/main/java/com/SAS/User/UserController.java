@@ -4,9 +4,12 @@ import com.SAS.crudoperations.CRUD;
 import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.team.Team;
 
-import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import com.SAS.systemLoggers.LoggerFactory;
+import org.json.JSONObject;
 
 public class UserController {
 
@@ -15,6 +18,7 @@ public class UserController {
      */
     private LoggerFactory logger;
     private Privileges globalPrivileges;
+    private Set<String> loggedInUsers;
 
     /**
      * Constructor
@@ -22,7 +26,7 @@ public class UserController {
     public UserController() {
         this.globalPrivileges = Privileges.getInstance();
         this.logger = LoggerFactory.getInstance();
-
+        this.loggedInUsers = new HashSet<>();
     }
 
     /**
@@ -38,10 +42,17 @@ public class UserController {
      * @param userName
      * @param password
      * @param fullName
+     * @param email
+     * @param userType
      */
-    public User createUser(String userName, String password, String fullName, UserType type, boolean approval, User newUser){
-         //check user parameters
-         if (!validateDetails(userName, password, fullName, type)) {
+    public User createUser(String userName, String password, String fullName, String email, String userType, boolean approval){
+        UserType type = null;
+        if (userType != null) {
+            type= Role.convertStringToUserType(userType);
+        }
+        User newUser = null;
+        //check user parameters
+         if (!validateDetails(userName, password, fullName, email, type)) {
              System.out.println("The parameters aren't valid. Pleas enter the details again.");
              return newUser;
          }
@@ -52,7 +63,7 @@ public class UserController {
              return newUser;
          }
 
-         newUser = new Registered(userName, password, fullName);
+         newUser = new Registered(userName, password, fullName, email);
          if (validateUser(fullName, type)) {
 
              switch (type) {
@@ -94,7 +105,7 @@ public class UserController {
              //keep in database
 
              try {
-                 UsersCRUD.postUser(userName, password, fullName, type.toString());
+                 UsersCRUD.postUser(userName, password, fullName, email, userType);
                  logger.logEvent("User: " + ((Role)newUser).getUserName() + ". New " + type + " Created.");
              }
              catch (Exception e){
@@ -113,13 +124,13 @@ public class UserController {
 
     /**
      * The method receives userName, password and full name as string and checks that they are valid
-     *
-     * @param userName
+     *  @param userName
      * @param password
      * @param fullName
+     * @param email
      */
-    private boolean validateDetails(String userName, String password, String fullName, UserType type) {
-        return  !(empty(userName) || empty(password)|| empty(fullName) || type == null);
+    private boolean validateDetails(String userName, String password, String fullName, String email, UserType type) {
+        return  !(empty(userName) || empty(password)|| empty(fullName) || empty(email) || type == null);
     }
 
 
@@ -162,10 +173,13 @@ public class UserController {
     /**
      * The function sets the privileges of the user
      * @param user
-     * @param type
+     * @param userType
      * @return
      */
-    public User addRoleToUser(User user, UserType type, boolean approval) {
+    public User addRoleToUser(User user, String userType, boolean approval) {
+        if (userType == null)
+            return null;
+        UserType type = Role.convertStringToUserType(userType);
         if (user == null || type == null) {
             return null;
         }
@@ -299,8 +313,27 @@ public class UserController {
      */
     public boolean isUserExist(String username, String password){
         if (validParam(username) && validParam(password)) {
-            return UsersCRUD.isUserValid(username, password);
+            Boolean isExist = UsersCRUD.isUserValid(username, password);
+            if (isExist) {
+                this.loggedInUsers.add(username);
+            }
+
+            return isExist;
         }
+        return false;
+    }
+
+    /**
+     * The function receives username and removes it from the logged in users
+     * @param username
+     * @return true of false
+     */
+    public boolean exit(String username){
+        if (validParam(username)) {
+            this.loggedInUsers.remove(username);
+            return true;
+        }
+
         return false;
     }
 
@@ -321,7 +354,7 @@ public class UserController {
      * @param type
      * @return true if were edited, otherwise false
      */
-    public boolean editUserDetails(String username, List<String> details, String type) {
+    public boolean editUserDetails(String username, JSONObject details, String type) {
         int userID = UsersCRUD.getUserIdByUserName(username);
         if (userID == -1)
             return false;
@@ -347,10 +380,10 @@ public class UserController {
      * @param details
      * @return
      */
-    private boolean editCoachDetails(int userID, List<String> details) {
+    private boolean editCoachDetails(int userID, JSONObject details) {
        //level, fieldRole, team
-        if (details.size()==3 && validParam(details.get(0)) && validParam(details.get(1))&& validParam(details.get(2))){
-            return UsersCRUD.setCoachDetails(userID, details.get(0), details.get(1), details.get(2));
+        if (details.length()==3 && validParam(details.get("level").toString()) && validParam(details.get("fieldRole").toString())&& validParam(details.get("team").toString())){
+            return UsersCRUD.setCoachDetails(userID, details.get("level").toString(), details.get("fieldRole").toString(), details.get("team").toString());
         }
         else
             return false;
@@ -362,10 +395,10 @@ public class UserController {
      * @param details
      * @return
      */
-    private boolean editTeamManagerDetails(int userID, List<String> details) {
+    private boolean editTeamManagerDetails(int userID, JSONObject details) {
         //team, nominatedBy
-        if (details.size()==2 && validParam(details.get(0)) && validParam(details.get(1))){
-            return UsersCRUD.setTeamOwnerOrManagerDetails(userID, details.get(0), details.get(1), "team_manager");
+        if (details.length()==2 && validParam(details.get("team").toString()) && validParam(details.get("nominatedBy").toString())){
+            return UsersCRUD.setTeamOwnerOrManagerDetails(userID, details.get("team").toString(), details.get("nominatedBy").toString(), "team_manager");
         }
         else
             return false;
@@ -377,10 +410,10 @@ public class UserController {
      * @param details
      * @return
      */
-    private boolean editRefereeDetails(int userID, List<String> details) {
+    private boolean editRefereeDetails(int userID, JSONObject details) {
         //level
-        if (details.size()==1 && validParam(details.get(0))){
-            return UsersCRUD.setRefereeDetails(userID, details.get(0));
+        if (details.length()==1 && validParam(details.get("level").toString())){
+            return UsersCRUD.setRefereeDetails(userID, details.get("level").toString());
         }
         else
             return false;
@@ -394,14 +427,14 @@ public class UserController {
      * @param details
      * @return
      */
-    private boolean editTeamOwnerDetails(int userID, List<String> details) {
+    private boolean editTeamOwnerDetails(int userID, JSONObject details) {
         //just team
-        if (details.size()==1 && validParam(details.get(0))){
-            return UsersCRUD.setTeamOwnerDetails(userID, details.get(0));
+        if (details.length()==1 && validParam(details.get("team").toString())){
+            return UsersCRUD.setTeamOwnerDetails(userID, details.get("team").toString());
         }
         //team, nominatedBy
-        else if (details.size()==2 && validParam(details.get(0)) && validParam(details.get(1))){
-            return UsersCRUD.setTeamOwnerOrManagerDetails(userID, details.get(0), details.get(1), "team_owner");
+        else if (details.length()==2 && validParam(details.get("team").toString()) && validParam(details.get("nominatedBy").toString())){
+            return UsersCRUD.setTeamOwnerOrManagerDetails(userID, details.get("team").toString(), details.get("nominatedBy").toString(), "team_owner");
         }
         else
             return false;
@@ -413,10 +446,10 @@ public class UserController {
      * @param details
      * @return true or false
      */
-    private boolean editPlayerDetails(int userID, List<String> details) {
-        if (details.size() == 3 && validParam(details.get(0)) && validParam(details.get(1)) && validParam(details.get(2))) {
-            //first is dateOfBirth, second is fieldRole
-            return UsersCRUD.setPlayerDetails(userID, details.get(0), details.get(1), details.get(2));
+    private boolean editPlayerDetails(int userID, JSONObject details) {
+        if (details.length() == 3 && validParam(details.get("dateOfBirth").toString()) && validParam(details.get("fieldRole").toString()) && validParam(details.get("team").toString())) {
+            //first is dateOfBirth, second is fieldRole, third is team
+            return UsersCRUD.setPlayerDetails(userID, details.get("dateOfBirth").toString(), details.get("fieldRole").toString(),details.get("team").toString());
         }
         return false;
     }

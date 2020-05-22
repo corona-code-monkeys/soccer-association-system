@@ -1,6 +1,7 @@
 package com.SAS.User;
 
 import com.SAS.team.Team;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,7 @@ public class PlayerUT {
 
     @BeforeEach
     public void setUp() throws Exception {
-        user = new Registered("avil", "123456", "Avi Levi");
+        user = new Registered("avil", "123456", "Avi Levi", "avi@gmail.com");
         user = new Player(user, "Avi Levi");
         Team team = new Team();
         ((Player)user).setTeam(team);
@@ -59,13 +60,10 @@ public class PlayerUT {
 
     @Test
     public void editDetails() {
-        List<String> details = new ArrayList<String>() {
-            {
-                add("1993-09-09");
-                add("Striker");
-            }
-        };
-
+        JSONObject details = new JSONObject();
+        details.put("dateOfBirth", "1992-12-20");
+        details.put("fieldRole", "Striker");
+        details.put("team", "macabi tel aviv");
         Assertions.assertTrue(((Player)user).editDetails(details));
     }
 

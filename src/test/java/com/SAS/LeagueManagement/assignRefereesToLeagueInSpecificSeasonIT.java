@@ -30,7 +30,7 @@ public class assignRefereesToLeagueInSpecificSeasonIT {
         Season season= new Season(2020, new HashSet<>(), new HashSet<>());
         Assertions.assertTrue(isSeasonExistStub(season));
         HashSet<Referee> referees= new HashSet<>();
-        Referee ref= new Referee(new Registered("dekelle","dekele","dekele levy"),"dekele levy");
+        Referee ref= new Referee(new Registered("dekelle","dekele","dekele levy", "dekel@gmail.com"),"dekele levy");
         referees.add(ref);
         Assertions.assertTrue(addRefereesToLeagueInSeasonStub(league,season, referees));
 

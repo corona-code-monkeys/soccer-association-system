@@ -301,7 +301,6 @@ public class LeagueManagementController {
                 logger.logError("Fault: the details inserted does not match the criteria");
                 return null;
             }
-
             //first userName, second password, third fullName and last level
             try {
                 String userName = details.get(0);
@@ -358,7 +357,7 @@ public class LeagueManagementController {
         if (canAccessSettingsPage(user)) {
             if (referee != null) {
                 referees.remove(referee);
-                if (LeagueCRUD.removeReferee(referee.getUserID())) {
+                if (LeagueCRUD.removeReferee(UsersCRUD.getUserIdByUserName(((Referee)referee).getUserName()))) {
                     logger.logEvent("User: " + ((Role) user).getUserName() + ". Removed referee");
                     return true;
                 } else {
@@ -507,7 +506,6 @@ public class LeagueManagementController {
             return null;
         }
 
-
         for (Referee referee : referees) {
             if (referee.getUserName().equals(userName)) {
                 return referee;
@@ -517,7 +515,12 @@ public class LeagueManagementController {
         return null;
     }
 
+    /**
+     * This function return a referee by it's id
+     * @param id
+     * @return
+     */
     public User getRefereeID(int id) {
-        return null;// dont know how the return an object from the db
+        return UsersCRUD.restoreRoleForUser(id);
     }
 }

@@ -1,5 +1,6 @@
 package com.SAS.facility;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -62,12 +63,10 @@ class FacilityUT {
         facility.setName("facility");
         facility.setLocation("Beer Sheva");
         facility.setFacilityType(facilityType.STADIUM);
-
-        LinkedList<String> details = new LinkedList<>();
-        details.add("newFacility");
-        details.add("Tel Aviv");
-        details.add("Training");
-
+        JSONObject details = new JSONObject();
+        details.put("name", "newFacility");
+        details.put("location", "Tel Aviv");
+        details.put("type", "Training");
         boolean result = facility.editDetails(details);
         assertTrue(result);
     }
@@ -78,12 +77,10 @@ class FacilityUT {
         facility.setName("facility");
         facility.setLocation("Beer Sheva");
         facility.setFacilityType(facilityType.TRAINING);
-
-        LinkedList<String> details = new LinkedList<>();
-        details.add("newFacility");
-        details.add("Tel Aviv");
-        details.add("Stadium");
-
+        JSONObject details = new JSONObject();
+        details.put("name", "newFacility");
+        details.put("location", "Tel Aviv");
+        details.put("type", "Stadium");
         boolean result = facility.editDetails(details);
         assertTrue(result);
     }
@@ -95,11 +92,10 @@ class FacilityUT {
         facility.setLocation("Beer Sheva");
         facility.setFacilityType(facilityType.TRAINING);
 
-        LinkedList<String> details = new LinkedList<>();
-        details.add("newFacility");
-        details.add("Tel Aviv");
-        details.add("field");
-
+        JSONObject details = new JSONObject();
+        details.put("name", "newFacility");
+        details.put("location", "Tel Aviv");
+        details.put("type", "field");
         boolean result = facility.editDetails(details);
         assertFalse(result);
     }

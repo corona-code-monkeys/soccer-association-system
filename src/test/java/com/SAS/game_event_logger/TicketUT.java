@@ -19,8 +19,8 @@ class TicketUT {
         String gameID = "1";
         Team t = new Team();
         t.setName("BGU");
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
-        Referee r = (Referee) u.createUser("Chen", "123456", "Chen Gelad", UserType.REFEREE, true,null);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", "matan@gmail.com", "PLAYER", true);
+        Referee r = (Referee) u.createUser("Rami", "123456", "Rami Levi", "rami@gmail.com","REFEREE", true);
         Ticket ticket = new RedTicket(gameID, LocalDate.now(),0,p,r);
         assertEquals(p.getFullName(),ticket.getAgainstPlayer().getFullName());
     }
@@ -31,8 +31,8 @@ class TicketUT {
         String gameID = "1";
         Team t = new Team();
         t.setName("BGU");
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
-        Referee r = (Referee) u.createUser("Chen", "123456", "Chen Gelad", UserType.REFEREE, true,null);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", "matan@gmail.com", "PLAYER", true);
+        Referee r = (Referee) u.createUser("Rami", "123456", "Rami Levi", "rami@gmail.com","REFEREE", true);
         Ticket ticket = new RedTicket(gameID, LocalDate.now(),0,null,r);
         assertNull(ticket.getAgainstPlayer());
         ticket.setAgainstPlayer(p);
@@ -45,8 +45,8 @@ class TicketUT {
         String gameID = "1";
         Team t = new Team();
         t.setName("BGU");
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
-        Referee r = (Referee) u.createUser("Chen", "123456", "Chen Gelad", UserType.REFEREE, true,null);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", "matan@gmail.com", "PLAYER", true);
+        Referee r = (Referee) u.createUser("Rami", "123456", "Rami Levi", "rami@gmail.com","REFEREE", true);
         Ticket ticket = new YellowTicket(gameID, LocalDate.now(),0,p,r);
         assertEquals(r.getFullName(),ticket.getRefereePulled().getFullName());
     }
@@ -57,8 +57,8 @@ class TicketUT {
         String gameID = "1";
         Team t = new Team();
         t.setName("BGU");
-        Player p = (Player) u.createUser("matan", "123456", "matan anavi", UserType.PLAYER, true,null);
-        Referee r = (Referee) u.createUser("Chen", "123456", "Chen Gelad", UserType.REFEREE, true,null);
+        Player p = (Player) u.createUser("matan", "123456", "matan anavi", "matan@gmail.com", "PLAYER", true);
+        Referee r = (Referee) u.createUser("Rami", "123456", "Rami Levi", "rami@gmail.com","REFEREE", true);
         Ticket ticket = new YellowTicket(gameID, LocalDate.now(),0,p,null);
         assertNull(ticket.getRefereePulled());
         ticket.setRefereePulled(r);

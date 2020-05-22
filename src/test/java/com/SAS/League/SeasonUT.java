@@ -90,7 +90,7 @@ class SeasonUT {
 
     @Test
     void addReferee() {
-        Referee ref = new Referee(new Registered("dekel", "dekel", "dekellevy"), "dekellevy");
+        Referee ref = new Referee(new Registered("dekel", "dekel", "dekellevy", "dekel@gmail.com"), "dekellevy");
         season.addLeague(league);
         Assertions.assertFalse(season.getReferees().get(league).contains(ref));
         season.addReferee(league, ref);

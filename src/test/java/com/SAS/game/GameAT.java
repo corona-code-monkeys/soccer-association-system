@@ -26,9 +26,9 @@ public class GameAT {
     @BeforeEach
     void setUp() {
         userController = new UserController();
-        referee = (Referee) userController.createUser("AviC", "password", "Avi Cohen", UserType.REFEREE, true, null);
+        referee = (Referee) userController.createUser("AviC", "password", "Avi Cohen", "rami@gmail.com","REFEREE", true);
         referee.setLevel(1);
-        referee2 = (Referee) userController.createUser("AviC", "password", "Avi Cohen", UserType.REFEREE, true, null);
+        referee2 = (Referee) userController.createUser("AviC", "password", "Avi Cohen", "rami@gmail.com","REFEREE", true);
         referee2.setLevel(2);
         List<Referee> refereeList = new ArrayList<>();
         refereeList.add(referee);

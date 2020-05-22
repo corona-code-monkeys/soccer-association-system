@@ -1,6 +1,7 @@
 package com.SAS.User;
 
 import com.SAS.team.Team;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +16,7 @@ public class CoachUT {
 
     @BeforeEach
     public void setUp() throws Exception {
-        user = new Registered("avil", "123456", "Avi Levi");
+        user = new Registered("avil", "123456", "Avi Levi", "avi@gmail.com");
         user = new Coach(user, "Avi Levi");
         ((Coach) user).setFieldRole(FieldRole.STRIKER);
         Team team = new Team();
@@ -72,35 +73,24 @@ public class CoachUT {
 
     @Test
     public void editDetailsSuccess() {
-        List<String> details = new ArrayList<String>() {
-            {
-                add("1");
-                add("Defender");
-            }
-        };
-
+        JSONObject details = new JSONObject();
+        details.put("level", "1");
+        details.put("fieldRole", "Defender");
         Assertions.assertTrue(((Coach) user).editDetails(details));
     }
 
     @Test
     public void editDetailsFailNotEnoughParams() {
-        List<String> details = new ArrayList<String>() {
-            {
-                add("1");
-            }
-        };
-
+        JSONObject details = new JSONObject();
+        details.put("level", "1");
         Assertions.assertFalse(((Coach) user).editDetails(details));
     }
 
     @Test
     public void editDetailsFailNotLegalRole() {
-        List<String> details = new ArrayList<String>() {
-            {
-                add("2");
-                add("defense");
-            }
-        };
+        JSONObject details = new JSONObject();
+        details.put("level", "2");
+        details.put("fieldRole", "defense");
 
         Assertions.assertFalse(((Coach) user).editDetails(details));
     }

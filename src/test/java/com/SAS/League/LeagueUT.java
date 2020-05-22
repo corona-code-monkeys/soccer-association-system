@@ -74,7 +74,7 @@ class LeagueUT {
 
     @Test
     void addReferee() {
-        Referee ref= new Referee(new Registered("dekel", "dekel", "dekel levy"), "dekel levy");
+        Referee ref= new Referee(new Registered("dekel", "dekel", "dekel levy", "dekel@gmail.com"), "dekel levy");
         league.addSeason(season);
         Assertions.assertTrue(league.getReferees().get(season).size()==0);
         league.addReferee(season,ref);

@@ -5,16 +5,17 @@ package com.SAS.Controllers.sasApplication;
 
 import com.SAS.Controllers.systemController.SystemController;
 import com.SAS.LeagueManagement.LeagueManagementController;
-import com.SAS.User.User;
 import com.SAS.User.UserController;
-import com.SAS.User.UserType;
-import com.SAS.team.Team;
 import com.SAS.teamManagenemt.TeamManagement;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+@Service
 public class SASApplication {
 
+    @Autowired
     private UserController userController;
     private LeagueManagementController leaugeManagement;
     private TeamManagement teamManagement;
@@ -37,9 +38,17 @@ public class SASApplication {
      * @param password
      * @return true if the user exists in the system, thus was logged in, otherwise false
      */
-
     public boolean login(String username, String password){
         return userController.isUserExist(username, password);
+    }
+
+    /**
+     * This function removes the user from logged in users
+     * @param username
+     * @return true of false
+     */
+    public boolean exit(String username){
+        return userController.exit(username);
     }
 
     //TODO: In UI: if true- show alert that the user was created and switch to home page so he would log in, wlse show error message
@@ -50,11 +59,11 @@ public class SASApplication {
      * @param fullName
      * @param type
      * @param approval
-     * @param newUser
+     * @param email
      * @return true if was created, otherwise false
      */
-    public boolean createUser(String userName, String password, String fullName, UserType type, boolean approval, User newUser){
-        if(userController.createUser(userName,password,fullName,type, approval, newUser)!=null)
+    public boolean createUser(String userName, String password, String fullName, String email, String type, boolean approval){
+        if(userController.createUser(userName, password, fullName, email, type, approval) != null)
             return true;
         return false;
     }
@@ -65,7 +74,7 @@ public class SASApplication {
      * @param teamOwner
      * @param teamName
      */
-    public boolean registerTeam(User teamOwner, String teamName){
+    public boolean registerTeam(String teamOwner, String teamName){
         return userController.sendNotificationToRepresentative(teamManagement.createANewTeam(teamOwner, teamName));
     }
 
@@ -77,7 +86,7 @@ public class SASApplication {
      * @param representative
      * @param confirm
      */
-    public boolean confirmTeam(String teamName, User representative, boolean confirm){
+    public boolean confirmTeam(String teamName, String representative, boolean confirm){
         return teamManagement.commitConfirmationOfTeam(teamName, representative, confirm);
     }
 
@@ -107,7 +116,7 @@ public class SASApplication {
      * @param type
      * @return true if the details were edited
      */
-    public boolean editUserDetails(String username, List<String> details, String type){
+    public boolean editUserDetails(String username, JSONObject details, String type){
         if (details != null && type != null){
             return userController.editUserDetails(username, details, type);
         }
@@ -120,8 +129,8 @@ public class SASApplication {
      * @param owner
      * @return
      */
-    public boolean closeTeam(String teamName, User owner){
-        return teamManagement.closeTeam(owner);
+    public boolean closeTeam(String teamName, String owner){
+        return teamManagement.closeTeam(teamName, owner);
     }
 
     /**
@@ -130,10 +139,165 @@ public class SASApplication {
      * @param owner
      * @return
      */
-    public boolean openTeam(String teamName, User owner){
-        return teamManagement.openTeam(owner);
+    public boolean openTeam(String teamName, String owner){
+        return teamManagement.openTeam(teamName, owner);
     }
 
 
+    /**
+     * The function receives a team name and returns the team page
+     * @param teamName
+     * @return
+     */
+    public JSONObject getTeamPage(String teamName) {
+        return teamManagement.enterTeamPage(teamName);
+    }
 
+
+    /**
+     * The function receives team name, new team owner username and nominated by username
+     * and returns true if nominated, otherwise returns false
+     * @param teamName
+     * @param newTeamOwner
+     * @param nominatedBy
+     * @return
+     */
+    public boolean addTeamOwner(String teamName, String newTeamOwner, String nominatedBy) {
+        return teamManagement.addAdditionalTeamOwner(teamName, newTeamOwner, nominatedBy);
+    }
+
+    /**
+     * The function receives team name, team owner username to remove and nominated by username
+     * and returns true if removes, otherwise returns false
+     * @param teamName
+     * @param removeTeamOwner
+     * @param nominatedBy
+     * @return
+     */
+    public boolean removeTeamOwner(String teamName, String removeTeamOwner, String nominatedBy) {
+        return teamManagement.removeTeamOwner(teamName, removeTeamOwner, nominatedBy);
+    }
+
+    /**
+     * The function receives team name, team owner username to remove and nominated by username
+     * and returns true if removes, otherwise returns false
+     * @param teamName
+     * @param newTeamManager
+     * @param nominatedBy
+     * @param approval
+     * @return
+     */
+    public boolean addTeamManager(String teamName, String newTeamManager, String nominatedBy, boolean approval) {
+        return teamManagement.addTeamManager(teamName, newTeamManager, nominatedBy, approval);
+    }
+
+    /**
+     * The function receives team name, team owner username to remove and nominated by username
+     * and returns true if removes, otherwise returns false
+     * @param teamName
+     * @param removeTeamManager
+     * @param nominatedBy
+     * @return
+     */
+    public boolean removeTeamManager(String teamName, String removeTeamManager, String nominatedBy) {
+        return teamManagement.removeTeamManager(teamName, removeTeamManager, nominatedBy);
+    }
+
+    /**
+     * The function receives the team name, team owner and transaction details to add
+     * and returns true if it added, otherwise returns false
+     * @return boolean - true or false
+     */
+    public boolean addTeamTransaction(String teamName, String teamOwner, JSONObject transactionDetails) {
+        return teamManagement.addTransactionToTeam(teamName, transactionDetails, teamOwner);
+    }
+
+    /**
+     * The function returns the teams
+     * @return array of names
+     */
+    public JSONArray getTeams() {
+        return teamManagement.getTeams();
+    }
+
+
+    /**
+     * The function receives asset details, team name and team owner and returns true if the asset added,
+     * otherwise returns false
+     * @param teamName
+     * @param teamOwner
+     * @param assetType
+     * @param assetDetails
+     * @return
+     */
+    public boolean addTeamAsset(String teamName, String teamOwner, String assetType, JSONObject assetDetails) {
+        if (assetType.equals("Facility")){
+            return teamManagement.addAssetToTeam(teamName, assetType, teamOwner, assetDetails);
+        }
+
+        else {
+            String userName = assetDetails.get("userName").toString();
+            String password = assetDetails.get("password").toString();
+            String fullName = assetDetails.get("fullName").toString();
+            String email = assetDetails.get("email").toString();
+            return teamManagement.addAssetToTeam(teamName, assetType, teamOwner, userName, password, fullName, email, assetDetails);
+        }
+    }
+
+    /**
+     * The function edits the asset details and returns true if succeeded, otherwise return false
+     * @param teamName
+     * @param assetType
+     * @param assetDetails
+     * @return true or false
+     */
+    public boolean editAssetDetails(String teamName, String assetType, JSONObject assetDetails) {
+        if (assetType.equals("Facility")) {
+            return teamManagement.editAssetDetails(teamName, assetType, assetDetails);
+        }
+
+        else {
+            return teamManagement.editAssetDetails(teamName, assetType, assetDetails.get("assetName").toString(), assetDetails);
+        }
+    }
+
+    /**
+     * The function receives team name, asset type and name and removes the asset from the team
+     * it returns true if succeeded, otherwise - returns false
+     * @param teamName
+     * @param assetType
+     * @param assetName
+     * @param teamOwner
+     * @return true or false
+     */
+    public boolean removeTeamAsset(String teamName, String assetType, String assetName, String teamOwner) {
+        return teamManagement.removeAsset(teamName, assetType, assetName, teamOwner);
+    }
+
+    /**
+     * The function returns all the optional nominees for the team owner
+     * @param teamName
+     * @return list of usernames
+     */
+    public JSONArray getOptionalNomineesForTeamOwner(String teamName) {
+        return teamManagement.showOptionalNomineesForTeamOwner(teamName);
+    }
+
+    /**
+     * The function returns all the optional nominees for the team manager
+     * @param teamName
+     * @return list of usernames
+     */
+    public JSONArray getOptionalNomineesForTeamManager(String teamName) {
+        return teamManagement.showOptionalNomineesForTeamManager(teamName);
+    }
+
+    /**
+     * The function returns all the assets of the team
+     * @param teamName
+     * @return list of assets
+     */
+    public JSONObject getAssetsForTeam(String teamName) {
+        return teamManagement.getAllTeamAssets(teamName);
+    }
 }

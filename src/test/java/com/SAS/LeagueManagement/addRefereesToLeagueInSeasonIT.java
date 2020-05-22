@@ -25,7 +25,7 @@ public class addRefereesToLeagueInSeasonIT {
     public void isLeagueExistTester() {
         League league= new League("Ligat Ha'al");
         HashSet<Referee> referees= new HashSet<>();
-        Referee ref= new Referee(new Registered("asd", "asd", "asd"),"dekel lev");
+        Referee ref= new Referee(new Registered("asd", "asd", "asd", "asd@gmail.com"),"dekel lev");
         referees.add(ref);
         Assertions.assertTrue(driverAssignRefereesToLeagueInSpecificSeason(league,new Season(2020, new HashSet<>(),new HashSet<>()), referees));
     }

@@ -29,14 +29,14 @@ public class CRUD {
      * @param type
      * @return
      */
-    public static User createUser(String userName, String password, String fullName, UserType type) {
+    public static User createUser(String userName, String password, String fullName, String email, UserType type) {
         if (userName == null || password == null || fullName == null) {
             return null;
         } else if (userName.equals("wrong")) {
             return null;
         } else {
             UserController c = new UserController();
-            return c.createUser(userName, password, fullName, type, true, null);
+            return c.createUser(userName, password, fullName, email, type.toString(), true);
         }
     }
 
@@ -137,23 +137,23 @@ public class CRUD {
         return userID >= 0;
     }
 
-    /**
-     * will return false for null inputs, or inputs with password == wrong, else, will return a Fan named
-     *
-     * @param userName
-     * @param password
-     * @return
-     */
-    public static User getUser(String userName, String password) {
-        if (userName == null || password == null) {
-            return null;
-        } else if (password.equals("wrong")) {
-            return null;
-        } else {
-            UserController controller = new UserController();
-            return controller.createUser(userName, password, "matan anavi", UserType.FAN, true, null);
-        }
-    }
+//    /**
+//     * will return false for null inputs, or inputs with password == wrong, else, will return a Fan named
+//     *
+//     * @param userName
+//     * @param password
+//     * @return
+//     */
+//    public static User getUser(String userName, String password) {
+//        if (userName == null || password == null) {
+//            return null;
+//        } else if (password.equals("wrong")) {
+//            return null;
+//        } else {
+//            UserController controller = new UserController();
+//            return controller.createUser(userName, password, "matan anavi", UserType.FAN, true, null);
+//        }
+//    }
 
 
     /**
@@ -365,25 +365,25 @@ public class CRUD {
     }
 
 
-    /**
-     * send null for wrong input, not null for real input (u'll get a list of three referees)
-     *
-     * @param league
-     * @param season
-     * @return
-     */
-    public static List<Referee> getRefereesList(League league, Season season) {
-        if (league == null || season == null) {
-            return null;
-        } else {
-            List<Referee> list = new ArrayList<>();
-            UserController c = new UserController();
-            list.add(new Referee(c.createUser("name1", "password1", "fullname1", UserType.REFEREE, true, null), "fullname1"));
-            list.add(new Referee(c.createUser("name2", "password2", "fullname2", UserType.REFEREE, true, null), "fullname2"));
-            list.add(new Referee(c.createUser("name3", "password3", "fullname3", UserType.REFEREE, true, null), "fullname3"));
-            return list;
-        }
-    }
+//    /**
+//     * send null for wrong input, not null for real input (u'll get a list of three referees)
+//     *
+//     * @param league
+//     * @param season
+//     * @return
+//     */
+//    public static List<Referee> getRefereesList(League league, Season season) {
+//        if (league == null || season == null) {
+//            return null;
+//        } else {
+//            List<Referee> list = new ArrayList<>();
+//            UserController c = new UserController();
+//            list.add(new Referee(c.createUser("name1", "password1", "fullname1", UserType.REFEREE, true, null), "fullname1"));
+//            list.add(new Referee(c.createUser("name2", "password2", "fullname2", UserType.REFEREE, true, null), "fullname2"));
+//            list.add(new Referee(c.createUser("name3", "password3", "fullname3", UserType.REFEREE, true, null), "fullname3"));
+//            return list;
+//        }
+//    }
 
     /**
      * send null for wrong input, not null for real input
