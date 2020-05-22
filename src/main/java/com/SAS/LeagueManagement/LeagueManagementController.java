@@ -309,7 +309,7 @@ public class LeagueManagementController {
                 String pass = details.get(1);
                 String fullName = details.get(2);
                 int level = Integer.parseInt(details.get(3));
-                if (LeagueCRUD.addReferee(UsersCRUD.getUserIdByUserName(userName),level)&& null!=userController.createUser(userName,pass,fullName,REFEREE,true,user)) {
+                if (LeagueCRUD.addReferee(UsersCRUD.getUserIdByUserName(userName),level)&& null!=userController.createUser(userName,pass,fullName,REFEREE.toString(),true,user)) {
                     logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new referee");
                     return user;
                 } else {
