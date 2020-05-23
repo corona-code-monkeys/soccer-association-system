@@ -10,6 +10,17 @@ public class SystemCRUD {
 
     private static JdbcTemplate jdbcTemplate;
 
+    public static boolean activateSystem(String systemStatus) {
+        try {
+
+            String query = String.format("insert into isActive () values ( \"%s\");", systemStatus);
+            jdbcTemplate.update(query);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public void setTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

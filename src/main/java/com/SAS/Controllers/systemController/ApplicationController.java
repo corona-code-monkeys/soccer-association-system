@@ -1,16 +1,12 @@
 package com.SAS.Controllers.systemController;
 
-import com.SAS.User.User;
 import com.SAS.User.UserController;
-import com.SAS.User.UserType;
 import com.SAS.crudoperations.SystemCRUD;
 import com.SAS.systemLoggers.LoggerFactory;
-
-import java.util.LinkedList;
 import java.util.List;
 
 
-public class SystemController {
+public class ApplicationController {
 
     private LoggerFactory logger;
     private UserController userController;
@@ -20,7 +16,7 @@ public class SystemController {
     /**
      * Constructor
      */
-    public SystemController() {
+    public ApplicationController() {
         this.userController = new UserController();
         this.logger = LoggerFactory.getInstance();
     }
@@ -143,4 +139,7 @@ public class SystemController {
         return true;
     }
 
+    public boolean activateSystem(String systemStatus) {
+        return SystemCRUD.activateSystem(systemStatus);
+    }
 }

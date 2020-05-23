@@ -3,7 +3,7 @@
  */
 package com.SAS.Controllers.sasApplication;
 
-import com.SAS.Controllers.systemController.SystemController;
+import com.SAS.Controllers.systemController.ApplicationController;
 import com.SAS.LeagueManagement.LeagueManagementController;
 import com.SAS.User.UserController;
 import com.SAS.teamManagenemt.TeamManagement;
@@ -19,7 +19,7 @@ public class SASApplication {
     private UserController userController;
     private LeagueManagementController leaugeManagement;
     private TeamManagement teamManagement;
-    private SystemController systemController; //check
+    private ApplicationController applicationControllerController; //check
 
 
     /**

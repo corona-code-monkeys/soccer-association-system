@@ -1,21 +1,21 @@
 package com.SAS.acceptanceTests;
 
-import com.SAS.Controllers.systemController.SystemController;
+import com.SAS.Controllers.systemController.ApplicationController;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.SAS.systemLoggers.LoggerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class SystemControllerAT {
+public class ApplicationControllerAT {
 
-    private SystemController systemController;
+    private ApplicationController applicationController;
     private LoggerFactory factory;
 
 
     @BeforeEach
     void setUp() {
-        systemController = new SystemController();
+        applicationController = new ApplicationController();
         factory = LoggerFactory.getInstance();
     }
 
@@ -35,14 +35,14 @@ public class SystemControllerAT {
         boolean createUser = false;
 
         //OpenAssociationSystem
-        System.out.println(systemController.openAssociationSystem());
+        System.out.println(applicationController.openAssociationSystem());
 
         //The user select the external systems he want to connect
         System.out.println("Please select which external systems you want to connect to:");
-        System.out.println(systemController.showAvailableExternalSystem());
+        System.out.println(applicationController.showAvailableExternalSystem());
         userChoose = "Accounting";
         System.out.println(userChoose);
-        if (systemController.addExternalSystem(userChoose)) {
+        if (applicationController.addExternalSystem(userChoose)) {
             system1 = true;
         }
         else{
@@ -53,10 +53,10 @@ public class SystemControllerAT {
         assertTrue(system1);
 
         System.out.println("Please select which external systems you want to connect to:");
-        System.out.println(systemController.showAvailableExternalSystem());
+        System.out.println(applicationController.showAvailableExternalSystem());
         userChoose = "Tax";
         System.out.println(userChoose);
-        if (systemController.addExternalSystem(userChoose)) {
+        if (applicationController.addExternalSystem(userChoose)) {
             system2 = true;
         }
         else {
@@ -81,7 +81,7 @@ public class SystemControllerAT {
             System.out.println("email: ");
             email = "admin12@gmail.com";
             System.out.println(email);
-            createUser = systemController.createSystemAdmin(userName, password, fullName, email);
+            createUser = applicationController.createSystemAdmin(userName, password, fullName, email);
             System.out.println("The setup ended successfully");
 
             assertTrue(system1 && system2 && createUser);
@@ -106,14 +106,14 @@ public class SystemControllerAT {
         boolean system2 = false;
 
         //OpenAssociationSystem
-        System.out.println(systemController.openAssociationSystem());
+        System.out.println(applicationController.openAssociationSystem());
 
         //The user select the external systems he want to connect
         System.out.println("Please select which external systems you want to connect to:");
-        System.out.println(systemController.showAvailableExternalSystem());
+        System.out.println(applicationController.showAvailableExternalSystem());
         userChoose = "Acounting";
         System.out.println(userChoose);
-        if (systemController.addExternalSystem(userChoose)) {
+        if (applicationController.addExternalSystem(userChoose)) {
             system1 = true;
         }
         else{
@@ -123,10 +123,10 @@ public class SystemControllerAT {
         }
 
         System.out.println("Please select which external systems you want to connect to:");
-        System.out.println(systemController.showAvailableExternalSystem());
+        System.out.println(applicationController.showAvailableExternalSystem());
         userChoose = "Tax";
         System.out.println(userChoose);
-        if (systemController.addExternalSystem(userChoose)) {
+        if (applicationController.addExternalSystem(userChoose)) {
             system2 = true;
         }
         else {
@@ -149,7 +149,7 @@ public class SystemControllerAT {
             System.out.println("email: ");
             email = "admin12@gmail.com";
             System.out.println(email);
-            systemController.createSystemAdmin(userName, password, fullName, email);
+            applicationController.createSystemAdmin(userName, password, fullName, email);
             System.out.println("The setup ended successfully");
         }
         long endTime = System.nanoTime();
