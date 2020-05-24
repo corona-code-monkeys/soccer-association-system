@@ -4,9 +4,11 @@ import com.SAS.User.Referee;
 import com.SAS.User.User;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
+import com.SAS.dbstub.dbStub;
 import com.SAS.game_event_logger.GameEvent;
 import com.SAS.game_event_logger.Offence;
 import com.SAS.team.Team;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,10 +27,13 @@ public class GameAT {
 
     @BeforeEach
     void setUp() {
+        dbStub db = new dbStub();
+        dbStub.initializeDB();
+
         userController = new UserController();
         referee = (Referee) userController.createUser("AviC", "password", "Avi Cohen", "rami@gmail.com","REFEREE", true);
         referee.setLevel(1);
-        referee2 = (Referee) userController.createUser("AviC", "password", "Avi Cohen", "rami@gmail.com","REFEREE", true);
+        referee2 = (Referee) userController.createUser("AviC2", "password", "Avi Cohen", "rami@gmail.com","REFEREE", true);
         referee2.setLevel(2);
         List<Referee> refereeList = new ArrayList<>();
         refereeList.add(referee);
@@ -61,6 +66,12 @@ public class GameAT {
         gameList.add(g3);
 
 
+    }
+
+    @AfterEach
+    void tearDown(){
+        userController.deleteUSer(referee.getUserName());
+        userController.deleteUSer(referee2.getUserName());
     }
 
     private void printGames() {
