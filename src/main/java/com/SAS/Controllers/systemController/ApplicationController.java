@@ -1,41 +1,26 @@
 package com.SAS.Controllers.systemController;
 
-import com.SAS.User.User;
 import com.SAS.User.UserController;
-import com.SAS.User.UserType;
+import com.SAS.crudoperations.SystemCRUD;
 import com.SAS.systemLoggers.LoggerFactory;
+import java.util.List;
 
-import java.util.LinkedList;
 
-
-public class SystemController {
+public class ApplicationController {
 
     private LoggerFactory logger;
-    private LinkedList<String> externalSystemsAvailable;
-    private LinkedList<ExternalSystem> connectedExternalSystems;
     private UserController userController;
-    private User admin;
 
 
 
     /**
      * Constructor
      */
-    public SystemController() {
-        this.connectedExternalSystems = new LinkedList<>();
-        this.externalSystemsAvailable = new LinkedList<>();
+    public ApplicationController() {
         this.userController = new UserController();
-        initExternalSystemsAvailable();
         this.logger = LoggerFactory.getInstance();
     }
 
-    /**
-     * The function initialize the external systems available to connect
-     */
-    private void initExternalSystemsAvailable() {
-        externalSystemsAvailable.add("Accounting system");
-        externalSystemsAvailable.add("Tax system");
-    }
 
     /**
      * The function receives raw data and insert the data to our DB
@@ -73,19 +58,14 @@ public class SystemController {
         switch (name) {
             case "Accounting":
                 if (!searchSystem(name)) {
-                    AccountingSystem accountingSystem = new AccountingSystem();
-                    accountingSystem.connectSystem();
-                    connectedExternalSystems.add(accountingSystem);
+                    SystemCRUD.connectToSystem("Accounting");
                     logger.logEvent("User: System. The system connected to the accounting system");
                     return true;
                 }
 
             case "Tax":
                 if (!searchSystem(name)) {
-                    TaxSystem taxSystem = new TaxSystem();
-                    taxSystem.connectSystem();
-                    connectedExternalSystems.add(taxSystem);
-                    logger.logEvent("User: System. The system connected to the tax system");
+                    SystemCRUD.connectToSystem("Tax");
                     return true;
                 }
 
@@ -101,12 +81,12 @@ public class SystemController {
      * @return
      */
     private boolean searchSystem(String name) {
-        for (ExternalSystem system : connectedExternalSystems) {
-            if (system.getSystemName().equals(name)){
-                return true;
-            }
+        boolean res = SystemCRUD.isSystemConnected(name);
+        if(res){
+            return true;
         }
-        logger.logError("Fault: system search failed");
+
+        logger.logError("Fault: system already connected");
         return false;
     }
 
@@ -115,16 +95,8 @@ public class SystemController {
      *
      * @return
      */
-    public String showAvailableExternalSystem() {
-        int counter = 1;
-        StringBuilder systems = new StringBuilder();
-
-        for (String systemName : externalSystemsAvailable) {
-            systems.append(counter + ". " + systemName + "\n");
-        }
-
-        systems.setLength(systems.length() - 1);
-        return systems.toString();
+    public List<String> showAvailableExternalSystem() {
+        return SystemCRUD.getAllExternalSystems();
     }
 
     /**
@@ -142,7 +114,7 @@ public class SystemController {
         }
 
         logger.logEvent("User: System. Admin user created.");
-        admin = userController.createUser(userName, password, fullName, email, "SYSTEM_ADMIN", true);
+        userController.createUser(userName, password, fullName, email, "SYSTEM_ADMIN", true);
         return true;
     }
 
@@ -167,4 +139,7 @@ public class SystemController {
         return true;
     }
 
+    public boolean activateSystem(String systemStatus) {
+        return SystemCRUD.activateSystem(systemStatus);
+    }
 }

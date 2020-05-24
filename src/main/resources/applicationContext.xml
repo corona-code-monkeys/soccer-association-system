@@ -57,6 +57,10 @@ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
         <property name="template" ref="jdbcTemplate"></property>
     </bean>
 
+    <bean id="systemDao" class="com.SAS.crudoperations.SystemCRUD">
+        <property name="template" ref="jdbcTemplate"></property>
+    </bean>
+
 
 
 
