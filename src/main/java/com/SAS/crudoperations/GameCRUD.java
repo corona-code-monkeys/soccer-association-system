@@ -6,10 +6,13 @@ import com.SAS.facility.Facility;
 import com.SAS.game.Game;
 import com.SAS.game_event_logger.*;
 import com.SAS.team.Team;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class GameCRUD {
 
@@ -292,6 +295,28 @@ public class GameCRUD {
             GameEventLogger logger = game.getEvents();
             return logger.getEventList();
         }
+    }
+
+    public static JSONObject getAllGames() {
+        String query = "SELECT * FROM game";
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        for (Map<String, Object> row : rows) {
+            JSONObject record = new JSONObject();
+            record.put("game_id", row.get("game_id"));
+            record.put("date", row.get("date"));
+            record.put("season_year", row.get("season_year"));
+            record.put("league_name", row.get("league_name"));
+            record.put("host_team_name", row.get("host_team_name"));
+            record.put("guest_team_name", row.get("guest_team_name"));
+            record.put("host_score", row.get("host_score"));
+            record.put("guest_score", row.get("guest_score"));
+            record.put("stadium_name", row.get("stadium_name"));
+            jsonArray.put(record);
+        }
+        jsonObject.put("games", jsonArray);
+        return jsonObject;
     }
 
 }
