@@ -13,7 +13,10 @@ import com.SAS.game.Game;
 import com.SAS.game_event_logger.*;
 import com.SAS.report.GameReport;
 import com.SAS.team.Team;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,9 +53,9 @@ public class GameCRUDTest {
         Team guest = new Team();
         guest.setName("Hapoel");
         game = new Game(season, league, LocalDate.now(), host, guest, 0, 0, f, new GameEventLogger(), new GameReport(), new LinkedList<Referee>());
-        player1 = (Player) uc.createUser("TheKing", "123465", "Avi Cohen", "rami@gmail.com","PLAYER", true);
-        player2 = (Player) uc.createUser("TheQueen", "123465", "Limur Asayag", "rami@gmail.com","PLAYER", true);
-        referee = (Referee) uc.createUser("NotSoCool", "123456", "Adva Polak", "rami@gmail.com","REFEREE", true);
+        player1 = (Player) uc.createUser("TheKing", "123465", "Avi Cohen", "rami@gmail.com", "PLAYER", true);
+        player2 = (Player) uc.createUser("TheQueen", "123465", "Limur Asayag", "rami@gmail.com", "PLAYER", true);
+        referee = (Referee) uc.createUser("NotSoCool", "123456", "Adva Polak", "rami@gmail.com", "REFEREE", true);
     }
 
     @AfterEach
@@ -176,6 +179,27 @@ public class GameCRUDTest {
         GameCRUD.removeGame(game);
     }
 
+    @Test
+    void getAllGames() {
+        JSONObject jsonObject1 = GameCRUD.getAllGames();
+        Assertions.assertEquals("{\"games\":[]}", jsonObject1.toString());
+        GameCRUD.addGame(game);
+        JSONObject jsonObject2 = GameCRUD.getAllGames();
+        Assertions.assertEquals(1,jsonObject2.getJSONArray("games").length());
+        Assertions.assertEquals(0,(jsonObject2.getJSONArray("games")).getJSONObject(0).get("host_score"));
+        Assertions.assertEquals(0,(jsonObject2.getJSONArray("games")).getJSONObject(0).get("guest_score"));
+        Assertions.assertEquals("testLeague",(jsonObject2.getJSONArray("games")).getJSONObject(0).get("league_name"));
+        Assertions.assertEquals("testLeague",(jsonObject2.getJSONArray("games")).getJSONObject(0).get("league_name"));
+        Assertions.assertEquals("Macabi",(jsonObject2.getJSONArray("games")).getJSONObject(0).get("host_team_name"));
+        Assertions.assertEquals("Hapoel",(jsonObject2.getJSONArray("games")).getJSONObject(0).get("guest_team_name"));
+        Assertions.assertEquals("Macabi Stadium",(jsonObject2.getJSONArray("games")).getJSONObject(0).get("stadium_name"));
+        Assertions.assertEquals(1992,(jsonObject2.getJSONArray("games")).getJSONObject(0).get("season_year"));
+        GameCRUD.removeGame(game);
+        JSONObject jsonObject3 = GameCRUD.getAllGames();
+        Assertions.assertEquals("{\"games\":[]}", jsonObject3.toString());
+        Assertions.assertEquals(jsonObject1.toString(), jsonObject3.toString());
+
+    }
 
     @Test
     void getGameEvents() {
