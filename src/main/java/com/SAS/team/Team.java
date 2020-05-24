@@ -589,7 +589,7 @@ public class Team {
      */
     public JSONObject getTeamJSON(){
         JSONObject teamJson = new JSONObject();
-        teamJson.put("Name: ", this.name);
+        teamJson.put("Name", this.name);
         JSONArray ownersNames = new JSONArray();
         for(TeamOwner to: this.owners){
             ownersNames.put(to.getFullName());

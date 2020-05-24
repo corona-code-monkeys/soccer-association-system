@@ -31,14 +31,14 @@ public class SASApplication {
         teamManagement= new TeamManagement(userController);
     }
 
-    //TODO: in UI : if return true switch to home page with correct privileges, else show alert that user doesn't exist
+    //TODO: in UI : if returns the role switch to home page with correct privileges, else show alert that user doesn't exist
     /**
      * This function logs in the user
      * @param username
      * @param password
-     * @return true if the user exists in the system, thus was logged in, otherwise false
+     * @return user role if the user exists in the system, thus was logged in, otherwise ""
      */
-    public boolean login(String username, String password){
+    public String login(String username, String password){
         return userController.isUserExist(username, password);
     }
 

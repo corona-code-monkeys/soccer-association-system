@@ -35,14 +35,14 @@ class SASApplicationUT {
 
     @Test
     public void loginSuccess() {
-        Boolean loggedIn = sasApp.login("AviCo", "Avi2468");
-        assertTrue(loggedIn);
+        String loggedIn = sasApp.login("AviCo", "Avi2468");
+        assertFalse(loggedIn.isEmpty());
     }
 
     @Test
     public void loginFailWrongPassword() {
-        Boolean loggedIn = sasApp.login("AviCo", "Avi246");
-        assertFalse(loggedIn);
+        String loggedIn = sasApp.login("AviCo", "Avi246");
+        assertTrue(loggedIn.isEmpty());
     }
 
 
@@ -119,6 +119,7 @@ class SASApplicationUT {
         details.put("fieldRole", "Striker");
         details.put("team", "macabi tel aviv");
         sasApp.editUserDetails("AviL12", details, "PLAYER");
-        User user = UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName("AviL12"));
+        assertNotNull(UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName("AviL12")));
+        sasApp.deleteUser("AviL12");
     }
 }

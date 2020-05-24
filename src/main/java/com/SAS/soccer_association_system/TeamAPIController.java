@@ -4,6 +4,8 @@
 package com.SAS.soccer_association_system;
 
 import com.SAS.Controllers.sasApplication.SASApplication;
+import com.SAS.crudoperations.TeamCRUD;
+import com.SAS.team.Team;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,9 @@ public class TeamAPIController {
      * The function receives the team name and returns the team page
      * @return JSONObject - team page
      */
-    @GetMapping(value ="/getTeamPage")
-    public JSONObject getTeam(@RequestBody String details) {
-        JSONObject json = new JSONObject(details);
-        String teamName = json.get("teamName").toString();
-        return app.getTeamPage(teamName);
+    @GetMapping(value ="/getTeamPage/{teamName}")
+    public String getTeam(@PathVariable String teamName) {
+        return app.getTeamPage(teamName).toString();
     }
 
     /**
@@ -210,10 +210,8 @@ public class TeamAPIController {
      * The function returns all the optional nominees for the team owner
      * @return list of usernames
      */
-    @GetMapping(value = "/getOptionalNomineesForTeamOwner")
-    public JSONArray getOptionalNomineesForTeam(@RequestBody String details) {
-        JSONObject json = new JSONObject(details);
-        String teamName = json.get("teamName").toString();
+    @GetMapping(value = "/getOptionalNomineesForTeamOwner/{teamName}")
+    public JSONArray getOptionalNomineesForTeam(@PathVariable String teamName) {
         return app.getOptionalNomineesForTeamOwner(teamName);
     }
 
@@ -221,10 +219,8 @@ public class TeamAPIController {
      * The function returns all the optional nominees for the team manager
      * @return list of usernames
      */
-    @GetMapping(value = "/getOptionalNomineesForTeamManager")
-    public JSONArray getOptionalNomineesForTeamManager(@RequestBody String details) {
-        JSONObject json = new JSONObject(details);
-        String teamName = json.get("teamName").toString();
+    @GetMapping(value = "/getOptionalNomineesForTeamManager/{teamName}")
+    public JSONArray getOptionalNomineesForTeamManager(@PathVariable String teamName) {
         return app.getOptionalNomineesForTeamManager(teamName);
     }
 
@@ -232,10 +228,8 @@ public class TeamAPIController {
      * The function returns all the assets of the team
      * @return list of assets
      */
-    @GetMapping(value = "/getAssetsForTeam")
-    public JSONObject getAssetsForTeam(@RequestBody String details) {
-        JSONObject json = new JSONObject(details);
-        String teamName = json.get("teamName").toString();
-        return app.getAssetsForTeam(teamName);
+    @GetMapping(value = "/getAssetsForTeam/{teamName}")
+    public String getAssetsForTeam(@PathVariable String teamName) {
+        return app.getAssetsForTeam(teamName).toString();
     }
 }

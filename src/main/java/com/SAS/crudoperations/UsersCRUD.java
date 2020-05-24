@@ -7,13 +7,11 @@ import com.SAS.usersDB.UsersDB;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class UsersCRUD {
@@ -47,12 +45,13 @@ public class UsersCRUD {
 
     /**
      * The function receives userName and password and insert the user to our DB
+     *
      * @param userName
      * @param password
      * @return
      */
     public static boolean postUser(String userName, String password, String fullName, String email, String role) {
-        if(!validParams(userName, password)){
+        if (!validParams(userName, password)) {
             return false;
         }
 
@@ -64,37 +63,35 @@ public class UsersCRUD {
 
             return addRoleToUser(userName, role);
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
      * This function returns the user id by username
+     *
      * @param userName
      * @return
      */
-    public static int getUserIdByUserName(String userName){
+    public static int getUserIdByUserName(String userName) {
         try {
             String queryUserId = String.format("SELECT user_id FROM user WHERE user_name = \"%s\";", userName);
             return jdbcTemplate.queryForObject(queryUserId, Integer.class);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return -1;
         }
     }
 
-    public static boolean addRoleToUser(String userName, String role){
+    public static boolean addRoleToUser(String userName, String role) {
         int userId = getUserIdByUserName(userName);
-        if(userId == -1){
+        if (userId == -1) {
             return false;
         }
         try {
             String roleInsert = String.format("insert into user_role (user_id, user_name, user_role) values ( \"%d\", \"%s\", \"%s\");", userId, userName, role.toUpperCase());
             jdbcTemplate.update(roleInsert);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
 
@@ -104,6 +101,7 @@ public class UsersCRUD {
 
     /**
      * The function returns true if the parameters are valid
+     *
      * @param userName
      * @param password
      * @return
@@ -114,12 +112,13 @@ public class UsersCRUD {
 
     /**
      * The function receives userName and password and checks if the userName and password are valid
+     *
      * @param userName
      * @param password
      * @return
      */
     public static boolean isUserValid(String userName, String password) {
-        if(!validParams(userName, password)) {
+        if (!validParams(userName, password)) {
             return false;
         }
 
@@ -128,20 +127,20 @@ public class UsersCRUD {
         String queryUserId = String.format("SELECT user_id FROM user WHERE user_name = \"%s\" AND password = \"%s\";", userName, encrypt);
         try {
             jdbcTemplate.queryForObject(queryUserId, Integer.class);
-            return  true;
-        }
-        catch (Exception e){
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
      * The function receives userName and password and delete the user from our DB
+     *
      * @param userName
      * @return
      */
     public static boolean deleteUser(String userName) {
-        if(userName == null || userName.trim().isEmpty()) {
+        if (userName == null || userName.trim().isEmpty()) {
             return false;
         }
 
@@ -150,20 +149,20 @@ public class UsersCRUD {
             String delete = String.format("delete from user where user_id = \"%d\";", userId);
             jdbcTemplate.update(delete);
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
      * This function deletes the user from the role table
+     *
      * @param userName
      * @param role
      * @return
      */
     public static boolean deleteRole(String userName, String role) {
-        if(userName == null || userName.trim().isEmpty()) {
+        if (userName == null || userName.trim().isEmpty()) {
             return false;
         }
         try {
@@ -171,18 +170,18 @@ public class UsersCRUD {
             String delete = String.format("delete from user_role where user_role = \"%s\" user_id = \"%d\";", role.toUpperCase(), userId);
             jdbcTemplate.update(delete);
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
      * The function receives a password and encrypt it using sha1 algorithm
+     *
      * @param password
      * @return
      */
-    private static String hashPasswords(String password){
+    private static String hashPasswords(String password) {
         String encryptPass = "";
 
         try {
@@ -190,7 +189,7 @@ public class UsersCRUD {
             digest.reset();
             digest.update(password.getBytes("utf8"));
             encryptPass = String.format("%040x", new BigInteger(1, digest.digest()));
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return encryptPass;
@@ -198,26 +197,27 @@ public class UsersCRUD {
 
     /**
      * This function sets the player details in the DB
+     *
      * @param userID
      * @param dateOfBirth
      * @param fieldRole
      * @return
      */
     public static boolean setPlayerDetails(int userID, String dateOfBirth, String fieldRole, String teamName) {
-        if(inRoleTable(userID, "player")){
+        if (inRoleTable(userID, "player")) {
             String queryUpdate = String.format("UPDATE player SET date_of_birth=\"%s\", field_role=\"%s\", team_name=\"%s\" WHERE user_id = \"%d\";", dateOfBirth, fieldRole.toUpperCase(), teamName, userID);
-            try{
+            try {
                 jdbcTemplate.update(queryUpdate);
                 return true;
-            } catch (Exception e){
+            } catch (Exception e) {
                 return false;
             }
-        }else{
-            try{
-                String playerToInsert = String.format("INSERT into player (user_id, date_of_birth, field_role) values ( \"%d\", \"%s\", \"%s\");", userID, dateOfBirth, fieldRole.toLowerCase());
+        } else {
+            try {
+                String playerToInsert = String.format("INSERT into player (user_id, date_of_birth, field_role, team_name) values ( \"%d\", \"%s\", \"%s\", \"%s\");", userID, dateOfBirth, fieldRole.toLowerCase(), teamName);
                 jdbcTemplate.update(playerToInsert);
                 return true;
-            } catch (Exception e){
+            } catch (Exception e) {
                 return false;
             }
         }
@@ -225,6 +225,7 @@ public class UsersCRUD {
 
     /**
      * This function checks if the user is in the role table
+     *
      * @param userID
      * @param role
      * @return
@@ -234,33 +235,31 @@ public class UsersCRUD {
         try {
             jdbcTemplate.queryForObject(queryUserRole, Integer.class);
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
      * This function edits the team ownerdetails in the DB- including nominated by
+     *
      * @param userID
      * @param teamName
      * @return
      */
     public static boolean setTeamOwnerDetails(int userID, String teamName) {
-        if(!inRoleTable(userID, "team_owner")){
-            try{
-                String teamOwnerToInsert = String.format("INSERT into team_owner (user_id, team_name) values ( \"%d\", \"%s\");", userID, teamName);
-                jdbcTemplate.update(teamOwnerToInsert);
-                return true;
-            } catch (Exception e){
-                return false;
-            }
+        try {
+            String teamOwnerToInsert = String.format("INSERT into team_owner (user_id, team_name) values ( \"%d\", \"%s\");", userID, teamName);
+            jdbcTemplate.update(teamOwnerToInsert);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
 
     /**
      * This function edits the team owner or manager details in the DB- including nominated by
+     *
      * @param userID
      * @param teamName
      * @param nominatedBy
@@ -269,20 +268,20 @@ public class UsersCRUD {
      */
     public static boolean setTeamOwnerOrManagerDetails(int userID, String teamName, String nominatedBy, String role) {
         int nominatedByID = getUserIdByUserName(nominatedBy);
-        if(!inRoleTable(userID, role)){
-            try{
-                String teamOwnerToInsert = String.format("INSERT into %s (user_id, team_name, nominated_by) values ( \"%d\", \"%s\", \"%s\");", role, userID, teamName, nominatedByID);
-                jdbcTemplate.update(teamOwnerToInsert);
-                return true;
-            } catch (Exception e){
-                return false;
-            }
+        try {
+            String teamOwnerToInsert = String.format("INSERT into %s (user_id, team_name, nominated_by) values ( \"%d\", \"%s\", \"%s\");", role.toLowerCase(), userID, teamName, nominatedByID);
+            jdbcTemplate.update(teamOwnerToInsert);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
+
+
     }
 
     /**
      * This function sets the coach details in the DB
+     *
      * @param userID
      * @param level
      * @param fieldRole
@@ -290,21 +289,21 @@ public class UsersCRUD {
      * @return
      */
     public static boolean setCoachDetails(int userID, String level, String fieldRole, String teamName) {
-        if(inRoleTable(userID, "coach")) {
+        if (inRoleTable(userID, "coach")) {
             //edit level and field role only
             String queryUpdate = String.format("UPDATE coach SET level= \"%d\", field_role=\"%s\", WHERE user_id = \"%d\";", Integer.parseInt(level), fieldRole.toUpperCase(), userID);
-            try{
+            try {
                 jdbcTemplate.update(queryUpdate);
                 return true;
-            } catch (Exception e){
+            } catch (Exception e) {
                 return false;
             }
-        }else{
-            try{
+        } else {
+            try {
                 String coachToInsert = String.format("INSERT into coach (user_id, level, field_role, team_name) values ( \"%d\", \"%d\", \"%s\", \"%s\");", userID, Integer.parseInt(level), fieldRole.toUpperCase(), teamName);
                 jdbcTemplate.update(coachToInsert);
                 return true;
-            } catch (Exception e){
+            } catch (Exception e) {
                 return false;
             }
         }
@@ -312,26 +311,27 @@ public class UsersCRUD {
 
     /**
      * This function sets the referee details in the DB
+     *
      * @param userID
      * @param level
      * @return
      */
     public static boolean setRefereeDetails(int userID, String level) {
-        if(inRoleTable(userID, "referee")) {
+        if (inRoleTable(userID, "referee")) {
             //edit level and field role only
-            String queryUpdate = String.format("UPDATE referee SET level=%d WHERE user_id = %d;", Integer.parseInt(level),userID);
-            try{
+            String queryUpdate = String.format("UPDATE referee SET level=%d WHERE user_id = %d;", Integer.parseInt(level), userID);
+            try {
                 jdbcTemplate.update(queryUpdate);
                 return true;
-            } catch (Exception e){
+            } catch (Exception e) {
                 return false;
             }
-        }else{
-            try{
+        } else {
+            try {
                 String refereeToInsert = String.format("INSERT into referee (user_id, level) values ( \"%d\", \"%d\");", userID, Integer.parseInt(level));
                 jdbcTemplate.update(refereeToInsert);
                 return true;
-            } catch (Exception e){
+            } catch (Exception e) {
                 return false;
             }
         }
@@ -339,6 +339,7 @@ public class UsersCRUD {
 
     /**
      * This function builds and returns a registered user from userid
+     *
      * @param id
      * @return Registered
      */
@@ -353,29 +354,29 @@ public class UsersCRUD {
                             rs.getString("email")
                     ));
             return user;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
     /**
      * This function returns the user name by id
+     *
      * @param id
      * @return username
      */
-    public static String getUserNameById(int id){
+    public static String getUserNameById(int id) {
         try {
             String queryUserId = String.format("SELECT user_name FROM user WHERE user_id = \"%d\";", id);
             return jdbcTemplate.queryForObject(queryUserId, String.class);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
     /**
      * The function receives a userName and returns the full name of the user
+     *
      * @param userName
      * @return
      */
@@ -383,14 +384,14 @@ public class UsersCRUD {
         try {
             String queryUserfullname = String.format("SELECT full_name FROM user WHERE user_name = \"%s\";", userName);
             return jdbcTemplate.queryForObject(queryUserfullname, String.class);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
     /**
      * The function receives a userName and returns the email of the user
+     *
      * @param userName
      * @return
      */
@@ -398,37 +399,36 @@ public class UsersCRUD {
         try {
             String queryUserEmail = String.format("SELECT email FROM user WHERE user_name = \"%s\";", userName);
             return jdbcTemplate.queryForObject(queryUserEmail, String.class);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
     /**
      * This function restore the user from db
+     *
      * @param id
      * @return
      */
     public static User restoreRoleForUser(int id) {
         User user = UsersCRUD.getRegisteredUserByID(id); //return registered
-        String username= ((Registered)user).getUserName();
+        String username = ((Registered) user).getUserName();
         //check roles
         try {
             String sqlroles = String.format("SELECT user_role FROM user_role WHERE user_id = \"%d\";", id);
             List<Map<String, Object>> rows = jdbcTemplate.queryForList(sqlroles);
             List<String> roles = new LinkedList<>();
-            for(Map<String, Object> row: rows){
-                roles.add((String)row.get("user_role"));
+            for (Map<String, Object> row : rows) {
+                roles.add(((String) row.get("user_role")).toLowerCase());
             }
             /*build user*/
             String role = roles.get(0);
-            if (roles.size() == 1 && roleOrder.get(role) == 0){
+            if (roles.size() == 1 && roleOrder.get(role) == 0) {
                 return createRoleSimple(id, user, username, role);
-            }
-            else {
+            } else {
                 return createRoleComplex(id, user, username, roles);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
@@ -445,17 +445,17 @@ public class UsersCRUD {
                         sql = "SELECT team_name, date_of_birth,field_role FROM player WHERE user_id = ?";
                         result = jdbcTemplate.queryForMap(sql, new Object[]{id});
                         ((Player) user).setDateOfBirth(LocalDate.parse(result.get("date_of_birth").toString()));
-                        String fieldRole = (String)result.get("field_role");
-                        ((Player) user).setFieldRole(Role.convertStringToFieldRole(fieldRole.substring(0,1) + fieldRole.substring(1).toLowerCase()));
-                        ((Player) user).setTeam(new Team((String)result.get("team_name")));
+                        String fieldRole = (String) result.get("field_role");
+                        ((Player) user).setFieldRole(Role.convertStringToFieldRole(fieldRole.substring(0, 1) + fieldRole.substring(1).toLowerCase()));
+                        ((Player) user).setTeam(new Team((String) result.get("team_name")));
                         return user;
                     case "coach":
                         user = new Coach(user, username);
                         sql = "SELECT team_name, level, field_role FROM coach WHERE user_id = ?";
                         result = jdbcTemplate.queryForMap(sql, new Object[]{id});
-                        ((Coach) user).setLevel(Integer.parseInt(result.get("date_of_birth").toString()));
-                        ((Coach) user).setFieldRole(Role.convertStringToFieldRole((String)result.get("field_role")));
-                        ((Coach) user).setTeam(new Team((String)result.get("team_name")));
+                        ((Coach) user).setLevel(Integer.parseInt(result.get("level").toString()));
+                        ((Coach) user).setFieldRole(Role.convertStringToFieldRole((String) result.get("field_role")));
+                        ((Coach) user).setTeam(new Team((String) result.get("team_name")));
                         return user;
                     default:
                         return null;
@@ -471,7 +471,7 @@ public class UsersCRUD {
 
         if (roles.contains("team_owner")) {
             user = new TeamOwner(user, username);
-            sql = String.format("SELECT team_name FROM team_owner WHERE ser_id = \"%d\";", id);
+            sql = String.format("SELECT team_name FROM team_owner WHERE user_id = \"%d\";", id);
             ((TeamOwner) user).setTeam(new Team(jdbcTemplate.queryForObject(sql, String.class)));
         }
 
@@ -481,6 +481,7 @@ public class UsersCRUD {
 
     /**
      * This function creates a simple role user
+     *
      * @param id
      * @param user
      * @param username
@@ -488,24 +489,44 @@ public class UsersCRUD {
      * @return
      */
     private static User createRoleSimple(int id, User user, String username, String role) {
-        switch(role){
+        switch (role) {
             case "fan":
                 return new Fan(user, username);
 
             case "referee":
-                user= new Referee(user, username);
+                user = new Referee(user, username);
                 String refereelevel = String.format("SELECT level FROM referee WHERE user_id = \"%d\";", id);
-                ((Referee)user).setLevel(jdbcTemplate.queryForObject(refereelevel, Integer.class));
+                ((Referee) user).setLevel(jdbcTemplate.queryForObject(refereelevel, Integer.class));
                 return user;
 
             case "system_admin":
-               return new SystemAdmin(user, username);
+                return new SystemAdmin(user, username);
 
             case "association_representative":
-              return new AssociationRepresentative(user, username);
+                return new AssociationRepresentative(user, username);
 
-              default: return null;
+            default:
+                return null;
         }
     }
 
+    /**
+     * This function return the highest role of the user
+     *
+     * @param username
+     * @return
+     */
+    public static String getHighestRole(String username) {
+        int id = getUserIdByUserName(username);
+        if (id == -1)
+            return "";
+        String sqlroles = String.format("SELECT user_role FROM user_role WHERE user_id = \"%d\";", id);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sqlroles);
+        HashMap<String, Integer> roles = new HashMap<>();
+        for (Map<String, Object> row : rows) {
+            String key = ((String) row.get("user_role")).toLowerCase();
+            roles.put(key, roleOrder.get(key));
+        }
+        return roles.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
+    }
 }
