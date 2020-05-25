@@ -20,4 +20,9 @@ public class GamesAPIController {
     public String getAllGames() {
         return GameCRUD.getAllGames().toString();
     }
+
+    @GetMapping(value = "/events/{gameID}")
+    public String getGameEvents(@PathVariable String gameID) {
+        return GameCRUD.getGameEvents(gameID).toString();
+    }
 }

@@ -281,24 +281,102 @@ public class GameCRUD {
         }
     }
 
-    /**
-     * on the moc just send null for false and real game for true
-     *
-     * @param game
-     * @return
-     */
-    public static List<GameEvent> getGameEvents(Game game) {
-        //TBD
-        if (game == null) {
-            return null;
-        } else {
-            GameEventLogger logger = game.getEvents();
-            return logger.getEventList();
+    public static JSONObject getGameEvents(String gameID) {
+        String queryForGoal = String.format("SELECT * FROM goal WHERE game_id = %s", gameID);
+        String queryForInjury = String.format("SELECT * FROM injury WHERE game_id = %s", gameID);
+        String queryForOffence = String.format("SELECT * FROM offence WHERE game_id = %s", gameID);
+        String queryForOffside = String.format("SELECT * FROM offside WHERE game_id = %s", gameID);
+        String queryForPlayerSub = String.format("SELECT * FROM player_substitution WHERE game_id = %s", gameID);
+        String queryForTicket = String.format("SELECT * FROM ticket WHERE game_id = %s", gameID);
+        JSONObject events = new JSONObject();
+        try {
+            List<Map<String, Object>> goals = jdbcTemplate.queryForList(queryForGoal);
+            List<Map<String, Object>> injuries = jdbcTemplate.queryForList(queryForInjury);
+            List<Map<String, Object>> offences = jdbcTemplate.queryForList(queryForOffence);
+            List<Map<String, Object>> offsides = jdbcTemplate.queryForList(queryForOffside);
+            List<Map<String, Object>> subs = jdbcTemplate.queryForList(queryForPlayerSub);
+            List<Map<String, Object>> tickets = jdbcTemplate.queryForList(queryForTicket);
+
+
+            JSONArray goalsArr = new JSONArray();
+            for (Map<String, Object> goal : goals) {
+                JSONObject record = new JSONObject();
+                record.put("game_minute", goal.get("game_minute"));
+                String playerName = UsersCRUD.getUserNameById((int) goal.get("player_user_id"));
+                record.put("player", playerName);
+                record.put("team_name", goal.get("team_name"));
+                goalsArr.put(record);
+            }
+            events.put("goals", goalsArr);
+
+            JSONArray injuryArr = new JSONArray();
+            for (Map<String, Object> injury : injuries) {
+                JSONObject record = new JSONObject();
+                record.put("game_minute", injury.get("game_minute"));
+                String playerName = UsersCRUD.getUserNameById((int) injury.get("player_user_id"));
+                record.put("player", playerName);
+                record.put("description", injury.get("description"));
+                injuryArr.put(record);
+            }
+            events.put("injuries", injuryArr);
+
+            JSONArray offenceArr = new JSONArray();
+            for (Map<String, Object> offence : offences) {
+                JSONObject record = new JSONObject();
+                record.put("game_minute", offence.get("game_minute"));
+                String playerCommitted = UsersCRUD.getUserNameById((int) offence.get("player_committed_user_id"));
+                String playerAgainst = UsersCRUD.getUserNameById((int) offence.get("player_against_user_id"));
+                record.put("player_committed", playerCommitted);
+                record.put("player_against", playerAgainst);
+                record.put("description", offence.get("description"));
+                offenceArr.put(record);
+            }
+            events.put("offences", offenceArr);
+
+            JSONArray offsideArr = new JSONArray();
+            for (Map<String, Object> offside : offsides) {
+                JSONObject record = new JSONObject();
+                record.put("game_minute", offside.get("game_minute"));
+                String playerInOffside = UsersCRUD.getUserNameById((int) offside.get("player_in_offside_user_id"));
+                record.put("player_committed", playerInOffside);
+                //add team name when team curd have get team name by ID
+                offsideArr.put(record);
+            }
+            events.put("offsides", offsideArr);
+
+            JSONArray subsArr = new JSONArray();
+            for (Map<String, Object> sub : subs) {
+                JSONObject record = new JSONObject();
+                record.put("game_minute", sub.get("game_minute"));
+                String playerIn = UsersCRUD.getUserNameById((int) sub.get("player_in_user_id"));
+                String playerOut = UsersCRUD.getUserNameById((int) sub.get("player_out_user_id"));
+                record.put("player_in", playerIn);
+                record.put("player_out", playerOut);
+                subsArr.put(record);
+            }
+            events.put("subs", subsArr);
+
+            JSONArray ticketsArr = new JSONArray();
+            for (Map<String, Object> ticket : tickets) {
+                JSONObject record = new JSONObject();
+                record.put("game_minute", ticket.get("game_minute"));
+                String playerAgainst = UsersCRUD.getUserNameById((int) ticket.get("player_against_user_id"));
+                String refereePulled = UsersCRUD.getUserNameById((int) ticket.get("referee_pulled_user_id"));
+                record.put("player_against", playerAgainst);
+                record.put("referee_pulled", refereePulled);
+                record.put("type", ticket.get("type"));
+
+            }
+            events.put("tickets", ticketsArr);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        return events;
     }
 
     public static JSONObject getAllGames() {
-        String query = "SELECT * FROM game";
+        String query = String.format("SELECT * FROM game");
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
