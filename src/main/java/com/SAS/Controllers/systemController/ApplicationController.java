@@ -139,7 +139,7 @@ public class ApplicationController {
         return true;
     }
 
-    public boolean activateSystem(String systemStatus) {
-        return SystemCRUD.activateSystem(systemStatus);
+    public boolean activateSystem() {
+        return SystemCRUD.activateSystem();
     }
 }
