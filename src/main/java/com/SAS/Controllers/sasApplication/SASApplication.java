@@ -38,8 +38,8 @@ public class SASApplication {
      * @param password
      * @return user role if the user exists in the system, thus was logged in, otherwise ""
      */
-    public String login(String username, String password){
-        return userController.isUserExist(username, password);
+    public String login(String username, String password, String clientURL){
+        return userController.isUserExist(username, password, clientURL);
     }
 
     /**

@@ -35,13 +35,13 @@ class SASApplicationUT {
 
     @Test
     public void loginSuccess() {
-        String loggedIn = sasApp.login("AviCo", "Avi2468");
+        String loggedIn = sasApp.login("AviCo", "Avi2468", "");
         assertFalse(loggedIn.isEmpty());
     }
 
     @Test
     public void loginFailWrongPassword() {
-        String loggedIn = sasApp.login("AviCo", "Avi246");
+        String loggedIn = sasApp.login("AviCo", "Avi246", "");
         assertTrue(loggedIn.isEmpty());
     }
 
