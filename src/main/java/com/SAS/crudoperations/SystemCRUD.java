@@ -10,10 +10,10 @@ public class SystemCRUD {
 
     private static JdbcTemplate jdbcTemplate;
 
-    public static boolean activateSystem(String systemStatus) {
+    public static boolean activateSystem() {
         try {
 
-            String query = String.format("insert into isActive () values ( \"%s\");", systemStatus);
+            String query = String.format("update is_active set isActive=1 where isActive=0;");
             jdbcTemplate.update(query);
             return true;
         } catch (Exception e) {
@@ -76,7 +76,7 @@ public class SystemCRUD {
 
     public static String isSystemInitiate(){
         try {
-            String query = String.format("SELECT isActive FROM isActive;");
+            String query = String.format("SELECT isActive FROM is_active;");
             String res = jdbcTemplate.queryForObject(query, String.class);
             if(res.equals("1")){
                 return "true";
