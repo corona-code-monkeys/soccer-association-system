@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * The class is the rest api controller for all the system routes
+ */
 @RestController
 public class SystemAPIController {
 
@@ -22,12 +25,19 @@ public class SystemAPIController {
     private static SASApplication app = new SASApplication();
 
 
-
+    /**
+     * This route check if the system has been Initiated already
+     * @return
+     */
     @GetMapping(value="/system/system_check")
     public String isSystemInit() {
         return SystemCRUD.isSystemInitiate();
     }
 
+    /**
+     * This route returns the external system our system can connect to
+     * @return
+     */
     @GetMapping(value="/system/external_systems")
     public String getExternalSystems() {
         List<String> systems =  applicationController.showAvailableExternalSystem();
@@ -35,13 +45,23 @@ public class SystemAPIController {
         return strSystems;
     }
 
+    /**
+     * This route activate the system at the end of the installation process
+     * @param value
+     * @return
+     */
     @PostMapping(value ="/system/activate_system")
     public boolean activateSystem(@RequestBody String value) {
         JSONObject json = new JSONObject(value);
         String systemStatus = json.get("system_status").toString();
-        return applicationController.activateSystem(systemStatus);
+        return applicationController.activateSystem();
     }
 
+    /**
+     * This route add external system
+     * @param system
+     * @return
+     */
     @PostMapping(value ="/system/add_system")
     public boolean addExternalSystems(@RequestBody String system) {
         JSONObject json = new JSONObject(system);
@@ -49,6 +69,11 @@ public class SystemAPIController {
         return applicationController.addExternalSystem(systemName);
     }
 
+    /**
+     * This route is for create the first admin user during installation
+     * @param adminDetails
+     * @return
+     */
     @PostMapping(value ="/system/add_system_admin")
     public boolean addSystemAdmin(@RequestBody String adminDetails) {
         JSONObject json = new JSONObject(adminDetails);
