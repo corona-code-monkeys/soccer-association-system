@@ -311,12 +311,12 @@ public class UserController {
      * @param password
      * @return true if the user exists, otherwise false
      */
-    public String isUserExist(String username, String password){
+    public String isUserExist(String username, String password, String clientURL){
         if (validParam(username) && validParam(password)) {
             Boolean isExist = UsersCRUD.isUserValid(username, password);
             if (isExist) {
                 String role = UsersCRUD.getHighestRole(username);
-                this.loggedInUsers.put(username, role);
+                this.loggedInUsers.put(username, clientURL);
                 return role;
             }
         }
