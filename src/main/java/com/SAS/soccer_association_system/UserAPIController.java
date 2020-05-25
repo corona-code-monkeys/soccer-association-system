@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RequestMapping(value ="/users")
 @RestController
 public class UserAPIController {
@@ -22,11 +24,12 @@ public class UserAPIController {
      * @return the list
      */
     @PostMapping(value ="/login")
-    public String postUser(@RequestBody String credentials) {
+    public String postUser(@RequestBody String credentials, HttpServletRequest request) {
         JSONObject json = new JSONObject(credentials);
         String username = json.get("username").toString();
         String password = json.get("password").toString();
-        String role = app.login(username, password);
+        String clientURL = request.getRemoteAddr() + ":" + request.getRemotePort();
+        String role = app.login(username, password, clientURL);
         return role.isEmpty() ? "Failed" : role;
     }
 
