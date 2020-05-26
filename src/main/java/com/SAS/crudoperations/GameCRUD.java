@@ -68,18 +68,17 @@ public class GameCRUD {
         }
     }
 
-    private static boolean addGoalToGameHost(Game game) {
-        int gameId = getGameId(game);
-        if (gameId == -1) {
+    private static boolean addGoalToGameHost(String gameId) {
+        if (gameId == null) {
             return false;
         } else {
             try {
-                String getNumOfGoalQuery = String.format("SELECT host_score FROM game WHERE game_id=%d;", gameId);
+                String getNumOfGoalQuery = String.format("SELECT host_score FROM game WHERE game_id=%s;", gameId);
                 Integer numOfGoal = jdbcTemplate.queryForObject(getNumOfGoalQuery, Integer.class);
                 if (numOfGoal == null) {
                     return false;
                 }
-                String updateQuery = String.format("UPDATE game SET host_score=\"%d\" WHERE game_id = \"%d\";", numOfGoal + 1, gameId);
+                String updateQuery = String.format("UPDATE game SET host_score=\"%d\" WHERE game_id = \"%s\";", numOfGoal + 1, gameId);
                 jdbcTemplate.update(updateQuery);
                 return true;
             } catch (Exception e) {
@@ -89,18 +88,17 @@ public class GameCRUD {
         }
     }
 
-    private static boolean addGoalToGameGuest(Game game) {
-        int gameId = getGameId(game);
-        if (gameId == -1) {
+    private static boolean addGoalToGameGuest(String gameId) {
+        if (gameId == null) {
             return false;
         } else {
             try {
-                String getNumOfGoalQuery = String.format("SELECT guest_score FROM game WHERE game_id=%d;", gameId);
+                String getNumOfGoalQuery = String.format("SELECT guest_score FROM game WHERE game_id=%s;", gameId);
                 Integer numOfGoal = jdbcTemplate.queryForObject(getNumOfGoalQuery, Integer.class);
                 if (numOfGoal == null) {
                     return false;
                 }
-                String updateQuery = String.format("UPDATE game SET guest_score=\"%d\" WHERE game_id = \"%d\";", numOfGoal + 1, gameId);
+                String updateQuery = String.format("UPDATE game SET guest_score=\"%d\" WHERE game_id = \"%s\";", numOfGoal + 1, gameId);
                 jdbcTemplate.update(updateQuery);
                 return true;
             } catch (Exception e) {
@@ -129,36 +127,38 @@ public class GameCRUD {
     }
 
     /**
-     * the actual implementation of this function
-     *
-     * @param game
+     * @param gameID
      * @param events
      * @return
      */
-    public static boolean insertGameEvents(Game game, List<GameEvent> events) {
-        if (game == null || events == null) {
+    public static boolean insertGameEvents(String gameID, List<GameEvent> events) {
+        if (gameID == null || events == null) {
             return false;
         } else {
             boolean answer = true;
             for (GameEvent event : events) {
-                answer &= addGameEvent(game, event);
+                answer &= addGameEvent(gameID, event, event.getGameDate());
             }
             return answer;
         }
     }
 
+    public static String getHostByGameID(String gameID) {
+        String query = String.format("SELECT host_team_name FROM game WHERE game_id = %s", gameID);
+        return jdbcTemplate.queryForObject(query, String.class);
+    }
+
     /**
-     * on the moc just send null for false and real game for true.
-     *
-     * @param game
+     * @param gameId
      * @param event
+     * @param date
      * @return
      */
-    public static boolean addGameEvent(Game game, GameEvent event) {
-        if (game == null || event == null) {
+    public static boolean addGameEvent(String gameId, GameEvent event, LocalDate date) {
+        if (event == null) {
             return false;
         }
-        int gameID = getGameId(game);
+        int gameID = Integer.parseInt(gameId);
         if (gameID == -1) {
             return false;
         } else {
@@ -173,10 +173,10 @@ public class GameCRUD {
                 if (event instanceof Goal) {
                     Goal goal = (Goal) event;
                     boolean goalAdded;
-                    if (goal.getScoringTeam().getName().equals(game.getHost().getName())) {
-                        goalAdded = addGoalToGameHost(game);
+                    if (goal.getScoringTeam().getName().equals(getHostByGameID(gameId))) {
+                        goalAdded = addGoalToGameHost(gameId);
                     } else {
-                        goalAdded = addGoalToGameGuest(game);
+                        goalAdded = addGoalToGameGuest(gameId);
                     }
                     if (!goalAdded) {
                         return false;
@@ -186,7 +186,7 @@ public class GameCRUD {
                         return false;
                     }
                     String query = String.format("INSERT INTO goal (game_id, game_date, game_event_id, game_minute, player_user_id, team_name) values " +
-                            "(\"%d\",\"%s\",\"%d\",\"%d\",\"%d\",\"%s\")", gameID, game.getDate().toString(), eventID, event.getGameMinute(), userId, goal.getScoringTeam().getName());
+                            "(\"%d\",\"%s\",\"%d\",\"%d\",\"%d\",\"%s\")", gameID, date.toString(), eventID, event.getGameMinute(), userId, goal.getScoringTeam().getName());
                     jdbcTemplate.update(query);
                 } else if (event instanceof Injury) {
                     Injury injury = (Injury) event;
@@ -195,7 +195,7 @@ public class GameCRUD {
                         return false;
                     }
                     String query = String.format("INSERT INTO injury (game_id, game_date, game_event_id, game_minute, player_user_id, description) values" +
-                            "(\"%d\",\"%s\",\"%d\",\"%d\",\"%d\",\"%s\");", gameID, game.getDate().toString(), eventID, event.getGameMinute(), userId, injury.getDescription());
+                            "(\"%d\",\"%s\",\"%d\",\"%d\",\"%d\",\"%s\");", gameID, date.toString(), eventID, event.getGameMinute(), userId, injury.getDescription());
                     jdbcTemplate.update(query);
                 } else if (event instanceof PlayerSubstitution) {
                     PlayerSubstitution playerSubstitution = (PlayerSubstitution) event;
@@ -205,7 +205,7 @@ public class GameCRUD {
                         return false;
                     }
                     String query = String.format("INSERT INTO player_substitution (game_id, game_event_id, game_date, game_minute, player_in_user_id, player_out_user_id) values" +
-                            "(\"%d\",\"%d\",\"%s\",\"%d\",\"%d\",\"%d\");", gameID, eventID, game.getDate().toString(), playerSubstitution.getGameMinute(), playerInId, playerOutId);
+                            "(\"%d\",\"%d\",\"%s\",\"%d\",\"%d\",\"%d\");", gameID, eventID, date.toString(), playerSubstitution.getGameMinute(), playerInId, playerOutId);
                     jdbcTemplate.update(query);
                 } else if (event instanceof Offence) {
                     Offence offence = (Offence) event;
@@ -215,7 +215,7 @@ public class GameCRUD {
                         return false;
                     }
                     String query = String.format("INSERT INTO offence (game_id, game_event_id, game_date, game_minute, player_committed_user_id, player_againt_user_id, description) values" +
-                            "(\"%d\",\"%d\",\"%s\",\"%d\",\"%d\",\"%d\",\"%s\");", gameID, eventID, game.getDate().toString(), offence.getGameMinute(), playerCommittedID, playerAgainstId, offence.getDescription());
+                            "(\"%d\",\"%d\",\"%s\",\"%d\",\"%d\",\"%d\",\"%s\");", gameID, eventID, date.toString(), offence.getGameMinute(), playerCommittedID, playerAgainstId, offence.getDescription());
                     jdbcTemplate.update(query);
                 } else if (event instanceof Offside) {
                     Offside offside = (Offside) event;
@@ -227,7 +227,7 @@ public class GameCRUD {
                     int playerAgainstId = UsersCRUD.getUserIdByUserName(ticket.getAgainstPlayer().getUserName());
                     int refereePulledId = UsersCRUD.getUserIdByUserName(ticket.getRefereePulled().getUserName());
                     String query = String.format("INSERT INTO ticket (game_id, game_event_id, game_date, game_minute, player_against_user_id, referee_pulled_user_id, type) values" +
-                            "(\"%d\",\"%d\",\"%s\",\"%d\",\"%d\",\"%d\",\"%s\");", gameID, eventID, game.getDate().toString(), ticket.getGameMinute(), playerAgainstId, refereePulledId, type);
+                            "(\"%d\",\"%d\",\"%s\",\"%d\",\"%d\",\"%d\",\"%s\");", gameID, eventID, date.toString(), ticket.getGameMinute(), playerAgainstId, refereePulledId, type);
                     jdbcTemplate.update(query);
                 }
                 return true;
@@ -240,38 +240,30 @@ public class GameCRUD {
     }
 
     /**
-     * the actual implementation of this function
-     *
-     * @param game
+     * @param gameId
      * @param oldEvent
      * @param newEvent
      * @return
      */
-    public static boolean editGameEvent(Game game, GameEvent oldEvent, GameEvent newEvent) {
-        if (removeGameEvent(game, oldEvent)) {
-            return addGameEvent(game, newEvent);
+    public static boolean editGameEvent(String gameId, GameEvent oldEvent, GameEvent newEvent) {
+        if (removeGameEvent(gameId, oldEvent)) {
+            return addGameEvent(gameId, newEvent, newEvent.getGameDate());
         } else {
             return false;
         }
     }
 
     /**
-     * on the moc just send null for false and real game for true, if the event not exist in the game event logger will return false as well
-     *
-     * @param game
+     * @param gameID
      * @param event
      * @return
      */
-    public static boolean removeGameEvent(Game game, GameEvent event) {
-        if (game == null || event == null) {
+    public static boolean removeGameEvent(String gameID, GameEvent event) {
+        if (gameID == null || event == null) {
             return false;
         } else {
-            int gameId = getGameId(game);
-            if (gameId == -1) {
-                return false;
-            }
             try {
-                String query = String.format("DELETE FROM game_game_event WHERE (game_id = %d AND game_minute = %d)", gameId, event.getGameMinute());
+                String query = String.format("DELETE FROM game_game_event WHERE (game_id = %s AND game_minute = %d)", gameID, event.getGameMinute());
                 jdbcTemplate.update(query);
                 return true;
             } catch (Exception e) {
