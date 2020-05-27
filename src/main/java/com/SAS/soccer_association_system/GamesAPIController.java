@@ -37,6 +37,11 @@ public class GamesAPIController {
         return GameCRUD.getGameEvents(gameID).toString();
     }
 
+    @GetMapping(value = "/referee/{gameID}")
+    public String getRefereeForGame(@PathVariable String gameID) {
+        return GameCRUD.getRefereesName(gameID).toString();
+    }
+
     @PostMapping(value = "/events/add")
     public String addEvent(@RequestBody String credentials) {
         try {
