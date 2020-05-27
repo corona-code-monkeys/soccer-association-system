@@ -4,17 +4,10 @@
 package com.SAS.soccer_association_system;
 
 import com.SAS.Controllers.sasApplication.SASApplication;
-import com.SAS.crudoperations.TeamCRUD;
 import com.SAS.systemLoggers.LoggerFactory;
-import com.SAS.team.Team;
-import javafx.scene.control.Alert;
-import org.apache.http.impl.bootstrap.HttpServer;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -23,12 +16,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.util.List;
 
 @RequestMapping(value ="/team")
 @RestController
