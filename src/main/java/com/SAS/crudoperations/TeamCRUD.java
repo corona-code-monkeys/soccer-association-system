@@ -83,9 +83,8 @@ public class TeamCRUD {
      */
     public static boolean isTeamActive(String teamName) {
         try {
-            String queryTeamActive = String.format("SELECT is_active FROM team WHERE team_name = \"%s\";", teamName);
-            jdbcTemplate.queryForObject(queryTeamActive, Boolean.class);
-            return true;
+            String queryTeamActive = String.format("SELECT isActive FROM team WHERE team_name = \"%s\";", teamName);
+            return jdbcTemplate.queryForObject(queryTeamActive, Boolean.class);
         }
         catch (Exception e){
             return false;

@@ -19,7 +19,7 @@ public class UserController {
      */
     private LoggerFactory logger;
     private Privileges globalPrivileges;
-    private Map<String, String> loggedInUsers;
+    private static Map<String, String> loggedInUsers;
 
     /**
      * Constructor
@@ -455,6 +455,16 @@ public class UserController {
         }
         return false;
     }
+
+    /**
+     * The function returns the address of logged in user if exists, otherwise returns null
+     * @param userName
+     * @return email
+     */
+    public String getAddressOfLoggedInUser(String userName) {
+        return loggedInUsers.get(userName);
+    }
+
 
     /**
      * This function gets username and role and retrieves the user details from the DB

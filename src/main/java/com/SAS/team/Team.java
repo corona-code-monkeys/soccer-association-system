@@ -622,4 +622,19 @@ public class Team {
         assets.put("coach", this.coach);
         return assets;
     }
+
+    /**
+     * The function returns the user names of the team management
+     * @return list of usernames
+     */
+    public List<String> getTeamManagement() {
+        List<String> userNames = new LinkedList<>();
+        userNames.add(this.getManager().getUserName());
+
+        for (TeamOwner owner: this.owners) {
+            userNames.add(owner.getUserName());
+        }
+
+        return userNames;
+    }
 }

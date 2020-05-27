@@ -5,12 +5,29 @@ package com.SAS.soccer_association_system;
 
 import com.SAS.Controllers.sasApplication.SASApplication;
 import com.SAS.crudoperations.TeamCRUD;
+import com.SAS.systemLoggers.LoggerFactory;
 import com.SAS.team.Team;
+import javafx.scene.control.Alert;
+import org.apache.http.impl.bootstrap.HttpServer;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.util.List;
 
 @RequestMapping(value ="/team")
@@ -19,6 +36,8 @@ public class TeamAPIController {
 
     @Autowired
     private static SASApplication app = new SASApplication();
+
+    private LoggerFactory logger = LoggerFactory.getInstance();
 
     /**
      * The function receives the team name and returns the team page
@@ -241,5 +260,48 @@ public class TeamAPIController {
     @GetMapping(value = "/getAssetsForTeam/{teamName}")
     public String getAssetsForTeam(@PathVariable String teamName) {
         return app.getAssetsForTeam(teamName).toString();
+    }
+
+    public void sendNotification(String clientURL, String message) {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+
+        try {
+            String url = "http://" + clientURL + "/getNotification";
+            HttpPost request = new HttpPost(url);
+
+            //create the request
+            StringEntity stringEntity = new StringEntity(message);
+            request.getRequestLine();
+            request.setEntity(stringEntity);
+            request.addHeader("Content-Type", "application/json");
+
+            CloseableHttpResponse response = httpClient.execute(request);
+
+            try {
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    String result = EntityUtils.toString(entity);
+                    if (result.equals("Sent")) {
+                        logger.logEvent("Notification sent to user with the message: " + message);
+                    }
+
+                    else {
+                        logger.logError("Notification didn't send, there was an error");
+                    }
+                }
+
+            } finally {
+                response.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

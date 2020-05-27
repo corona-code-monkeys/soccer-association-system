@@ -1,6 +1,12 @@
+/**
+ * The class represents notification handler - which responsible for sending emails
+ */
+
 package com.SAS.User;
 
 import com.SAS.crudoperations.UsersCRUD;
+import com.SAS.systemLoggers.LoggerFactory;
+
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.mail.Session;
@@ -12,16 +18,17 @@ public class NotificationsHandler {
 
     private String from = "deymcaapp@gmail.com";
     private String pass = "Sasapp123";
+    private String subject = "You have new message from DeYMCA app";
+    private LoggerFactory logger = LoggerFactory.getInstance();
 
     /**
      * The function receives list of userNames, subject and body and sends the message to the users
      * by email
      * @param userNames
-     * @param subject
      * @param body
      * @return true if succeeded
      */
-    public boolean sendEmailToUser(List<String> userNames, String subject, String body) {
+    public boolean sendEmailToUser(List<String> userNames, String body) {
 
         //email of recipient
         String[] to = getUsersEmails(userNames);
@@ -61,6 +68,8 @@ public class NotificationsHandler {
             transport.connect(host, from, pass);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
+
+            logger.logEvent("Email has been sent with the message: " + body);
         }
         catch (AddressException ae) {
             ae.printStackTrace();
