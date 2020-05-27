@@ -596,7 +596,7 @@ public class Team {
         }
         JSONArray playersNames = new JSONArray();
         for(Player pla: this.players){
-            playersNames.put(pla.getFullName() + " - " + pla.getRole());
+            playersNames.put(pla.getFullName() + "     -     " + pla.getFieldRole());
         }
         JSONArray facilitiesNames = new JSONArray();
         for(Facility fac: this.teamFacilities){
