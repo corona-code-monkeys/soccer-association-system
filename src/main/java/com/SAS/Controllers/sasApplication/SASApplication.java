@@ -5,6 +5,7 @@ package com.SAS.Controllers.sasApplication;
 
 import com.SAS.Controllers.systemController.ApplicationController;
 import com.SAS.LeagueManagement.LeagueManagementController;
+import com.SAS.User.User;
 import com.SAS.User.UserController;
 import com.SAS.teamManagenemt.TeamManagement;
 import org.json.JSONArray;
@@ -299,5 +300,33 @@ public class SASApplication {
      */
     public JSONObject getAssetsForTeam(String teamName) {
         return teamManagement.getAllTeamAssets(teamName);
+    }
+
+    /**
+     * This function gets the user details from DB
+     * @param username
+     * @param role
+     * @return
+     */
+    public JSONObject getUserDetails(String username, String role){
+        return userController.getUserDetails(username, role);
+    }
+
+    /**
+     * This function updates the user details in the DB
+     * @param details
+     * @return
+     */
+    public boolean setDetails(JSONObject details) {
+        return userController.setDetails(details);
+    }
+
+    /**
+     * This function returns the registration status of the team
+     * @param teamName
+     * @return
+     */
+    public boolean getTeamStatus(String teamName) {
+        return teamManagement.getTeamRegistrationStatus(teamName);
     }
 }

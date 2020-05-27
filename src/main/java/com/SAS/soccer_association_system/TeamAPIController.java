@@ -57,6 +57,16 @@ public class TeamAPIController {
     }
 
     /**
+     * The function receives the team name and returns the team's registration status
+     * @return string - status
+     */
+    @GetMapping(value ="/{teamName}/teamStatus")
+    public String checkTeamStatus(@PathVariable String teamName) {
+        Boolean result = app.getTeamStatus(teamName);
+        return result ? "Registered" : "Not registered";
+    }
+
+    /**
      * The function receives team name and owner username and returns response success
      * if the team closed successfully, otherwise returns false
      * @return String - success or fail

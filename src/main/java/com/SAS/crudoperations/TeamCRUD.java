@@ -16,6 +16,8 @@ public class TeamCRUD {
     private static JdbcTemplate jdbcTemplate;
 
 
+
+
     public void setTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -52,6 +54,22 @@ public class TeamCRUD {
             jdbcTemplate.update(query);
             return true;
 
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * This function returns the registration status of the team
+     * @param teamName
+     * @return
+     */
+    public static boolean isTeamRegistered(String teamName) {
+        try {
+            String queryTeamActive = String.format("SELECT isRegistered FROM team WHERE team_name = \"%s\";", teamName);
+            Boolean result = jdbcTemplate.queryForObject(queryTeamActive, Boolean.class);
+            return result;
         }
         catch (Exception e){
             return false;
