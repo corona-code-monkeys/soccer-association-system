@@ -220,7 +220,10 @@ public class GameCRUD {
                 } else if (event instanceof Offside) {
                     Offside offside = (Offside) event;
                     int playerId = UsersCRUD.getUserIdByUserName(offside.getPlayerInOffside().getUserName());
-                    //TBD
+                    String teamName = offside.getTeamInFavor().getName();
+                    String query = String.format("INSERT INTO offside (game_id, game_event_id, game_date, game_minute, player_in_offside_user_id, team_in_favor) values" +
+                            "(\"%d\", \"%s\", \"%s\",\"%d\",\"%d\",\"%s\" );", gameID, eventID, date.toString(), offside.getGameMinute(), playerId, teamName);
+                    jdbcTemplate.update(query);
                 } else if (event instanceof Ticket) {
                     Ticket ticket = (Ticket) event;
                     String type = (ticket instanceof RedTicket) ? "red" : "yellow";
@@ -317,7 +320,7 @@ public class GameCRUD {
                 JSONObject record = new JSONObject();
                 record.put("game_minute", offence.get("game_minute"));
                 String playerCommitted = UsersCRUD.getUserNameById((int) offence.get("player_committed_user_id"));
-                String playerAgainst = UsersCRUD.getUserNameById((int) offence.get("player_against_user_id"));
+                String playerAgainst = UsersCRUD.getUserNameById((int) offence.get("player_againt_user_id"));
                 record.put("player_committed", playerCommitted);
                 record.put("player_against", playerAgainst);
                 record.put("description", offence.get("description"));
@@ -331,7 +334,7 @@ public class GameCRUD {
                 record.put("game_minute", offside.get("game_minute"));
                 String playerInOffside = UsersCRUD.getUserNameById((int) offside.get("player_in_offside_user_id"));
                 record.put("player_committed", playerInOffside);
-                //add team name when team curd have get team name by ID
+                record.put("team_in_favor", offside.get("team_in_favor"));
                 offsideArr.put(record);
             }
             events.put("offsides", offsideArr);
@@ -357,7 +360,7 @@ public class GameCRUD {
                 record.put("player_against", playerAgainst);
                 record.put("referee_pulled", refereePulled);
                 record.put("type", ticket.get("type"));
-
+                ticketsArr.put(record);
             }
             events.put("tickets", ticketsArr);
         } catch (Exception e) {
