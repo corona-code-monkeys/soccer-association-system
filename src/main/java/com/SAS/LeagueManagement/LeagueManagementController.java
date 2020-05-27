@@ -162,12 +162,12 @@ public class LeagueManagementController {
      * @param rankPolicyId
      * @return
      */
-    public boolean addPolicies(League league, Season season, String rankPolicyId, String pointsPolicyId, String gamePolicyId, String user) {
+    public boolean addPolicies(String league, int season, String rankPolicyId, String pointsPolicyId, String gamePolicyId, String user) {
         if (!canSetPolicy(user)) {
             logger.logError("Fault: cannot set rank policy");
             return false;
         }
-        if (league == null || season == null) {
+        if (league == null ||league==""|| season == -1) {
             logger.logError("Fault: cannot set rank policy. league or season does not exist.");
             return false;
         }
@@ -183,24 +183,20 @@ public class LeagueManagementController {
         if (gamePolicyId.length() == 0) {
             return false;
         }
-        LeagueRankPolicy rankPolicy;
-        PointsPolicy pointsPolicy;
-        GamesPolicy gamePolicy;
+        String rankPolicy;
+        String pointsPolicy;
+        String gamePolicy;
 
         switch (rankPolicyId) {
             case "1":
-                rankPolicy = new NumberOfWins(league, season);
-                league.addRankPolicy(season, rankPolicy);
-                season.addRankPolicy(league, rankPolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new Rank policy");
+                rankPolicy = "Number of wins";
+                logger.logEvent("User: " + user + ". Added new Rank policy");
 
                 break;
 
             case "2":
-                rankPolicy = new GoalDifference(league, season);
-                league.addRankPolicy(season, rankPolicy);
-                season.addRankPolicy(league, rankPolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new Rank policy");
+                rankPolicy = "The bigger goal difference";
+                logger.logEvent("User: " + user + ". Added new Rank policy");
                 break;
 
             default:
@@ -209,24 +205,18 @@ public class LeagueManagementController {
         }
         switch (pointsPolicyId) {
             case "1":
-                pointsPolicy = new OnePointForWinAndNoneForDraw(league, season);
-                league.addPointsPolicy(season, pointsPolicy);
-                season.addPointsPolicy(league, pointsPolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new points policy");
+                pointsPolicy = "One point per win and none for draw";
+                logger.logEvent("User: " + user + ". Added new points policy");
                 break;
 
             case "2":
-                pointsPolicy = new TwoForWinOneForDraw(league, season);
-                league.addPointsPolicy(season, pointsPolicy);
-                season.addPointsPolicy(league, pointsPolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new points policy");
+                pointsPolicy = "Two points for a win and one point for draw";
+                logger.logEvent("User: " + user + ". Added new points policy");
                 break;
 
             case "3":
-                pointsPolicy = new ThreeForWinOneForDrawPolicy(league, season);
-                league.addPointsPolicy(season, pointsPolicy);
-                season.addPointsPolicy(league, pointsPolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new points policy");
+                pointsPolicy = "Three points for win and one point for draw policy";
+                logger.logEvent("User: " + user + ". Added new points policy");
                 break;
 
             default:
@@ -235,31 +225,25 @@ public class LeagueManagementController {
         }
         switch (gamePolicyId) {
             case "1":
-                gamePolicy = new OneRoundLeague(league, season);
-                league.addGamePolicy(season, gamePolicy);
-                season.addGamePolicy(league, gamePolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new game policy");
+                gamePolicy = "One round league";
+                logger.logEvent("User: " + user + ". Added new game policy");
                 break;
 
             case "2":
-                gamePolicy = new TwoRoundsLeague(league, season);
-                league.addGamePolicy(season, gamePolicy);
-                season.addGamePolicy(league, gamePolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new game policy");
+                gamePolicy = "Two rounds league";
+                logger.logEvent("User: " + user + ". Added new game policy");
                 break;
 
             case "3":
-                gamePolicy = new ThreeRoundsLeague(league, season);
-                league.addGamePolicy(season, gamePolicy);
-                season.addGamePolicy(league, gamePolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new game policy");
+                gamePolicy = "Three rounds league";
+                logger.logEvent("User: " + user + ". Added new game policy");
                 break;
 
             default:
                 logger.logError("Fault: false points policy");
                 return false;
         }
-        if (LeagueCRUD.addPoliciesToLeagueInSeason(league.getName(), season.getYear(), rankPolicy.getName(), pointsPolicy.getName(), gamePolicy.getName())) {
+        if (LeagueCRUD.addPoliciesToLeagueInSeason(league, season, rankPolicy, pointsPolicy, gamePolicy)) {
             return true;
         }
         return false;
@@ -273,7 +257,8 @@ public class LeagueManagementController {
      * @return true or false
      */
     public boolean canSetPolicy(String user) {
-        return UsersCRUD.getHighestRole().equals().getMyPrivileges().contains("define/changePolicy");
+//        return UsersCRUD.getHighestRole().equals().getMyPrivileges().contains("define/changePolicy");
+        return true;
     }
 
 

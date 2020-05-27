@@ -355,7 +355,7 @@ public class SASApplication {
         return leagueManagement.addNewRefereeToLeague(seasonYear,leagueName,username);
     }
 
-    public boolean setPolicies(String leagueName, String seasonYear, String rankPolicy, String pointsPolicy, String gamePolicy, String username) {
+    public boolean setPolicies(String leagueName, int seasonYear, String rankPolicy, String pointsPolicy, String gamePolicy, String username) {
         return leagueManagement.addPolicies(leagueName,seasonYear,rankPolicy,pointsPolicy,gamePolicy, username);
     }
 }
