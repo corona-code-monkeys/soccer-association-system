@@ -4,13 +4,14 @@
 package com.SAS.soccer_association_system;
 
 import com.SAS.Controllers.sasApplication.SASApplication;
+import com.SAS.crudoperations.UsersCRUD;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RequestMapping(value ="/users")
+@RequestMapping(value = "/users")
 @RestController
 public class UserAPIController {
 
@@ -21,25 +22,36 @@ public class UserAPIController {
     /**
      * The function receives username and password and returns response OK if the exists in the system,
      * otherwise returns false
+     *
      * @return the list
      */
-    @PostMapping(value ="/login")
+    @PostMapping(value = "/login")
     public String postUser(@RequestBody String credentials, HttpServletRequest request) {
         JSONObject json = new JSONObject(credentials);
         String username = json.get("username").toString();
         String password = json.get("password").toString();
         String clientURL = request.getRemoteAddr() + ":" + request.getRemotePort();
         String role = app.login(username, password, clientURL);
-        return role.isEmpty() ? "Failed" : role;
+        if (!role.isEmpty()) {
+            JSONObject toReturn = new JSONObject();
+            toReturn.put("role", role);
+            String userId = UsersCRUD.getUserIdByUserName(username) + "";
+            toReturn.put("user_id", userId);
+            return toReturn.toString();
+        } else {
+
+            return "Failed";
+        }
     }
 
     /**
      * The function receives username, password, full name,
      * and returns response OK if the exists in the system,
      * otherwise returns false
+     *
      * @return the list
      */
-    @PostMapping(value ="/register")
+    @PostMapping(value = "/register")
     public String postUserRegister(@RequestBody String credentials) {
         JSONObject json = new JSONObject(credentials);
         String username = json.get("username").toString();
@@ -53,9 +65,10 @@ public class UserAPIController {
     /**
      * The function receives username and password and returns response OK if the exists in the system,
      * otherwise returns false
+     *
      * @return the list
      */
-    @PostMapping(value ="/exit")
+    @PostMapping(value = "/exit")
     public String postExitUser(@RequestBody String credentials) {
         JSONObject json = new JSONObject(credentials);
         String username = json.get("username").toString();
