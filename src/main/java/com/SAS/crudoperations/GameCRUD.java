@@ -2,6 +2,7 @@ package com.SAS.crudoperations;
 
 import com.SAS.League.League;
 import com.SAS.League.Season;
+import com.SAS.User.Referee;
 import com.SAS.facility.Facility;
 import com.SAS.game.Game;
 import com.SAS.game_event_logger.*;
@@ -35,7 +36,7 @@ public class GameCRUD {
      * @param stadium    the stadium the game happen in
      * @return true if worked, false otherwise
      */
-    public static boolean addGame(Season season, League league, int hostScore, int guestScore, LocalDate date, Team host, Team guest, Facility stadium) {
+    public static boolean addGame(Season season, League league, int hostScore, int guestScore, LocalDate date, Team host, Team guest, Facility stadium, List<Referee> referees) {
         try {
             int seasonYear = season.getYear();
             String leagueName = league.getName();
@@ -45,6 +46,11 @@ public class GameCRUD {
             String query = String.format("INSERT INTO game (date, season_year, league_name, host_team_name, guest_team_name, host_score, guest_score, stadium_name)"
                     + "values (\"%s\",\"%d\",\"%s\",\"%s\",\"%s\",\"%d\",\"%d\",\"%s\");", date.toString(), seasonYear, leagueName, hostTeamName, guestTeamName, hostScore, guestScore, stadiumName);
             jdbcTemplate.update(query);
+            int gameID = getGameId(new Game(season, league, date, host, guest, hostScore, guestScore, stadium, null, null, referees));
+            for (Referee ref : referees) {
+                String insert_into_game_referees = String.format("INSERT INTO game_referees (game_id, referee_user_id) values(\"%d\",\"%s\");", gameID, UsersCRUD.getUserIdByUserName(ref.getUserName()));
+                jdbcTemplate.update(insert_into_game_referees);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -53,7 +59,7 @@ public class GameCRUD {
     }
 
     public static boolean addGame(Game game) {
-        return addGame(game.getSeason(), game.getLeague(), game.getHostScore(), game.getGuestScore(), game.getDate(), game.getHost(), game.getGuest(), game.getStadium());
+        return addGame(game.getSeason(), game.getLeague(), game.getHostScore(), game.getGuestScore(), game.getDate(), game.getHost(), game.getGuest(), game.getStadium(), game.getReferees());
     }
 
     public static boolean removeGame(Game game) {
@@ -66,6 +72,18 @@ public class GameCRUD {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static JSONObject getRefereesName(String gameID) {
+        JSONObject jsonObject = new JSONObject();
+        String queryForRef = String.format("SELECT referee_user_id FROM game_referees WHERE game_id = %s;", gameID);
+        List<Map<String, Object>> refs = jdbcTemplate.queryForList(queryForRef);
+        JSONArray refArr = new JSONArray();
+        for (Map<String, Object> ref : refs) {
+            refArr.put(ref.get("referee_user_id"));
+        }
+        jsonObject.put("refs", refArr);
+        return jsonObject;
     }
 
     private static boolean addGoalToGameHost(String gameId) {
