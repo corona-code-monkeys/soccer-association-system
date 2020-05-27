@@ -39,7 +39,7 @@ public class GamesAPIController {
 
     @GetMapping(value = "/referee/{gameID}")
     public String getRefereeForGame(@PathVariable String gameID) {
-        return GameCRUD.getRefereesName(gameID).toString();
+        return GameCRUD.getRefereesName(gameID).toString();//TBD fix it so its works as Yaar explained
     }
 
     @PostMapping(value = "/events/add")
