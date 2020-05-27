@@ -27,7 +27,7 @@ public class LeagueManagementController {
     /**
      * Constructor
      */
-    public LeagueManagementController() {
+    public LeagueManagementController(UserController userController) {
         this.logger = LoggerFactory.getInstance();
         this.rankPolicies = new LinkedList<>();
         this.pointsPolicies = new LinkedList<>();
@@ -35,7 +35,7 @@ public class LeagueManagementController {
         referees = new LinkedList<>();
         leagues = new LinkedList<>();
         initPolicies();
-        userController= new UserController();
+        this.userController = userController;
     }
 
     /**
