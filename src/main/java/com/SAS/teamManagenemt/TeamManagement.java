@@ -882,8 +882,9 @@ public class TeamManagement {
      * @Return the new team
      */
     public Team createANewTeam(String teamOwnerName, String teamName){
+        UsersCRUD.setTeamOwnerDetails(UsersCRUD.getUserIdByUserName(teamOwnerName), teamName);
         User teamOwner = retrieveUser(teamOwnerName);
-        if (teamOwner != null && teamOwner instanceof TeamOwner){
+        if (teamOwner != null ){
             Team team = new Team(teamName, (TeamOwner)teamOwner);
             TeamCRUD.postTeam(teamName);
             return team;
@@ -937,6 +938,18 @@ public class TeamManagement {
     public JSONArray getTeams() {
         List<String> teams = TeamCRUD.getTeams();
         return new JSONArray(teams);
+    }
+
+    /**
+     * This function returns the registration status of the team
+     * @param teamName
+     * @return
+     */
+    public boolean getTeamRegistrationStatus(String teamName) {
+        if (validParam(teamName)){
+            return TeamCRUD.isTeamRegistered(teamName);
+        }
+        return false;
     }
 }
 

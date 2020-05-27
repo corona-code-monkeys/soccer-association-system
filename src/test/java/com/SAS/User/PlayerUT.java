@@ -75,18 +75,18 @@ public class PlayerUT {
 
     @Test
     public void convertFieldRoleSuccessS() {
-        String fieldRole = "Striker";
+        String fieldRole = "STRIKER";
         Assertions.assertEquals(FieldRole.STRIKER, ((Player)user).convertStringToFieldRole(fieldRole));
     }
 
     @Test
     public void convertFieldRoleSuccessM() {
-        String fieldRole = "Midfielder";
+        String fieldRole = "MIDFIELDER";
         Assertions.assertEquals(FieldRole.MIDFIELDER, ((Player)user).convertStringToFieldRole(fieldRole));
     }
     @Test
     public void convertFieldRoleSuccessG() {
-        String fieldRole = "Goal Keeper";
+        String fieldRole = "GOAL_KEEPER";
         Assertions.assertEquals(FieldRole.GOAL_KEEPER, ((Player)user).convertStringToFieldRole(fieldRole));
     }
 

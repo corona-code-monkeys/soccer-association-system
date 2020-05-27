@@ -4,6 +4,7 @@ import com.SAS.User.*;
 import com.SAS.team.Team;
 import com.SAS.User.FieldRole;
 import com.SAS.usersDB.UsersDB;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,6 +24,44 @@ public class UsersCRUD {
         this.roleOrder = new HashMap<>();
         initRolesOrder();
     }
+
+    /**
+     * This function updates user details
+     * @param username
+     * @param fullname
+     * @param email
+     */
+    public static boolean setUserDetails(String username, String fullname, String email) {
+        int id = getUserIdByUserName(username);
+        if (id == -1)
+            return false;
+        String queryUpdate = String.format("UPDATE user SET full_name=\"%s\", email=\"%s\" WHERE user_id = \"%d\";", fullname, email, id);
+        try {
+            jdbcTemplate.update(queryUpdate);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * This function returns all representatives usernames
+     * @return
+     */
+    public static List<String> getAssociationRepresentatives() {
+        List<String> usernames = new LinkedList<>();
+        String sqlrows = String.format("SELECT user_id FROM association_representative");
+        try {
+            List<Map<String, Object>> rows = jdbcTemplate.queryForList(sqlrows);
+            for (Map<String, Object> row : rows) {
+                int id = (Integer) row.get("user_id");
+                usernames.add(getUserNameById(id));
+            }
+        }catch(Exception e){
+        }
+        return usernames;
+    }
+
 
     /**
      * This function initializes the role order hash map
@@ -214,7 +253,7 @@ public class UsersCRUD {
             }
         } else {
             try {
-                String playerToInsert = String.format("INSERT into player (user_id, date_of_birth, field_role, team_name) values ( \"%d\", \"%s\", \"%s\", \"%s\");", userID, dateOfBirth, fieldRole.toLowerCase(), teamName);
+                String playerToInsert = String.format("INSERT into player (user_id, date_of_birth, field_role, team_name) values ( \"%d\", \"%s\", \"%s\", \"%s\");", userID, dateOfBirth, fieldRole.toUpperCase(), teamName);
                 jdbcTemplate.update(playerToInsert);
                 return true;
             } catch (Exception e) {
@@ -390,6 +429,21 @@ public class UsersCRUD {
     }
 
     /**
+     * The function receives id and returns the full name of the user
+     *
+     * @param id
+     * @return
+     */
+    public static String getFullNameByUserId(int id) {
+        try {
+            String queryUserfullname = String.format("SELECT full_name FROM user WHERE user_id = \"%s\";", id);
+            return jdbcTemplate.queryForObject(queryUserfullname, String.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
      * The function receives a userName and returns the email of the user
      *
      * @param userName
@@ -528,5 +582,45 @@ public class UsersCRUD {
             roles.put(key, roleOrder.get(key));
         }
         return roles.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
+    }
+
+    /**
+     * This function returns all user details
+     * @param username
+     * @param role
+     */
+    public static JSONObject getAllDetails(String username, String role) {
+        JSONObject details = new JSONObject();
+        int id = getUserIdByUserName(username);
+        if (id == -1)
+            return null;
+        try {
+            Map<String, Object> result;
+            String sql = "SELECT full_name, email FROM user WHERE user_name = ?";
+            result = jdbcTemplate.queryForMap(sql, new Object[]{username});
+            details.put("Username", username);
+            details.put("Name", result.get("full_name").toString());
+            details.put("Email", result.get("email").toString());
+        }catch (Exception e) {
+            return details;
+        }
+        try{
+            Map<String, Object> result;
+            String sql;
+            switch (role) {
+                case "team_owner":
+                    sql = "SELECT * FROM team_owner WHERE user_id = ?";
+                    result = jdbcTemplate.queryForMap(sql, new Object[]{id});
+                    if (result.get("team_name")!=null)
+                        details.put("Team name", result.get("team_name").toString());
+                    if (result.get("nominatedBy")!=null)
+                        details.put("Nominated by", getFullNameByUserId((Integer) result.get("nominatedBy")));
+
+                    //TODO- other roles
+            }
+            return details;
+        } catch (Exception e) {
+            return details;
+        }
     }
 }

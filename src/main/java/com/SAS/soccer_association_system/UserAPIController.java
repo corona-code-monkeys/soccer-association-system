@@ -62,4 +62,27 @@ public class UserAPIController {
         return app.exit(username) ? "OK" : "Failed";
     }
 
+    /**
+     * The function receives username and role and returns his details
+     * @return JSONObject - details
+     */
+    @GetMapping(value ="/getUserDetails/{username}/{role}")
+    public String getDetails(@PathVariable String username, @PathVariable String role) {
+        JSONObject details = app.getUserDetails(username, role);
+        return details != null ? details.toString() : "Failed";
+    }
+
+
+    /**
+     * The function receives username and role and returns his details
+     * @return status
+     */
+    @PostMapping(value ="/setUserDetails")
+    public String setDetails(@RequestBody String userDetails) {
+        JSONObject details = new JSONObject(userDetails);
+        boolean result = app.setDetails(details);
+        return result ? "OK" : "Failed";
+    }
+
+
 }
