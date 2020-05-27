@@ -1,6 +1,7 @@
 package com.SAS.crudoperations;
 
 import com.SAS.League.*;
+import com.SAS.LeagueManagement.LeagueManagementController;
 import com.SAS.User.Referee;
 import com.SAS.User.Registered;
 import com.SAS.dbstub.dbStub;
@@ -101,28 +102,32 @@ class LeagueCRUDTest {
     void addPoliciesToLeagueInSeason() {
         Assertions.assertTrue(LeagueCRUD.addPoliciesToLeagueInSeason(name, season.getYear(), new GoalDifference().getName(), new ThreeForWinOneForDrawPolicy().getName(), new TwoRoundsLeague().getName()));
     }
-//    @Test
-//    void addRefToLeagueInSeason() {
-//        ref.setLevel(1);
-//        UsersCRUD.postUser(ref.getUserName(),"dekel","dekel",ref.getRole());
-//        LeagueCRUD.addLeague(name);
-//        LeagueCRUD.addSeason(season.getYear());
-//        Assertions.assertTrue(LeagueCRUD.addRefToLeagueInSeason(name,season.getYear(),ref.getUserName(),ref.getLevel()));
-//
-//    }
+    @Test
+    void addRefToLeagueInSeason() {
+        ref.setLevel(1);
+        UsersCRUD.postUser(ref.getUserName(),"dekel","dekel","dek@gmail.com", ref.getRole());
+        LeagueCRUD.addLeague(name);
+        LeagueCRUD.addSeason(season.getYear());
+        LeagueCRUD.addLeagueToSeason(name,season.getYear());
+        Assertions.assertTrue(LeagueCRUD.addRefToLeagueInSeason(name,season.getYear(),ref.getUserName(),ref.getLevel()));
 
-//    @Test
-//    void removeRefFromLeague() {
-//        UsersCRUD.postUser(ref.getUserName(),"dekel","dekel",ref.getRole());
-//        Assertions.assertFalse(LeagueCRUD.removeRefFromLeague(ref.getUserName(),name));
-//        ref.setLevel(1);
-//        LeagueCRUD.addReferee(UsersCRUD.getUserIdByUserName(ref.getUserName()),ref.getLevel());
-//        HashSet <Referee> referees= new HashSet<>();
-//        referees.add(ref);
-//        LeagueCRUD.addRefToLeagueInSeason(name,season.getYear(),ref.getUserName(),ref.getLevel());
-//        Assertions.assertTrue(LeagueCRUD.removeRefFromLeague(ref.getUserName(),name));
-//
-//    }
+    }
+
+    @Test
+    void removeRefFromLeague() {
+        UsersCRUD.postUser(ref.getUserName(),"dekel","dekel","dek@gmail.com", ref.getRole());
+        Assertions.assertFalse(LeagueCRUD.removeRefFromLeague(ref.getUserName(),name));
+        ref.setLevel(1);
+        LeagueCRUD.addReferee(UsersCRUD.getUserIdByUserName(ref.getUserName()),ref.getLevel());
+        HashSet <Referee> referees= new HashSet<>();
+        referees.add(ref);
+        LeagueCRUD.addLeague(name);
+        LeagueCRUD.addSeason(season.getYear());
+        LeagueCRUD.addLeagueToSeason(name,season.getYear());
+        LeagueCRUD.addRefToLeagueInSeason(name,season.getYear(),ref.getUserName(),ref.getLevel());
+        Assertions.assertTrue(LeagueCRUD.removeRefFromLeague(ref.getUserName(),name));
+
+    }
 
 
 }
