@@ -100,9 +100,9 @@ public class LeagueCRUD {
         }
     }
 
-    public static boolean removeRefFromLeague(String username, String name) {
+    public static boolean removeRefFromLeague(String username, String leagueName) {
         try {
-            String query = String.format("DELETE FROM referees_in_duty WHERE user_id=%d AND league_name=\"%s\"", UsersCRUD.getUserIdByUserName(username), name);
+            String query = String.format("DELETE FROM referees_in_duty WHERE user_id=%d AND league_name=\"%s\"", UsersCRUD.getUserIdByUserName(username), leagueName);
             if (jdbcTemplate.update(query) == 0 || UsersCRUD.getUserIdByUserName(username) == -1) {
                 return false;
             }

@@ -35,7 +35,7 @@ public class LeagueManagementController {
         referees = new LinkedList<>();
         leagues = new LinkedList<>();
         initPolicies();
-        userController= new UserController();
+        userController = new UserController();
     }
 
     /**
@@ -86,26 +86,26 @@ public class LeagueManagementController {
     }
 
 
-    public boolean addSeasonToALeague(Season season, League league) {
-        if (LeagueCRUD.isLeagueExist(league.getName()) && LeagueCRUD.isSeasonExist(season.getYear())) {
-            LeagueCRUD.addLeagueToSeason(league.getName(), season.getYear());
+    public boolean addSeasonToALeague(int season, String league) {
+        if (LeagueCRUD.isLeagueExist(league) && LeagueCRUD.isSeasonExist(season)) {
+            LeagueCRUD.addLeagueToSeason(league, season);
         }
         logger.logError("Fault: unable to add season to league");
         return false;
     }
 
 
-    public boolean assignRefereesToLeagueInSpecificSeason(League league, Season season, HashSet<Referee> referees, User user) {
+    public boolean assignRefereesToLeagueInSpecificSeason(League league, Season season, HashSet<Referee> referees, String username) {
         boolean isNew = false;
-        if (canAccessSettingsPage(user)) {
+        if (canAccessSettingsPage(username)) {
             if (LeagueCRUD.isLeagueExist(league.getName()) && LeagueCRUD.isSeasonExist(season.getYear())) {
                 for (Referee referee : referees) {
                     if (LeagueCRUD.addRefToLeagueInSeason(league.getName(), season.getYear(), referee.getUserName(), referee.getLevel())) {
-                        isNew=true;
+                        isNew = true;
                         //add referees
                         if (!league.isRefereeInSeason(season, referee)) {
                             league.addReferee(season, referee);
-                            logger.logEvent("User: " + ((Role) user).getUserName() + ". Assign new referees");
+                            logger.logEvent("User: " + username + ". Assign new referees");
                         } else {
                             isNew = false;
                         }
@@ -162,7 +162,7 @@ public class LeagueManagementController {
      * @param rankPolicyId
      * @return
      */
-    public boolean addPolicies(League league, Season season, String rankPolicyId, String pointsPolicyId, String gamePolicyId, User user) {
+    public boolean addPolicies(League league, Season season, String rankPolicyId, String pointsPolicyId, String gamePolicyId, String user) {
         if (!canSetPolicy(user)) {
             logger.logError("Fault: cannot set rank policy");
             return false;
@@ -272,18 +272,19 @@ public class LeagueManagementController {
      * @param user
      * @return true or false
      */
-    public boolean canSetPolicy(User user) {
-        return user.getMyPrivileges().contains("define/changePolicy");
+    public boolean canSetPolicy(String user) {
+        return UsersCRUD.getHighestRole().equals().getMyPrivileges().contains("define/changePolicy");
     }
 
 
     /**
      * The fenuction returns true if the user can access the association settings page
      *
-     * @param user
+     * @param username
      * @return
      */
-    public boolean canAccessSettingsPage(User user) {
+    public boolean canAccessSettingsPage(String username) {
+        User user = UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(username));
         return user instanceof AssociationRepresentative;
     }
 
@@ -293,8 +294,8 @@ public class LeagueManagementController {
      * @param details
      * @return user
      */
-    public User addNewReferee(List<String> details, User user) {
-        if (canAccessSettingsPage(user)) {
+    public Referee addNewReferee(List<String> details) {
+        if (canAccessSettingsPage(details.get(0))) {
             if (details == null || details.size() != 4) {
                 logger.logError("Fault: the details inserted does not match the criteria");
                 return null;
@@ -306,9 +307,10 @@ public class LeagueManagementController {
                 String pass = details.get(1);
                 String fullName = details.get(2);
                 int level = Integer.parseInt(details.get(3));
-                if (LeagueCRUD.addReferee(UsersCRUD.getUserIdByUserName(userName),level)&& null!=userController.createUser(userName,pass,fullName,"ref@gmail.com",REFEREE.toString(),true)) {
-                    logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new referee");
-                    return user;
+                if (LeagueCRUD.addReferee(UsersCRUD.getUserIdByUserName(userName), level) && null != userController.createUser(userName, pass, fullName, "ref@gmail.com", REFEREE.toString(), true)) {
+                    logger.logEvent("User: " + userName + ". Added new referee");
+                    Referee ref = new Referee(UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(userName)), userName);
+                    return ref;
                 } else {
                     logger.logError("Fault: unable to add referee");
                     return null;
@@ -347,26 +349,24 @@ public class LeagueManagementController {
 
 
     /**
-     * The function returns true if the referee removed, otherwise returns false
+     * The function returns true if the referee removed from the league
      *
-     * @param referee
+     * @param leagueName
+     * @param username
      * @return
      */
-    public boolean removeReferee(User referee, User user) {
-        if (canAccessSettingsPage(user)) {
-            if (referee != null) {
-                referees.remove(referee);
-                if (LeagueCRUD.removeReferee(UsersCRUD.getUserIdByUserName(((Referee)referee).getUserName()))) {
-                    logger.logEvent("User: " + ((Role) user).getUserName() + ". Removed referee");
-                    return true;
-                } else {
-                    logger.logError("Fault: unable to remove referee");
-                    return false;
-                }
+    public boolean removeRefereeFromLeague(String leagueName, String username) {
+        if (UsersCRUD.getUserIdByUserName(username) != -1) {
+            if (LeagueCRUD.removeRefFromLeague(username, leagueName)) {
+                logger.logEvent("User: " + username + ". Removed referee");
+                return true;
             }
-            logger.logError("Fault: unable to remove: referee not found");
+        } else {
+            logger.logError("Fault: unable to remove referee");
+            return false;
         }
-        logger.logError("Fault: can not access to settings");
+
+        logger.logError("Fault: unable to remove: referee not found");
         return false;
     }
 
@@ -377,14 +377,14 @@ public class LeagueManagementController {
      * @param name
      * @return true or false
      */
-    public boolean addNewLeague(String name, User user) {
-        if (canAccessSettingsPage(user)) {
+    public boolean addNewLeague(String name, String username) {
+        if (canAccessSettingsPage(username)) {
             if (name == null || name.trim().isEmpty()) {
                 return false;
             }
             leagues.add(new League(name));
             if (LeagueCRUD.addLeague(name)) {
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new league");
+                logger.logEvent("User: " + username + ". Added new league");
                 return true;
             } else {
                 logger.logError("Fault: could not able to add league");
@@ -442,8 +442,8 @@ public class LeagueManagementController {
      * @param league
      * @return
      */
-    public boolean addNewSeasonToLeague(String yearStr, League league, User user) {
-        if (canAccessSettingsPage(user)) {
+    public boolean addNewRefereeToLeague(String yearStr, String league, String username) {
+        if (canAccessSettingsPage(username)) {
             if (league == null || yearStr == null && yearStr.trim().isEmpty()) {
                 logger.logError("Fault: unable to add: league or year not found");
                 return false;
@@ -451,9 +451,8 @@ public class LeagueManagementController {
             try {
                 int year = Integer.parseInt(yearStr);
                 Season season = new Season(year, new HashSet<>(), new HashSet<>());
-                league.addSeason(season);
-                if (LeagueCRUD.addLeagueToSeason(league.getName(), season.getYear())) {
-                    logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new season to league: " + league.getName());
+                if (LeagueCRUD.addLeagueToSeason(league, season.getYear())) {
+                    logger.logEvent("User: " + username + ". Added new season to league: " + league);
                     return true;
                 }
             } catch (Exception e) {
@@ -517,6 +516,7 @@ public class LeagueManagementController {
 
     /**
      * This function return a referee by it's id
+     *
      * @param id
      * @return
      */
