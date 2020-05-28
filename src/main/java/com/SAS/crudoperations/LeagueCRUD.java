@@ -100,9 +100,9 @@ public class LeagueCRUD {
         }
     }
 
-    public static boolean removeRefFromLeague(String username, String name) {
+    public static boolean removeRefFromLeague(String username, String leagueName) {
         try {
-            String query = String.format("DELETE FROM referees_in_duty WHERE user_id=%d AND league_name=\"%s\"", username, name);
+            String query = String.format("DELETE FROM referees_in_duty WHERE user_id=%d AND league_name=\"%s\"", UsersCRUD.getUserIdByUserName(username), leagueName);
             if (jdbcTemplate.update(query) == 0 || UsersCRUD.getUserIdByUserName(username) == -1) {
                 return false;
             }
@@ -125,7 +125,7 @@ public class LeagueCRUD {
     public static boolean isRefExistInLeagueInSeason(String username) {
         if (isRefExist(username)) {
             try {
-                String query = String.format("SELECT * FROM referees_in_duty WHERE user_id=\"%d\"", username);
+                String query = String.format("SELECT * FROM referees_in_duty WHERE user_id=\"%d\"", UsersCRUD.getUserIdByUserName(username));
                 jdbcTemplate.queryForObject(query, int.class);
                 return true;
             } catch (EmptyResultDataAccessException e) {

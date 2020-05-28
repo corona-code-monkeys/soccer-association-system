@@ -20,7 +20,7 @@ public class SASApplication implements Observer {
 
     @Autowired
     private UserController userController;
-    private LeagueManagementController leaugeManagement;
+    private LeagueManagementController leagueManagement;
     private TeamManagement teamManagement;
     private NotificationsHandler notificationsHandler;
 
@@ -30,7 +30,7 @@ public class SASApplication implements Observer {
      */
     public SASApplication() {
         userController= new UserController();
-        leaugeManagement= new LeagueManagementController(userController);
+        leagueManagement= new LeagueManagementController(userController);
         teamManagement= new TeamManagement(userController, this);
         notificationsHandler = new NotificationsHandler();
     }
@@ -359,5 +359,34 @@ public class SASApplication implements Observer {
      */
     public boolean getTeamStatus(String teamName) {
         return teamManagement.getTeamRegistrationStatus(teamName);
+    }
+
+    /**
+     * create a new league from the name and the user that creates it
+     * @param leagueName
+     * @param userCreated
+     * @return
+     */
+    public boolean createLeague(String leagueName, String userCreated) {
+        return leagueManagement.addNewLeague(leagueName,userCreated);
+    }
+
+    /**
+     * gets the league name and season year and attach league to season
+     * @param leagueName
+     * @param seasonYear
+     * @return
+     */
+    public boolean addSeasonToLeague(String leagueName, int seasonYear) {
+        return leagueManagement.addSeasonToALeague(seasonYear,leagueName);
+
+    }
+
+    public boolean assignRefereeToLeague(String leagueName, String seasonYear, String username) {
+        return leagueManagement.addNewRefereeToLeague(seasonYear,leagueName,username);
+    }
+
+    public boolean setPolicies(String leagueName, int seasonYear, String rankPolicy, String pointsPolicy, String gamePolicy, String username) {
+        return leagueManagement.addPolicies(leagueName,seasonYear,rankPolicy,pointsPolicy,gamePolicy, username);
     }
 }
