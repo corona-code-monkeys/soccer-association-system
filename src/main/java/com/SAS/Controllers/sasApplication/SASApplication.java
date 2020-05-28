@@ -3,24 +3,26 @@
  */
 package com.SAS.Controllers.sasApplication;
 
-import com.SAS.Controllers.systemController.ApplicationController;
 import com.SAS.LeagueManagement.LeagueManagementController;
-import com.SAS.User.User;
+import com.SAS.User.NotificationsHandler;
 import com.SAS.User.UserController;
+import com.SAS.soccer_association_system.TeamAPIController;
 import com.SAS.teamManagenemt.TeamManagement;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
+
 @Service
-public class SASApplication {
+public class SASApplication implements Observer {
 
     @Autowired
     private UserController userController;
     private LeagueManagementController leagueManagement;
     private TeamManagement teamManagement;
-    private ApplicationController applicationControllerController; //check
+    private NotificationsHandler notificationsHandler;
 
 
     /**
@@ -28,8 +30,9 @@ public class SASApplication {
      */
     public SASApplication() {
         userController= new UserController();
-        leagueManagement= new LeagueManagementController();
-        teamManagement= new TeamManagement(userController);
+        leagueManagement= new LeagueManagementController(userController);
+        teamManagement= new TeamManagement(userController, this);
+        notificationsHandler = new NotificationsHandler();
     }
 
     //TODO: in UI : if returns the role switch to home page with correct privileges, else show alert that user doesn't exist
@@ -300,6 +303,34 @@ public class SASApplication {
      */
     public JSONObject getAssetsForTeam(String teamName) {
         return teamManagement.getAllTeamAssets(teamName);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        List<String> userNames = (LinkedList) arg;
+        String body = userNames.remove(0);
+        List<String> usersNotLogged = new LinkedList<>();
+
+        for (String userName: userNames) {
+            String address = userController.getAddressOfLoggedInUser(userName);
+
+            //not logged in users
+            if (address == null) {
+                usersNotLogged.add(userName);
+            }
+
+            else {
+                if (o == teamManagement) {
+                    TeamAPIController teamAPIController = new TeamAPIController();
+                    teamAPIController.sendNotification(address, body);
+                }
+
+            }
+        }
+
+        //send an email to users that are not logged in
+        notificationsHandler.sendEmailToUser(usersNotLogged, body);
+
     }
 
     /**
