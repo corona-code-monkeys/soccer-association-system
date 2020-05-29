@@ -7,6 +7,7 @@ import com.SAS.LeagueManagement.LeagueManagementController;
 import com.SAS.User.NotificationsHandler;
 import com.SAS.User.UserController;
 import com.SAS.soccer_association_system.TeamAPIController;
+import com.SAS.soccer_association_system.UserAPIController;
 import com.SAS.teamManagenemt.TeamManagement;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -307,29 +308,29 @@ public class SASApplication implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        List<String> userNames = (LinkedList) arg;
-        String body = userNames.remove(0);
-        List<String> usersNotLogged = new LinkedList<>();
+        if (o == teamManagement) {
+            List<String> params = (LinkedList) arg;
+            String body = params.remove(0);
+            List<String> usersNotLogged = new LinkedList<>();
+            UserAPIController userAPIController = new UserAPIController();
 
-        for (String userName: userNames) {
-            String address = userController.getAddressOfLoggedInUser(userName);
+            for (String userName : params) {
+                String address = userController.getAddressOfLoggedInUser(userName);
 
-            //not logged in users
-            if (address == null) {
-                usersNotLogged.add(userName);
-            }
+                //not logged in users
+                if (address == null) {
+                    usersNotLogged.add(userName);
+                }
 
-            else {
-                if (o == teamManagement) {
-                    TeamAPIController teamAPIController = new TeamAPIController();
-                    teamAPIController.sendNotification(address, body);
+                else {
+                    userAPIController.sendNotification(address, body);
                 }
 
             }
-        }
 
-        //send an email to users that are not logged in
-        notificationsHandler.sendEmailToUser(usersNotLogged, body);
+            //send an email to users that are not logged in
+            notificationsHandler.sendEmailToUser(usersNotLogged, body);
+        }
 
     }
 
