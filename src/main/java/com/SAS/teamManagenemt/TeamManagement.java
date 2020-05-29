@@ -621,8 +621,8 @@ public class TeamManagement extends Observable {
             return false;
         }
         if (ownsTeam(team, teamOwner)) {
-            if (true/*TeamCRUD.isTeamActive(team.getName())*/) {
-                //TeamCRUD.setTeamActivity(team.getName(), false);
+            if (TeamCRUD.isTeamActive(team.getName())) {
+                TeamCRUD.setTeamActivity(team.getName(), false);
                 String message = "The team " + team.getName() + " has been closed.";
                 logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ". Closed " + team.getName() + " team.");
 
