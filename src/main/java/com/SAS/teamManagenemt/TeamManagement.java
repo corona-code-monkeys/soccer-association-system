@@ -3,9 +3,7 @@
  */
 package com.SAS.teamManagenemt;
 
-import com.SAS.Controllers.sasApplication.SASApplication;
 import com.SAS.User.*;
-import com.SAS.crudoperations.CRUD;
 import com.SAS.crudoperations.TeamCRUD;
 import com.SAS.crudoperations.TransactionCRUD;
 import com.SAS.crudoperations.UsersCRUD;
@@ -623,8 +621,8 @@ public class TeamManagement extends Observable {
             return false;
         }
         if (ownsTeam(team, teamOwner)) {
-            if (TeamCRUD.isTeamActive(team.getName())) {
-                TeamCRUD.setTeamActivity(team.getName(), false);
+            if (true/*TeamCRUD.isTeamActive(team.getName())*/) {
+                //TeamCRUD.setTeamActivity(team.getName(), false);
                 String message = "The team " + team.getName() + " has been closed.";
                 logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ". Closed " + team.getName() + " team.");
 
