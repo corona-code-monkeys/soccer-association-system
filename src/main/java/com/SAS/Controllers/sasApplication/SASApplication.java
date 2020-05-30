@@ -6,6 +6,7 @@ package com.SAS.Controllers.sasApplication;
 import com.SAS.LeagueManagement.LeagueManagementController;
 import com.SAS.User.NotificationsHandler;
 import com.SAS.User.UserController;
+import com.SAS.game.GameManagement;
 import com.SAS.soccer_association_system.TeamAPIController;
 import com.SAS.soccer_association_system.UserAPIController;
 import com.SAS.teamManagenemt.TeamManagement;
@@ -24,6 +25,7 @@ public class SASApplication implements Observer {
     private LeagueManagementController leagueManagement;
     private TeamManagement teamManagement;
     private NotificationsHandler notificationsHandler;
+    private GameManagement gameManagement;
 
 
     /**
@@ -33,10 +35,10 @@ public class SASApplication implements Observer {
         userController= new UserController();
         leagueManagement= new LeagueManagementController(userController);
         teamManagement= new TeamManagement(userController, this);
+        this.gameManagement = new GameManagement();
         notificationsHandler = new NotificationsHandler();
     }
 
-    //TODO: in UI : if returns the role switch to home page with correct privileges, else show alert that user doesn't exist
     /**
      * This function logs in the user
      * @param username
@@ -56,7 +58,6 @@ public class SASApplication implements Observer {
         return userController.exit(username);
     }
 
-    //TODO: In UI: if true- show alert that the user was created and switch to home page so he would log in, wlse show error message
     /**
      * This function calls the creation of a user using the userController
      * @param userName
@@ -73,7 +74,6 @@ public class SASApplication implements Observer {
         return false;
     }
 
-    //TODO: UI- if true, show alert that the request was sent to the association
     /**
      * This function registers the team
      * @param teamOwner
@@ -297,7 +297,7 @@ public class SASApplication implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o == teamManagement) {
+        if (o == teamManagement || o == gameManagement) {
             List<String> params = (LinkedList) arg;
             String body = params.remove(0);
             List<String> usersNotLogged = new LinkedList<>();
@@ -416,5 +416,37 @@ public class SASApplication implements Observer {
     public boolean approveTeam(String teamName, String confirm) {
         boolean response = confirm.equals("approve") ? true : false;
         return teamManagement.commitConfirmationOfTeam(teamName, response);
+    }
+
+    /**
+     * The function receibes userName and game ID and adds a new follower to the game if exists,
+     * otherwise returns false
+     * @param userName
+     * @param gameID
+     * @return true or false
+     */
+    public boolean addGameFollower(String userName, String gameID){
+        return gameManagement.addGameFollower(userName, gameID);
+    }
+
+    /**
+     * The function receibes userName and game ID and adds a new follower to the game if exists,
+     * otherwise returns false
+     * @param userName
+     * @param gameID
+     * @return true or false
+     */
+    public boolean removeGameFollower(String userName, String gameID){
+        return gameManagement.removeGameFollower(userName, gameID);
+    }
+
+    /**
+     * The function receives gameID and game event and sent notification to the game followers
+     * @param gameID
+     * @param gameEvent
+     * @return
+     */
+    public boolean sendGameEventNotification(String gameID, String gameEvent) {
+        return gameManagement.sendNotification(gameID, gameEvent);
     }
 }
