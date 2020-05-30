@@ -44,6 +44,7 @@ public class GamesAPIController {
 
     @PostMapping(value = "/events/add")
     public String addEvent(@RequestBody String credentials) {
+        boolean worked = false;
         try {
             JSONObject json = new JSONObject(credentials);
             String type = json.getString("type");
@@ -55,63 +56,63 @@ public class GamesAPIController {
                     String teamName = json.getString("team_name");
                     Team team = TeamCRUD.getTeamByName(teamName);
                     String playerName = json.getString("player_name");
-                    Player player = (Player) UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(playerName));
+                    Player player = (Player) UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName(playerName));
                     Goal goal = new Goal(gameID, date, gameMinute, team, player);
-                    GameCRUD.addGameEvent(gameID, goal, date);
+                    worked = GameCRUD.addGameEvent(gameID, goal, date);
                     break;
                 case "injury":
                     playerName = json.getString("player_name");
-                    player = (Player) UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(playerName));
+                    player = (Player) UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName(playerName));
                     String desc = json.getString("description");
                     Injury injury = new Injury(gameID, date, gameMinute, player, desc);
-                    GameCRUD.addGameEvent(gameID, injury, date);
+                    worked = GameCRUD.addGameEvent(gameID, injury, date);
                     break;
                 case "offence":
                     desc = json.getString("description");
                     String playerCommittedName = json.getString("player_committed");
-                    Player playerCommitted = (Player) UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(playerCommittedName));
+                    Player playerCommitted = (Player) UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName(playerCommittedName));
                     String playerAgainstName = json.getString("player_against");
-                    Player playerAgainst = (Player) UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(playerAgainstName));
+                    Player playerAgainst = (Player) UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName(playerAgainstName));
                     Offence offence = new Offence(gameID, date, gameMinute, playerCommitted, playerAgainst, desc);
-                    GameCRUD.addGameEvent(gameID, offence, date);
+                    worked = GameCRUD.addGameEvent(gameID, offence, date);
                     break;
                 case "offside":
                     playerName = json.getString("player_name");
-                    player = (Player) UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(playerName));
+                    player = (Player) UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName(playerName));
                     teamName = json.getString("team_name");
                     team = TeamCRUD.getTeamByName(teamName);
                     Offside offside = new Offside(gameID, date, gameMinute, team, player);
-                    GameCRUD.addGameEvent(gameID, offside, date);
+                    worked = GameCRUD.addGameEvent(gameID, offside, date);
                     break;
                 case "sub":
                     String playerInName = json.getString("player_in");
-                    Player playerIn = (Player) UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(playerInName));
+                    Player playerIn = (Player) UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName(playerInName));
                     String playerOutName = json.getString("player_out");
-                    Player playerOut = (Player) UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(playerOutName));
+                    Player playerOut = (Player) UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName(playerOutName));
                     PlayerSubstitution playerSubstitution = new PlayerSubstitution(gameID, date, gameMinute, playerIn, playerOut);
-                    GameCRUD.addGameEvent(gameID, playerSubstitution, date);
+                    worked = GameCRUD.addGameEvent(gameID, playerSubstitution, date);
                     break;
                 case "ticket":
                     String ticketType = json.getString("ticket_type");
                     playerAgainstName = json.getString("player_against");
-                    playerAgainst = (Player) UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(playerAgainstName));
+                    playerAgainst = (Player) UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName(playerAgainstName));
                     String refereeName = json.getString("referee_pulled");
-                    Referee referee = (Referee) UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(refereeName));
+                    Referee referee = (Referee) UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName(refereeName));
                     Ticket ticket;
                     if (ticketType.equalsIgnoreCase("yellow")) {
                         ticket = new YellowTicket(gameID, date, gameMinute, playerAgainst, referee);
                     } else {
                         ticket = new RedTicket(gameID, date, gameMinute, playerAgainst, referee);
                     }
-                    GameCRUD.addGameEvent(gameID, ticket, date);
+                    worked = GameCRUD.addGameEvent(gameID, ticket, date);
                     break;
                 default:
-                    throw new Exception("Illegal type");
+                    worked = false;
             }
         } catch (Exception e) {
             e.printStackTrace();
             return "fail";
         }
-        return "success";
+        return worked ? "success" : "fail";
     }
 }
