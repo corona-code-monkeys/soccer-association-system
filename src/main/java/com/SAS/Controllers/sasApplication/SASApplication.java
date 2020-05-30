@@ -39,7 +39,6 @@ public class SASApplication implements Observer {
         notificationsHandler = new NotificationsHandler();
     }
 
-    //TODO: in UI : if returns the role switch to home page with correct privileges, else show alert that user doesn't exist
     /**
      * This function logs in the user
      * @param username
@@ -59,7 +58,6 @@ public class SASApplication implements Observer {
         return userController.exit(username);
     }
 
-    //TODO: In UI: if true- show alert that the user was created and switch to home page so he would log in, wlse show error message
     /**
      * This function calls the creation of a user using the userController
      * @param userName
@@ -76,7 +74,6 @@ public class SASApplication implements Observer {
         return false;
     }
 
-    //TODO: UI- if true, show alert that the request was sent to the association
     /**
      * This function registers the team
      * @param teamOwner
@@ -300,7 +297,7 @@ public class SASApplication implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o == teamManagement) {
+        if (o == teamManagement || o == gameManagement) {
             List<String> params = (LinkedList) arg;
             String body = params.remove(0);
             List<String> usersNotLogged = new LinkedList<>();
