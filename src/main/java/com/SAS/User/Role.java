@@ -6,6 +6,7 @@ package com.SAS.User;
 
 import com.SAS.crudoperations.CRUD;
 import com.SAS.crudoperations.UsersCRUD;
+import org.json.JSONObject;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -54,7 +55,7 @@ public abstract class Role extends User {
      */
     public static FieldRole convertStringToFieldRole(String fieldRole) {
         switch (fieldRole) {
-            case "Goal Keeper":
+            case "Goal_Keeper":
                 return FieldRole.GOAL_KEEPER;
             case "Defender":
                 return FieldRole.DEFENDER;
@@ -62,8 +63,23 @@ public abstract class Role extends User {
                 return FieldRole.STRIKER;
             case "Midfielder":
                 return FieldRole.MIDFIELDER;
+            case "GOAL_KEEPER":
+                return FieldRole.GOAL_KEEPER;
+            case "DEFENDER":
+                return FieldRole.DEFENDER;
+            case "STRIKER":
+                return FieldRole.STRIKER;
+            case "MIDFIELDER":
+                return FieldRole.MIDFIELDER;
+            case "goal_Keeper":
+                return FieldRole.GOAL_KEEPER;
+            case "defender":
+                return FieldRole.DEFENDER;
+            case "striker":
+                return FieldRole.STRIKER;
+            case "midfielder":
+                return FieldRole.MIDFIELDER;
             default:
-                System.out.println("Error, no such type");
                 return null;
         }
     }
@@ -108,4 +124,5 @@ public abstract class Role extends User {
                 System.out.println(getRole() + " - " + getUserName() + " got the message: " + message);
             }
         }
+
     }

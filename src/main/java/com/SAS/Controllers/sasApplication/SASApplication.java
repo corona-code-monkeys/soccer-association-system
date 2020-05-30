@@ -3,23 +3,29 @@
  */
 package com.SAS.Controllers.sasApplication;
 
-import com.SAS.Controllers.systemController.SystemController;
 import com.SAS.LeagueManagement.LeagueManagementController;
+import com.SAS.User.NotificationsHandler;
 import com.SAS.User.UserController;
+import com.SAS.game.GameManagement;
+import com.SAS.soccer_association_system.TeamAPIController;
+import com.SAS.soccer_association_system.UserAPIController;
 import com.SAS.teamManagenemt.TeamManagement;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
+
 @Service
-public class SASApplication {
+public class SASApplication implements Observer {
 
     @Autowired
     private UserController userController;
-    private LeagueManagementController leaugeManagement;
+    private LeagueManagementController leagueManagement;
     private TeamManagement teamManagement;
-    private SystemController systemController; //check
+    private NotificationsHandler notificationsHandler;
+    private GameManagement gameManagement;
 
 
     /**
@@ -27,19 +33,20 @@ public class SASApplication {
      */
     public SASApplication() {
         userController= new UserController();
-        leaugeManagement= new LeagueManagementController();
-        teamManagement= new TeamManagement(userController);
+        leagueManagement= new LeagueManagementController(userController);
+        teamManagement= new TeamManagement(userController, this);
+        this.gameManagement = new GameManagement();
+        notificationsHandler = new NotificationsHandler();
     }
 
-    //TODO: in UI : if return true switch to home page with correct privileges, else show alert that user doesn't exist
     /**
      * This function logs in the user
      * @param username
      * @param password
-     * @return true if the user exists in the system, thus was logged in, otherwise false
+     * @return user role if the user exists in the system, thus was logged in, otherwise ""
      */
-    public boolean login(String username, String password){
-        return userController.isUserExist(username, password);
+    public String login(String username, String password, String clientURL){
+        return userController.isUserExist(username, password, clientURL);
     }
 
     /**
@@ -51,7 +58,6 @@ public class SASApplication {
         return userController.exit(username);
     }
 
-    //TODO: In UI: if true- show alert that the user was created and switch to home page so he would log in, wlse show error message
     /**
      * This function calls the creation of a user using the userController
      * @param userName
@@ -68,27 +74,15 @@ public class SASApplication {
         return false;
     }
 
-    //TODO: UI- if true, show alert that the request was sent to the association
     /**
      * This function registers the team
      * @param teamOwner
      * @param teamName
      */
     public boolean registerTeam(String teamOwner, String teamName){
-        return userController.sendNotificationToRepresentative(teamManagement.createANewTeam(teamOwner, teamName));
+        return teamManagement.sendNotificationToRepresentative(teamManagement.createANewTeam(teamOwner, teamName));
     }
 
-
-    //TODO: UI- if true, show alert that a notification about the team registration was sent to its owner
-    /**
-     * This function applies the confirmation/denial of the team
-     * @param teamName
-     * @param representative
-     * @param confirm
-     */
-    public boolean confirmTeam(String teamName, String representative, boolean confirm){
-        return teamManagement.commitConfirmationOfTeam(teamName, representative, confirm);
-    }
 
     /**
      * This function deletes the user associated with the given user name
@@ -299,5 +293,160 @@ public class SASApplication {
      */
     public JSONObject getAssetsForTeam(String teamName) {
         return teamManagement.getAllTeamAssets(teamName);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o == teamManagement || o == gameManagement) {
+            List<String> params = (LinkedList) arg;
+            String body = params.remove(0);
+            List<String> usersNotLogged = new LinkedList<>();
+            UserAPIController userAPIController = new UserAPIController();
+
+            for (String userName : params) {
+                String address = userController.getAddressOfLoggedInUser(userName);
+
+                //not logged in users
+                if (address == null) {
+                    usersNotLogged.add(userName);
+                }
+
+                else {
+                    userAPIController.sendNotification(address, body);
+                }
+
+            }
+
+            //send an email to users that are not logged in
+            notificationsHandler.sendEmailToUser(usersNotLogged, body);
+        }
+
+    }
+
+    /**
+     * This function gets the user details from DB
+     * @param username
+     * @param role
+     * @return
+     */
+    public JSONObject getUserDetails(String username, String role){
+        return userController.getUserDetails(username, role);
+    }
+
+    /**
+     * This function updates the user details in the DB
+     * @param details
+     * @return
+     */
+    public boolean setDetails(JSONObject details) {
+        return userController.setDetails(details);
+    }
+
+    /**
+     * This function returns the registration status of the team
+     * @param teamName
+     * @return
+     */
+    public boolean getTeamStatus(String teamName) {
+        return teamManagement.getTeamRegistrationStatus(teamName);
+    }
+
+    /**
+     * create a new league from the name and the user that creates it
+     * @param leagueName
+     * @param userCreated
+     * @return
+     */
+    public boolean createLeague(String leagueName, String userCreated) {
+        return leagueManagement.addNewLeague(leagueName,userCreated);
+    }
+
+    /**
+     * gets the league name and season year and attach league to season
+     * @param leagueName
+     * @param seasonYear
+     * @return
+     */
+    public boolean addSeasonToLeague(String leagueName, int seasonYear) {
+        return leagueManagement.addSeasonToALeague(seasonYear,leagueName);
+
+    }
+
+    /**
+     * assign a referee to a league in season
+     * @param leagueName - the league's name
+     * @param seasonYear - the year of the season
+     * @param username - name of the referee
+     * @return
+     */
+    public boolean assignRefereeToLeague(String leagueName, String seasonYear, String username) {
+        return leagueManagement.addNewRefereeToLeague(seasonYear,leagueName,username);
+    }
+
+    /**
+     * sets policies to league in specific season
+     * @param leagueName
+     * @param seasonYear
+     * @param rankPolicy
+     * @param pointsPolicy
+     * @param gamePolicy
+     * @param username
+     * @return
+     */
+    public boolean setPolicies(String leagueName, int seasonYear, String rankPolicy, String pointsPolicy, String gamePolicy, String username) {
+        return leagueManagement.addPolicies(leagueName,seasonYear,rankPolicy,pointsPolicy,gamePolicy, username);
+    }
+
+    /**
+     *
+     * @return json array with all the leagues names
+     */
+    public JSONArray getLeagues() {
+        return leagueManagement.getLeagues();
+    }
+    public JSONArray getUnregisteredTeams() {
+        return teamManagement.getUnregisteredTeams();
+    }
+
+    /**
+     * This function applies the confirmation/denial of the team
+     * @param teamName
+     * @param confirm
+     */
+    public boolean approveTeam(String teamName, String confirm) {
+        boolean response = confirm.equals("approve") ? true : false;
+        return teamManagement.commitConfirmationOfTeam(teamName, response);
+    }
+
+    /**
+     * The function receibes userName and game ID and adds a new follower to the game if exists,
+     * otherwise returns false
+     * @param userName
+     * @param gameID
+     * @return true or false
+     */
+    public boolean addGameFollower(String userName, String gameID){
+        return gameManagement.addGameFollower(userName, gameID);
+    }
+
+    /**
+     * The function receibes userName and game ID and adds a new follower to the game if exists,
+     * otherwise returns false
+     * @param userName
+     * @param gameID
+     * @return true or false
+     */
+    public boolean removeGameFollower(String userName, String gameID){
+        return gameManagement.removeGameFollower(userName, gameID);
+    }
+
+    /**
+     * The function receives gameID and game event and sent notification to the game followers
+     * @param gameID
+     * @param gameEvent
+     * @return
+     */
+    public boolean sendGameEventNotification(String gameID, String gameEvent) {
+        return gameManagement.sendNotification(gameID, gameEvent);
     }
 }

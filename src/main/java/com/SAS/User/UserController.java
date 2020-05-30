@@ -4,9 +4,10 @@ import com.SAS.crudoperations.CRUD;
 import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.team.Team;
 
-import java.util.HashSet;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import com.SAS.systemLoggers.LoggerFactory;
 import org.json.JSONObject;
@@ -18,7 +19,7 @@ public class UserController {
      */
     private LoggerFactory logger;
     private Privileges globalPrivileges;
-    private Set<String> loggedInUsers;
+    private static Map<String, String> loggedInUsers;
 
     /**
      * Constructor
@@ -26,7 +27,7 @@ public class UserController {
     public UserController() {
         this.globalPrivileges = Privileges.getInstance();
         this.logger = LoggerFactory.getInstance();
-        this.loggedInUsers = new HashSet<>();
+        this.loggedInUsers = new HashMap<>();
     }
 
     /**
@@ -259,26 +260,7 @@ public class UserController {
         }
     }
 
-    /**
-     * This function send the notification to all representatives
-     * @param aNewTeam
-     * @Return true if a notification was sent, otherwise false
-     */
-    public boolean sendNotificationToRepresentative(Team aNewTeam) {
-        if (aNewTeam != null) {
-            List<AssociationRepresentative> representatives = CRUD.getAssociationRepresentatives();
-            if (representatives.size()==0) {
-                logger.logError("Fault: unable to send: there are no representatives to send notifications");
-                return false;
-            }
-            for (AssociationRepresentative rep : representatives) {
-                rep.getNotification("The new team: " + aNewTeam.getName() + " is waiting to be registered");
-            }
-            return true;
-        }
-        logger.logError("Fault: unable to send: team does not exist");
-        return false;
-    }
+
 
     /**
      * This function deletes a user
@@ -311,16 +293,16 @@ public class UserController {
      * @param password
      * @return true if the user exists, otherwise false
      */
-    public boolean isUserExist(String username, String password){
+    public String isUserExist(String username, String password, String clientURL){
         if (validParam(username) && validParam(password)) {
             Boolean isExist = UsersCRUD.isUserValid(username, password);
             if (isExist) {
-                this.loggedInUsers.add(username);
+                String role = UsersCRUD.getHighestRole(username);
+                this.loggedInUsers.put(username, clientURL);
+                return role;
             }
-
-            return isExist;
         }
-        return false;
+        return "";
     }
 
     /**
@@ -452,5 +434,51 @@ public class UserController {
             return UsersCRUD.setPlayerDetails(userID, details.get("dateOfBirth").toString(), details.get("fieldRole").toString(),details.get("team").toString());
         }
         return false;
+    }
+
+    /**
+     * The function returns the address of logged in user if exists, otherwise returns null
+     * @param userName
+     * @return email
+     */
+    public String getAddressOfLoggedInUser(String userName) {
+        return loggedInUsers.get(userName);
+    }
+
+
+    /**
+     * This function gets username and role and retrieves the user details from the DB
+     * @param username
+     * @param role
+     * @return
+     */
+    public JSONObject getUserDetails(String username, String role) {
+        JSONObject details;
+        if (validParam(username) && validParam(role)){
+            details =  UsersCRUD.getAllDetails(username,role);
+            return details;
+        }
+        else{
+            logger.logError("Fault: unable to get the user details");
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param details
+     * @return
+     */
+    public boolean setDetails(JSONObject details) {
+        try{
+            String username = details.get("Username").toString();
+            String fullname = details.get("Full name").toString();
+            String email = details.get("Email").toString();
+            return UsersCRUD.setUserDetails(username, fullname, email);
+
+        }catch(Exception e){
+            logger.logError("Fault: unable to get details from object");
+            return false;
+        }
     }
 }

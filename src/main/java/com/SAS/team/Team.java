@@ -382,6 +382,14 @@ public class Team {
     }
 
     /**
+     * This function sets isActive
+     * @param active
+     */
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    /**
      * The function returns true if the team is active, otherwise returns false
      *
      * @return treu or false
@@ -589,25 +597,31 @@ public class Team {
      */
     public JSONObject getTeamJSON(){
         JSONObject teamJson = new JSONObject();
-        teamJson.put("Name: ", this.name);
+        teamJson.put("Name", this.name);
         JSONArray ownersNames = new JSONArray();
         for(TeamOwner to: this.owners){
             ownersNames.put(to.getFullName());
         }
         JSONArray playersNames = new JSONArray();
         for(Player pla: this.players){
-            playersNames.put(pla.getFullName());
+            playersNames.put(pla.getFullName() + "     -     " + pla.getFieldRole().toString().toLowerCase());
         }
         JSONArray facilitiesNames = new JSONArray();
         for(Facility fac: this.teamFacilities){
             playersNames.put(fac.getFacilityType() + " " + fac.getName());
         }
         teamJson.put("Team Owners", ownersNames);
-        teamJson.put("Team Manager", manager.getFullName());
-        teamJson.put("Coach", coach.getFullName());
+        if (this.manager!=null)
+            teamJson.put("Team Manager", manager.getFullName());
+        else
+            teamJson.put("Team Manager", "");
+        if (this.coach!=null)
+            teamJson.put("Coach", coach.getFullName());
+        else
+            teamJson.put("Coach", "");
         teamJson.put("Players", playersNames);
         teamJson.put("Facilities",facilitiesNames);
-        teamJson.put("Active", this.active);
+        teamJson.put("Activity status", this.active);
         return teamJson;
     }
 
@@ -621,5 +635,33 @@ public class Team {
         assets.put("facilities", this.teamFacilities);
         assets.put("coach", this.coach);
         return assets;
+    }
+
+    /**
+     * The function returns the user names of the team management
+     * @return list of usernames
+     */
+    public List<String> getTeamManagement() {
+        List<String> userNames = new LinkedList<>();
+        if (this.manager!=null)
+            userNames.add(this.getManager().getUserName());
+
+        for (TeamOwner owner: this.owners) {
+            userNames.add(owner.getUserName());
+        }
+
+        return userNames;
+    }
+
+    /**
+     * This function returns the owners
+     * @return
+     */
+    public List<String> getOwnersNames() {
+        List<String> userNames = new LinkedList<>();
+        for (TeamOwner owner: this.owners) {
+            userNames.add(owner.getUserName());
+        }
+        return userNames;
     }
 }

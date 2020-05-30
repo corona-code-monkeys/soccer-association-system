@@ -4,12 +4,11 @@
 package com.SAS.soccer_association_system;
 
 import com.SAS.Controllers.sasApplication.SASApplication;
+import com.SAS.systemLoggers.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping(value ="/team")
 @RestController
@@ -22,11 +21,9 @@ public class TeamAPIController {
      * The function receives the team name and returns the team page
      * @return JSONObject - team page
      */
-    @GetMapping(value ="/getTeamPage")
-    public JSONObject getTeam(@RequestBody String details) {
-        JSONObject json = new JSONObject(details);
-        String teamName = json.get("teamName").toString();
-        return app.getTeamPage(teamName);
+    @GetMapping(value ="/getTeamPage/{teamName}")
+    public String getTeam(@PathVariable String teamName) {
+        return app.getTeamPage(teamName).toString();
     }
 
     /**
@@ -43,17 +40,13 @@ public class TeamAPIController {
     }
 
     /**
-     * The function receives team name, representative username and confirmation status and returns response success
-     * if the team confirmed successfully, otherwise returns false
-     * @return String - success or fail
+     * The function receives the team name and returns the team's registration status
+     * @return string - status
      */
-    @PostMapping(value ="/confirmTeamRegistration")
-    public String postTeamConfirmation(@RequestBody String details) {
-        JSONObject json = new JSONObject(details);
-        String representative = json.get("representative").toString();
-        String teamName = json.get("teamName").toString();
-        boolean isConfirm = (boolean) json.get("confirm");
-        return app.confirmTeam(teamName, representative, isConfirm) ? "success" : "fail";
+    @GetMapping(value ="/{teamName}/teamStatus")
+    public String checkTeamStatus(@PathVariable String teamName) {
+        Boolean result = app.getTeamStatus(teamName);
+        return result ? "Registered" : "Not registered";
     }
 
     /**
@@ -197,6 +190,18 @@ public class TeamAPIController {
         return app.removeTeamAsset(teamName, assetType, assetName, teamOwner) ? "success": "fail";
     }
 
+    /** The function approves registration of the team by representative
+     * @return String - success or fail
+     */
+    @PostMapping(value ="/approveTeam")
+    public String postApproveTeam(@RequestBody String details) {
+        JSONObject json = new JSONObject(details);
+        String teamName = json.get("teamName").toString();
+        String confirm = json.get("confirm").toString();
+        return app.approveTeam(teamName, confirm) ? "success": "fail";
+    }
+
+
     /**
      * The function returns all the teams
      * @return
@@ -207,13 +212,20 @@ public class TeamAPIController {
     }
 
     /**
+     * The function returns all unregistered teams
+     * @return
+     */
+    @GetMapping(value = "/getUnregisteredTeams")
+    public JSONArray getUnregisteredTeams() {
+        return app.getUnregisteredTeams();
+    }
+
+    /**
      * The function returns all the optional nominees for the team owner
      * @return list of usernames
      */
-    @GetMapping(value = "/getOptionalNomineesForTeamOwner")
-    public JSONArray getOptionalNomineesForTeam(@RequestBody String details) {
-        JSONObject json = new JSONObject(details);
-        String teamName = json.get("teamName").toString();
+    @GetMapping(value = "/getOptionalNomineesForTeamOwner/{teamName}")
+    public JSONArray getOptionalNomineesForTeam(@PathVariable String teamName) {
         return app.getOptionalNomineesForTeamOwner(teamName);
     }
 
@@ -221,10 +233,8 @@ public class TeamAPIController {
      * The function returns all the optional nominees for the team manager
      * @return list of usernames
      */
-    @GetMapping(value = "/getOptionalNomineesForTeamManager")
-    public JSONArray getOptionalNomineesForTeamManager(@RequestBody String details) {
-        JSONObject json = new JSONObject(details);
-        String teamName = json.get("teamName").toString();
+    @GetMapping(value = "/getOptionalNomineesForTeamManager/{teamName}")
+    public JSONArray getOptionalNomineesForTeamManager(@PathVariable String teamName) {
         return app.getOptionalNomineesForTeamManager(teamName);
     }
 
@@ -232,10 +242,9 @@ public class TeamAPIController {
      * The function returns all the assets of the team
      * @return list of assets
      */
-    @GetMapping(value = "/getAssetsForTeam")
-    public JSONObject getAssetsForTeam(@RequestBody String details) {
-        JSONObject json = new JSONObject(details);
-        String teamName = json.get("teamName").toString();
-        return app.getAssetsForTeam(teamName);
+    @GetMapping(value = "/getAssetsForTeam/{teamName}")
+    public String getAssetsForTeam(@PathVariable String teamName) {
+        return app.getAssetsForTeam(teamName).toString();
     }
+
 }

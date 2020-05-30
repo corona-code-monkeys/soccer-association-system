@@ -1,13 +1,13 @@
 package com.SAS.LeagueManagement;
 
-import com.SAS.Controllers.systemController.SystemController;
 import com.SAS.League.*;
 import com.SAS.User.*;
-import com.SAS.crudoperations.CRUD;
 import com.SAS.User.User;
 import com.SAS.crudoperations.LeagueCRUD;
+import com.SAS.crudoperations.TeamCRUD;
 import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.systemLoggers.LoggerFactory;
+import org.json.JSONArray;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -29,7 +29,7 @@ public class LeagueManagementController {
     /**
      * Constructor
      */
-    public LeagueManagementController() {
+    public LeagueManagementController(UserController userController) {
         this.logger = LoggerFactory.getInstance();
         this.rankPolicies = new LinkedList<>();
         this.pointsPolicies = new LinkedList<>();
@@ -37,7 +37,7 @@ public class LeagueManagementController {
         referees = new LinkedList<>();
         leagues = new LinkedList<>();
         initPolicies();
-        userController= new UserController();
+        this.userController = userController;
     }
 
     /**
@@ -88,26 +88,26 @@ public class LeagueManagementController {
     }
 
 
-    public boolean addSeasonToALeague(Season season, League league) {
-        if (LeagueCRUD.isLeagueExist(league.getName()) && LeagueCRUD.isSeasonExist(season.getYear())) {
-            LeagueCRUD.addLeagueToSeason(league.getName(), season.getYear());
+    public boolean addSeasonToALeague(int season, String league) {
+        if (LeagueCRUD.isLeagueExist(league) && LeagueCRUD.isSeasonExist(season)) {
+            LeagueCRUD.addLeagueToSeason(league, season);
         }
         logger.logError("Fault: unable to add season to league");
         return false;
     }
 
 
-    public boolean assignRefereesToLeagueInSpecificSeason(League league, Season season, HashSet<Referee> referees, User user) {
+    public boolean assignRefereesToLeagueInSpecificSeason(League league, Season season, HashSet<Referee> referees, String username) {
         boolean isNew = false;
-        if (canAccessSettingsPage(user)) {
+        if (canAccessSettingsPage(username)) {
             if (LeagueCRUD.isLeagueExist(league.getName()) && LeagueCRUD.isSeasonExist(season.getYear())) {
                 for (Referee referee : referees) {
                     if (LeagueCRUD.addRefToLeagueInSeason(league.getName(), season.getYear(), referee.getUserName(), referee.getLevel())) {
-                        isNew=true;
+                        isNew = true;
                         //add referees
                         if (!league.isRefereeInSeason(season, referee)) {
                             league.addReferee(season, referee);
-                            logger.logEvent("User: " + ((Role) user).getUserName() + ". Assign new referees");
+                            logger.logEvent("User: " + username + ". Assign new referees");
                         } else {
                             isNew = false;
                         }
@@ -164,12 +164,12 @@ public class LeagueManagementController {
      * @param rankPolicyId
      * @return
      */
-    public boolean addPolicies(League league, Season season, String rankPolicyId, String pointsPolicyId, String gamePolicyId, User user) {
+    public boolean addPolicies(String league, int season, String rankPolicyId, String pointsPolicyId, String gamePolicyId, String user) {
         if (!canSetPolicy(user)) {
             logger.logError("Fault: cannot set rank policy");
             return false;
         }
-        if (league == null || season == null) {
+        if (league == null ||league==""|| season == -1) {
             logger.logError("Fault: cannot set rank policy. league or season does not exist.");
             return false;
         }
@@ -185,24 +185,20 @@ public class LeagueManagementController {
         if (gamePolicyId.length() == 0) {
             return false;
         }
-        LeagueRankPolicy rankPolicy;
-        PointsPolicy pointsPolicy;
-        GamesPolicy gamePolicy;
+        String rankPolicy;
+        String pointsPolicy;
+        String gamePolicy;
 
         switch (rankPolicyId) {
             case "1":
-                rankPolicy = new NumberOfWins(league, season);
-                league.addRankPolicy(season, rankPolicy);
-                season.addRankPolicy(league, rankPolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new Rank policy");
+                rankPolicy = "Number of wins";
+                logger.logEvent("User: " + user + ". Added new Rank policy");
 
                 break;
 
             case "2":
-                rankPolicy = new GoalDifference(league, season);
-                league.addRankPolicy(season, rankPolicy);
-                season.addRankPolicy(league, rankPolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new Rank policy");
+                rankPolicy = "The bigger goal difference";
+                logger.logEvent("User: " + user + ". Added new Rank policy");
                 break;
 
             default:
@@ -211,24 +207,18 @@ public class LeagueManagementController {
         }
         switch (pointsPolicyId) {
             case "1":
-                pointsPolicy = new OnePointForWinAndNoneForDraw(league, season);
-                league.addPointsPolicy(season, pointsPolicy);
-                season.addPointsPolicy(league, pointsPolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new points policy");
+                pointsPolicy = "One point per win and none for draw";
+                logger.logEvent("User: " + user + ". Added new points policy");
                 break;
 
             case "2":
-                pointsPolicy = new TwoForWinOneForDraw(league, season);
-                league.addPointsPolicy(season, pointsPolicy);
-                season.addPointsPolicy(league, pointsPolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new points policy");
+                pointsPolicy = "Two points for a win and one point for draw";
+                logger.logEvent("User: " + user + ". Added new points policy");
                 break;
 
             case "3":
-                pointsPolicy = new ThreeForWinOneForDrawPolicy(league, season);
-                league.addPointsPolicy(season, pointsPolicy);
-                season.addPointsPolicy(league, pointsPolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new points policy");
+                pointsPolicy = "Three points for win and one point for draw policy";
+                logger.logEvent("User: " + user + ". Added new points policy");
                 break;
 
             default:
@@ -237,31 +227,25 @@ public class LeagueManagementController {
         }
         switch (gamePolicyId) {
             case "1":
-                gamePolicy = new OneRoundLeague(league, season);
-                league.addGamePolicy(season, gamePolicy);
-                season.addGamePolicy(league, gamePolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new game policy");
+                gamePolicy = "One round league";
+                logger.logEvent("User: " + user + ". Added new game policy");
                 break;
 
             case "2":
-                gamePolicy = new TwoRoundsLeague(league, season);
-                league.addGamePolicy(season, gamePolicy);
-                season.addGamePolicy(league, gamePolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new game policy");
+                gamePolicy = "Two rounds league";
+                logger.logEvent("User: " + user + ". Added new game policy");
                 break;
 
             case "3":
-                gamePolicy = new ThreeRoundsLeague(league, season);
-                league.addGamePolicy(season, gamePolicy);
-                season.addGamePolicy(league, gamePolicy);
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new game policy");
+                gamePolicy = "Three rounds league";
+                logger.logEvent("User: " + user + ". Added new game policy");
                 break;
 
             default:
                 logger.logError("Fault: false points policy");
                 return false;
         }
-        if (LeagueCRUD.addPoliciesToLeagueInSeason(league.getName(), season.getYear(), rankPolicy.getName(), pointsPolicy.getName(), gamePolicy.getName())) {
+        if (LeagueCRUD.addPoliciesToLeagueInSeason(league, season, rankPolicy, pointsPolicy, gamePolicy)) {
             return true;
         }
         return false;
@@ -274,18 +258,20 @@ public class LeagueManagementController {
      * @param user
      * @return true or false
      */
-    public boolean canSetPolicy(User user) {
-        return user.getMyPrivileges().contains("define/changePolicy");
+    public boolean canSetPolicy(String user) {
+//        return UsersCRUD.getHighestRole().equals().getMyPrivileges().contains("define/changePolicy");
+        return true;
     }
 
 
     /**
      * The fenuction returns true if the user can access the association settings page
      *
-     * @param user
+     * @param username
      * @return
      */
-    public boolean canAccessSettingsPage(User user) {
+    public boolean canAccessSettingsPage(String username) {
+        User user = UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName(username));
         return user instanceof AssociationRepresentative;
     }
 
@@ -295,8 +281,8 @@ public class LeagueManagementController {
      * @param details
      * @return user
      */
-    public User addNewReferee(List<String> details, User user) {
-        if (canAccessSettingsPage(user)) {
+    public Referee addNewReferee(List<String> details) {
+        if (canAccessSettingsPage(details.get(0))) {
             if (details == null || details.size() != 4) {
                 logger.logError("Fault: the details inserted does not match the criteria");
                 return null;
@@ -308,9 +294,10 @@ public class LeagueManagementController {
                 String pass = details.get(1);
                 String fullName = details.get(2);
                 int level = Integer.parseInt(details.get(3));
-                if (LeagueCRUD.addReferee(UsersCRUD.getUserIdByUserName(userName),level)&& null!=userController.createUser(userName,pass,fullName,"ref@gmail.com",REFEREE.toString(),true)) {
-                    logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new referee");
-                    return user;
+                if (LeagueCRUD.addReferee(UsersCRUD.getUserIdByUserName(userName), level) && null != userController.createUser(userName, pass, fullName, "ref@gmail.com", REFEREE.toString(), true)) {
+                    logger.logEvent("User: " + userName + ". Added new referee");
+                    Referee ref = new Referee(UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(userName)), userName);
+                    return ref;
                 } else {
                     logger.logError("Fault: unable to add referee");
                     return null;
@@ -349,26 +336,24 @@ public class LeagueManagementController {
 
 
     /**
-     * The function returns true if the referee removed, otherwise returns false
+     * The function returns true if the referee removed from the league
      *
-     * @param referee
+     * @param leagueName
+     * @param username
      * @return
      */
-    public boolean removeReferee(User referee, User user) {
-        if (canAccessSettingsPage(user)) {
-            if (referee != null) {
-                referees.remove(referee);
-                if (LeagueCRUD.removeReferee(UsersCRUD.getUserIdByUserName(((Referee)referee).getUserName()))) {
-                    logger.logEvent("User: " + ((Role) user).getUserName() + ". Removed referee");
-                    return true;
-                } else {
-                    logger.logError("Fault: unable to remove referee");
-                    return false;
-                }
+    public boolean removeRefereeFromLeague(String leagueName, String username) {
+        if (UsersCRUD.getUserIdByUserName(username) != -1) {
+            if (LeagueCRUD.removeRefFromLeague(username, leagueName)) {
+                logger.logEvent("User: " + username + ". Removed referee");
+                return true;
             }
-            logger.logError("Fault: unable to remove: referee not found");
+        } else {
+            logger.logError("Fault: unable to remove referee");
+            return false;
         }
-        logger.logError("Fault: can not access to settings");
+
+        logger.logError("Fault: unable to remove: referee not found");
         return false;
     }
 
@@ -379,14 +364,14 @@ public class LeagueManagementController {
      * @param name
      * @return true or false
      */
-    public boolean addNewLeague(String name, User user) {
-        if (canAccessSettingsPage(user)) {
+    public boolean addNewLeague(String name, String username) {
+        if (canAccessSettingsPage(username)) {
             if (name == null || name.trim().isEmpty()) {
                 return false;
             }
             leagues.add(new League(name));
             if (LeagueCRUD.addLeague(name)) {
-                logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new league");
+                logger.logEvent("User: " + username + ". Added new league");
                 return true;
             } else {
                 logger.logError("Fault: could not able to add league");
@@ -444,8 +429,8 @@ public class LeagueManagementController {
      * @param league
      * @return
      */
-    public boolean addNewSeasonToLeague(String yearStr, League league, User user) {
-        if (canAccessSettingsPage(user)) {
+    public boolean addNewRefereeToLeague(String yearStr, String league, String username) {
+        if (canAccessSettingsPage(username)) {
             if (league == null || yearStr == null && yearStr.trim().isEmpty()) {
                 logger.logError("Fault: unable to add: league or year not found");
                 return false;
@@ -453,9 +438,8 @@ public class LeagueManagementController {
             try {
                 int year = Integer.parseInt(yearStr);
                 Season season = new Season(year, new HashSet<>(), new HashSet<>());
-                league.addSeason(season);
-                if (LeagueCRUD.addLeagueToSeason(league.getName(), season.getYear())) {
-                    logger.logEvent("User: " + ((Role) user).getUserName() + ". Added new season to league: " + league.getName());
+                if (LeagueCRUD.addLeagueToSeason(league, season.getYear())) {
+                    logger.logEvent("User: " + username + ". Added new season to league: " + league);
                     return true;
                 }
             } catch (Exception e) {
@@ -519,10 +503,20 @@ public class LeagueManagementController {
 
     /**
      * This function return a referee by it's id
+     *
      * @param id
      * @return
      */
     public User getRefereeID(int id) {
         return UsersCRUD.restoreRoleForUser(id);
+    }
+
+    /**
+     *
+     * @return an array of leagues names
+     */
+    public JSONArray getLeagues() {
+        List<String> leagues = LeagueCRUD.getLeagues();
+        return new JSONArray(leagues);
     }
 }

@@ -5,6 +5,7 @@
 package com.SAS.User;
 
 import com.SAS.team.Team;
+import org.json.JSONObject;
 
 public class AssociationRepresentative extends Role {
 

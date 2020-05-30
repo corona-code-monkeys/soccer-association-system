@@ -6,6 +6,7 @@ import com.SAS.User.Referee;
 import com.SAS.User.User;
 import com.SAS.User.UserController;
 import com.SAS.User.UserType;
+import com.SAS.dbstub.dbStub;
 import com.SAS.facility.Facility;
 import com.SAS.facility.facilityType;
 import com.SAS.team.Team;
@@ -27,8 +28,8 @@ class GameIT {
     }
 
     @Test
-    void setVlidSeasonTest() {
-        Season season = new Season(2020,new HashSet<Team>(), new HashSet<League>());
+    void setValidSeasonTest() {
+        Season season = new Season(2020, new HashSet<Team>(), new HashSet<League>());
         boolean res = game.setSeason(season);
         assertTrue(res);
     }
@@ -119,35 +120,46 @@ class GameIT {
 
     @Test
     void setValidReferees() {
+        dbStub db = new dbStub();
+        dbStub.initializeDB();
+
         UserController userController = new UserController();
         LinkedList<Referee> referees = new LinkedList<>();
-        User ref1 = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", "rami@gmail.com","REFEREE", true);
-        User ref2 = userController.createUser("Vladimir2", "Vladi1234", "Vladimir Ivich2", "rami@gmail.com","REFEREE", true);
+        User ref1 = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", "rami@gmail.com", "REFEREE", true);
+        User ref2 = userController.createUser("Vladimir2", "Vladi1234", "Vladimir Ivich2", "rami@gmail.com", "REFEREE", true);
         referees.add((Referee) ref1);
         referees.add((Referee) ref2);
         boolean res = game.setReferees(referees);
         assertTrue(res);
+        userController.deleteUSer(((Referee) ref1).getUserName());
+        userController.deleteUSer(((Referee) ref2).getUserName());
     }
 
     @Test
     void setInvalidRefereesLowerThen2() {
+        dbStub db = new dbStub();
+        dbStub.initializeDB();
         UserController userController = new UserController();
         LinkedList<Referee> referees = new LinkedList<>();
-        User ref1 = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", "rami@gmail.com","REFEREE", true);
+        User ref1 = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", "rami@gmail.com", "REFEREE", true);
         referees.add((Referee) ref1);
         boolean res = game.setReferees(referees);
         assertFalse(res);
+        userController.deleteUSer(((Referee) ref1).getUserName());
     }
 
     @Test
     void setInvalidReferees() {
+        dbStub db = new dbStub();
+        dbStub.initializeDB();
         UserController userController = new UserController();
         LinkedList<Referee> referees = new LinkedList<>();
-        User ref1 = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", "rami@gmail.com","REFEREE", true);
+        User ref1 = userController.createUser("VladimirI", "Vladi123", "Vladimir Ivich", "rami@gmail.com", "REFEREE", true);
         User ref2 = null;
         referees.add((Referee) ref1);
         referees.add((Referee) ref2);
         boolean res = game.setReferees(referees);
         assertFalse(res);
+        userController.deleteUSer(((Referee) ref1).getUserName());
     }
 }

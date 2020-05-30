@@ -1,11 +1,9 @@
 package com.SAS.crudoperations;
 
-import com.SAS.Controllers.systemController.SystemController;
 import com.SAS.League.*;
 import com.SAS.LeagueManagement.LeagueManagementController;
 import com.SAS.User.Referee;
 import com.SAS.User.Registered;
-import com.SAS.User.User;
 import com.SAS.dbstub.dbStub;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -13,8 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class LeagueCRUDTest {
     private dbStub db;
