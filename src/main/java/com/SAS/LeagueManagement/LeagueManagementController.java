@@ -4,8 +4,10 @@ import com.SAS.League.*;
 import com.SAS.User.*;
 import com.SAS.User.User;
 import com.SAS.crudoperations.LeagueCRUD;
+import com.SAS.crudoperations.TeamCRUD;
 import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.systemLoggers.LoggerFactory;
+import org.json.JSONArray;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -269,7 +271,7 @@ public class LeagueManagementController {
      * @return
      */
     public boolean canAccessSettingsPage(String username) {
-        User user = UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(username));
+        User user = UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName(username));
         return user instanceof AssociationRepresentative;
     }
 
@@ -507,5 +509,14 @@ public class LeagueManagementController {
      */
     public User getRefereeID(int id) {
         return UsersCRUD.restoreRoleForUser(id);
+    }
+
+    /**
+     *
+     * @return an array of leagues names
+     */
+    public JSONArray getLeagues() {
+        List<String> leagues = LeagueCRUD.getLeagues();
+        return new JSONArray(leagues);
     }
 }
