@@ -3,24 +3,27 @@
  */
 package com.SAS.Controllers.sasApplication;
 
-import com.SAS.Controllers.systemController.ApplicationController;
 import com.SAS.LeagueManagement.LeagueManagementController;
-import com.SAS.User.User;
+import com.SAS.User.NotificationsHandler;
 import com.SAS.User.UserController;
+import com.SAS.soccer_association_system.TeamAPIController;
+import com.SAS.soccer_association_system.UserAPIController;
 import com.SAS.teamManagenemt.TeamManagement;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
+
 @Service
-public class SASApplication {
+public class SASApplication implements Observer {
 
     @Autowired
     private UserController userController;
     private LeagueManagementController leagueManagement;
     private TeamManagement teamManagement;
-    private ApplicationController applicationControllerController; //check
+    private NotificationsHandler notificationsHandler;
 
 
     /**
@@ -29,7 +32,8 @@ public class SASApplication {
     public SASApplication() {
         userController= new UserController();
         leagueManagement= new LeagueManagementController(userController);
-        teamManagement= new TeamManagement(userController);
+        teamManagement= new TeamManagement(userController, this);
+        notificationsHandler = new NotificationsHandler();
     }
 
     //TODO: in UI : if returns the role switch to home page with correct privileges, else show alert that user doesn't exist
@@ -76,20 +80,9 @@ public class SASApplication {
      * @param teamName
      */
     public boolean registerTeam(String teamOwner, String teamName){
-        return userController.sendNotificationToRepresentative(teamManagement.createANewTeam(teamOwner, teamName));
+        return teamManagement.sendNotificationToRepresentative(teamManagement.createANewTeam(teamOwner, teamName));
     }
 
-
-    //TODO: UI- if true, show alert that a notification about the team registration was sent to its owner
-    /**
-     * This function applies the confirmation/denial of the team
-     * @param teamName
-     * @param representative
-     * @param confirm
-     */
-    public boolean confirmTeam(String teamName, String representative, boolean confirm){
-        return teamManagement.commitConfirmationOfTeam(teamName, representative, confirm);
-    }
 
     /**
      * This function deletes the user associated with the given user name
@@ -302,6 +295,34 @@ public class SASApplication {
         return teamManagement.getAllTeamAssets(teamName);
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o == teamManagement) {
+            List<String> params = (LinkedList) arg;
+            String body = params.remove(0);
+            List<String> usersNotLogged = new LinkedList<>();
+            UserAPIController userAPIController = new UserAPIController();
+
+            for (String userName : params) {
+                String address = userController.getAddressOfLoggedInUser(userName);
+
+                //not logged in users
+                if (address == null) {
+                    usersNotLogged.add(userName);
+                }
+
+                else {
+                    userAPIController.sendNotification(address, body);
+                }
+
+            }
+
+            //send an email to users that are not logged in
+            notificationsHandler.sendEmailToUser(usersNotLogged, body);
+        }
+
+    }
+
     /**
      * This function gets the user details from DB
      * @param username
@@ -382,5 +403,18 @@ public class SASApplication {
      */
     public JSONArray getLeagues() {
         return leagueManagement.getLeagues();
+    }
+    public JSONArray getUnregisteredTeams() {
+        return teamManagement.getUnregisteredTeams();
+    }
+
+    /**
+     * This function applies the confirmation/denial of the team
+     * @param teamName
+     * @param confirm
+     */
+    public boolean approveTeam(String teamName, String confirm) {
+        boolean response = confirm.equals("approve") ? true : false;
+        return teamManagement.commitConfirmationOfTeam(teamName, response);
     }
 }

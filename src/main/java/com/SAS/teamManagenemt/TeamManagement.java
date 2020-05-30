@@ -4,7 +4,6 @@
 package com.SAS.teamManagenemt;
 
 import com.SAS.User.*;
-import com.SAS.crudoperations.CRUD;
 import com.SAS.crudoperations.TeamCRUD;
 import com.SAS.crudoperations.TransactionCRUD;
 import com.SAS.crudoperations.UsersCRUD;
@@ -18,11 +17,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.*;
 
-import java.util.LinkedList;
-
-public class TeamManagement {
+public class TeamManagement extends Observable {
 
     private LoggerFactory logger;
     private UserController userController;
@@ -31,9 +28,10 @@ public class TeamManagement {
      * Constructor
      * @param userController
      */
-    public TeamManagement(UserController userController) {
+    public TeamManagement(UserController userController, Observer application) {
         this.userController = userController;
         logger = LoggerFactory.getInstance();
+        addObserver(application);
     }
 
     /**
@@ -216,7 +214,7 @@ public class TeamManagement {
 
         User user = retrieveUser(username);
 
-        if (canAddRemoveAsset(user) && (ownsTeam(teamName, user) || managesTeam(teamName, user))) {
+        if (canAddRemoveAsset(user) && (ownsTeam(team, user) || managesTeam(teamName, user))) {
             TeamAsset asset = team.getAssetByNameAndType(assetType, assetName);
 
             asset.removeAssetFromTeam();
@@ -274,7 +272,7 @@ public class TeamManagement {
         User nominatedBy = retrieveUser(nominatedByName);
 
         //check if the user can owns the team and that the nominate is the owner of the team
-        if (validateUserCanOwnTeam(teamName, newTeamOwner) && ownsTeam(teamName, nominatedBy)) {
+        if (validateUserCanOwnTeam(teamName, newTeamOwner) && ownsTeam(team, nominatedBy)) {
             newTeamOwner = userController.addRoleToUser(newTeamOwner, "TEAM_OWNER", true);
             team.addTeamOwner((TeamOwner)newTeamOwner);
             ((TeamOwner) newTeamOwner).setTeam(team);
@@ -317,7 +315,7 @@ public class TeamManagement {
             return false;
         }
         //check if the user can manage this team and that the user that nominates him is the team owner
-        if (validateTeamManager(newTeamManager) && ownsTeam(teamName, nominatedBy)){
+        if (validateTeamManager(newTeamManager) && ownsTeam(team, nominatedBy)){
             newTeamManager = userController.addRoleToUser(newTeamManager, "TEAM_MANAGER" ,approval);
             team.setTeamManager((TeamManager)newTeamManager);
             ((TeamManager)newTeamManager).setTeam(team);
@@ -376,7 +374,7 @@ public class TeamManagement {
         User teamManager = retrieveUser(teamManagerName);
         User removedBy = retrieveUser(removedByName);
         //checks if the user manages the team and that the removing user is the owner of the team and nominated him
-        if (validateTeamManager(teamName, teamManager, removedBy) && ownsTeam(teamName, removedBy)) {
+        if (validateTeamManager(teamName, teamManager, removedBy) && ownsTeam(team, removedBy)) {
             team.removeTeamManager((TeamManager)teamManager);
             ((TeamManager)teamManager).removeTeam();
             //get the inner user (previous role)
@@ -386,6 +384,18 @@ public class TeamManagement {
             String username = ((TeamManager)teamManager).getUserName();
             UsersCRUD.deleteRole(username, "team_manager");
             TeamCRUD.removeManagerFromTeam(username, team.getName());
+
+            //notification
+            String message = "Your nomination for managing " + team.getName() + " has been removed.";
+            //send notifications to team owners and manager
+            List<String> notify = new LinkedList<String>(){
+                {
+                    add(message);
+                    add(teamManagerName);
+                }
+            };
+            setChanged();
+            notifyObservers(notify);
 
             logger.logEvent("User: " + ((Role)removedBy).getUserName() + ". Removed team manager from " + team.getName() + " team.");
         }
@@ -423,12 +433,24 @@ public class TeamManagement {
         User nominatedBy = retrieveUser(nominatedByName);
 
         //check if the user is owns the team and that the nominate is the owner of the team and nominated this user
-        if (validateTeamOwner(teamName, teamOwner, nominatedBy) && ownsTeam(teamName, nominatedBy)) {
+        if (validateTeamOwner(teamName, teamOwner, nominatedBy) && ownsTeam(team, nominatedBy)) {
             teamOwner = removeTeamOwnerAndNominees(teamName, teamOwner);
             //remove from db
             String username = ((TeamOwner)teamOwner).getUserName();
             UsersCRUD.deleteRole(username, "team_owner");
             TeamCRUD.removeOwnerFromTeam(username, team.getName());
+
+            //notification
+            String message = "Your nomination for owning " + team.getName() + " has been removed.";
+            //send notifications to team owners and manager
+            List<String> notify = new LinkedList<String>(){
+                {
+                    add(message);
+                    add(teamOwnerName);
+                }
+            };
+            setChanged();
+            notifyObservers(notify);
             return true;
         }
 
@@ -535,13 +557,11 @@ public class TeamManagement {
      * @param nominatedBy
      * @return true - if the user is the team owner, otherwise - false
      */
-    private boolean ownsTeam(String teamName, User nominatedBy) {
-
-        Team team = retrieveTeam(teamName);
+    private boolean ownsTeam(Team team, User nominatedBy) {
         if (team==null)
             return false;
         if (nominatedBy != null)
-            return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam()==team;
+            return nominatedBy instanceof TeamOwner && team.getOwnersNames().contains(((TeamOwner) nominatedBy).getUserName());
         return false;
     }
 
@@ -569,7 +589,7 @@ public class TeamManagement {
             return false;
         User teamOwner = retrieveUser(teamOwnerName);
 
-        if (ownsTeam(teamName, teamOwner)) {
+        if (ownsTeam(team, teamOwner)) {
             //first amount, second type, third date and last description
             double amount = Double.parseDouble(transDetails.get("amount").toString());
             TransactionType type = convertStringToTrasactionType(transDetails.get("type").toString());
@@ -624,11 +644,22 @@ public class TeamManagement {
         if (teamOwner == null || team == null){
             return false;
         }
-        if (ownsTeam(teamName, teamOwner)) {
+        if (ownsTeam(team, teamOwner)) {
             if (TeamCRUD.isTeamActive(team.getName())) {
                 TeamCRUD.setTeamActivity(team.getName(), false);
-                sendNotificationClose(team.getName(), "closed");
+                String message = "The team " + team.getName() + " has been closed.";
                 logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ". Closed " + team.getName() + " team.");
+
+                //send notifications to team owners and manager
+                List<String> users = new LinkedList<String>(){
+                    {
+                        add(message);
+                        addAll(team.getTeamManagement());
+                    }
+                };
+
+                setChanged();
+                notifyObservers(users);
                 return true;
             }
             logger.logError("Fault: unable to close: the team is already closed");
@@ -653,10 +684,21 @@ public class TeamManagement {
         if (teamOwner == null || team == null){
             return false;
         }
-        if (ownsTeam(teamName, teamOwner)) {
+        if (ownsTeam(team, teamOwner)) {
             if (!TeamCRUD.isTeamActive(team.getName())) {
                 TeamCRUD.setTeamActivity(team.getName(), true);
-                sendNotificationClose(team.getName(), "opened");
+                String message = "The team " + team.getName() + " has been opened.";
+
+                //send notifications to team owners and manager
+                List<String> users = new LinkedList<String>(){
+                    {
+                        add(message);
+                        addAll(team.getTeamManagement());
+                    }
+                };
+
+                setChanged();
+                notifyObservers(users);
                 logger.logEvent("User: " + ((Role)teamOwner).getUserName() + ".Opened " + team.getName() + " team.");
                 return true;
             }
@@ -669,32 +711,6 @@ public class TeamManagement {
             logger.logError("Fault: unable to open: user not authorized to open this team");
             return false;
         }
-    }
-
-    /**
-     * The function receives a team that has been closed and send the message to all the team management
-     * and the system admins
-     * @param teamName
-     */
-    //TODO: add system admins from DB
-    private void sendNotificationClose(String teamName, String message) {
-        String close = "The team " + teamName + " has been " + message + ".";
-
-        //get all the management of the team
-        List<User> management = new LinkedList<>();
-//        management.addAll(team.getOwners());
-//        User manager = team.getManager();
-//        if (manager != null) {
-//            management.add(manager);
-//        }
-//
-//        //add the system admins from DB
-//
-//        for (User user: management) {
-//            ((Role)user).getNotification(close);
-//        }
-        //TODO ask yaar if to keep this
-
     }
 
     /**
@@ -718,7 +734,7 @@ public class TeamManagement {
         if (user == null || team == null){
             return false;
         }
-        return (user instanceof TeamOwner && ownsTeam(teamName, user) || user instanceof TeamManager && managesTeam(teamName, user));
+        return (user instanceof TeamOwner && ownsTeam(team, user) || user instanceof TeamManager && managesTeam(teamName, user));
 
     }
 
@@ -887,6 +903,7 @@ public class TeamManagement {
         if (teamOwner != null ){
             Team team = new Team(teamName, (TeamOwner)teamOwner);
             TeamCRUD.postTeam(teamName);
+            TeamCRUD.addOwnerToTeam(teamOwnerName, teamName);
             return team;
         }
         logger.logError("Fault: unable to create: the team owner does not exist or not a team owner");
@@ -896,25 +913,34 @@ public class TeamManagement {
     /**
      * This function applies the confirmation or rejection of new team
      * @param teamName
-     * @param representativeName
      * @param confirmed
      */
-    public boolean commitConfirmationOfTeam(String teamName, String representativeName, boolean confirmed) {
-        User representative = retrieveUser(representativeName);
+    public boolean commitConfirmationOfTeam(String teamName, boolean confirmed) {
         if (teamName != null && !teamName.trim().isEmpty()) {
             Team team = retrieveTeam(teamName);
-            if (team!=null && representative != null && representative instanceof AssociationRepresentative) {
+            if (team!=null) {
+                String message;
                 if (!confirmed) {
-                    for (TeamOwner owner : team.getOwners())
-                        owner.getNotification("Your team registration request for " + teamName + " was rejected");
+                    message = "Your team registration request for " + teamName + " was rejected";
                     TeamCRUD.removeTeam(team.getName());
+                    logger.logEvent("team registration request for " + teamName + " was rejected");
                 } else {
+                    message = "Your team registration request for " + teamName + " was approved";
                     team.registerTeam();
                     TeamCRUD.setTeamActivity(team.getName(), true);
                     TeamCRUD.setTeamRegistration(team.getName(), true);
-                    for (TeamOwner owner : team.getOwners())
-                        owner.getNotification("Your team registration request for " + teamName + " was approved");
+                    logger.logEvent("team registration request for " + teamName + " was approved");
+
                 }
+                //notification
+                List<String> notify = new LinkedList<String>(){
+                    {
+                        add(message);
+                        addAll(team.getOwnersNames());
+                    }
+                };
+                setChanged();
+                notifyObservers(notify);
             }
             return true;
         }
@@ -936,7 +962,7 @@ public class TeamManagement {
      * @return
      */
     public JSONArray getTeams() {
-        List<String> teams = TeamCRUD.getTeams();
+        List<String> teams = TeamCRUD.getTeams("1");
         return new JSONArray(teams);
     }
 
@@ -950,6 +976,44 @@ public class TeamManagement {
             return TeamCRUD.isTeamRegistered(teamName);
         }
         return false;
+    }
+
+    /**
+     * This function send the notification to all representatives
+     * @param aNewTeam
+     * @Return true if a notification was sent, otherwise false
+     */
+    public boolean sendNotificationToRepresentative(Team aNewTeam) {
+        if (aNewTeam != null) {
+            List<String> representatives = UsersCRUD.getAssociationRepresentatives();
+            if (representatives.size()==0) {
+                logger.logError("Fault: unable to send: there are no representatives to send notifications");
+                return false;
+            }
+            //notification
+            String message = "The new team: " + aNewTeam.getName() + " is waiting to be registered";
+            //send notifications to team owners and manager
+            List<String> notify = new LinkedList<String>(){
+                {
+                    add(message);
+                    addAll(UsersCRUD.getAssociationRepresentatives());
+                }
+            };
+            setChanged();
+            notifyObservers(notify);
+            return true;
+        }
+        logger.logError("Fault: unable to send: team does not exist");
+        return false;
+    }
+
+    /**
+     * This function returns the names of all unregistered teams
+     * @return
+     */
+    public JSONArray getUnregisteredTeams() {
+        List<String> teams = TeamCRUD.getTeams("0");
+        return new JSONArray(teams);
     }
 }
 

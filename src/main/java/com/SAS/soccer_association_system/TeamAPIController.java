@@ -4,14 +4,11 @@
 package com.SAS.soccer_association_system;
 
 import com.SAS.Controllers.sasApplication.SASApplication;
-import com.SAS.crudoperations.TeamCRUD;
-import com.SAS.team.Team;
+import com.SAS.systemLoggers.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping(value ="/team")
 @RestController
@@ -40,20 +37,6 @@ public class TeamAPIController {
         String teamOwner = json.get("teamOwner").toString();
         String teamName = json.get("teamName").toString();
         return app.registerTeam(teamOwner, teamName) ? "success" : "fail";
-    }
-
-    /**
-     * The function receives team name, representative username and confirmation status and returns response success
-     * if the team confirmed successfully, otherwise returns false
-     * @return String - success or fail
-     */
-    @PostMapping(value ="/confirmTeamRegistration")
-    public String postTeamConfirmation(@RequestBody String details) {
-        JSONObject json = new JSONObject(details);
-        String representative = json.get("representative").toString();
-        String teamName = json.get("teamName").toString();
-        boolean isConfirm = (boolean) json.get("confirm");
-        return app.confirmTeam(teamName, representative, isConfirm) ? "success" : "fail";
     }
 
     /**
@@ -207,6 +190,18 @@ public class TeamAPIController {
         return app.removeTeamAsset(teamName, assetType, assetName, teamOwner) ? "success": "fail";
     }
 
+    /** The function approves registration of the team by representative
+     * @return String - success or fail
+     */
+    @PostMapping(value ="/approveTeam")
+    public String postApproveTeam(@RequestBody String details) {
+        JSONObject json = new JSONObject(details);
+        String teamName = json.get("teamName").toString();
+        String confirm = json.get("confirm").toString();
+        return app.approveTeam(teamName, confirm) ? "success": "fail";
+    }
+
+
     /**
      * The function returns all the teams
      * @return
@@ -214,6 +209,15 @@ public class TeamAPIController {
     @GetMapping(value = "/getTeams")
     public JSONArray getTeams() {
         return app.getTeams();
+    }
+
+    /**
+     * The function returns all unregistered teams
+     * @return
+     */
+    @GetMapping(value = "/getUnregisteredTeams")
+    public JSONArray getUnregisteredTeams() {
+        return app.getUnregisteredTeams();
     }
 
     /**
@@ -242,4 +246,5 @@ public class TeamAPIController {
     public String getAssetsForTeam(@PathVariable String teamName) {
         return app.getAssetsForTeam(teamName).toString();
     }
+
 }

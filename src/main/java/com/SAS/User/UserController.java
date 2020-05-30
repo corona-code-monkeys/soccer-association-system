@@ -19,7 +19,7 @@ public class UserController {
      */
     private LoggerFactory logger;
     private Privileges globalPrivileges;
-    private Map<String, String> loggedInUsers;
+    private static Map<String, String> loggedInUsers;
 
     /**
      * Constructor
@@ -260,27 +260,7 @@ public class UserController {
         }
     }
 
-    /**
-     * This function send the notification to all representatives
-     * @param aNewTeam
-     * @Return true if a notification was sent, otherwise false
-     */
-    public boolean sendNotificationToRepresentative(Team aNewTeam) {
-        if (aNewTeam != null) {
-            List<String> representatives = UsersCRUD.getAssociationRepresentatives();
-            if (representatives.size()==0) {
-                logger.logError("Fault: unable to send: there are no representatives to send notifications");
-                return false;
-            }
-            //TODO - ad notifications by Yaar
-//            for (String rep : representatives) {
-//                rep.getNotification("The new team: " + aNewTeam.getName() + " is waiting to be registered");
-//            }
-            return true;
-        }
-        logger.logError("Fault: unable to send: team does not exist");
-        return false;
-    }
+
 
     /**
      * This function deletes a user
@@ -455,6 +435,16 @@ public class UserController {
         }
         return false;
     }
+
+    /**
+     * The function returns the address of logged in user if exists, otherwise returns null
+     * @param userName
+     * @return email
+     */
+    public String getAddressOfLoggedInUser(String userName) {
+        return loggedInUsers.get(userName);
+    }
+
 
     /**
      * This function gets username and role and retrieves the user details from the DB

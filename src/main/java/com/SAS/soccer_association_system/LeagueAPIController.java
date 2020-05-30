@@ -85,7 +85,6 @@ public class LeagueAPIController {
         String username= json.get("username").toString();
         return app.setPolicies(leagueName,seasonYear, rankPolicy,pointsPolicy,gamePolicy,username) ? "success" : "fail";
     }
-
     /**
      * The function returns all the teams
      * @return

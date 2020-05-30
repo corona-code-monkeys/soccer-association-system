@@ -29,6 +29,7 @@ public class CRUD {
      * @param type
      * @return
      */
+    /*
     public static User createUser(String userName, String password, String fullName, String email, UserType type) {
         if (userName == null || password == null || fullName == null) {
             return null;
@@ -39,6 +40,7 @@ public class CRUD {
             return c.createUser(userName, password, fullName, email, type.toString(), true);
         }
     }
+    */
 
     /**
      * will return false for userID smaller then 0
