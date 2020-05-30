@@ -385,6 +385,18 @@ public class TeamManagement extends Observable {
             UsersCRUD.deleteRole(username, "team_manager");
             TeamCRUD.removeManagerFromTeam(username, team.getName());
 
+            //notification
+            String message = "Your nomination for managing " + team.getName() + " has been removed.";
+            //send notifications to team owners and manager
+            List<String> notify = new LinkedList<String>(){
+                {
+                    add(message);
+                    add(teamManagerName);
+                }
+            };
+            setChanged();
+            notifyObservers(notify);
+
             logger.logEvent("User: " + ((Role)removedBy).getUserName() + ". Removed team manager from " + team.getName() + " team.");
         }
         return true;
@@ -427,6 +439,18 @@ public class TeamManagement extends Observable {
             String username = ((TeamOwner)teamOwner).getUserName();
             UsersCRUD.deleteRole(username, "team_owner");
             TeamCRUD.removeOwnerFromTeam(username, team.getName());
+
+            //notification
+            String message = "Your nomination for owning " + team.getName() + " has been removed.";
+            //send notifications to team owners and manager
+            List<String> notify = new LinkedList<String>(){
+                {
+                    add(message);
+                    add(teamOwnerName);
+                }
+            };
+            setChanged();
+            notifyObservers(notify);
             return true;
         }
 
@@ -537,7 +561,7 @@ public class TeamManagement extends Observable {
         if (team==null)
             return false;
         if (nominatedBy != null)
-            return nominatedBy instanceof TeamOwner && ((TeamOwner) nominatedBy).getTeam().getName().equals(team.getName());
+            return nominatedBy instanceof TeamOwner && team.getOwnersNames().contains(((TeamOwner) nominatedBy).getUserName());
         return false;
     }
 
@@ -879,6 +903,7 @@ public class TeamManagement extends Observable {
         if (teamOwner != null ){
             Team team = new Team(teamName, (TeamOwner)teamOwner);
             TeamCRUD.postTeam(teamName);
+            TeamCRUD.addOwnerToTeam(teamOwnerName, teamName);
             return team;
         }
         logger.logError("Fault: unable to create: the team owner does not exist or not a team owner");
@@ -888,25 +913,34 @@ public class TeamManagement extends Observable {
     /**
      * This function applies the confirmation or rejection of new team
      * @param teamName
-     * @param representativeName
      * @param confirmed
      */
-    public boolean commitConfirmationOfTeam(String teamName, String representativeName, boolean confirmed) {
-        User representative = retrieveUser(representativeName);
+    public boolean commitConfirmationOfTeam(String teamName, boolean confirmed) {
         if (teamName != null && !teamName.trim().isEmpty()) {
             Team team = retrieveTeam(teamName);
-            if (team!=null && representative != null && representative instanceof AssociationRepresentative) {
+            if (team!=null) {
+                String message;
                 if (!confirmed) {
-                    for (TeamOwner owner : team.getOwners())
-                        owner.getNotification("Your team registration request for " + teamName + " was rejected");
+                    message = "Your team registration request for " + teamName + " was rejected";
                     TeamCRUD.removeTeam(team.getName());
+                    logger.logEvent("team registration request for " + teamName + " was rejected");
                 } else {
+                    message = "Your team registration request for " + teamName + " was approved";
                     team.registerTeam();
                     TeamCRUD.setTeamActivity(team.getName(), true);
                     TeamCRUD.setTeamRegistration(team.getName(), true);
-                    for (TeamOwner owner : team.getOwners())
-                        owner.getNotification("Your team registration request for " + teamName + " was approved");
+                    logger.logEvent("team registration request for " + teamName + " was approved");
+
                 }
+                //notification
+                List<String> notify = new LinkedList<String>(){
+                    {
+                        add(message);
+                        addAll(team.getOwnersNames());
+                    }
+                };
+                setChanged();
+                notifyObservers(notify);
             }
             return true;
         }
@@ -928,7 +962,7 @@ public class TeamManagement extends Observable {
      * @return
      */
     public JSONArray getTeams() {
-        List<String> teams = TeamCRUD.getTeams();
+        List<String> teams = TeamCRUD.getTeams("1");
         return new JSONArray(teams);
     }
 
@@ -942,6 +976,44 @@ public class TeamManagement extends Observable {
             return TeamCRUD.isTeamRegistered(teamName);
         }
         return false;
+    }
+
+    /**
+     * This function send the notification to all representatives
+     * @param aNewTeam
+     * @Return true if a notification was sent, otherwise false
+     */
+    public boolean sendNotificationToRepresentative(Team aNewTeam) {
+        if (aNewTeam != null) {
+            List<String> representatives = UsersCRUD.getAssociationRepresentatives();
+            if (representatives.size()==0) {
+                logger.logError("Fault: unable to send: there are no representatives to send notifications");
+                return false;
+            }
+            //notification
+            String message = "The new team: " + aNewTeam.getName() + " is waiting to be registered";
+            //send notifications to team owners and manager
+            List<String> notify = new LinkedList<String>(){
+                {
+                    add(message);
+                    addAll(UsersCRUD.getAssociationRepresentatives());
+                }
+            };
+            setChanged();
+            notifyObservers(notify);
+            return true;
+        }
+        logger.logError("Fault: unable to send: team does not exist");
+        return false;
+    }
+
+    /**
+     * This function returns the names of all unregistered teams
+     * @return
+     */
+    public JSONArray getUnregisteredTeams() {
+        List<String> teams = TeamCRUD.getTeams("0");
+        return new JSONArray(teams);
     }
 }
 

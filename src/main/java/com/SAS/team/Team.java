@@ -382,6 +382,14 @@ public class Team {
     }
 
     /**
+     * This function sets isActive
+     * @param active
+     */
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    /**
      * The function returns true if the team is active, otherwise returns false
      *
      * @return treu or false
@@ -596,18 +604,24 @@ public class Team {
         }
         JSONArray playersNames = new JSONArray();
         for(Player pla: this.players){
-            playersNames.put(pla.getFullName() + "     -     " + pla.getFieldRole());
+            playersNames.put(pla.getFullName() + "     -     " + pla.getFieldRole().toString().toLowerCase());
         }
         JSONArray facilitiesNames = new JSONArray();
         for(Facility fac: this.teamFacilities){
             playersNames.put(fac.getFacilityType() + " " + fac.getName());
         }
         teamJson.put("Team Owners", ownersNames);
-        teamJson.put("Team Manager", manager.getFullName());
-        teamJson.put("Coach", coach.getFullName());
+        if (this.manager!=null)
+            teamJson.put("Team Manager", manager.getFullName());
+        else
+            teamJson.put("Team Manager", "");
+        if (this.coach!=null)
+            teamJson.put("Coach", coach.getFullName());
+        else
+            teamJson.put("Coach", "");
         teamJson.put("Players", playersNames);
         teamJson.put("Facilities",facilitiesNames);
-        teamJson.put("Active", this.active);
+        teamJson.put("Activity status", this.active);
         return teamJson;
     }
 
@@ -629,12 +643,25 @@ public class Team {
      */
     public List<String> getTeamManagement() {
         List<String> userNames = new LinkedList<>();
-        userNames.add(this.getManager().getUserName());
+        if (this.manager!=null)
+            userNames.add(this.getManager().getUserName());
 
         for (TeamOwner owner: this.owners) {
             userNames.add(owner.getUserName());
         }
 
+        return userNames;
+    }
+
+    /**
+     * This function returns the owners
+     * @return
+     */
+    public List<String> getOwnersNames() {
+        List<String> userNames = new LinkedList<>();
+        for (TeamOwner owner: this.owners) {
+            userNames.add(owner.getUserName());
+        }
         return userNames;
     }
 }
