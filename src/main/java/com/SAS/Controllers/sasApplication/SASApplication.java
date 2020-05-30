@@ -80,20 +80,9 @@ public class SASApplication implements Observer {
      * @param teamName
      */
     public boolean registerTeam(String teamOwner, String teamName){
-        return userController.sendNotificationToRepresentative(teamManagement.createANewTeam(teamOwner, teamName));
+        return teamManagement.sendNotificationToRepresentative(teamManagement.createANewTeam(teamOwner, teamName));
     }
 
-
-    //TODO: UI- if true, show alert that a notification about the team registration was sent to its owner
-    /**
-     * This function applies the confirmation/denial of the team
-     * @param teamName
-     * @param representative
-     * @param confirm
-     */
-    public boolean confirmTeam(String teamName, String representative, boolean confirm){
-        return teamManagement.commitConfirmationOfTeam(teamName, representative, confirm);
-    }
 
     /**
      * This function deletes the user associated with the given user name
@@ -389,5 +378,19 @@ public class SASApplication implements Observer {
 
     public boolean setPolicies(String leagueName, int seasonYear, String rankPolicy, String pointsPolicy, String gamePolicy, String username) {
         return leagueManagement.addPolicies(leagueName,seasonYear,rankPolicy,pointsPolicy,gamePolicy, username);
+    }
+
+    public JSONArray getUnregisteredTeams() {
+        return teamManagement.getUnregisteredTeams();
+    }
+
+    /**
+     * This function applies the confirmation/denial of the team
+     * @param teamName
+     * @param confirm
+     */
+    public boolean approveTeam(String teamName, String confirm) {
+        boolean response = confirm.equals("approve") ? true : false;
+        return teamManagement.commitConfirmationOfTeam(teamName, response);
     }
 }

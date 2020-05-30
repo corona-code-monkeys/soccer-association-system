@@ -40,20 +40,6 @@ public class TeamAPIController {
     }
 
     /**
-     * The function receives team name, representative username and confirmation status and returns response success
-     * if the team confirmed successfully, otherwise returns false
-     * @return String - success or fail
-     */
-    @PostMapping(value ="/confirmTeamRegistration")
-    public String postTeamConfirmation(@RequestBody String details) {
-        JSONObject json = new JSONObject(details);
-        String representative = json.get("representative").toString();
-        String teamName = json.get("teamName").toString();
-        boolean isConfirm = (boolean) json.get("confirm");
-        return app.confirmTeam(teamName, representative, isConfirm) ? "success" : "fail";
-    }
-
-    /**
      * The function receives the team name and returns the team's registration status
      * @return string - status
      */
@@ -204,6 +190,18 @@ public class TeamAPIController {
         return app.removeTeamAsset(teamName, assetType, assetName, teamOwner) ? "success": "fail";
     }
 
+    /** The function approves registration of the team by representative
+     * @return String - success or fail
+     */
+    @PostMapping(value ="/approveTeam")
+    public String postApproveTeam(@RequestBody String details) {
+        JSONObject json = new JSONObject(details);
+        String teamName = json.get("teamName").toString();
+        String confirm = json.get("confirm").toString();
+        return app.approveTeam(teamName, confirm) ? "success": "fail";
+    }
+
+
     /**
      * The function returns all the teams
      * @return
@@ -211,6 +209,15 @@ public class TeamAPIController {
     @GetMapping(value = "/getTeams")
     public JSONArray getTeams() {
         return app.getTeams();
+    }
+
+    /**
+     * The function returns all unregistered teams
+     * @return
+     */
+    @GetMapping(value = "/getUnregisteredTeams")
+    public JSONArray getUnregisteredTeams() {
+        return app.getUnregisteredTeams();
     }
 
     /**

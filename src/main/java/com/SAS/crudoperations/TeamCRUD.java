@@ -2,6 +2,7 @@ package com.SAS.crudoperations;
 
 import com.SAS.User.*;
 import com.SAS.team.Team;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -14,8 +15,6 @@ import java.util.Map;
 public class TeamCRUD {
 
     private static JdbcTemplate jdbcTemplate;
-
-
 
 
     public void setTemplate(JdbcTemplate jdbcTemplate) {
@@ -404,7 +403,6 @@ public class TeamCRUD {
         }
 
         String registration = isRegistered ? "1" : "0";
-
         try {
             String query = String.format("update team set isRegistered = \"%s\" where team_name = \"%s\";", registration, teamName);
             jdbcTemplate.update(query);
@@ -427,7 +425,7 @@ public class TeamCRUD {
         Team team;
         Map<String, Object> result;
         try {
-            String sqlTeam = "SELECT team_name, manager_user_id, coach_user_id FROM team WHERE team_name = ?";
+            String sqlTeam = "SELECT * FROM team WHERE team_name = ?";
             result = jdbcTemplate.queryForMap(sqlTeam, new Object[]{teamName});
             team = new Team (teamName);
 
@@ -470,7 +468,13 @@ public class TeamCRUD {
             } catch(Exception e){
                 //no coach, do nothing
             }
-        }catch (Exception e) {
+            //isActive
+            try{
+                boolean active = (Boolean) result.get("isActive");
+                team.setActive(active);
+            } catch(Exception e) {
+            }
+            }catch (Exception e) {
             return null;
         }
         return team;
@@ -505,8 +509,8 @@ public class TeamCRUD {
      * The function returns all the teams
      * @return list of names
      */
-    public static List<String> getTeams() {
-        String query = String.format("SELECT team_name FROM team");
+    public static List<String> getTeams(String registered) {
+        String query = String.format("SELECT team_name FROM team where isRegistered=\"%s\";", registered);
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
         List<String> teams = new LinkedList<>();
         for(Map<String, Object> row: rows){
@@ -515,4 +519,6 @@ public class TeamCRUD {
 
         return teams;
     }
+
+
 }
