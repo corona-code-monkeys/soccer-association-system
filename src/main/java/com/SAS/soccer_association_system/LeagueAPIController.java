@@ -78,7 +78,7 @@ public class LeagueAPIController {
     public String postDefinePolicies(@RequestBody String details) {
         JSONObject json = new JSONObject(details);
         String leagueName = json.get("leagueName").toString();
-        int seasonYear = (Integer)json.get("seasonName");
+        int seasonYear = Integer.parseInt(json.get("seasonName").toString());
         String gamePolicy = json.get("gamePolicy").toString();
         String rankPolicy = json.get("leagueRankPolicy").toString();
         String pointsPolicy = json.get("pointsPolicy").toString();

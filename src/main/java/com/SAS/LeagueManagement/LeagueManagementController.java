@@ -271,7 +271,7 @@ public class LeagueManagementController {
      * @return
      */
     public boolean canAccessSettingsPage(String username) {
-        User user = UsersCRUD.getRegisteredUserByID(UsersCRUD.getUserIdByUserName(username));
+        User user = UsersCRUD.restoreRoleForUser(UsersCRUD.getUserIdByUserName(username));
         return user instanceof AssociationRepresentative;
     }
 
