@@ -4,8 +4,10 @@ import com.SAS.League.*;
 import com.SAS.User.*;
 import com.SAS.User.User;
 import com.SAS.crudoperations.LeagueCRUD;
+import com.SAS.crudoperations.TeamCRUD;
 import com.SAS.crudoperations.UsersCRUD;
 import com.SAS.systemLoggers.LoggerFactory;
+import org.json.JSONArray;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -27,7 +29,7 @@ public class LeagueManagementController {
     /**
      * Constructor
      */
-    public LeagueManagementController() {
+    public LeagueManagementController(UserController userController) {
         this.logger = LoggerFactory.getInstance();
         this.rankPolicies = new LinkedList<>();
         this.pointsPolicies = new LinkedList<>();
@@ -35,7 +37,7 @@ public class LeagueManagementController {
         referees = new LinkedList<>();
         leagues = new LinkedList<>();
         initPolicies();
-        userController = new UserController();
+        this.userController = userController;
     }
 
     /**
@@ -507,5 +509,14 @@ public class LeagueManagementController {
      */
     public User getRefereeID(int id) {
         return UsersCRUD.restoreRoleForUser(id);
+    }
+
+    /**
+     *
+     * @return an array of leagues names
+     */
+    public JSONArray getLeagues() {
+        List<String> leagues = LeagueCRUD.getLeagues();
+        return new JSONArray(leagues);
     }
 }

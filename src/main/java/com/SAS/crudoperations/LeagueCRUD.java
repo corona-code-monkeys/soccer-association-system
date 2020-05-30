@@ -6,11 +6,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class LeagueCRUD {
 
     private static JdbcTemplate jdbcTemplate;
-
 
     public void setTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -189,5 +191,13 @@ public class LeagueCRUD {
         } catch (EmptyResultDataAccessException e) {
         }
     }
-
+    public static List<String> getLeagues() {
+        String query = String.format("SELECT league_name FROM league");
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
+        List<String> leagues = new LinkedList<>();
+        for(Map<String, Object> row: rows){
+            leagues.add((String)row.get("league_name"));
+        }
+        return leagues;
+    }
 }

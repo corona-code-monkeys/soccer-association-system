@@ -28,7 +28,7 @@ public class SASApplication {
      */
     public SASApplication() {
         userController= new UserController();
-        leagueManagement= new LeagueManagementController();
+        leagueManagement= new LeagueManagementController(userController);
         teamManagement= new TeamManagement(userController);
     }
 
@@ -351,11 +351,36 @@ public class SASApplication {
 
     }
 
+    /**
+     * assign a referee to a league in season
+     * @param leagueName - the league's name
+     * @param seasonYear - the year of the season
+     * @param username - name of the referee
+     * @return
+     */
     public boolean assignRefereeToLeague(String leagueName, String seasonYear, String username) {
         return leagueManagement.addNewRefereeToLeague(seasonYear,leagueName,username);
     }
 
+    /**
+     * sets policies to league in specific season
+     * @param leagueName
+     * @param seasonYear
+     * @param rankPolicy
+     * @param pointsPolicy
+     * @param gamePolicy
+     * @param username
+     * @return
+     */
     public boolean setPolicies(String leagueName, int seasonYear, String rankPolicy, String pointsPolicy, String gamePolicy, String username) {
         return leagueManagement.addPolicies(leagueName,seasonYear,rankPolicy,pointsPolicy,gamePolicy, username);
+    }
+
+    /**
+     *
+     * @return json array with all the leagues names
+     */
+    public JSONArray getLeagues() {
+        return leagueManagement.getLeagues();
     }
 }
