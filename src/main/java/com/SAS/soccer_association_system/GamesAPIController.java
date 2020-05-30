@@ -108,10 +108,28 @@ public class GamesAPIController {
                 default:
                     throw new Exception("Illegal type");
             }
+            app.sendGameEventNotification(gameID, type);
+
         } catch (Exception e) {
             e.printStackTrace();
             return "fail";
         }
         return "success";
+    }
+
+    @PostMapping(value = "/addFollower")
+    public String addFollowerToGame(@RequestBody String credentials) {
+        JSONObject json = new JSONObject(credentials);
+        String gameID = json.getString("gameID");
+        String userName = json.getString("userName");
+        return app.addGameFollower(userName, gameID) ? "success" : "fail";
+    }
+
+    @PostMapping(value = "/removeFollower")
+    public String removeFollowerFromGame(@RequestBody String credentials) {
+        JSONObject json = new JSONObject(credentials);
+        String gameID = json.getString("gameID");
+        String userName = json.getString("userName");
+        return app.removeGameFollower(userName, gameID) ? "success" : "fail";
     }
 }

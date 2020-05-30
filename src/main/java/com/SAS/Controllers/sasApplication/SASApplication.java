@@ -6,6 +6,7 @@ package com.SAS.Controllers.sasApplication;
 import com.SAS.LeagueManagement.LeagueManagementController;
 import com.SAS.User.NotificationsHandler;
 import com.SAS.User.UserController;
+import com.SAS.game.GameManagement;
 import com.SAS.soccer_association_system.TeamAPIController;
 import com.SAS.soccer_association_system.UserAPIController;
 import com.SAS.teamManagenemt.TeamManagement;
@@ -24,6 +25,7 @@ public class SASApplication implements Observer {
     private LeagueManagementController leagueManagement;
     private TeamManagement teamManagement;
     private NotificationsHandler notificationsHandler;
+    private GameManagement gameManagement;
 
 
     /**
@@ -33,6 +35,7 @@ public class SASApplication implements Observer {
         userController= new UserController();
         leagueManagement= new LeagueManagementController(userController);
         teamManagement= new TeamManagement(userController, this);
+        this.gameManagement = new GameManagement();
         notificationsHandler = new NotificationsHandler();
     }
 
@@ -416,5 +419,37 @@ public class SASApplication implements Observer {
     public boolean approveTeam(String teamName, String confirm) {
         boolean response = confirm.equals("approve") ? true : false;
         return teamManagement.commitConfirmationOfTeam(teamName, response);
+    }
+
+    /**
+     * The function receibes userName and game ID and adds a new follower to the game if exists,
+     * otherwise returns false
+     * @param userName
+     * @param gameID
+     * @return true or false
+     */
+    public boolean addGameFollower(String userName, String gameID){
+        return gameManagement.addGameFollower(userName, gameID);
+    }
+
+    /**
+     * The function receibes userName and game ID and adds a new follower to the game if exists,
+     * otherwise returns false
+     * @param userName
+     * @param gameID
+     * @return true or false
+     */
+    public boolean removeGameFollower(String userName, String gameID){
+        return gameManagement.removeGameFollower(userName, gameID);
+    }
+
+    /**
+     * The function receives gameID and game event and sent notification to the game followers
+     * @param gameID
+     * @param gameEvent
+     * @return
+     */
+    public boolean sendGameEventNotification(String gameID, String gameEvent) {
+        return gameManagement.sendNotification(gameID, gameEvent);
     }
 }
