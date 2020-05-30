@@ -2,6 +2,10 @@ package com.SAS.Controllers.systemController;
 
 import com.SAS.User.UserController;
 import com.SAS.crudoperations.SystemCRUD;
+import com.SAS.externalSystems.AccountSystem;
+import com.SAS.externalSystems.IAccountSystem;
+import com.SAS.externalSystems.ITaxSystem;
+import com.SAS.externalSystems.TaxSystem;
 import com.SAS.systemLoggers.LoggerFactory;
 import java.util.List;
 
@@ -10,6 +14,8 @@ public class ApplicationController {
 
     private LoggerFactory logger;
     private UserController userController;
+    private IAccountSystem accountSystem;
+    private ITaxSystem taxSystem;
 
 
 
@@ -58,6 +64,7 @@ public class ApplicationController {
         switch (name) {
             case "Accounting":
                 if (!searchSystem(name)) {
+                    accountSystem = new AccountSystem();
                     SystemCRUD.connectToSystem("Accounting");
                     logger.logEvent("User: System. The system connected to the accounting system");
                     return true;
@@ -65,6 +72,7 @@ public class ApplicationController {
 
             case "Tax":
                 if (!searchSystem(name)) {
+                    taxSystem = new TaxSystem();
                     SystemCRUD.connectToSystem("Tax");
                     return true;
                 }
