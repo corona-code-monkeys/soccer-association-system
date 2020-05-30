@@ -56,13 +56,13 @@ public class LeagueCRUD {
     }
 
     public static boolean addLeagueToSeason(String name, int year) {
-        if (LeagueCRUD.isLeagueExist(name) && LeagueCRUD.isSeasonExist(year)) {
+        if (!isPaired(name, year)) {
             try {
-                String query = String.format("UPDATE season SET league_name =(\"%s\") WHERE season_year = \"%d\";", name, year);
+                String query = String.format("insert into policies (league_name,season_year) values (\"%s\",\"%d\")", name, year);
                 jdbcTemplate.update(query);
                 return true;
-            } catch (EmptyResultDataAccessException e) {
-                return false;
+            } catch (Exception e) {
+                throw e;
             }
         } else {
             return false;
@@ -149,19 +149,35 @@ public class LeagueCRUD {
     }
 
     public static boolean addPoliciesToLeagueInSeason(String name, int year, String rankPolicy, String pointsPolicy, String gamePolicy) {
-        try {
-            String query = String.format("insert into policies values (%d,\"%s\", \"%s\", \"%s\",\"%s\");", year, name, rankPolicy, pointsPolicy, gamePolicy);
-            jdbcTemplate.update(query);
-            return true;
-        } catch (EmptyResultDataAccessException e) {
-            return false;
+        if (isPaired(name, year)) {
+            try {
+                String query = String.format("UPDATE policies SET league_rank_policy=\"%s\", points_policy=\"%s\" ,games_policy=\"%s\" WHERE season_year=%d AND league_name=\"%s\"", rankPolicy, pointsPolicy, gamePolicy, year, name);
+                jdbcTemplate.update(query);
+                return true;
+            } catch (EmptyResultDataAccessException e) {
+                return false;
+            }
         }
+        return false;
+    }
+
+    private static boolean isPaired(String name, int year) {
+        if (LeagueCRUD.isLeagueExist(name) && LeagueCRUD.isSeasonExist(year)) {
+            try {
+                String query = String.format("SELECT season_year FROM policies WHERE season_year=\"%d\" AND league_name=\"%s\"", year, name);
+                jdbcTemplate.queryForObject(query, int.class);
+                return true;
+            } catch (EmptyResultDataAccessException e) {
+                return false;
+            }
+        }
+        return false;
     }
 
     public static boolean addReferee(int user_id, int level) {
         try {
             String query = String.format("insert into referee (user_id,level) values (\"%s\",\"%d\")", user_id, level);
-            if(user_id==-1){
+            if (user_id == -1) {
                 return false;
             }
             jdbcTemplate.update(query);
@@ -191,12 +207,13 @@ public class LeagueCRUD {
         } catch (EmptyResultDataAccessException e) {
         }
     }
+
     public static List<String> getLeagues() {
         String query = String.format("SELECT league_name FROM league");
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
         List<String> leagues = new LinkedList<>();
-        for(Map<String, Object> row: rows){
-            leagues.add((String)row.get("league_name"));
+        for (Map<String, Object> row : rows) {
+            leagues.add((String) row.get("league_name"));
         }
         return leagues;
     }

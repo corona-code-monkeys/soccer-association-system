@@ -91,6 +91,7 @@ public class LeagueManagementController {
     public boolean addSeasonToALeague(int season, String league) {
         if (LeagueCRUD.isLeagueExist(league) && LeagueCRUD.isSeasonExist(season)) {
             LeagueCRUD.addLeagueToSeason(league, season);
+            return true;
         }
         logger.logError("Fault: unable to add season to league");
         return false;

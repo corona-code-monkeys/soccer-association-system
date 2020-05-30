@@ -41,7 +41,7 @@ public class LeagueAPIController {
     public String postSeasonToLeague(@RequestBody String details) {
         JSONObject json = new JSONObject(details);
         String leagueName = json.get("leagueName").toString();
-        int seasonYear = (Integer)json.get("seasonName");
+        int seasonYear = Integer.parseInt(json.get("seasonName").toString());
         return app.addSeasonToLeague(leagueName, seasonYear) ? "success" : "fail";
     }
 
