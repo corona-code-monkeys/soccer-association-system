@@ -500,7 +500,7 @@ public class UsersCRUD {
                         result = jdbcTemplate.queryForMap(sql, new Object[]{id});
                         ((Player) user).setDateOfBirth(LocalDate.parse(result.get("date_of_birth").toString()));
                         String fieldRole = (String) result.get("field_role");
-                        ((Player) user).setFieldRole(Role.convertStringToFieldRole(fieldRole.substring(0, 1) + fieldRole.substring(1).toLowerCase()));
+                        ((Player) user).setFieldRole(Role.convertStringToFieldRole(fieldRole));
                         ((Player) user).setTeam(new Team((String) result.get("team_name")));
                         return user;
                     case "coach":
